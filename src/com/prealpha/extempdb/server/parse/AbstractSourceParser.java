@@ -7,6 +7,9 @@
 package com.prealpha.extempdb.server.parse;
 
 abstract class AbstractSourceParser implements SourceParser {
+	protected AbstractSourceParser() {
+	}
+
 	@Override
 	public String getCanonicalUrl(String url) {
 		int parameterIndex = url.indexOf('?');

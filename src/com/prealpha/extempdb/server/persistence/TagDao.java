@@ -14,6 +14,9 @@ import org.hibernate.type.StandardBasicTypes;
 import com.prealpha.extempdb.server.domain.Tag;
 
 public class TagDao extends GenericDao<Tag, String> {
+	public TagDao() {
+	}
+
 	@Override
 	protected Class<Tag> getEntityClass() {
 		return Tag.class;

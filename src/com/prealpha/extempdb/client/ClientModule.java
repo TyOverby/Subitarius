@@ -34,6 +34,9 @@ import com.prealpha.gwt.dispatch.shared.Dispatcher;
 import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public final class ClientModule extends AbstractGinModule {
+	public ClientModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
@@ -61,7 +64,7 @@ public final class ClientModule extends AbstractGinModule {
 		dispatcher.addFilter(batchingFilter);
 		return dispatcher;
 	}
-	
+
 	@Provides
 	@BackingDispatcher
 	DispatcherAsync getBackingDispatcher() {
@@ -69,13 +72,13 @@ public final class ClientModule extends AbstractGinModule {
 		((ServiceDefTarget) dispatcher).setServiceEntryPoint("./GWT.rpc");
 		return dispatcher;
 	}
-	
+
 	@Provides
 	@BatchDelay
 	Integer getBatchDelay() {
 		return 200;
 	}
-	
+
 	@Provides
 	DateTimeFormat getDateTimeFormat() {
 		return DateTimeFormat.getFormat("yyyy-MM-dd");

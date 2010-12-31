@@ -10,6 +10,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.user.client.ui.SuggestOracle;
 
 public class CommonModule extends AbstractGinModule {
+	public CommonModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(LoadingStatusPresenter.Display.class)

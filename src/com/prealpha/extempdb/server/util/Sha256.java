@@ -7,6 +7,7 @@
 package com.prealpha.extempdb.server.util;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public final class Sha256 {
 	public static String hashAsHex(String text) {
@@ -29,8 +30,9 @@ public final class Sha256 {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			md.update(input, 0, input.length);
 			return md.digest();
-		} catch (Exception x) {
-			throw new IllegalStateException(x);
+		} catch (NoSuchAlgorithmException nsax) {
+			assert false;
+			throw new UnsupportedOperationException(nsax);
 		}
 	}
 

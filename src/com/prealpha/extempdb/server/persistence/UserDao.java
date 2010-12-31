@@ -9,6 +9,9 @@ package com.prealpha.extempdb.server.persistence;
 import com.prealpha.extempdb.server.domain.User;
 
 public class UserDao extends GenericDao<User, String> {
+	public UserDao() {
+	}
+
 	@Override
 	protected Class<User> getEntityClass() {
 		return User.class;

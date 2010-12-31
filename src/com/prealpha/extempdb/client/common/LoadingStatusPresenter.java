@@ -12,6 +12,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.Presenter;
 
+/*
+ * TODO: relies on Widgets directly, so would require GwtTestCase to test
+ */
 public class LoadingStatusPresenter implements Presenter<LoadingStatus> {
 	public static interface Display extends IsWidget {
 		Image getImage();

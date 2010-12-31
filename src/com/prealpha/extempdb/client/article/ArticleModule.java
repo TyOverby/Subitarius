@@ -9,6 +9,9 @@ package com.prealpha.extempdb.client.article;
 import com.google.gwt.inject.client.AbstractGinModule;
 
 public class ArticleModule extends AbstractGinModule {
+	public ArticleModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(ArticlePresenter.Display.class).to(ArticleWidget.class);

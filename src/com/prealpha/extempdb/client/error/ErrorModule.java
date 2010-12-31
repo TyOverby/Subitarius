@@ -9,6 +9,9 @@ package com.prealpha.extempdb.client.error;
 import com.google.gwt.inject.client.AbstractGinModule;
 
 public class ErrorModule extends AbstractGinModule {
+	public ErrorModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(ErrorPresenter.Display.class).to(ErrorWidget.class);

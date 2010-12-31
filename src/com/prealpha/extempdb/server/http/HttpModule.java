@@ -21,6 +21,9 @@ public class HttpModule extends AbstractModule {
 	private static final String[] DATE_PATTERNS = new String[] {
 			"EEE MMM dd HH:mm:ss yyyy", "EEE, dd-MMM-yyyy HH:mm:ss ZZZ" };
 
+	public HttpModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(HttpClient.class).in(Singleton.class);

@@ -12,6 +12,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
 public class ParseModule extends AbstractModule {
+	public ParseModule() {
+	}
+
 	@Override
 	protected void configure() {
 	}

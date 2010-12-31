@@ -20,6 +20,9 @@ import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 
 public class PersistenceModule extends AbstractModule {
+	public PersistenceModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(Random.class).to(AESCounterRNG.class);

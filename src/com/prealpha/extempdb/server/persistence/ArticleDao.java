@@ -13,6 +13,9 @@ import org.hibernate.criterion.Restrictions;
 import com.prealpha.extempdb.server.domain.Article;
 
 public class ArticleDao extends GenericDao<Article, Long> {
+	public ArticleDao() {
+	}
+
 	@Override
 	protected Class<Article> getEntityClass() {
 		return Article.class;

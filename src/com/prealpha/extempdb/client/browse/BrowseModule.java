@@ -13,6 +13,9 @@ import com.google.inject.Provides;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 
 public class BrowseModule extends AbstractGinModule {
+	public BrowseModule() {
+	}
+
 	protected void configure() {
 		bind(BrowsePresenter.Display.class).to(BrowseWidget.class);
 		bind(ArticleTablePresenter.Display.class).to(ArticleTableWidget.class);

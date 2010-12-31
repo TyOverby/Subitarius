@@ -15,6 +15,9 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
 class Slf4jTypeListener implements TypeListener {
+	Slf4jTypeListener() {
+	}
+
 	@Override
 	public <T> void hear(TypeLiteral<T> typeLiteral,
 			TypeEncounter<T> typeEncounter) {

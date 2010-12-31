@@ -12,6 +12,9 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 
 public class HierarchyModule extends AbstractGinModule {
+	public HierarchyModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(HierarchyPresenter.Display.class).to(HierarchyWidget.class);

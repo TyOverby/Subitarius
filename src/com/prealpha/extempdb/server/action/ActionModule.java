@@ -26,6 +26,9 @@ import com.prealpha.extempdb.shared.action.UpdateTag;
 import com.prealpha.gwt.dispatch.server.ActionHandlerModule;
 
 public class ActionModule extends ActionHandlerModule {
+	public ActionModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(Mapper.class).to(DozerBeanMapper.class).in(Singleton.class);

@@ -19,7 +19,7 @@ class TransactionalInterceptor implements MethodInterceptor {
 	@Inject
 	private SessionFactory sessionFactory;
 
-	public TransactionalInterceptor() {
+	TransactionalInterceptor() {
 	}
 
 	@Override

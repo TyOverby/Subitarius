@@ -19,7 +19,7 @@ abstract class GenericDao<T, Id extends Serializable> {
 	@Inject
 	protected Provider<Session> sessionProvider;
 
-	public GenericDao() {
+	protected GenericDao() {
 	}
 
 	protected abstract Class<T> getEntityClass();

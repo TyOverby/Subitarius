@@ -6,15 +6,13 @@
 
 package com.prealpha.extempdb.client.core;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 
-class ExtempDb implements EntryPoint {
-	@Override
-	public void onModuleLoad() {
+class ExtempDb {
+	public static void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
 			public void onUncaughtException(Throwable caught) {
@@ -28,5 +26,8 @@ class ExtempDb implements EntryPoint {
 		});
 
 		AppPlace.getCoreManager().init();
+	}
+	
+	private ExtempDb() {
 	}
 }

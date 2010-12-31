@@ -12,10 +12,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public abstract class ManagedCallback<T> implements AsyncCallback<T> {
 	private static Throwable caught;
 
-	public static Throwable getCaught() {
+	static Throwable getCaught() {
 		Throwable caught = ManagedCallback.caught;
 		ManagedCallback.caught = null;
 		return caught;
+	}
+
+	protected ManagedCallback() {
 	}
 
 	@Override

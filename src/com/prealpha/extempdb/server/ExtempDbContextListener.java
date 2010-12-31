@@ -18,6 +18,9 @@ import com.prealpha.gwt.dispatch.server.DispatchServerModule;
 import com.prealpha.gwt.dispatch.server.filter.BatchActionModule;
 
 public class ExtempDbContextListener extends GuiceServletContextListener {
+	public ExtempDbContextListener() {
+	}
+
 	@Override
 	protected Injector getInjector() {
 		return Guice.createInjector(new PersistenceModule(),

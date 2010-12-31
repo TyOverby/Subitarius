@@ -14,6 +14,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 
 public class SearchModule extends AbstractModule {
+	public SearchModule() {
+	}
+
 	@Override
 	protected void configure() {
 		bind(SearchProvider.class).to(BingSearchProvider.class);

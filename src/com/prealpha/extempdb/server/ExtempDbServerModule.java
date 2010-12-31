@@ -11,6 +11,9 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.ServletModule;
 
 public class ExtempDbServerModule extends ServletModule {
+	public ExtempDbServerModule() {
+	}
+
 	@Override
 	protected void configureServlets() {
 		bind(GuiceServiceServlet.class).in(Singleton.class);

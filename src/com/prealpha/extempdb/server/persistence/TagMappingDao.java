@@ -15,6 +15,9 @@ import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
 
 public class TagMappingDao extends GenericDao<TagMapping, Long> {
+	public TagMappingDao() {
+	}
+
 	@Override
 	public Class<TagMapping> getEntityClass() {
 		return TagMapping.class;
