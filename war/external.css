@@ -1,0 +1,28 @@
+/*
+ * external.css
+ * Copyright (C) 2010 Meyer Kizner
+ * All rights reserved.
+ */
+body {
+	margin: 0;
+	padding: 0;
+}
+
+html,html>body {
+	height: 100%;
+}
+
+#__gwt_historyFrame {
+	display: none; /* +1 for Firefox */
+}
+
+.netbookResolution {
+	border: 1px solid red;
+	display: none;
+	height: 600px;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	width: 1024px;
+	z-index: 10;
+}

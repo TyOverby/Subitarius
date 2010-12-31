@@ -1,0 +1,135 @@
+/*
+ * BingSearchProvider.java
+ * Copyright (C) 2010 Meyer Kizner
+ * All rights reserved.
+ */
+
+package com.prealpha.extempdb.server.search;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.inject.Inject;
+import com.prealpha.extempdb.server.domain.Source;
+import com.prealpha.extempdb.server.domain.Tag;
+import com.prealpha.extempdb.server.http.HttpClient;
+import com.prealpha.extempdb.server.http.RobotsExclusionException;
+
+class BingSearchProvider implements SearchProvider {
+	/*
+	 * Package visibility for unit testing.
+	 */
+	static final String BASE_URL = "http://api.search.live.net/json.aspx";
+
+	private static final String APP_ID = "363DC039EDCF7F7947D73592A171866C93E4D6F6";
+
+	private static final int RESULT_COUNT = 15;
+
+	private final HttpClient httpClient;
+
+	private final Gson gson;
+
+	@Inject
+	public BingSearchProvider(HttpClient httpClient, Gson gson) {
+		this.httpClient = httpClient;
+		this.gson = gson;
+	}
+
+	@Override
+	public List<String> search(Tag tag, Source source)
+			throws SearchUnavailableException {
+		List<String> urls = new ArrayList<String>();
+		int offset = 0;
+		BingSearch search;
+
+		do {
+			try {
+				search = doRequest(tag, source, offset);
+				BingNews news = search.getSearchResponse().getNews();
+
+				if (news == null) {
+					break;
+				}
+
+				Iterable<BingNewsResult> results = news.getResults();
+
+				if (results == null) {
+					break;
+				}
+
+				for (BingNewsResult result : results) {
+					// handle Bing's apiclick.aspx
+					String url = handleApiClick(result.getUrl());
+					urls.add(url);
+				}
+
+				offset += RESULT_COUNT;
+			} catch (IOException iox) {
+				throw new SearchUnavailableException(iox);
+			} catch (RobotsExclusionException rex) {
+				throw new SearchUnavailableException(rex);
+			}
+		} while (shouldContinue(search));
+
+		return urls;
+	}
+
+	private BingSearch doRequest(Tag tag, Source source, int offset)
+			throws IOException, RobotsExclusionException {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("AppId", APP_ID);
+		params.put("Query", getQuery(tag, source));
+		params.put("Sources", "News");
+		params.put("Version", "2.0");
+		params.put("News.Count", Integer.toString(RESULT_COUNT));
+		params.put("News.Offset", Integer.toString(offset));
+		params.put("News.SortBy", "Relevance");
+
+		InputStream stream = httpClient.doGet(BASE_URL, params);
+		String json = HttpClient.readCompletely(stream);
+		return gson.fromJson(json, BingSearch.class);
+	}
+
+	private static String getQuery(Tag tag, Source source) {
+		String query = "site:";
+		query += source.getDomainName();
+		query += " " + tag.getName();
+		return query;
+	}
+
+	private static boolean shouldContinue(BingSearch search) {
+		BingNews news = search.getSearchResponse().getNews();
+		int total = news.getTotal();
+		int offset = news.getOffset();
+
+		if ((offset + RESULT_COUNT) >= total) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	private static String handleApiClick(String url) {
+		if (url.startsWith("http://www.bing.com/news/apiclick.aspx")) {
+			int urlIndex = url.indexOf("&url=");
+			int beginUrlIndex = urlIndex + 5;
+			int endUrlIndex = url.indexOf("&", beginUrlIndex);
+			url = url.substring(beginUrlIndex, endUrlIndex);
+
+			try {
+				return URLDecoder.decode(url, "UTF-8");
+			} catch (UnsupportedEncodingException uex) {
+				throw new IllegalStateException(uex);
+			}
+		} else {
+			return url;
+		}
+	}
+}

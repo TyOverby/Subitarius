@@ -1,0 +1,73 @@
+/*
+ * GetTagSuggestions.java
+ * Copyright (C) 2010 Meyer Kizner
+ * All rights reserved.
+ */
+
+package com.prealpha.extempdb.shared.action;
+
+import static com.google.common.base.Preconditions.*;
+
+import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
+
+public class GetTagSuggestions implements
+		MergeableAction<GetTagSuggestionsResult> {
+	private String namePrefix;
+
+	private int limit;
+
+	// serialization support
+	@SuppressWarnings("unused")
+	private GetTagSuggestions() {
+	}
+
+	public GetTagSuggestions(String nameFragment, int limit) {
+		checkNotNull(nameFragment);
+		checkArgument(limit >= 0);
+		this.namePrefix = nameFragment;
+		this.limit = limit;
+	}
+
+	public String getNamePrefix() {
+		return namePrefix;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + limit;
+		result = prime * result
+				+ ((namePrefix == null) ? 0 : namePrefix.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof GetTagSuggestions)) {
+			return false;
+		}
+		GetTagSuggestions other = (GetTagSuggestions) obj;
+		if (limit != other.limit) {
+			return false;
+		}
+		if (namePrefix == null) {
+			if (other.namePrefix != null) {
+				return false;
+			}
+		} else if (!namePrefix.equals(other.namePrefix)) {
+			return false;
+		}
+		return true;
+	}
+}

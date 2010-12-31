@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:common="urn:import:com.prealpha.extempdb.client.common"
+	xmlns:tools="urn:import:com.prealpha.extempdb.client.settings">
+
+	<ui:with field="res"
+		type="com.prealpha.extempdb.client.common.CommonResources" />
+	<ui:with field="msg"
+		type="com.prealpha.extempdb.client.settings.SettingsMessages" />
+
+	<g:HTMLPanel>
+		<table>
+			<tr>
+				<td colspan="2">
+					<g:Label addStyleNames="{res.style.heading}" text="{msg.tagManagement}" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<g:Label text="{msg.tagLabel}" />
+				</td>
+
+				<td>
+					<common:TagInputBox ui:field="tagInput" />
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<g:Label text="{msg.searchedLabel}" />
+				</td>
+
+				<td>
+					<g:CheckBox checked="true" ui:field="searchedBox" />
+				</td>
+			</tr>
+
+			<tr>
+				<td style="vertical-align: top;">
+					<g:Label text="{msg.parentLabel}" />
+				</td>
+
+				<td>
+					<tools:MultiTagInputBox ui:field="parentInput" />
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2">
+					<g:Label ui:field="errorLabel" />
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2">
+					<g:Button text="{msg.saveButton}" ui:field="saveButton" />
+					<g:Button text="{msg.deleteButton}" ui:field="deleteButton" />
+					<g:Button text="{msg.resetButton}" ui:field="resetButton" />
+				</td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

@@ -1,0 +1,77 @@
+/*
+ * style.css
+ * Copyright (C) 2010 Meyer Kizner
+ * All rights reserved.
+ */
+@external .gwt-Button, .gwt-Hyperlink;
+.container {
+	font-family: Calibri, sans-serif;
+	height: 100%;
+	width: 100%;
+}
+
+.container a {
+	color: inherit;
+}
+
+.titleBar {
+	background-color: #323442;
+	color: white;
+	height: 40px;
+	padding-top: 10px;
+	position: relative;
+}
+
+.titleBar a {
+	text-decoration: none;
+}
+
+.title .gwt-Hyperlink,.navButton .gwt-Hyperlink {
+	display: inline;
+}
+
+.title {
+	font-size: 2em;
+	margin: 20px;
+	opacity: 0.75;
+}
+
+.buttonContainer {
+	margin-left: 12px;
+}
+
+.navButton {
+	background-color: black;
+	border-radius: 5px 5px 0 0;
+	-moz-border-radius: 5px 5px 0 0;
+	cursor: pointer;
+	font-size: 1.25em;
+	margin-left: 5px;
+	opacity: 0.5;
+	padding: 3px;
+}
+
+.loginStatus {
+	background-color: black;
+	height: 80%;
+	padding: 5px;
+	position: absolute;
+	right: 0;
+	opacity: 0.5;
+	top: 0;
+}
+
+.loginStatus a {
+	text-decoration: underline;
+}
+
+.contentPanel {
+	margin-bottom: 20px;
+	margin-right: 20px;
+	max-width: 100%;
+}
+
+.contentPanel .gwt-Button {
+	font-family: inherit;
+	font-size: 12pt;
+}

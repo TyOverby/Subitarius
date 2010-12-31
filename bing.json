@@ -1,0 +1,23 @@
+{
+	"SearchResponse": {
+		"Version": "2.0",
+		"Query": {
+			"SearchTerms": 
+			"site:www.nytimes.com network neutrality"
+		},
+		"News": {
+			"Total": 0,
+			"Offset": 0,
+			"Results": [
+				{
+					"Title": "Google and Verizon Near Deal on Pay Tiers for Web",
+					"Url": "http:\/\/www.nytimes.com\/2010\/08\/05\/technology\/05secret.html",
+					"Source": "New York Times",
+					"Snippet": "The charges could be paid by companies, like YouTube , owned by Google, for example, to Verizon, one of the nation’s leading Internet service providers, to ensure that its content received priority as it ...",
+					"Date": "2010-08-04T00:00:00Z",
+					"BreakingNews": 0
+				}
+			]
+		}
+	}
+}

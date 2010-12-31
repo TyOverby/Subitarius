@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="res"
+		type="com.prealpha.extempdb.client.common.CommonResources" />
+	<ui:with field="msg"
+		type="com.prealpha.extempdb.client.error.ErrorMessages" />
+
+	<g:HTMLPanel addStyleNames="{res.style.contentSection}">
+		<g:VerticalPanel>
+			<g:Label addStyleNames="{res.style.heading}" text="{msg.heading}" />
+			<g:Label text="{msg.message}" />
+			<g:HTML ui:field="stackTraceField" />
+			<g:Anchor text="{msg.back}" href="javascript:" ui:field="backLink" />
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

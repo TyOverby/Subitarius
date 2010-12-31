@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="res"
+		type="com.prealpha.extempdb.client.common.CommonResources" />
+
+	<ui:style>
+		.metaPanel {
+			width: 200px;			
+		}
+		
+		.articleDisplay {
+			
+		}
+	</ui:style>
+
+	<g:HorizontalPanel>
+		<g:Widget addStyleNames="{style.metaPanel}" ui:field="metaPanel" />
+
+		<g:Widget addStyleNames="{res.style.contentSection} {style.articleDisplay}"
+			ui:field="articleDisplay" />
+	</g:HorizontalPanel>
+
+</ui:UiBinder>

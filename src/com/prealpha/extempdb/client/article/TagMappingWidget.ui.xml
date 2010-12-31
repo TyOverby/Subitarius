@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:style>
+		.mapping {
+			float: left;
+		}
+		
+		.links {
+			float: right;
+		}
+	</ui:style>
+
+	<g:HTMLPanel>
+		<g:Hyperlink addStyleNames="{style.mapping}" ui:field="mappingLink" />
+
+		<div class="{style.links}">
+			<g:Anchor ui:field="patrolLink" />
+			<g:Anchor ui:field="removeLink" />
+		</div>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

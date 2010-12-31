@@ -1,0 +1,87 @@
+<!--
+	build.xml
+	Copyright (C) 2010 Meyer Kizner
+	All rights reserved.
+-->
+
+<project name="extempdb" default="deploy" basedir=".">
+
+	<description>
+		Compiles, packages, and deploys the project to the remote Tomcat instance.
+		Can be used for other GWT projects by modifying properties accordingly.
+	</description>
+
+	<property name="dist" location="./dist" />
+	<property name="war" location="./war" />
+	<property name="src" location="./src" />
+	<property name="bin" location="${war}/WEB-INF/classes" />
+	<property name="workspace" location="C:\Users\Meyer\workspace" />
+
+	<property name="dist.war" location="${dist}/${ant.project.name}.war" />
+
+	<property name="gwt.modules" value="com.prealpha.extempdb.ExtempDb" />
+	<property name="gwt.base" location="C:\Program Files (x86)\Eclipse\plugins\com.google.gwt.eclipse.sdkbundle.2.1.0_2.1.0.v201010280102\gwt-2.1.0" />
+
+	<path id="classpath">
+		<!-- Our source and binaries -->
+		<pathelement location="${src}" />
+		<pathelement location="${bin}" />
+
+		<!-- GWT -->
+		<pathelement location="${gwt.base}/gwt-user.jar" />
+		<pathelement location="${gwt.base}/gwt-dev.jar" />
+
+		<!-- GIN, Guice -->
+		<pathelement location="${workspace}/gin-r137/out/dist/gin-1.0.jar" />
+		<pathelement location="${workspace}/guice-2.0/guice-2.0.jar" />
+		<pathelement location="${workspace}/guice-2.0/aopalliance.jar" />
+
+		<!-- gwt-dispatch -->
+		<pathelement location="${workspace}/gwt-dispatch.jar" />
+		
+		<!-- GwtUtil -->
+		<pathelement location="${workspace}/GwtUtil/src" />
+		<pathelement location="${workspace}/GwtUtil/bin" />
+		
+		<!-- Guava -->
+		<pathelement location="${workspace}/guava-r07/guava-r07.jar" />
+		<pathelement location="${workspace}/guava-r07/guava-r07-gwt.jar" />
+		<pathelement location="${workspace}/jsr-305/ri/build/jsr305-gwt.jar" />
+	</path>
+
+	<property name="deploy.server" value="meyer.pre-alpha.com" />
+	<property name="deploy.dir" value="/usr/share/tomcat6/webapps" />
+	<property name="deploy.username" value="deploy" />
+	<property name="deploy.password" value="33025333319833233433" />
+
+	<target name="init">
+	</target>
+
+	<target name="clean">
+		<delete dir="${dist}" />
+	</target>
+
+	<target name="compile" depends="">
+		<java classpathref="classpath" fork="true" failonerror="true" classname="com.google.gwt.dev.Compiler">
+			<!-- <arg line="-compileReport" /> -->
+			<arg line="-war ${war}" />
+			<arg line="${gwt.modules}" />
+		</java>
+	</target>
+
+	<target name="war" depends="clean, compile">
+		<mkdir dir="${dist}" />
+		<jar destfile="${dist.war}">
+			<fileset dir="${war}" />
+		</jar>
+	</target>
+
+	<target name="deploy" depends="init, war">
+		<ftp server="${deploy.server}" userid="${deploy.username}" password="${deploy.password}" remoteDir="${deploy.dir}" verbose="yes" depends="yes">
+			<fileset file="${dist.war}" />
+		</ftp>
+
+		<sshexec host="${deploy.server}" username="${deploy.username}" password="${deploy.password}" knownhosts="../known_hosts" command="sudo /sbin/service tomcat6 restart" />
+	</target>
+
+</project>

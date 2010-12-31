@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:style>
+		.tagInput>div {
+			display: inline;
+		}
+	</ui:style>
+
+	<g:HTMLPanel addStyleNames="{style.tagInput}">
+		<g:SuggestBox ui:field="nameBox" />
+		<g:Label>&nbsp;</g:Label>
+		<g:Widget ui:field="statusWidget" />
+	</g:HTMLPanel>
+
+</ui:UiBinder>

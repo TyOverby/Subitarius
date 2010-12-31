@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:style>
+		.articleTitle {
+			font-size: 24pt;
+		}
+		
+		.articleText {
+			margin-top: 6px;
+		}
+		
+		.articleText p {
+			margin-bottom: 3px;
+			margin-top: 3px;
+		}
+	</ui:style>
+
+	<g:HTMLPanel>
+		<div class="{style.articleTitle}">
+			<g:Anchor ui:field="titleLink" />
+		</div>
+
+		<div>
+			<g:Label ui:field="bylineLabel" />
+			<g:Label ui:field="sourceLabel" />
+		</div>
+
+		<div>
+			<g:VerticalPanel addStyleNames="{style.articleText}"
+				ui:field="articleText" />
+		</div>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

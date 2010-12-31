@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+	<ui:style>
+		.browser {
+			height: 400px;
+			margin-top: 5px;
+			width: 955px;
+		}
+		
+		@external gwt-SplitLayoutPanel-HDragger;
+		.gwt-SplitLayoutPanel-HDragger {
+			background-color: #999999;
+		}
+	</ui:style>
+
+	<ui:with field="res"
+		type="com.prealpha.extempdb.client.common.CommonResources" />
+	<ui:with field="msg"
+		type="com.prealpha.extempdb.client.hierarchy.HierarchyMessages" />
+
+	<g:VerticalPanel addStyleNames="{res.style.contentSection}">
+		<g:Label addStyleNames="{res.style.heading}" text="{msg.heading}" />
+		<c:CellBrowser addStyleNames="{style.browser}" ui:field="cellBrowser" />
+	</g:VerticalPanel>
+
+</ui:UiBinder>

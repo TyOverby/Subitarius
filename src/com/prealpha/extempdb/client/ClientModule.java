@@ -1,0 +1,101 @@
+/*
+ * ClientModule.java
+ * Copyright (C) 2010 Meyer Kizner
+ * All rights reserved.
+ */
+
+package com.prealpha.extempdb.client;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.impl.SchedulerImpl;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.google.inject.BindingAnnotation;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.prealpha.gwt.dispatch.client.filter.ActionFilter;
+import com.prealpha.gwt.dispatch.client.filter.CachingActionFilter;
+import com.prealpha.gwt.dispatch.client.filter.DelayedBatchingFilter;
+import com.prealpha.gwt.dispatch.client.filter.DelayedBatchingFilter.BatchDelay;
+import com.prealpha.gwt.dispatch.client.filter.FilteringDispatcherAsync;
+import com.prealpha.gwt.dispatch.client.filter.FilteringDispatcherAsync.BackingDispatcher;
+import com.prealpha.gwt.dispatch.client.filter.MergingActionFilter;
+import com.prealpha.gwt.dispatch.shared.Dispatcher;
+import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
+
+public final class ClientModule extends AbstractGinModule {
+	@Override
+	protected void configure() {
+		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
+
+		bind(HistoryManager.class).in(Singleton.class);
+		bind(SessionManager.class).in(Singleton.class);
+
+		bind(ActionFilter.class).annotatedWith(CachingFilter.class)
+				.to(CachingActionFilter.class).in(Singleton.class);
+		bind(ActionFilter.class).annotatedWith(MergingFilter.class)
+				.to(MergingActionFilter.class).in(Singleton.class);
+		bind(ActionFilter.class).annotatedWith(BatchingFilter.class)
+				.to(DelayedBatchingFilter.class).in(Singleton.class);
+		bind(Scheduler.class).to(SchedulerImpl.class).in(Singleton.class);
+	}
+
+	@Provides
+	@Inject
+	DispatcherAsync getDispatcher(FilteringDispatcherAsync dispatcher,
+			@CachingFilter ActionFilter cachingFilter,
+			@MergingFilter ActionFilter mergingFilter,
+			@BatchingFilter ActionFilter batchingFilter) {
+		dispatcher.addFilter(cachingFilter);
+		dispatcher.addFilter(mergingFilter);
+		dispatcher.addFilter(batchingFilter);
+		return dispatcher;
+	}
+	
+	@Provides
+	@BackingDispatcher
+	DispatcherAsync getBackingDispatcher() {
+		DispatcherAsync dispatcher = GWT.create(Dispatcher.class);
+		((ServiceDefTarget) dispatcher).setServiceEntryPoint("./GWT.rpc");
+		return dispatcher;
+	}
+	
+	@Provides
+	@BatchDelay
+	Integer getBatchDelay() {
+		return 200;
+	}
+	
+	@Provides
+	DateTimeFormat getDateTimeFormat() {
+		return DateTimeFormat.getFormat("yyyy-MM-dd");
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+	@BindingAnnotation
+	private static @interface CachingFilter {
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+	@BindingAnnotation
+	private static @interface MergingFilter {
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+	@BindingAnnotation
+	private static @interface BatchingFilter {
+	}
+}
