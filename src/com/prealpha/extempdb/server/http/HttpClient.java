@@ -8,6 +8,7 @@ package com.prealpha.extempdb.server.http;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -27,6 +27,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.robots.RobotsTxt;
 
@@ -77,7 +78,8 @@ public class HttpClient {
 
 			try {
 				InputStream stream = doGet(url, parameters);
-				RobotsTxt robotsTxt = new RobotsTxt(readCompletely(stream));
+				InputStreamReader isr = new InputStreamReader(stream);
+				RobotsTxt robotsTxt = new RobotsTxt(CharStreams.toString(isr));
 				robotsExclusion.put(authority, robotsTxt);
 			} catch (IOException iox) {
 				// it's set to null in the map already, so we move on
@@ -106,12 +108,6 @@ public class HttpClient {
 		} else {
 			throw new IOException("no response body");
 		}
-	}
-
-	public static String readCompletely(InputStream in) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		baos.write(in);
-		return baos.toString();
 	}
 
 	private static List<NameValuePair> getNameValuePairs(

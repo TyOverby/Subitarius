@@ -5,15 +5,15 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AtUnit 1.0.1"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Dozer 5.3.0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Dozer 5.3.1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EasyMock 3.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gin-r137"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Gson 1.4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Gson 1.6"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/guava-r07"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Guice 2.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gwt-dispatch"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate 3.6.0-Final"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HttpClient 4.0.1"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HttpClient 4.0.3"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDOM 1.1.1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JTidy r1127"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>

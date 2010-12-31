@@ -10,6 +10,8 @@
 		Compiles, packages, and deploys the project to the remote Tomcat instance.
 		Can be used for other GWT projects by modifying properties accordingly.
 	</description>
+	
+	<property environment="env" />
 
 	<property name="dist" location="./dist" />
 	<property name="war" location="./war" />

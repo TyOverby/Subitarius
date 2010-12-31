@@ -8,6 +8,7 @@ package com.prealpha.extempdb.server.search;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.domain.Source;
@@ -93,7 +95,8 @@ class BingSearchProvider implements SearchProvider {
 		params.put("News.SortBy", "Relevance");
 
 		InputStream stream = httpClient.doGet(BASE_URL, params);
-		String json = HttpClient.readCompletely(stream);
+		InputStreamReader isr = new InputStreamReader(stream);
+		String json = CharStreams.toString(isr);
 		return gson.fromJson(json, BingSearch.class);
 	}
 

@@ -23,7 +23,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="com.google.gwt.eclipse.core.moduleClasspathProvider"/>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.DevMode"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-startupUrl / -war C:\Users\Meyer\workspace\ExtempDB\war -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -logLevel INFO -port 8888 -codeServerPort 9997 com.prealpha.extempdb.ExtempDb"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -startupUrl / -logLevel INFO -port 8888 -war C:\Users\Meyer\workspace\ExtempDB\war -codeServerPort 9997 com.prealpha.extempdb.ExtempDb"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ExtempDB"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m -Duser.timezone=UTC -Dlog4j.configuration=file:///C:/Users/Meyer/workspace/ExtempDB/log4j.dev.properties"/>
 </launchConfiguration>
