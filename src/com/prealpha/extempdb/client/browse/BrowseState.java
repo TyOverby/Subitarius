@@ -18,9 +18,6 @@ import com.google.common.collect.ImmutableSet;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 import com.prealpha.extempdb.shared.id.TagName;
 
-/*
- * TODO: what happens on deserialization failure?
- */
 final class BrowseState {
 	public static BrowseState getInstance(TagName tagName, Set<State> states,
 			ArticleSort sort, int pageStart) {
@@ -28,6 +25,25 @@ final class BrowseState {
 		return new BrowseState(tagName, states, sort, pageStart);
 	}
 
+	/**
+	 * Deserializes and returns a {@code BrowseState} from a list of
+	 * {@code String} parameters. The parameters must be in the format returned
+	 * by {@link #serialize()}. While the implementation may attempt to recover
+	 * from some invalid inputs, clients should not rely on this behavior.
+	 * 
+	 * @param parameters
+	 *            the serialized form of a {@code BrowseState}, as returned by
+	 *            {@link #serialize()}
+	 * @return a {@code BrowseState} equal to the instance previously serialized
+	 * @throws IllegalArgumentException
+	 *             if the parameters are not in the format returned by
+	 *             {@link #serialize()}
+	 * @throws NullPointerException
+	 *             if the list is {@code null}, if any parameters are
+	 *             {@code null}, or if the {@link ArticleSort} parameter is an
+	 *             empty string (which represents a {@code null}
+	 *             {@code ArticleSort})
+	 */
 	public static BrowseState deserialize(List<String> parameters) {
 		checkArgument(parameters.size() <= 4);
 
@@ -40,7 +56,11 @@ final class BrowseState {
 		// change the defaults if there is an appropriate parameter
 		switch (parameters.size()) {
 		case 4:
-			pageStart = Integer.parseInt(parameters.get(3));
+			try {
+				pageStart = Integer.parseInt(parameters.get(3));
+			} catch (NumberFormatException nfx) {
+				throw new IllegalArgumentException("invalid page start", nfx);
+			}
 		case 3:
 			sort = deserializeSort(parameters.get(2));
 		case 2:
@@ -99,6 +119,62 @@ final class BrowseState {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + pageStart;
+		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
+		result = prime * result + ((states == null) ? 0 : states.hashCode());
+		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof BrowseState)) {
+			return false;
+		}
+		BrowseState other = (BrowseState) obj;
+		if (pageStart != other.pageStart) {
+			return false;
+		}
+		if (sort == null) {
+			if (other.sort != null) {
+				return false;
+			}
+		} else if (!sort.equals(other.sort)) {
+			return false;
+		}
+		if (states == null) {
+			if (other.states != null) {
+				return false;
+			}
+		} else if (!states.equals(other.states)) {
+			return false;
+		}
+		if (tagName == null) {
+			if (other.tagName != null) {
+				return false;
+			}
+		} else if (!tagName.equals(other.tagName)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "BrowseState [tagName=" + tagName + ", states=" + states
+				+ ", sort=" + sort + ", pageStart=" + pageStart + "]";
+	}
+
 	private static String serializeStates(Set<State> states) {
 		String str = "";
 		for (State state : states) {
@@ -111,6 +187,10 @@ final class BrowseState {
 	}
 
 	private static Set<State> deserializeStates(String str) {
+		if (str.isEmpty()) {
+			return Collections.<State> emptySet();
+		}
+
 		String[] split = str.split(",");
 		Set<State> states = new HashSet<State>();
 		for (String stateStr : split) {
@@ -135,20 +215,25 @@ final class BrowseState {
 		if (str.isEmpty()) {
 			return null;
 		} else {
-			int fieldEnd = str.indexOf(",");
-			String fieldStr = str.substring(0, fieldEnd);
-			ArticleField field = ArticleField.valueOf(fieldStr);
+			try {
+				int fieldEnd = str.indexOf(",");
+				String fieldStr = str.substring(0, fieldEnd);
+				ArticleField field = ArticleField.valueOf(fieldStr);
 
-			int ascendingStart = fieldEnd + 1;
-			int ascendingEnd = str.indexOf(",", ascendingStart);
-			String ascendingStr = str.substring(ascendingStart, ascendingEnd);
-			boolean ascending = Boolean.parseBoolean(ascendingStr);
+				int ascendingStart = fieldEnd + 1;
+				int ascendingEnd = str.indexOf(",", ascendingStart);
+				String ascendingStr = str.substring(ascendingStart,
+						ascendingEnd);
+				boolean ascending = Boolean.parseBoolean(ascendingStr);
 
-			int lastSortStart = ascendingEnd + 1;
-			String lastSortStr = str.substring(lastSortStart);
-			ArticleSort lastSort = deserializeSort(lastSortStr);
+				int lastSortStart = ascendingEnd + 1;
+				String lastSortStr = str.substring(lastSortStart);
+				ArticleSort lastSort = deserializeSort(lastSortStr);
 
-			return new ArticleSort(field, ascending, lastSort);
+				return new ArticleSort(field, ascending, lastSort);
+			} catch (IndexOutOfBoundsException ioobx) {
+				throw new IllegalArgumentException(ioobx);
+			}
 		}
 	}
 }

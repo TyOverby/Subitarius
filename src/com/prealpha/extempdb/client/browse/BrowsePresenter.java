@@ -53,8 +53,12 @@ public class BrowsePresenter implements PlacePresenter {
 
 	@Override
 	public void bind(List<String> parameters) {
-		BrowseState browseState = BrowseState.deserialize(parameters);
-		browseWidget.setValue(browseState);
+		try {
+			BrowseState browseState = BrowseState.deserialize(parameters);
+			browseWidget.setValue(browseState);
+		} catch (NullPointerException npx) {
+			throw new IllegalArgumentException(npx);
+		}
 	}
 
 	@Override

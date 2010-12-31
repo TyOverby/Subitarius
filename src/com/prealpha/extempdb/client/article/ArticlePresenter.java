@@ -45,16 +45,20 @@ public class ArticlePresenter implements PlacePresenter {
 	public void bind(List<String> parameters) {
 		checkArgument(parameters.size() == 1);
 
-		ArticleId id = new ArticleId(Long.parseLong(parameters.get(0)));
-		GetArticle action = new GetArticle(id);
-		dispatcher.execute(action, new ManagedCallback<GetArticleResult>() {
-			@Override
-			public void onSuccess(GetArticleResult result) {
-				ArticleDto article = result.getArticle();
-				widget.getMetaPresenter().bind(article);
-				widget.getArticlePresenter().bind(article);
-			}
-		});
+		try {
+			ArticleId id = new ArticleId(Long.parseLong(parameters.get(0)));
+			GetArticle action = new GetArticle(id);
+			dispatcher.execute(action, new ManagedCallback<GetArticleResult>() {
+				@Override
+				public void onSuccess(GetArticleResult result) {
+					ArticleDto article = result.getArticle();
+					widget.getMetaPresenter().bind(article);
+					widget.getArticlePresenter().bind(article);
+				}
+			});
+		} catch (NumberFormatException nfx) {
+			throw new IllegalArgumentException(nfx);
+		}
 	}
 
 	@Override

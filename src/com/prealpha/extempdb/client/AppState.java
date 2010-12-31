@@ -19,7 +19,7 @@ public final class AppState {
 
 	public AppState(String token) throws AppStateException {
 		if (token == null || !isValidToken(token)) {
-			throw new AppStateException();
+			throw new AppStateException("invalid token \"" + token + "\"");
 		}
 
 		String[] split = token.split(";");

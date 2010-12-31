@@ -8,11 +8,13 @@ package com.prealpha.extempdb.client.core;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
+import com.prealpha.extempdb.client.AppStateException;
 import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
 import com.prealpha.extempdb.client.SessionManager;
@@ -67,8 +69,32 @@ public final class CoreManager {
 	}
 
 	private void handleAppState(final AppState appState) {
+		AsyncCallback<PlacePresenter> callback = new ManagedCallback<PlacePresenter>() {
+			@Override
+			public void onSuccess(PlacePresenter result) {
+				if (currentPresenter != result) {
+					assert (currentPresenter == null);
+					currentPresenter = result;
+					currentPresenter.init();
+				}
+
+				IsWidget content = currentPresenter.getDisplay();
+				coreWidget.getContentPanel().clear();
+				coreWidget.getContentPanel().add(content.asWidget());
+
+				try {
+					currentPresenter.bind(appState.getParameters());
+				} catch (IllegalArgumentException iax) {
+					AppStateException asx = new AppStateException(
+							"place presenter rejected AppState", appState);
+					asx.initCause(iax);
+					historyManager.handle(asx);
+				}
+			}
+		};
+
 		if (appState.getAppPlace().equals(currentPlace)) {
-			currentPresenter.bind(appState.getParameters());
+			callback.onSuccess(currentPresenter);
 		} else {
 			if (currentPresenter != null) {
 				currentPresenter.destroy();
@@ -76,21 +102,9 @@ public final class CoreManager {
 			}
 
 			currentPlace = appState.getAppPlace();
-			AsyncProvider<? extends PlacePresenter> managerProvider = currentPlace
+			AsyncProvider<? extends PlacePresenter> presenterProvider = currentPlace
 					.getPresenter();
-			managerProvider.get(new ManagedCallback<PlacePresenter>() {
-				@Override
-				public void onSuccess(PlacePresenter result) {
-					currentPresenter = result;
-					currentPresenter.init();
-
-					IsWidget content = currentPresenter.getDisplay();
-					coreWidget.getContentPanel().clear();
-					coreWidget.getContentPanel().add(content.asWidget());
-					
-					currentPresenter.bind(appState.getParameters());
-				}
-			});
+			presenterProvider.get(callback);
 		}
 	}
 }

@@ -25,12 +25,11 @@ public final class HistoryManager {
 
 				try {
 					appState = new AppState(event.getValue());
+					eventBus.fireEventFromSource(new AppStateEvent(appState),
+							this);
 				} catch (AppStateException asx) {
-					setAppState(new AppState(AppPlace.MAIN));
-					return;
+					handle(asx);
 				}
-
-				eventBus.fireEventFromSource(new AppStateEvent(appState), this);
 			}
 		});
 	}
@@ -41,7 +40,7 @@ public final class HistoryManager {
 		} catch (AppStateException asx) {
 			// should never happen
 			assert false;
-			throw new IllegalStateException();
+			throw new IllegalStateException(asx);
 		}
 	}
 
@@ -57,5 +56,9 @@ public final class HistoryManager {
 
 	public void back() {
 		History.back();
+	}
+
+	public void handle(AppStateException asx) {
+		setAppState(new AppState(AppPlace.MAIN));
 	}
 }

@@ -119,4 +119,10 @@ class ArticleSort implements Comparator<ArticleDto>, IsSerializable {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "ArticleSort [field=" + field + ", ascending=" + ascending
+				+ ", lastSort=" + lastSort + "]";
+	}
 }
