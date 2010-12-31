@@ -20,7 +20,7 @@
 	<property name="dist.war" location="${dist}/${ant.project.name}.war" />
 
 	<property name="gwt.modules" value="com.prealpha.extempdb.ExtempDb" />
-	<property name="gwt.base" location="C:\Program Files (x86)\Eclipse\plugins\com.google.gwt.eclipse.sdkbundle.2.1.0_2.1.0.v201010280102\gwt-2.1.0" />
+	<property name="gwt.home" location="${env.GWT_HOME}" />
 
 	<path id="classpath">
 		<!-- Our source and binaries -->
@@ -28,8 +28,8 @@
 		<pathelement location="${bin}" />
 
 		<!-- GWT -->
-		<pathelement location="${gwt.base}/gwt-user.jar" />
-		<pathelement location="${gwt.base}/gwt-dev.jar" />
+		<pathelement location="${gwt.home}/gwt-user.jar" />
+		<pathelement location="${gwt.home}/gwt-dev.jar" />
 
 		<!-- GIN, Guice -->
 		<pathelement location="${workspace}/gin-r137/out/dist/gin-1.0.jar" />
