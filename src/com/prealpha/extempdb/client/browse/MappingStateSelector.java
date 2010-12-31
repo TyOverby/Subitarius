@@ -45,7 +45,7 @@ public class MappingStateSelector extends Composite implements
 				ValueChangeEvent.fire(MappingStateSelector.this, getValue());
 			}
 		};
-		
+
 		patrolledBox.addValueChangeHandler(handler);
 		unpatrolledBox.addValueChangeHandler(handler);
 		removedBox.addValueChangeHandler(handler);

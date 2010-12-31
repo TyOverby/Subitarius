@@ -14,7 +14,7 @@ public class TagMappingDto implements IsSerializable {
 	public static enum State {
 		PATROLLED, UNPATROLLED, REMOVED;
 	}
-	
+
 	private Long id;
 
 	private TagDto tag;
@@ -22,7 +22,7 @@ public class TagMappingDto implements IsSerializable {
 	private ArticleDto article;
 
 	private Date added;
-	
+
 	private State state;
 
 	public TagMappingDto() {
@@ -59,11 +59,11 @@ public class TagMappingDto implements IsSerializable {
 	public void setAdded(Date added) {
 		this.added = added;
 	}
-	
+
 	public State getState() {
 		return state;
 	}
-	
+
 	public void setState(State state) {
 		this.state = state;
 	}

@@ -27,7 +27,7 @@ class ExtempDb {
 
 		AppPlace.getCoreManager().init();
 	}
-	
+
 	private ExtempDb() {
 	}
 }

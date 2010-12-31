@@ -152,7 +152,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 
 					inputWidget.setValue(tag);
 
-					Comparator<TagMappingDto> comparator = new ComparatorWrapper(
+					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
 							browseState.getSort());
 					GetMappingsByTag mappingsAction = new GetMappingsByTag(tag,
 							browseState.getStates(), comparator);
@@ -183,16 +183,16 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	}
 
 	// package visibility for serialization support
-	static class ComparatorWrapper implements Comparator<TagMappingDto>,
+	static class ComparatorAdapter implements Comparator<TagMappingDto>,
 			IsSerializable {
 		private Comparator<? super ArticleDto> delegate;
 
 		// serialization support
 		@SuppressWarnings("unused")
-		private ComparatorWrapper() {
+		private ComparatorAdapter() {
 		}
 
-		public ComparatorWrapper(Comparator<? super ArticleDto> delegate) {
+		public ComparatorAdapter(Comparator<? super ArticleDto> delegate) {
 			assert (delegate != null);
 			this.delegate = delegate;
 		}
@@ -219,10 +219,10 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 			if (obj == null) {
 				return false;
 			}
-			if (!(obj instanceof ComparatorWrapper)) {
+			if (!(obj instanceof ComparatorAdapter)) {
 				return false;
 			}
-			ComparatorWrapper other = (ComparatorWrapper) obj;
+			ComparatorAdapter other = (ComparatorAdapter) obj;
 			if (delegate == null) {
 				if (other.delegate != null) {
 					return false;

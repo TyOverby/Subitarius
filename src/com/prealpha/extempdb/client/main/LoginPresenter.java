@@ -23,9 +23,9 @@ import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 public class LoginPresenter implements Presenter<UserSessionDto> {
 	public static interface Display extends IsWidget {
 		boolean isVisible();
-		
+
 		void setVisible(boolean visible);
-		
+
 		HasText getNameBox();
 
 		HasText getPasswordBox();

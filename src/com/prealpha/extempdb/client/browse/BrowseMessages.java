@@ -10,10 +10,10 @@ import com.google.gwt.i18n.client.Messages;
 
 interface BrowseMessages extends Messages {
 	String heading();
-	
+
 	String showPatrolled();
-	
+
 	String showUnpatrolled();
-	
+
 	String showRemoved();
 }
