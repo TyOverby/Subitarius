@@ -32,6 +32,9 @@ import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.id.TagName;
 import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
+/*
+ * TODO: non-interface methods, and the quirks in this class
+ */
 public class TagInputBox extends Composite implements HasValue<TagDto> {
 	public static interface TagInputUiBinder extends
 			UiBinder<Widget, TagInputBox> {

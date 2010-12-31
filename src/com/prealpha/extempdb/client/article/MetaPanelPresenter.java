@@ -23,6 +23,9 @@ import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.id.TagMappingId;
 import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
+/*
+ * TODO: relies on DateTimeFormat, so would require GwtTestCase to unit test
+ */
 public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
 		HasText getIdLabel();

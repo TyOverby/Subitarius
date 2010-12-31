@@ -32,6 +32,7 @@ import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 /*
  * TODO: doesn't present anything
+ * TODO: relies on Widgets directly, so would require GwtTestCase to unit test
  */
 public class TagManagerPresenter implements Presenter<Void> {
 	public static interface Display extends IsWidget {

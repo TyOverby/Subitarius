@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class MainWidget extends Composite {
+public class MainWidget extends Composite implements MainPresenter.Display {
 	public static interface MainUiBinder extends UiBinder<Widget, MainWidget> {
 	}
 
@@ -25,6 +25,7 @@ public class MainWidget extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
+	@Override
 	public HasWidgets getLoginPanel() {
 		return loginPanel;
 	}

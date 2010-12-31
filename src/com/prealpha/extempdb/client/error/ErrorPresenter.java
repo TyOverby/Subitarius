@@ -14,7 +14,10 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.ui.HasHTML;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
@@ -22,20 +25,26 @@ import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
 
 public class ErrorPresenter implements PlacePresenter {
-	private final ErrorWidget errorWidget;
+	public static interface Display extends IsWidget {
+		HasHTML getStackTraceField();
+
+		HasClickHandlers getBackLink();
+	}
+
+	private final Display display;
 
 	private final HistoryManager historyManager;
 
 	private final Scheduler scheduler;
 
 	@Inject
-	public ErrorPresenter(ErrorWidget errorWidget,
-			HistoryManager historyManager, Scheduler scheduler) {
-		this.errorWidget = errorWidget;
+	public ErrorPresenter(Display display, HistoryManager historyManager,
+			Scheduler scheduler) {
+		this.display = display;
 		this.historyManager = historyManager;
 		this.scheduler = scheduler;
 
-		errorWidget.getBackLink().addClickHandler(new ClickHandler() {
+		display.getBackLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				ErrorPresenter.this.historyManager.back();
@@ -56,13 +65,13 @@ public class ErrorPresenter implements PlacePresenter {
 			});
 		} else {
 			String text = SafeHtmlUtils.htmlEscape(printStackTrace(caught));
-			errorWidget.getStackTraceField().setHTML("<pre>" + text + "</pre>");
+			display.getStackTraceField().setHTML("<pre>" + text + "</pre>");
 		}
 	}
 
 	@Override
-	public ErrorWidget getDisplay() {
-		return errorWidget;
+	public Display getDisplay() {
+		return display;
 	}
 
 	@Override

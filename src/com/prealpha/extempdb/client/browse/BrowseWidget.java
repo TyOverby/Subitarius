@@ -19,7 +19,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.common.TagInputBox;
@@ -36,7 +35,7 @@ import com.prealpha.extempdb.shared.id.TagMappingId;
 import com.prealpha.extempdb.shared.id.TagName;
 import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
-public class BrowseWidget extends Composite implements HasValue<BrowseState> {
+public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	public static interface BrowseUiBinder extends
 			UiBinder<Widget, BrowseWidget> {
 	}

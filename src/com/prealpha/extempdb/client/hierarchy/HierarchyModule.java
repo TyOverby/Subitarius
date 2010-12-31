@@ -14,6 +14,7 @@ import com.google.gwt.view.client.TreeViewModel;
 public class HierarchyModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
+		bind(HierarchyPresenter.Display.class).to(HierarchyWidget.class);
 		bind(TreeViewModel.class).to(TagTreeViewModel.class);
 		bind(SelectionModel.class).to(SingleSelectionModel.class);
 	}

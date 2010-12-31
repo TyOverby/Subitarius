@@ -11,7 +11,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
@@ -23,8 +22,10 @@ import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class LoginPresenter implements Presenter<UserSessionDto> {
 	public static interface Display extends IsWidget {
-		UIObject getContainer();
-
+		boolean isVisible();
+		
+		void setVisible(boolean visible);
+		
 		HasText getNameBox();
 
 		HasText getPasswordBox();
@@ -50,7 +51,8 @@ public class LoginPresenter implements Presenter<UserSessionDto> {
 		this.sessionManager = sessionManager;
 		this.messages = messages;
 
-		this.display.getSubmitButton().addClickHandler(new ClickHandler() {
+		display.setVisible(false);
+		display.getSubmitButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				submit();
@@ -66,12 +68,12 @@ public class LoginPresenter implements Presenter<UserSessionDto> {
 	@Override
 	public void bind(UserSessionDto session) {
 		if (session == null) {
-			display.getContainer().setVisible(true);
+			display.setVisible(true);
 			display.getNameBox().setText(null);
 			display.getPasswordBox().setText(null);
 			display.getStatusLabel().setText(messages.logInText());
 		} else {
-			display.getContainer().setVisible(false);
+			display.setVisible(false);
 		}
 	}
 

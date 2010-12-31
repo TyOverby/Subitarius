@@ -7,8 +7,7 @@
 		type="com.prealpha.extempdb.client.common.CommonResources" />
 	<ui:with field="msg" type="com.prealpha.extempdb.client.main.MainMessages" />
 
-	<g:HTMLPanel addStyleNames="{res.style.contentSection}"
-		visible="false" ui:field="container">
+	<g:HTMLPanel addStyleNames="{res.style.contentSection}">
 		<table cellspacing="0">
 			<tr>
 				<td colspan="2" class="{res.style.heading}">

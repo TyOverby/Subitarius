@@ -14,6 +14,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.PlacePresenter;
@@ -22,7 +24,11 @@ import com.prealpha.extempdb.client.event.SessionEvent;
 import com.prealpha.extempdb.client.event.SessionHandler;
 
 public class MainPresenter implements PlacePresenter {
-	private final MainWidget mainWidget;
+	public static interface Display extends IsWidget {
+		HasWidgets getLoginPanel();
+	}
+
+	private final Display display;
 
 	private final LoginPresenter loginPresenter;
 
@@ -35,17 +41,17 @@ public class MainPresenter implements PlacePresenter {
 	private HandlerRegistration sessionRegistration;
 
 	@Inject
-	public MainPresenter(MainWidget mainWidget, LoginPresenter loginPresenter,
+	public MainPresenter(Display display, LoginPresenter loginPresenter,
 			SessionManager sessionManager, EventBus eventBus,
 			Scheduler scheduler) {
-		this.mainWidget = mainWidget;
+		this.display = display;
 		this.loginPresenter = loginPresenter;
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 
 		Widget loginWidget = loginPresenter.getDisplay().asWidget();
-		mainWidget.getLoginPanel().add(loginWidget);
+		display.getLoginPanel().add(loginWidget);
 	}
 
 	@Override
@@ -67,8 +73,8 @@ public class MainPresenter implements PlacePresenter {
 	}
 
 	@Override
-	public MainWidget getDisplay() {
-		return mainWidget;
+	public Display getDisplay() {
+		return display;
 	}
 
 	@Override

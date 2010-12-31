@@ -11,8 +11,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.prealpha.extempdb.client.Presenter;
+import com.prealpha.extempdb.shared.dto.ArticleDto;
 
-public class ArticleWidget extends Composite {
+public class ArticleWidget extends Composite implements
+		ArticlePresenter.Display {
 	public static interface ArticleUiBinder extends
 			UiBinder<Widget, ArticleWidget> {
 	}
@@ -40,11 +43,13 @@ public class ArticleWidget extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	public MetaPanelPresenter getMetaPresenter() {
+	@Override
+	public Presenter<ArticleDto> getMetaPresenter() {
 		return metaPresenter;
 	}
 
-	public ArticleDisplayPresenter getArticlePresenter() {
+	@Override
+	public Presenter<ArticleDto> getArticlePresenter() {
 		return articlePresenter;
 	}
 }

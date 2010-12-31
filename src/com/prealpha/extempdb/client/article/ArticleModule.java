@@ -11,6 +11,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 public class ArticleModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
+		bind(ArticlePresenter.Display.class).to(ArticleWidget.class);
 		bind(ArticleDisplayPresenter.Display.class).to(
 				ArticleDisplayWidget.class);
 		bind(MetaPanelPresenter.Display.class).to(MetaPanelWidget.class);

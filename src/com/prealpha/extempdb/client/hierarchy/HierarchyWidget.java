@@ -14,7 +14,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.inject.Inject;
 
-public class HierarchyWidget extends Composite {
+public class HierarchyWidget extends Composite implements
+		HierarchyPresenter.Display {
 	public static interface HierarchyUiBinder extends
 			UiBinder<Widget, HierarchyWidget> {
 	}

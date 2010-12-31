@@ -10,15 +10,19 @@ import static com.google.common.base.Preconditions.*;
 
 import java.util.List;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.PlacePresenter;
 
 public class HierarchyPresenter implements PlacePresenter {
-	private final HierarchyWidget hierarchyWidget;
+	public static interface Display extends IsWidget {
+	}
+
+	private final Display display;
 
 	@Inject
-	public HierarchyPresenter(HierarchyWidget hierarchyWidget) {
-		this.hierarchyWidget = hierarchyWidget;
+	public HierarchyPresenter(Display display) {
+		this.display = display;
 	}
 
 	@Override
@@ -26,8 +30,8 @@ public class HierarchyPresenter implements PlacePresenter {
 	}
 
 	@Override
-	public HierarchyWidget getDisplay() {
-		return hierarchyWidget;
+	public Display getDisplay() {
+		return display;
 	}
 
 	@Override

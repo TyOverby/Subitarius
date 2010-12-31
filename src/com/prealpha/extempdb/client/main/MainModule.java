@@ -11,6 +11,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 public class MainModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
+		bind(MainPresenter.Display.class).to(MainWidget.class);
 		bind(LoginPresenter.Display.class).to(LoginWidget.class);
 	}
 }

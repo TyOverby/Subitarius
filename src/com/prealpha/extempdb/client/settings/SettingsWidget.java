@@ -12,7 +12,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class SettingsWidget extends Composite {
+public class SettingsWidget extends Composite implements
+		SettingsPresenter.Display {
 	public static interface ToolsUiBinder extends
 			UiBinder<Widget, SettingsWidget> {
 	}

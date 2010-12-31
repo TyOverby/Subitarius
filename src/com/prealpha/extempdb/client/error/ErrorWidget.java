@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-public class ErrorWidget extends Composite {
+public class ErrorWidget extends Composite implements ErrorPresenter.Display {
 	public static interface ErrorUiBinder extends UiBinder<Widget, ErrorWidget> {
 	}
 
@@ -29,10 +29,12 @@ public class ErrorWidget extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
+	@Override
 	public HasHTML getStackTraceField() {
 		return stackTraceField;
 	}
 
+	@Override
 	public HasClickHandlers getBackLink() {
 		return backLink;
 	}

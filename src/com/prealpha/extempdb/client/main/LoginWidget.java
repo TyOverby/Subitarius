@@ -15,16 +15,12 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public class LoginWidget extends Composite implements LoginPresenter.Display {
 	public static interface LoginUiBinder extends UiBinder<Widget, LoginWidget> {
 	}
-
-	@UiField
-	UIObject container;
 
 	@UiField
 	HasText nameBox;
@@ -41,11 +37,6 @@ public class LoginWidget extends Composite implements LoginPresenter.Display {
 	@Inject
 	public LoginWidget(LoginUiBinder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-	@Override
-	public UIObject getContainer() {
-		return container;
 	}
 
 	@Override

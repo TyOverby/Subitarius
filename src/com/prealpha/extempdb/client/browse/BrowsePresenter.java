@@ -11,6 +11,8 @@ import java.util.List;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
@@ -18,22 +20,24 @@ import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
 
 public class BrowsePresenter implements PlacePresenter {
-	private final BrowseWidget browseWidget;
+	public static interface Display extends IsWidget, HasValue<BrowseState> {
+	}
+
+	private final Display display;
 
 	private final HistoryManager historyManager;
 
 	private HandlerRegistration handler;
 
 	@Inject
-	public BrowsePresenter(BrowseWidget browseWidget,
-			HistoryManager historyManager) {
-		this.browseWidget = browseWidget;
+	public BrowsePresenter(Display display, HistoryManager historyManager) {
+		this.display = display;
 		this.historyManager = historyManager;
 	}
 
 	@Override
 	public void init() {
-		handler = browseWidget
+		handler = display
 				.addValueChangeHandler(new ValueChangeHandler<BrowseState>() {
 					@Override
 					public void onValueChange(
@@ -47,15 +51,15 @@ public class BrowsePresenter implements PlacePresenter {
 	}
 
 	@Override
-	public BrowseWidget getDisplay() {
-		return browseWidget;
+	public Display getDisplay() {
+		return display;
 	}
 
 	@Override
 	public void bind(List<String> parameters) {
 		try {
 			BrowseState browseState = BrowseState.deserialize(parameters);
-			browseWidget.setValue(browseState);
+			display.setValue(browseState);
 		} catch (NullPointerException npx) {
 			throw new IllegalArgumentException(npx);
 		}

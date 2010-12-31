@@ -10,9 +10,11 @@ import static com.google.common.base.Preconditions.*;
 
 import java.util.List;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
+import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetArticleResult;
@@ -21,14 +23,20 @@ import com.prealpha.extempdb.shared.id.ArticleId;
 import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class ArticlePresenter implements PlacePresenter {
-	private final ArticleWidget widget;
+	public static interface Display extends IsWidget {
+		Presenter<ArticleDto> getMetaPresenter();
+
+		Presenter<ArticleDto> getArticlePresenter();
+	}
+
+	private final Display display;
 
 	private final DispatcherAsync dispatcher;
 
 	@Inject
-	public ArticlePresenter(ArticleWidget widget, DispatcherAsync dispatcher,
+	public ArticlePresenter(Display display, DispatcherAsync dispatcher,
 			HistoryManager historyManager) {
-		this.widget = widget;
+		this.display = display;
 		this.dispatcher = dispatcher;
 	}
 
@@ -37,8 +45,8 @@ public class ArticlePresenter implements PlacePresenter {
 	}
 
 	@Override
-	public ArticleWidget getDisplay() {
-		return widget;
+	public Display getDisplay() {
+		return display;
 	}
 
 	@Override
@@ -52,8 +60,8 @@ public class ArticlePresenter implements PlacePresenter {
 				@Override
 				public void onSuccess(GetArticleResult result) {
 					ArticleDto article = result.getArticle();
-					widget.getMetaPresenter().bind(article);
-					widget.getArticlePresenter().bind(article);
+					display.getMetaPresenter().bind(article);
+					display.getArticlePresenter().bind(article);
 				}
 			});
 		} catch (NumberFormatException nfx) {

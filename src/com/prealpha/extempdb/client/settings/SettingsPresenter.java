@@ -10,15 +10,19 @@ import static com.google.common.base.Preconditions.*;
 
 import java.util.List;
 
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.PlacePresenter;
 
 public class SettingsPresenter implements PlacePresenter {
-	private final SettingsWidget widget;
+	public static interface Display extends IsWidget {
+	}
+
+	private final Display display;
 
 	@Inject
-	public SettingsPresenter(SettingsWidget widget) {
-		this.widget = widget;
+	public SettingsPresenter(Display display) {
+		this.display = display;
 	}
 
 	@Override
@@ -26,8 +30,8 @@ public class SettingsPresenter implements PlacePresenter {
 	}
 
 	@Override
-	public SettingsWidget getDisplay() {
-		return widget;
+	public Display getDisplay() {
+		return display;
 	}
 
 	@Override

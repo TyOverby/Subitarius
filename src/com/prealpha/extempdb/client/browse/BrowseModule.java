@@ -14,6 +14,7 @@ import com.prealpha.extempdb.shared.dto.ArticleDto;
 
 public class BrowseModule extends AbstractGinModule {
 	protected void configure() {
+		bind(BrowsePresenter.Display.class).to(BrowseWidget.class);
 		bind(ArticleTablePresenter.Display.class).to(ArticleTableWidget.class);
 	}
 
