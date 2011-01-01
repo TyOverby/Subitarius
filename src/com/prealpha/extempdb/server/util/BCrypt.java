@@ -59,9 +59,6 @@ import java.security.SecureRandom;
  * @author Damien Miller
  * @version 0.2
  */
-/*
- * TODO: I dislike this implementation. Find/make some unit tests and rewrite.
- */
 public final class BCrypt {
 	// BCrypt parameters
 	private static final int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
