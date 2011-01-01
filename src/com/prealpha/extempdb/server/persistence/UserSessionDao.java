@@ -16,15 +16,19 @@ import org.hibernate.criterion.Restrictions;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.server.domain.UserSession;
-import com.prealpha.extempdb.server.util.Sha256;
+import com.prealpha.extempdb.server.util.Base64Coder;
+import com.prealpha.extempdb.server.util.Hasher;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 public class UserSessionDao extends GenericDao<UserSession, String> {
 	private final Random random;
+	
+	private final Hasher hasher;
 
 	@Inject
-	public UserSessionDao(Random random) {
+	public UserSessionDao(Random random, Hasher hasher) {
 		this.random = random;
+		this.hasher = hasher;
 	}
 
 	@Override
@@ -49,7 +53,8 @@ public class UserSessionDao extends GenericDao<UserSession, String> {
 
 		byte[] bytes = new byte[32];
 		random.nextBytes(bytes);
-		String token = Sha256.hashAsBase64(new String(bytes));
+		byte[] hash = hasher.hash(bytes);
+		String token = new String(Base64Coder.encode(hash));
 		session.setToken(token);
 
 		Calendar expiry = Calendar.getInstance();

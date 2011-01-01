@@ -97,7 +97,7 @@ public final class XmlUtils {
 		}
 	}
 
-	public static final String xmlToString(Element element) {
+	public static String xmlToString(Element element) {
 		return new XMLOutputter().outputString(element);
 	}
 

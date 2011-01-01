@@ -6,6 +6,8 @@
 
 package com.prealpha.extempdb.server.persistence;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 import org.hibernate.Session;
@@ -32,6 +34,11 @@ public class PersistenceModule extends AbstractModule {
 		bindInterceptor(Matchers.any(),
 				Matchers.annotatedWith(Transactional.class),
 				transactionalInterceptor);
+	}
+
+	@Provides
+	MessageDigest getMessageDigest() throws NoSuchAlgorithmException {
+		return MessageDigest.getInstance("SHA-256");
 	}
 
 	@Provides
