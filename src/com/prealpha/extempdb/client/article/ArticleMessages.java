@@ -20,4 +20,8 @@ interface ArticleMessages extends Messages {
 	String sourceLabel();
 
 	String tagsLabel();
+	
+	String addMappingButton();
+	
+	String submitMappingButton();
 }

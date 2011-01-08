@@ -33,6 +33,7 @@ public class ActionModule extends ActionHandlerModule {
 	protected void configure() {
 		bind(Mapper.class).to(DozerBeanMapper.class).in(Singleton.class);
 
+		bindHandler(AddMapping.class, AddMappingHandler.class);
 		bindHandler(AddMappingAction.class, AddMappingActionHandler.class);
 		bindHandler(ChangePassword.class, ChangePasswordHandler.class);
 		bindHandler(GetArticle.class, GetArticleHandler.class);
