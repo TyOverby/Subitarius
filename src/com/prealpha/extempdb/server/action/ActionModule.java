@@ -11,6 +11,7 @@ import org.dozer.Mapper;
 
 import com.google.inject.Singleton;
 import com.prealpha.dispatch.server.ActionHandlerModule;
+import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.ChangePassword;
 import com.prealpha.extempdb.shared.action.GetArticle;
