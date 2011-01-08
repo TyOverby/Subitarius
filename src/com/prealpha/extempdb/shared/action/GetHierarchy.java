@@ -6,10 +6,8 @@
 
 package com.prealpha.extempdb.shared.action;
 
-import java.util.Date;
-
-import com.prealpha.gwt.dispatch.client.filter.CacheableAction;
-import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
+import com.prealpha.dispatch.shared.CacheableAction;
+import com.prealpha.dispatch.shared.MergeableAction;
 
 public class GetHierarchy implements CacheableAction<GetHierarchyResult>,
 		MergeableAction<GetHierarchyResult> {
@@ -22,8 +20,8 @@ public class GetHierarchy implements CacheableAction<GetHierarchyResult>,
 	}
 
 	@Override
-	public Date getCacheExpiry(GetHierarchyResult result) {
-		return new Date(cacheExpiry);
+	public long getCacheExpiry(GetHierarchyResult result) {
+		return cacheExpiry;
 	}
 
 	@Override

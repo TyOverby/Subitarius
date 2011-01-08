@@ -20,13 +20,13 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetMapping;
 import com.prealpha.extempdb.shared.action.GetMappingResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.id.TagMappingId;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class ArticleTablePresenter implements Presenter<List<TagMappingId>> {
 	public static interface Display extends IsWidget, HasValue<ArticleSort> {

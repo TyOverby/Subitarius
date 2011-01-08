@@ -23,15 +23,15 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.prealpha.gwt.dispatch.client.filter.ActionFilter;
-import com.prealpha.gwt.dispatch.client.filter.CachingActionFilter;
-import com.prealpha.gwt.dispatch.client.filter.DelayedBatchingFilter;
-import com.prealpha.gwt.dispatch.client.filter.DelayedBatchingFilter.BatchDelay;
-import com.prealpha.gwt.dispatch.client.filter.FilteringDispatcherAsync;
-import com.prealpha.gwt.dispatch.client.filter.FilteringDispatcherAsync.BackingDispatcher;
-import com.prealpha.gwt.dispatch.client.filter.MergingActionFilter;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
+import com.prealpha.dispatch.client.filter.ActionFilter;
+import com.prealpha.dispatch.client.filter.CachingActionFilter;
+import com.prealpha.dispatch.client.filter.DelayedBatchingFilter;
+import com.prealpha.dispatch.client.filter.DelayedBatchingFilter.BatchDelay;
+import com.prealpha.dispatch.client.filter.FilteringDispatcherAsync;
+import com.prealpha.dispatch.client.filter.FilteringDispatcherAsync.BackingDispatcher;
+import com.prealpha.dispatch.client.filter.MergingActionFilter;
+import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 
 public final class ClientModule extends AbstractGinModule {
 	public ClientModule() {

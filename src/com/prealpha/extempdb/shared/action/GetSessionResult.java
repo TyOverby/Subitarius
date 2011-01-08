@@ -6,8 +6,8 @@
 
 package com.prealpha.extempdb.shared.action;
 
+import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.shared.dto.UserSessionDto;
-import com.prealpha.gwt.dispatch.shared.Result;
 
 public class GetSessionResult implements Result {
 	private UserSessionDto session;

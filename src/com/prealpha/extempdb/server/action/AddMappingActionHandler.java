@@ -12,6 +12,9 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
 import com.prealpha.extempdb.server.domain.UserSession;
@@ -22,9 +25,6 @@ import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.dto.TagMappingActionDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class AddMappingActionHandler implements
 		ActionHandler<AddMappingAction, MutationResult> {
@@ -43,11 +43,6 @@ class AddMappingActionHandler implements
 		this.userSessionDao = userSessionDao;
 		this.tagMappingActionDao = tagMappingActionDao;
 		this.mapper = mapper;
-	}
-
-	@Override
-	public Class<AddMappingAction> getActionType() {
-		return AddMappingAction.class;
 	}
 
 	@Transactional

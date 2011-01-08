@@ -12,6 +12,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.User;
@@ -23,9 +26,6 @@ import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.action.UpdateTag;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class UpdateTagHandler implements ActionHandler<UpdateTag, MutationResult> {
 	@InjectLogger
@@ -39,11 +39,6 @@ class UpdateTagHandler implements ActionHandler<UpdateTag, MutationResult> {
 	public UpdateTagHandler(TagDao tagDao, UserSessionDao userSessionDao) {
 		this.tagDao = tagDao;
 		this.userSessionDao = userSessionDao;
-	}
-
-	@Override
-	public Class<UpdateTag> getActionType() {
-		return UpdateTag.class;
 	}
 
 	@Transactional

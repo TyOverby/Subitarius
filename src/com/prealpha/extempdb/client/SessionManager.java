@@ -12,13 +12,13 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.client.event.SessionEvent;
 import com.prealpha.extempdb.shared.action.GetSession;
 import com.prealpha.extempdb.shared.action.GetSessionResult;
 import com.prealpha.extempdb.shared.dto.UserSessionDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public final class SessionManager {
 	private static final String COOKIE_NAME = "EXTEMPDB";

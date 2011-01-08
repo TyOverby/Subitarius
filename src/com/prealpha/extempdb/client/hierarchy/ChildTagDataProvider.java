@@ -16,6 +16,7 @@ import com.google.common.collect.SetMultimap;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetHierarchy;
 import com.prealpha.extempdb.shared.action.GetHierarchyResult;
@@ -23,7 +24,6 @@ import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 	private static SetMultimap<TagName, TagName> hierarchy;

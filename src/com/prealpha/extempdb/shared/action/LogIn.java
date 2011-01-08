@@ -8,7 +8,7 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.gwt.dispatch.shared.Action;
+import com.prealpha.dispatch.shared.Action;
 
 public class LogIn implements Action<GetSessionResult> {
 	private String name;

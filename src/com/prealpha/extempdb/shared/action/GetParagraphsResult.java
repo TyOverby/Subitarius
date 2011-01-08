@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.prealpha.gwt.dispatch.shared.Result;
+import com.prealpha.dispatch.shared.Result;
 
 public class GetParagraphsResult implements Result {
 	private ArrayList<String> paragraphs;

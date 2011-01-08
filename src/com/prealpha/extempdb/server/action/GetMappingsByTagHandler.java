@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
@@ -25,9 +28,6 @@ import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.id.TagMappingId;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class GetMappingsByTagHandler implements
 		ActionHandler<GetMappingsByTag, GetMappingsResult> {
@@ -42,11 +42,6 @@ class GetMappingsByTagHandler implements
 	public GetMappingsByTagHandler(TagDao tagDao, Mapper mapper) {
 		this.tagDao = tagDao;
 		this.mapper = mapper;
-	}
-
-	@Override
-	public Class<GetMappingsByTag> getActionType() {
-		return GetMappingsByTag.class;
 	}
 
 	@Transactional

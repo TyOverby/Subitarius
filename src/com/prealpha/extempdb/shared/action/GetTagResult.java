@@ -6,8 +6,8 @@
 
 package com.prealpha.extempdb.shared.action;
 
+import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.gwt.dispatch.shared.Result;
 
 public class GetTagResult implements Result {
 	private TagDto tag;

@@ -6,7 +6,7 @@
 
 package com.prealpha.extempdb.shared.action;
 
-import com.prealpha.gwt.dispatch.shared.Result;
+import com.prealpha.dispatch.shared.Result;
 
 public enum MutationResult implements Result {
 	SUCCESS, INVALID_REQUEST, INVALID_SESSION, PERMISSION_DENIED;

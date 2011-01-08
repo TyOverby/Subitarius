@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.shared.id.TagMappingId;
-import com.prealpha.gwt.dispatch.shared.Result;
 
 public class GetMappingsResult implements Result {
 	private ArrayList<TagMappingId> ids;

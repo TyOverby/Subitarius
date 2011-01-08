@@ -8,7 +8,7 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
+import com.prealpha.dispatch.shared.MergeableAction;
 
 public class GetTagSuggestions implements
 		MergeableAction<GetTagSuggestionsResult> {

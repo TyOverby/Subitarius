@@ -8,11 +8,9 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Date;
-
+import com.prealpha.dispatch.shared.CacheableAction;
+import com.prealpha.dispatch.shared.MergeableAction;
 import com.prealpha.extempdb.shared.id.ArticleId;
-import com.prealpha.gwt.dispatch.client.filter.CacheableAction;
-import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
 
 public class GetArticle implements CacheableAction<GetArticleResult>,
 		MergeableAction<GetArticleResult> {
@@ -41,8 +39,8 @@ public class GetArticle implements CacheableAction<GetArticleResult>,
 	}
 
 	@Override
-	public Date getCacheExpiry(GetArticleResult result) {
-		return new Date(cacheExpiry);
+	public long getCacheExpiry(GetArticleResult result) {
+		return cacheExpiry;
 	}
 
 	@Override

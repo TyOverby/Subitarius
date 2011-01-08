@@ -12,8 +12,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
+import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.shared.Result;
 
 public class GetHierarchyResult implements Result {
 	private HashMultimap<TagName, TagName> hierarchy;

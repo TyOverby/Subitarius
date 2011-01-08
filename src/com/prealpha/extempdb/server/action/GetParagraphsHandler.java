@@ -12,6 +12,9 @@ import java.util.List;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.persistence.ArticleDao;
@@ -19,9 +22,6 @@ import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetParagraphs;
 import com.prealpha.extempdb.shared.action.GetParagraphsResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class GetParagraphsHandler implements
 		ActionHandler<GetParagraphs, GetParagraphsResult> {
@@ -33,11 +33,6 @@ class GetParagraphsHandler implements
 	@Inject
 	public GetParagraphsHandler(ArticleDao articleDao) {
 		this.articleDao = articleDao;
-	}
-
-	@Override
-	public Class<GetParagraphs> getActionType() {
-		return GetParagraphs.class;
 	}
 
 	@Transactional

@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
 import com.prealpha.extempdb.client.Presenter;
@@ -20,7 +21,6 @@ import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetArticleResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.id.ArticleId;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class ArticlePresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {

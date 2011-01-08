@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.common.TagInputBox;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetMappingsByTag;
@@ -33,7 +34,6 @@ import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 import com.prealpha.extempdb.shared.id.TagMappingId;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	public static interface BrowseUiBinder extends

@@ -25,12 +25,12 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 /*
  * TODO: non-interface methods, and the quirks in this class

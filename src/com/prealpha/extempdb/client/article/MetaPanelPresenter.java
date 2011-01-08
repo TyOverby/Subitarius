@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetMapping;
@@ -21,7 +22,6 @@ import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.id.TagMappingId;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 /*
  * TODO: relies on DateTimeFormat, so would require GwtTestCase to unit test

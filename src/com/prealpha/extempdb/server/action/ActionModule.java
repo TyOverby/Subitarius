@@ -10,6 +10,7 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
 import com.google.inject.Singleton;
+import com.prealpha.dispatch.server.ActionHandlerModule;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.ChangePassword;
 import com.prealpha.extempdb.shared.action.GetArticle;
@@ -23,7 +24,6 @@ import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.shared.action.LogIn;
 import com.prealpha.extempdb.shared.action.UpdateTag;
-import com.prealpha.gwt.dispatch.server.ActionHandlerModule;
 
 public class ActionModule extends ActionHandlerModule {
 	public ActionModule() {

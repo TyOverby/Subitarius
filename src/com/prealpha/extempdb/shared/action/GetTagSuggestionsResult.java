@@ -12,8 +12,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.shared.Result;
 
 public class GetTagSuggestionsResult implements Result {
 	private HashSet<TagName> suggestions;

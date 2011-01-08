@@ -11,6 +11,9 @@ import org.slf4j.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.persistence.TagDao;
@@ -18,9 +21,6 @@ import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetHierarchy;
 import com.prealpha.extempdb.shared.action.GetHierarchyResult;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class GetHierarchyHandler implements
 		ActionHandler<GetHierarchy, GetHierarchyResult> {
@@ -32,11 +32,6 @@ class GetHierarchyHandler implements
 	@Inject
 	public GetHierarchyHandler(TagDao tagDao) {
 		this.tagDao = tagDao;
-	}
-
-	@Override
-	public Class<GetHierarchy> getActionType() {
-		return GetHierarchy.class;
 	}
 
 	@Transactional

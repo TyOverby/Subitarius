@@ -14,6 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
@@ -27,7 +28,6 @@ import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 import com.prealpha.extempdb.shared.dto.UserSessionDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	public static interface Display extends IsWidget {

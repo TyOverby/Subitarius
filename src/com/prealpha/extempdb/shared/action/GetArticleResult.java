@@ -6,8 +6,8 @@
 
 package com.prealpha.extempdb.shared.action;
 
+import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.gwt.dispatch.shared.Result;
 
 public class GetArticleResult implements Result {
 	private ArticleDto article;

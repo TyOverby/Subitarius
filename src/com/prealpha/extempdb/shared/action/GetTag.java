@@ -8,11 +8,9 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Date;
-
+import com.prealpha.dispatch.shared.CacheableAction;
+import com.prealpha.dispatch.shared.MergeableAction;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.client.filter.CacheableAction;
-import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
 
 public class GetTag implements CacheableAction<GetTagResult>,
 		MergeableAction<GetTagResult> {
@@ -38,8 +36,8 @@ public class GetTag implements CacheableAction<GetTagResult>,
 	}
 
 	@Override
-	public Date getCacheExpiry(GetTagResult result) {
-		return new Date(cacheExpiry);
+	public long getCacheExpiry(GetTagResult result) {
+		return cacheExpiry;
 	}
 
 	@Override

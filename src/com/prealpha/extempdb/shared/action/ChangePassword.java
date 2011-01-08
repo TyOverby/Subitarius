@@ -8,8 +8,8 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.prealpha.dispatch.shared.Action;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.shared.Action;
 
 public class ChangePassword implements Action<MutationResult> {
 	private UserSessionToken sessionToken;

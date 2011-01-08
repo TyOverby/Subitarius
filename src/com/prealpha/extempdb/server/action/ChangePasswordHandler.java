@@ -9,6 +9,9 @@ package com.prealpha.extempdb.server.action;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.server.domain.UserSession;
@@ -19,9 +22,6 @@ import com.prealpha.extempdb.server.util.BCrypt;
 import com.prealpha.extempdb.shared.action.ChangePassword;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class ChangePasswordHandler implements
 		ActionHandler<ChangePassword, MutationResult> {
@@ -38,11 +38,6 @@ class ChangePasswordHandler implements
 	public ChangePasswordHandler(UserDao userDao, UserSessionDao userSessionDao) {
 		this.userDao = userDao;
 		this.userSessionDao = userSessionDao;
-	}
-
-	@Override
-	public Class<ChangePassword> getActionType() {
-		return ChangePassword.class;
 	}
 
 	@Transactional

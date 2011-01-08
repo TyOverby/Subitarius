@@ -22,7 +22,7 @@ import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 public class UserSessionDao extends GenericDao<UserSession, String> {
 	private final Random random;
-	
+
 	private final Hasher hasher;
 
 	@Inject

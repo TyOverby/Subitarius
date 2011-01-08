@@ -6,12 +6,10 @@
 
 package com.prealpha.extempdb.shared.action;
 
-import java.util.Date;
-
 import com.google.common.base.Predicate;
+import com.prealpha.dispatch.shared.CacheableAction;
+import com.prealpha.dispatch.shared.MergeableAction;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.gwt.dispatch.client.filter.CacheableAction;
-import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
 
 /*
  * TODO: the caching behavior is not ideal. Needs to be sensitive to mutation.
@@ -29,8 +27,8 @@ abstract class GetMappings implements CacheableAction<GetMappingsResult>,
 	}
 
 	@Override
-	public Date getCacheExpiry(GetMappingsResult result) {
-		return new Date(cacheExpiry);
+	public long getCacheExpiry(GetMappingsResult result) {
+		return cacheExpiry;
 	}
 
 	@Override

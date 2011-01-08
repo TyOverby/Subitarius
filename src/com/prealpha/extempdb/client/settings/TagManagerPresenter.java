@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.common.LoadingStatus;
@@ -28,7 +29,6 @@ import com.prealpha.extempdb.shared.action.UpdateTag;
 import com.prealpha.extempdb.shared.action.UpdateTag.UpdateType;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 /*
  * TODO: doesn't present anything

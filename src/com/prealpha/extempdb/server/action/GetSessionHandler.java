@@ -10,6 +10,9 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.UserSession;
 import com.prealpha.extempdb.server.persistence.Transactional;
@@ -18,9 +21,6 @@ import com.prealpha.extempdb.shared.action.GetSession;
 import com.prealpha.extempdb.shared.action.GetSessionResult;
 import com.prealpha.extempdb.shared.dto.UserSessionDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class GetSessionHandler implements ActionHandler<GetSession, GetSessionResult> {
 	@InjectLogger
@@ -34,11 +34,6 @@ class GetSessionHandler implements ActionHandler<GetSession, GetSessionResult> {
 	public GetSessionHandler(UserSessionDao userSessionDao, Mapper mapper) {
 		this.userSessionDao = userSessionDao;
 		this.mapper = mapper;
-	}
-
-	@Override
-	public Class<GetSession> getActionType() {
-		return GetSession.class;
 	}
 
 	@Transactional

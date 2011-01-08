@@ -10,6 +10,9 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.server.domain.UserSession;
@@ -20,9 +23,6 @@ import com.prealpha.extempdb.server.util.BCrypt;
 import com.prealpha.extempdb.shared.action.GetSessionResult;
 import com.prealpha.extempdb.shared.action.LogIn;
 import com.prealpha.extempdb.shared.dto.UserSessionDto;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class LogInHandler implements ActionHandler<LogIn, GetSessionResult> {
 	@InjectLogger
@@ -40,11 +40,6 @@ class LogInHandler implements ActionHandler<LogIn, GetSessionResult> {
 		this.userDao = userDao;
 		this.userSessionDao = userSessionDao;
 		this.mapper = mapper;
-	}
-
-	@Override
-	public Class<LogIn> getActionType() {
-		return LogIn.class;
 	}
 
 	@Transactional

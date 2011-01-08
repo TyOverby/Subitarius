@@ -8,12 +8,10 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Date;
-
+import com.prealpha.dispatch.shared.CacheableAction;
+import com.prealpha.dispatch.shared.MergeableAction;
 import com.prealpha.extempdb.shared.dto.UserSessionDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
-import com.prealpha.gwt.dispatch.client.filter.CacheableAction;
-import com.prealpha.gwt.dispatch.client.filter.MergeableAction;
 
 public class GetSession implements CacheableAction<GetSessionResult>,
 		MergeableAction<GetSessionResult> {
@@ -34,9 +32,9 @@ public class GetSession implements CacheableAction<GetSessionResult>,
 	}
 
 	@Override
-	public Date getCacheExpiry(GetSessionResult result) {
+	public long getCacheExpiry(GetSessionResult result) {
 		UserSessionDto session = result.getSession();
-		return session.getExpiry();
+		return session.getExpiry().getTime();
 	}
 
 	@Override

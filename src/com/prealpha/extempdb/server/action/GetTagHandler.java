@@ -10,6 +10,9 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.prealpha.dispatch.server.ActionHandler;
+import com.prealpha.dispatch.shared.ActionException;
+import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.persistence.TagDao;
@@ -18,9 +21,6 @@ import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.server.ActionHandler;
-import com.prealpha.gwt.dispatch.shared.ActionException;
-import com.prealpha.gwt.dispatch.shared.Dispatcher;
 
 class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 	@InjectLogger
@@ -34,11 +34,6 @@ class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 	public GetTagHandler(TagDao tagDao, Mapper mapper) {
 		this.tagDao = tagDao;
 		this.mapper = mapper;
-	}
-
-	@Override
-	public Class<GetTag> getActionType() {
-		return GetTag.class;
 	}
 
 	@Transactional

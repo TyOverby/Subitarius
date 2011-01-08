@@ -13,11 +13,11 @@ import java.util.Set;
 
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
+import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
 import com.prealpha.extempdb.shared.id.TagName;
-import com.prealpha.gwt.dispatch.shared.DispatcherAsync;
 
 public class TagInputSuggestOracle extends SuggestOracle {
 	private final DispatcherAsync dispatcher;
