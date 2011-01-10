@@ -10,7 +10,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.impl.SchedulerImpl;
@@ -25,10 +27,9 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.prealpha.dispatch.client.filter.ActionFilter;
 import com.prealpha.dispatch.client.filter.CachingActionFilter;
+import com.prealpha.dispatch.client.filter.ChainingFilter;
 import com.prealpha.dispatch.client.filter.DelayedBatchingFilter;
 import com.prealpha.dispatch.client.filter.DelayedBatchingFilter.BatchDelay;
-import com.prealpha.dispatch.client.filter.FilteringDispatcherAsync;
-import com.prealpha.dispatch.client.filter.FilteringDispatcherAsync.BackingDispatcher;
 import com.prealpha.dispatch.client.filter.MergingActionFilter;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.dispatch.shared.DispatcherAsync;
@@ -54,22 +55,19 @@ public final class ClientModule extends AbstractGinModule {
 	}
 
 	@Provides
+	@Singleton
 	@Inject
-	DispatcherAsync getDispatcher(FilteringDispatcherAsync dispatcher,
-			@CachingFilter ActionFilter cachingFilter,
+	DispatcherAsync getDispatcher(@CachingFilter ActionFilter cachingFilter,
 			@MergingFilter ActionFilter mergingFilter,
 			@BatchingFilter ActionFilter batchingFilter) {
-		dispatcher.addFilter(cachingFilter);
-		dispatcher.addFilter(mergingFilter);
-		dispatcher.addFilter(batchingFilter);
-		return dispatcher;
-	}
+		DispatcherAsync backingDispatcher = GWT.create(Dispatcher.class);
+		((ServiceDefTarget) backingDispatcher)
+				.setServiceEntryPoint("./GWT.rpc");
 
-	@Provides
-	@BackingDispatcher
-	DispatcherAsync getBackingDispatcher() {
-		DispatcherAsync dispatcher = GWT.create(Dispatcher.class);
-		((ServiceDefTarget) dispatcher).setServiceEntryPoint("./GWT.rpc");
+		List<ActionFilter> filters = ImmutableList.of(cachingFilter,
+				mergingFilter, batchingFilter);
+		ActionFilter dispatcher = new ChainingFilter(filters);
+		dispatcher.init(backingDispatcher);
 		return dispatcher;
 	}
 
