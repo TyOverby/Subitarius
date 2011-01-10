@@ -1,6 +1,6 @@
 /*
  * MetaPanelWidget.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -32,6 +32,9 @@ public class MetaPanelWidget extends Composite implements
 	@UiField
 	HasWidgets tagsPanel;
 
+	@UiField
+	HasWidgets mappingInputPanel;
+
 	@Inject
 	public MetaPanelWidget(MetaPanelUiBinder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -55,5 +58,10 @@ public class MetaPanelWidget extends Composite implements
 	@Override
 	public HasWidgets getTagsPanel() {
 		return tagsPanel;
+	}
+
+	@Override
+	public HasWidgets getMappingInputPanel() {
+		return mappingInputPanel;
 	}
 }

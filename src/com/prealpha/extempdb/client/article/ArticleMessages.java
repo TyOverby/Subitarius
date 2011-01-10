@@ -1,6 +1,6 @@
 /*
  * ArticleMessages.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,7 +8,7 @@ package com.prealpha.extempdb.client.article;
 
 import com.google.gwt.i18n.client.Messages;
 
-interface ArticleMessages extends Messages {
+public interface ArticleMessages extends Messages {
 	String idLabel();
 
 	String bylineLabel();
@@ -24,4 +24,6 @@ interface ArticleMessages extends Messages {
 	String addMappingButton();
 
 	String submitMappingButton();
+	
+	String mappingAlreadyExists();
 }

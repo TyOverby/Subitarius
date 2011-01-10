@@ -1,6 +1,6 @@
 /*
  * ArticleModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -18,6 +18,7 @@ public class ArticleModule extends AbstractGinModule {
 		bind(ArticleDisplayPresenter.Display.class).to(
 				ArticleDisplayWidget.class);
 		bind(MetaPanelPresenter.Display.class).to(MetaPanelWidget.class);
+		bind(MappingInputPresenter.Display.class).to(MappingInputWidget.class);
 		bind(TagMappingPresenter.Display.class).to(TagMappingWidget.class);
 	}
 }

@@ -48,6 +48,7 @@
 			<g:Label addStyleNames="{style.metaLabel}" text="{msg.tagsLabel}" />
 			<g:VerticalPanel addStyleNames="{style.tagsPanel}"
 				ui:field="tagsPanel" />
+			<g:SimplePanel ui:field="mappingInputPanel" />
 		</g:HTMLPanel>
 	</g:VerticalPanel>
 

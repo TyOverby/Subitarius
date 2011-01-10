@@ -1,6 +1,6 @@
 /*
  * MetaPanelPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -35,6 +35,8 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 		HasText getRetrievalDateLabel();
 
 		HasWidgets getTagsPanel();
+
+		HasWidgets getMappingInputPanel();
 	}
 
 	private final Display display;
@@ -43,16 +45,23 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 
 	private final DateTimeFormat dateTimeFormat;
 
+	private final MappingInputPresenter mappingInputPresenter;
+
 	private final Provider<TagMappingPresenter> mappingPresenterProvider;
 
 	@Inject
 	public MetaPanelPresenter(Display display, DispatcherAsync dispatcher,
 			DateTimeFormat dateTimeFormat,
+			MappingInputPresenter mappingInputPresenter,
 			Provider<TagMappingPresenter> mappingPresenterProvider) {
 		this.display = display;
 		this.dispatcher = dispatcher;
 		this.dateTimeFormat = dateTimeFormat;
+		this.mappingInputPresenter = mappingInputPresenter;
 		this.mappingPresenterProvider = mappingPresenterProvider;
+
+		display.getMappingInputPanel().add(
+				mappingInputPresenter.getDisplay().asWidget());
 	}
 
 	@Override
@@ -68,6 +77,8 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 		display.getRetrievalDateLabel().setText(
 				dateTimeFormat.format(article.getRetrievalDate()));
 		display.getTagsPanel().clear();
+
+		mappingInputPresenter.bind(article);
 
 		GetMappingsByArticle action = new GetMappingsByArticle(article);
 		dispatcher.execute(action, new MappingsCallback());
