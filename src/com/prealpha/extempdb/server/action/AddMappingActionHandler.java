@@ -1,6 +1,6 @@
 /*
  * AddMappingActionHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,7 +8,6 @@ package com.prealpha.extempdb.server.action;
 
 import java.util.Date;
 
-import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -16,14 +15,17 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
+import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
+import com.prealpha.extempdb.server.domain.TagMappingAction.Type;
 import com.prealpha.extempdb.server.domain.UserSession;
 import com.prealpha.extempdb.server.persistence.TagMappingActionDao;
+import com.prealpha.extempdb.server.persistence.TagMappingDao;
 import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.server.persistence.UserSessionDao;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.dto.TagMappingActionDto;
+import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 class AddMappingActionHandler implements
@@ -33,16 +35,16 @@ class AddMappingActionHandler implements
 
 	private final UserSessionDao userSessionDao;
 
-	private final TagMappingActionDao tagMappingActionDao;
+	private final TagMappingDao tagMappingDao;
 
-	private final Mapper mapper;
+	private final TagMappingActionDao tagMappingActionDao;
 
 	@Inject
 	public AddMappingActionHandler(UserSessionDao userSessionDao,
-			TagMappingActionDao tagMappingActionDao, Mapper mapper) {
+			TagMappingDao tagMappingDao, TagMappingActionDao tagMappingActionDao) {
 		this.userSessionDao = userSessionDao;
+		this.tagMappingDao = tagMappingDao;
 		this.tagMappingActionDao = tagMappingActionDao;
-		this.mapper = mapper;
 	}
 
 	@Transactional
@@ -52,8 +54,8 @@ class AddMappingActionHandler implements
 		UserSessionToken sessionToken = action.getSessionToken();
 		UserSession session = userSessionDao.validateSession(sessionToken);
 
-		TagMappingActionDto dto = action.getMappingAction();
-		Long mappingId = dto.getMapping().getId();
+		TagMappingDto mappingDto = action.getMapping();
+		Long mappingId = mappingDto.getId();
 
 		if (session == null) {
 			log.info(
@@ -62,8 +64,11 @@ class AddMappingActionHandler implements
 			return MutationResult.INVALID_SESSION;
 		}
 
-		TagMappingAction mappingAction = mapper
-				.map(dto, TagMappingAction.class);
+		TagMapping mapping = tagMappingDao.get(mappingId);
+		TagMappingAction mappingAction = new TagMappingAction();
+		Type type = Type.valueOf(action.getType().name());
+		mappingAction.setMapping(mapping);
+		mappingAction.setType(type);
 		mappingAction.setUser(session.getUser());
 		mappingAction.setTimestamp(new Date());
 		tagMappingActionDao.save(mappingAction);

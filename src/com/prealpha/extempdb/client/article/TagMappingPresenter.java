@@ -1,6 +1,6 @@
 /*
  * TagMappingPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -22,7 +22,6 @@ import com.prealpha.extempdb.client.event.SessionEvent;
 import com.prealpha.extempdb.client.event.SessionHandler;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.dto.TagMappingActionDto;
 import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
@@ -104,12 +103,8 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	}
 
 	private void updateMapping(Type type) {
-		TagMappingActionDto mappingAction = new TagMappingActionDto();
-		mappingAction.setMapping(mapping);
-		mappingAction.setType(type);
-
 		UserSessionToken sessionToken = sessionManager.getSessionToken();
-		AddMappingAction action = new AddMappingAction(mappingAction,
+		AddMappingAction action = new AddMappingAction(mapping, type,
 				sessionToken);
 		dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 			@Override

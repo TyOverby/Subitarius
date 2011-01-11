@@ -1,6 +1,6 @@
 /*
  * AddMappingAction.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -9,11 +9,14 @@ package com.prealpha.extempdb.shared.action;
 import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.Action;
-import com.prealpha.extempdb.shared.dto.TagMappingActionDto;
+import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
+import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 public class AddMappingAction implements Action<MutationResult> {
-	private TagMappingActionDto mappingAction;
+	private TagMappingDto mapping;
+
+	private Type type;
 
 	private UserSessionToken sessionToken;
 
@@ -22,17 +25,23 @@ public class AddMappingAction implements Action<MutationResult> {
 	private AddMappingAction() {
 	}
 
-	public AddMappingAction(TagMappingActionDto mappingAction,
+	public AddMappingAction(TagMappingDto mapping, Type type,
 			UserSessionToken sessionToken) {
-		checkNotNull(mappingAction);
+		checkNotNull(mapping);
+		checkNotNull(type);
 		checkNotNull(sessionToken);
 
-		this.mappingAction = mappingAction;
+		this.mapping = mapping;
+		this.type = type;
 		this.sessionToken = sessionToken;
 	}
 
-	public TagMappingActionDto getMappingAction() {
-		return mappingAction;
+	public TagMappingDto getMapping() {
+		return mapping;
+	}
+
+	public Type getType() {
+		return type;
 	}
 
 	public UserSessionToken getSessionToken() {
