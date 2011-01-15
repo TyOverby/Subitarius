@@ -1,6 +1,6 @@
 /*
  * TagMapping.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -100,12 +100,16 @@ public class TagMapping {
 	}
 
 	@Transient
+	public TagMappingAction getLastAction() {
+		return (actions.isEmpty() ? null : actions.get(actions.size() - 1));
+	}
+
+	@Transient
 	public State getState() {
 		if (actions.isEmpty()) {
 			return State.UNPATROLLED;
 		} else {
-			TagMappingAction lastAction = actions.get(actions.size() - 1);
-			switch (lastAction.getType()) {
+			switch (getLastAction().getType()) {
 			case PATROL:
 				return State.PATROLLED;
 			case REMOVE:

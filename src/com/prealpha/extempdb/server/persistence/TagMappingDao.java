@@ -1,6 +1,6 @@
 /*
  * TagMappingDao.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -25,9 +25,17 @@ public class TagMappingDao extends GenericDao<TagMapping, Long> {
 
 	public TagMapping get(Tag tag, Article article) {
 		Session session = sessionProvider.get();
-		Criteria criteria = session.createCriteria(TagMapping.class);
+		Criteria criteria = session.createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("tag", tag));
 		criteria.add(Restrictions.eq("article", article));
 		return (TagMapping) criteria.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<TagMapping> getAllModified() {
+		Session session = sessionProvider.get();
+		Criteria criteria = session.createCriteria(getEntityClass());
+		criteria.add(Restrictions.isNotEmpty("actions"));
+		return criteria.list();
 	}
 }

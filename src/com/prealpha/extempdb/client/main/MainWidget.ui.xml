@@ -25,6 +25,8 @@
 							</span>
 							<g:Label text="{msg.usageText}" />
 						</g:HTMLPanel>
+						
+						<g:SimplePanel addStyleNames="{res.style.contentSection}" ui:field="pointsPanel" />
 					</g:VerticalPanel>
 				</td>
 

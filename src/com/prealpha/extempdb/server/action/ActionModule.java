@@ -1,6 +1,6 @@
 /*
  * ActionModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -20,6 +20,7 @@ import com.prealpha.extempdb.shared.action.GetMapping;
 import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.shared.action.GetParagraphs;
+import com.prealpha.extempdb.shared.action.GetPoints;
 import com.prealpha.extempdb.shared.action.GetSession;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
@@ -44,6 +45,7 @@ public class ActionModule extends ActionHandlerModule {
 				GetMappingsByArticleHandler.class);
 		bindHandler(GetMappingsByTag.class, GetMappingsByTagHandler.class);
 		bindHandler(GetParagraphs.class, GetParagraphsHandler.class);
+		bindHandler(GetPoints.class, GetPointsHandler.class);
 		bindHandler(GetSession.class, GetSessionHandler.class);
 		bindHandler(GetTag.class, GetTagHandler.class);
 		bindHandler(GetTagSuggestions.class, GetTagSuggestionsHandler.class);
