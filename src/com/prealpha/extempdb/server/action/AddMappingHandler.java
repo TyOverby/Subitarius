@@ -1,11 +1,12 @@
 /*
  * AddMappingHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.action;
 
+import java.util.Collections;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
+import com.prealpha.extempdb.server.domain.TagMapping.State;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.server.domain.UserSession;
@@ -80,26 +82,24 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 		Article article = articleDao.get(articleDto.getId());
 		User user = session.getUser();
 
-		if (tagMappingDao.get(tag, article) != null) {
-			log.info(
-					"rejected attempt by user \"{}\" to remap tag \"{}\" to article ID {}",
-					new Object[] { user.getName(), tag.getName(),
-							article.getId() });
-			return MutationResult.INVALID_REQUEST;
+		TagMapping mapping = tagMappingDao.get(tag, article);
+		if (mapping == null) {
+			mapping = new TagMapping();
+			mapping.setTag(tag);
+			mapping.setArticle(article);
+			mapping.setAdded(new Date());
+			mapping.setActions(Collections.<TagMappingAction> emptyList());
+			tagMappingDao.save(mapping);
 		}
 
-		TagMapping mapping = new TagMapping();
-		mapping.setTag(tag);
-		mapping.setArticle(article);
-		mapping.setAdded(new Date());
-		tagMappingDao.save(mapping);
-
-		TagMappingAction mappingAction = new TagMappingAction();
-		mappingAction.setMapping(mapping);
-		mappingAction.setType(TagMappingAction.Type.PATROL);
-		mappingAction.setUser(user);
-		mappingAction.setTimestamp(new Date());
-		tagMappingActionDao.save(mappingAction);
+		if (!mapping.getState().equals(State.PATROLLED)) {
+			TagMappingAction mappingAction = new TagMappingAction();
+			mappingAction.setMapping(mapping);
+			mappingAction.setType(TagMappingAction.Type.PATROL);
+			mappingAction.setUser(user);
+			mappingAction.setTimestamp(new Date());
+			tagMappingActionDao.save(mappingAction);
+		}
 
 		log.info("user \"{}\" mapped tag \"{}\" to article ID {}",
 				new Object[] { user.getName(), tag.getName(), article.getId() });

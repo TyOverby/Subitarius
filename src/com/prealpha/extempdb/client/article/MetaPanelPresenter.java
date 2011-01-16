@@ -21,6 +21,7 @@ import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 import com.prealpha.extempdb.shared.id.TagMappingId;
 
 /*
@@ -98,11 +99,14 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 		@Override
 		public void onSuccess(GetMappingResult result) {
 			TagMappingDto mapping = result.getMapping();
-			TagMappingPresenter mappingPresenter = mappingPresenterProvider
-					.get();
-			mappingPresenter.bind(mapping);
-			display.getTagsPanel()
-					.add(mappingPresenter.getDisplay().asWidget());
+
+			if (!mapping.getState().equals(State.REMOVED)) {
+				TagMappingPresenter mappingPresenter = mappingPresenterProvider
+						.get();
+				mappingPresenter.bind(mapping);
+				display.getTagsPanel().add(
+						mappingPresenter.getDisplay().asWidget());
+			}
 		}
 	}
 }

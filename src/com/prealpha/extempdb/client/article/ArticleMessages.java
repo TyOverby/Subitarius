@@ -24,6 +24,4 @@ public interface ArticleMessages extends Messages {
 	String addMappingButton();
 
 	String submitMappingButton();
-
-	String mappingAlreadyExists();
 }

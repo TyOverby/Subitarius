@@ -51,18 +51,15 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 
 	private final SessionManager sessionManager;
 
-	private final ArticleMessages messages;
-
 	private ArticleDto article;
 
 	@Inject
 	public MappingInputPresenter(final Display display,
 			DispatcherAsync dispatcher, SessionManager sessionManager,
-			ArticleMessages messages, EventBus eventBus) {
+			EventBus eventBus) {
 		this.display = display;
 		this.dispatcher = dispatcher;
 		this.sessionManager = sessionManager;
-		this.messages = messages;
 
 		display.getAddButton().addClickHandler(new ClickHandler() {
 			@Override
@@ -116,15 +113,8 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 			dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 				@Override
 				public void onSuccess(MutationResult result) {
-					switch (result) {
-					case INVALID_REQUEST:
-						Window.alert(messages.mappingAlreadyExists());
-						break;
-					default:
-						// TODO: should be some better way to do this
-						Window.Location.reload();
-						break;
-					}
+					// TODO: should be some better way to do this
+					Window.Location.reload();
 				}
 			});
 		}
