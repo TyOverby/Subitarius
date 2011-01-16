@@ -1,6 +1,6 @@
 /*
  * MainModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -16,5 +16,6 @@ public class MainModule extends AbstractGinModule {
 	protected void configure() {
 		bind(MainPresenter.Display.class).to(MainWidget.class);
 		bind(LoginPresenter.Display.class).to(LoginWidget.class);
+		bind(PointsPresenter.Display.class).to(PointsWidget.class);
 	}
 }

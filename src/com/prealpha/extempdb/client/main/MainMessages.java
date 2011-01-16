@@ -1,6 +1,6 @@
 /*
  * MainMessages.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -30,4 +30,6 @@ public interface MainMessages extends Messages {
 	String usageHeading();
 
 	String usageText();
+
+	String pointsHeading();
 }

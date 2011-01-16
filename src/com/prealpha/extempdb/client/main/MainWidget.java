@@ -1,6 +1,6 @@
 /*
  * MainWidget.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -18,11 +18,19 @@ public class MainWidget extends Composite implements MainPresenter.Display {
 	}
 
 	@UiField
+	HasWidgets pointsPanel;
+
+	@UiField
 	HasWidgets loginPanel;
 
 	@Inject
 	public MainWidget(MainUiBinder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+
+	@Override
+	public HasWidgets getPointsPanel() {
+		return pointsPanel;
 	}
 
 	@Override

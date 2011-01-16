@@ -1,6 +1,6 @@
 /*
- * SettingsPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * MainPresenter.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -25,10 +25,14 @@ import com.prealpha.extempdb.client.event.SessionHandler;
 
 public class MainPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {
+		HasWidgets getPointsPanel();
+
 		HasWidgets getLoginPanel();
 	}
 
 	private final Display display;
+
+	private final PointsPresenter pointsPresenter;
 
 	private final LoginPresenter loginPresenter;
 
@@ -41,15 +45,18 @@ public class MainPresenter implements PlacePresenter {
 	private HandlerRegistration sessionRegistration;
 
 	@Inject
-	public MainPresenter(Display display, LoginPresenter loginPresenter,
-			SessionManager sessionManager, EventBus eventBus,
-			Scheduler scheduler) {
+	public MainPresenter(Display display, PointsPresenter pointsPresenter,
+			LoginPresenter loginPresenter, SessionManager sessionManager,
+			EventBus eventBus, Scheduler scheduler) {
 		this.display = display;
+		this.pointsPresenter = pointsPresenter;
 		this.loginPresenter = loginPresenter;
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
 		this.scheduler = scheduler;
 
+		Widget pointsWidget = pointsPresenter.getDisplay().asWidget();
+		display.getPointsPanel().add(pointsWidget);
 		Widget loginWidget = loginPresenter.getDisplay().asWidget();
 		display.getLoginPanel().add(loginWidget);
 	}
@@ -60,6 +67,7 @@ public class MainPresenter implements PlacePresenter {
 				new SessionHandler() {
 					@Override
 					public void sessionUpdated(SessionEvent event) {
+						pointsPresenter.bind(event.getSession());
 						loginPresenter.bind(event.getSession());
 					}
 				});
