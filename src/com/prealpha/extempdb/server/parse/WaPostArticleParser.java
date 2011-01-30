@@ -1,6 +1,6 @@
 /*
- * WaPostSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * WaPostArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -36,7 +36,7 @@ import com.prealpha.extempdb.server.util.XmlUtils;
 /*
  * TODO: some articles have "paragraphs" enclosed only by <b> tags...
  */
-class WaPostSourceParser extends AbstractSourceParser {
+class WaPostArticleParser extends AbstractArticleParser {
 	/*
 	 * Package visibility for unit testing.
 	 */
@@ -50,7 +50,7 @@ class WaPostSourceParser extends AbstractSourceParser {
 	private final DOMBuilder builder;
 
 	@Inject
-	public WaPostSourceParser(HttpClient httpClient, Tidy tidy,
+	public WaPostArticleParser(HttpClient httpClient, Tidy tidy,
 			DOMBuilder builder) {
 		this.httpClient = httpClient;
 		this.tidy = tidy;

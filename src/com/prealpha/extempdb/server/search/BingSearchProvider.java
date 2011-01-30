@@ -1,10 +1,12 @@
 /*
  * BingSearchProvider.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.search;
+
+import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +26,7 @@ import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class BingSearchProvider implements SearchProvider {
+final class BingSearchProvider implements SearchProvider {
 	/*
 	 * Package visibility for unit testing.
 	 */
@@ -45,15 +47,22 @@ class BingSearchProvider implements SearchProvider {
 	}
 
 	@Override
-	public List<String> search(Tag tag, Source source)
-			throws SearchUnavailableException {
+	public List<String> search(SearchQuery query) throws SearchUnavailableException {
+		return search(query, -1);
+	}
+	
+	@Override
+	public List<String> search(SearchQuery query, int limit) throws SearchUnavailableException {
+		checkNotNull(query);
+		checkArgument(limit != 0);
+		
 		List<String> urls = new ArrayList<String>();
 		int offset = 0;
 		BingSearch search;
 
 		do {
 			try {
-				search = doRequest(tag, source, offset);
+				search = doRequest(query.getSource(), query.getTag(), offset);
 				BingNews news = search.getSearchResponse().getNews();
 
 				if (news == null) {
@@ -67,9 +76,11 @@ class BingSearchProvider implements SearchProvider {
 				}
 
 				for (BingNewsResult result : results) {
-					// handle Bing's apiclick.aspx
-					String url = handleApiClick(result.getUrl());
-					urls.add(url);
+					if (limit < 0 || urls.size() < limit) {
+						// handle Bing's apiclick.aspx
+						String url = handleApiClick(result.getUrl());
+						urls.add(url);
+					}
 				}
 
 				offset += RESULT_COUNT;
@@ -78,16 +89,16 @@ class BingSearchProvider implements SearchProvider {
 			} catch (RobotsExclusionException rex) {
 				throw new SearchUnavailableException(rex);
 			}
-		} while (shouldContinue(search));
+		} while (!isComplete(search) && (limit < 0 || urls.size() < limit));
 
 		return urls;
 	}
 
-	private BingSearch doRequest(Tag tag, Source source, int offset)
+	private BingSearch doRequest(Source source, Tag tag, int offset)
 			throws IOException, RobotsExclusionException {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("AppId", APP_ID);
-		params.put("Query", getQuery(tag, source));
+		params.put("Query", getQuery(source, tag));
 		params.put("Sources", "News");
 		params.put("Version", "2.0");
 		params.put("News.Count", Integer.toString(RESULT_COUNT));
@@ -100,23 +111,19 @@ class BingSearchProvider implements SearchProvider {
 		return gson.fromJson(json, BingSearch.class);
 	}
 
-	private static String getQuery(Tag tag, Source source) {
+	private static String getQuery(Source source, Tag tag) {
 		String query = "site:";
 		query += source.getDomainName();
 		query += " " + tag.getName();
 		return query;
 	}
 
-	private static boolean shouldContinue(BingSearch search) {
+	private static boolean isComplete(BingSearch search) {
 		BingNews news = search.getSearchResponse().getNews();
 		int total = news.getTotal();
 		int offset = news.getOffset();
-
-		if ((offset + RESULT_COUNT) >= total) {
-			return false;
-		} else {
-			return true;
-		}
+		
+		return ((offset + RESULT_COUNT) >= total);
 	}
 
 	private static String handleApiClick(String url) {

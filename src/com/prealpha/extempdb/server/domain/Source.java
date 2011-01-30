@@ -1,6 +1,6 @@
 /*
  * Source.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.NaturalId;
 
-import com.prealpha.extempdb.server.parse.SourceParser;
+import com.prealpha.extempdb.server.parse.ArticleParser;
 
 @Entity
 public class Source {
@@ -23,7 +23,7 @@ public class Source {
 
 	private String displayName;
 
-	private Class<? extends SourceParser> parserClass;
+	private Class<? extends ArticleParser> parserClass;
 
 	public Source() {
 	}
@@ -60,11 +60,11 @@ public class Source {
 	}
 
 	@Column(unique = true, nullable = false)
-	public Class<? extends SourceParser> getParserClass() {
+	public Class<? extends ArticleParser> getParserClass() {
 		return parserClass;
 	}
 
-	public void setParserClass(Class<? extends SourceParser> parserClass) {
+	public void setParserClass(Class<? extends ArticleParser> parserClass) {
 		this.parserClass = parserClass;
 	}
 

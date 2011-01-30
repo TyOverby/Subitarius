@@ -1,6 +1,6 @@
 /*
  * SearcherServlet.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -15,8 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
+import com.prealpha.extempdb.server.search.Searcher;
 
-class SearcherServlet extends HttpServlet {
+final class SearcherServlet extends HttpServlet {
 	private final Searcher searcher;
 
 	@Inject

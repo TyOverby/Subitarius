@@ -1,6 +1,6 @@
 /*
- * NyTimesSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * NyTimesArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -29,7 +29,7 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
-class NyTimesSourceParser extends AbstractSourceParser {
+class NyTimesArticleParser extends AbstractArticleParser {
 	private static final String TYPE_KEY = "PST";
 
 	private static final String[] UNPARSEABLE_TYPES = { "Interactive",
@@ -53,7 +53,7 @@ class NyTimesSourceParser extends AbstractSourceParser {
 	private final DOMBuilder builder;
 
 	@Inject
-	public NyTimesSourceParser(HttpClient httpClient, Tidy tidy,
+	public NyTimesArticleParser(HttpClient httpClient, Tidy tidy,
 			DOMBuilder builder) {
 		this.httpClient = httpClient;
 		this.tidy = tidy;
