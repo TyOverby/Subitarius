@@ -1,6 +1,6 @@
 /*
  * TagInputBox.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -30,7 +30,6 @@ import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.TagName;
 
 /*
  * TODO: non-interface methods, and the quirks in this class
@@ -129,7 +128,7 @@ public class TagInputBox extends Composite implements HasValue<TagDto> {
 	private void fetchTag() {
 		setLoadingStatus(LoadingStatus.PENDING);
 		String name = nameBox.getValue();
-		GetTag action = new GetTag(new TagName(name));
+		GetTag action = new GetTag(name);
 		dispatcher.execute(action, new TagCallback(name));
 	}
 

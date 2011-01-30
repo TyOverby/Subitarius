@@ -1,6 +1,6 @@
 /*
  * ErrorPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -16,16 +16,21 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.ui.HasHTML;
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
 import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
+import com.prealpha.extempdb.shared.action.InvalidSessionException;
 
 public class ErrorPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {
+		HasText getMessageLabel();
+
 		HasHTML getStackTraceField();
 
 		HasClickHandlers getBackLink();
@@ -37,12 +42,15 @@ public class ErrorPresenter implements PlacePresenter {
 
 	private final Scheduler scheduler;
 
+	private final ErrorMessages messages;
+
 	@Inject
 	public ErrorPresenter(Display display, HistoryManager historyManager,
-			Scheduler scheduler) {
+			Scheduler scheduler, ErrorMessages messages) {
 		this.display = display;
 		this.historyManager = historyManager;
 		this.scheduler = scheduler;
+		this.messages = messages;
 
 		display.getBackLink().addClickHandler(new ClickHandler() {
 			@Override
@@ -57,15 +65,23 @@ public class ErrorPresenter implements PlacePresenter {
 		Throwable caught = ManagedCallback.getCaught();
 
 		if (caught == null) {
+			display.getMessageLabel().setText(null);
 			scheduler.scheduleDeferred(new ScheduledCommand() {
 				@Override
 				public void execute() {
 					historyManager.setAppState(new AppState(AppPlace.MAIN));
 				}
 			});
+		} else if (caught instanceof InvalidSessionException) {
+			display.getMessageLabel().setText(messages.invalidSession());
+		} else if (caught instanceof IncompatibleRemoteServiceException) {
+			display.getMessageLabel().setText(messages.incompatibleService());
 		} else {
-			String text = SafeHtmlUtils.htmlEscape(printStackTrace(caught));
-			display.getStackTraceField().setHTML("<pre>" + text + "</pre>");
+			display.getMessageLabel().setText(messages.exception());
+			String stackTrace = SafeHtmlUtils
+					.htmlEscape(printStackTrace(caught));
+			display.getStackTraceField().setHTML(
+					"<pre>" + stackTrace + "</pre>");
 		}
 	}
 

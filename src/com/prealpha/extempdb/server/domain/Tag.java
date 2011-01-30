@@ -1,6 +1,6 @@
 /*
  * Tag.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -52,6 +52,9 @@ public class Tag {
 		this.searched = searched;
 	}
 
+	/*
+	 * TODO: many to many isn't supported on App Engine
+	 */
 	@ManyToMany
 	@JoinTable
 	public Set<Tag> getParents() {

@@ -1,6 +1,6 @@
 /*
  * GetParagraphsHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,6 +8,8 @@ package com.prealpha.extempdb.server.action;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
@@ -17,30 +19,28 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.persistence.ArticleDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetParagraphs;
 import com.prealpha.extempdb.shared.action.GetParagraphsResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.wideplay.warp.persist.Transactional;
 
 class GetParagraphsHandler implements
 		ActionHandler<GetParagraphs, GetParagraphsResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final ArticleDao articleDao;
+	private final EntityManager entityManager;
 
 	@Inject
-	public GetParagraphsHandler(ArticleDao articleDao) {
-		this.articleDao = articleDao;
+	public GetParagraphsHandler(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 	@Transactional
 	@Override
 	public GetParagraphsResult execute(GetParagraphs action,
 			Dispatcher dispatcher) throws ActionException {
-		ArticleDto dto = action.getArticle();
-		Article article = articleDao.get(dto.getId());
+		Long articleId = action.getArticleId();
+		Article article = entityManager.find(Article.class, articleId);
 		List<String> paragraphs = new ArrayList<String>(article.getParagraphs());
 
 		log.info(

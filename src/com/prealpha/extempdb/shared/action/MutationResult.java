@@ -1,6 +1,6 @@
 /*
  * MutationResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -9,5 +9,5 @@ package com.prealpha.extempdb.shared.action;
 import com.prealpha.dispatch.shared.Result;
 
 public enum MutationResult implements Result {
-	SUCCESS, INVALID_REQUEST, INVALID_SESSION, PERMISSION_DENIED;
+	SUCCESS, INVALID_REQUEST, PERMISSION_DENIED;
 }

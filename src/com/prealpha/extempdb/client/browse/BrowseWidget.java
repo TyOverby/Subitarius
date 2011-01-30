@@ -1,6 +1,6 @@
 /*
  * BrowseWidget.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -32,8 +32,6 @@ import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
-import com.prealpha.extempdb.shared.id.TagMappingId;
-import com.prealpha.extempdb.shared.id.TagName;
 
 public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	public static interface BrowseUiBinder extends
@@ -76,14 +74,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 			@Override
 			public void onValueChange(ValueChangeEvent<TagDto> event) {
 				TagDto tag = event.getValue();
-				TagName tagName;
-
-				if (tag == null) {
-					tagName = null;
-				} else {
-					tagName = new TagName(tag.getName());
-				}
-
+				String tagName = (tag == null ? null : tag.getName());
 				BrowseState newState = BrowseState.getInstance(tagName,
 						browseState.getStates(), browseState.getSort(), 0);
 				setValue(newState, true);
@@ -139,12 +130,12 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 		BrowseState oldBrowseState = this.browseState;
 		this.browseState = browseState;
 
-		TagName tagName = browseState.getTagName();
+		String tagName = browseState.getTagName();
 		if (tagName == null) {
 			inputWidget.setValue(null);
-			tablePresenter.bind(Collections.<TagMappingId> emptyList());
+			tablePresenter.bind(Collections.<Long> emptyList());
 		} else {
-			GetTag tagAction = new GetTag(browseState.getTagName());
+			GetTag tagAction = new GetTag(tagName);
 			dispatcher.execute(tagAction, new ManagedCallback<GetTagResult>() {
 				@Override
 				public void onSuccess(GetTagResult result) {
@@ -154,13 +145,13 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 
 					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
 							browseState.getSort());
-					GetMappingsByTag mappingsAction = new GetMappingsByTag(tag,
-							browseState.getStates(), comparator);
+					GetMappingsByTag mappingsAction = new GetMappingsByTag(tag
+							.getName(), browseState.getStates(), comparator);
 					dispatcher.execute(mappingsAction,
 							new ManagedCallback<GetMappingsResult>() {
 								@Override
 								public void onSuccess(GetMappingsResult result) {
-									tablePresenter.bind(result.getIds());
+									tablePresenter.bind(result.getMappingIds());
 								}
 							});
 				}

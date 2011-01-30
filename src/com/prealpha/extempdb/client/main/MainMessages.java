@@ -23,6 +23,8 @@ public interface MainMessages extends Messages {
 
 	String logInTextInvalid();
 
+	String noCookies();
+
 	String aboutHeading();
 
 	String aboutText();

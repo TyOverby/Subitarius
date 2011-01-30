@@ -1,6 +1,6 @@
 /*
  * Source.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -10,8 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.NaturalId;
 
 import com.prealpha.extempdb.server.parse.SourceParser;
 
@@ -40,7 +38,6 @@ public class Source {
 		this.id = id;
 	}
 
-	@NaturalId
 	@Column(unique = true, nullable = false)
 	public String getDomainName() {
 		return domainName;

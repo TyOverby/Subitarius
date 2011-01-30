@@ -1,6 +1,6 @@
 /*
  * GetTag.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -10,13 +10,12 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.CacheableAction;
 import com.prealpha.dispatch.shared.MergeableAction;
-import com.prealpha.extempdb.shared.id.TagName;
 
 public class GetTag implements CacheableAction<GetTagResult>,
 		MergeableAction<GetTagResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 
-	private TagName name;
+	private String tagName;
 
 	private long cacheExpiry;
 
@@ -25,14 +24,14 @@ public class GetTag implements CacheableAction<GetTagResult>,
 	private GetTag() {
 	}
 
-	public GetTag(TagName name) {
-		checkNotNull(name);
-		this.name = name;
+	public GetTag(String tagName) {
+		checkNotNull(tagName);
+		this.tagName = tagName;
 		cacheExpiry = System.currentTimeMillis() + EXPIRY_TIME;
 	}
 
-	public TagName getName() {
-		return name;
+	public String getTagName() {
+		return tagName;
 	}
 
 	@Override
@@ -44,7 +43,7 @@ public class GetTag implements CacheableAction<GetTagResult>,
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
 		return result;
 	}
 
@@ -60,11 +59,11 @@ public class GetTag implements CacheableAction<GetTagResult>,
 			return false;
 		}
 		GetTag other = (GetTag) obj;
-		if (name == null) {
-			if (other.name != null) {
+		if (tagName == null) {
+			if (other.tagName != null) {
 				return false;
 			}
-		} else if (!name.equals(other.name)) {
+		} else if (!tagName.equals(other.tagName)) {
 			return false;
 		}
 		return true;

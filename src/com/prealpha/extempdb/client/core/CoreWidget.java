@@ -1,6 +1,6 @@
 /*
  * CoreWidget.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,8 +13,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.event.SessionEvent;
-import com.prealpha.extempdb.client.event.SessionHandler;
+import com.prealpha.extempdb.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.client.event.ActiveUserHandler;
 
 public class CoreWidget extends Composite {
 	public static interface CoreUiBinder extends UiBinder<Widget, CoreWidget> {
@@ -29,10 +29,10 @@ public class CoreWidget extends Composite {
 	@Inject
 	public CoreWidget(CoreUiBinder uiBinder,
 			final LoginStatusPresenter loginPresenter, EventBus eventBus) {
-		eventBus.addHandler(SessionEvent.getType(), new SessionHandler() {
+		eventBus.addHandler(ActiveUserEvent.getType(), new ActiveUserHandler() {
 			@Override
-			public void sessionUpdated(SessionEvent event) {
-				loginPresenter.bind(event.getSession());
+			public void activeUserChanged(ActiveUserEvent event) {
+				loginPresenter.bind(event.getUser());
 			}
 		});
 

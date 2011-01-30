@@ -1,6 +1,6 @@
 /*
  * BingSearchProviderTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -16,7 +16,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,8 +29,6 @@ import atunit.Unit;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.google.inject.Provider;
-import com.google.inject.util.Providers;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.http.HttpClient;
@@ -57,9 +54,6 @@ public class BingSearchProviderTest implements Module {
 
 	@Override
 	public void configure(Binder binder) {
-		Provider<Session> sessionProvider = Providers.of(null);
-		binder.bind(Session.class).toProvider(sessionProvider);
-
 		binder.install(new SearchModule());
 	}
 

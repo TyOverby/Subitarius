@@ -1,6 +1,6 @@
 /*
  * CoreManager.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -65,7 +65,7 @@ public final class CoreManager {
 		});
 
 		historyManager.fireCurrentState();
-		sessionManager.fireCurrentSession();
+		sessionManager.fireActiveUser();
 	}
 
 	private void handleAppState(final AppState appState) {

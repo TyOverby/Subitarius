@@ -1,6 +1,6 @@
 /*
  * GetMappingsByTagHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -9,6 +9,8 @@ package com.prealpha.extempdb.server.action;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -21,26 +23,23 @@ import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
-import com.prealpha.extempdb.server.persistence.TagDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
-import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.extempdb.shared.id.TagMappingId;
+import com.wideplay.warp.persist.Transactional;
 
 class GetMappingsByTagHandler implements
 		ActionHandler<GetMappingsByTag, GetMappingsResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final TagDao tagDao;
+	private final EntityManager entityManager;
 
 	private final Mapper mapper;
 
 	@Inject
-	public GetMappingsByTagHandler(TagDao tagDao, Mapper mapper) {
-		this.tagDao = tagDao;
+	public GetMappingsByTagHandler(EntityManager entityManager, Mapper mapper) {
+		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
@@ -48,8 +47,8 @@ class GetMappingsByTagHandler implements
 	@Override
 	public GetMappingsResult execute(GetMappingsByTag action,
 			Dispatcher dispatcher) throws ActionException {
-		TagDto tagDto = action.getTag();
-		Tag tag = tagDao.get(tagDto.getName());
+		String tagName = action.getTagName();
+		Tag tag = entityManager.find(Tag.class, tagName);
 		List<TagMappingDto> dtos = new ArrayList<TagMappingDto>();
 
 		for (TagMapping mapping : tag.getMappings()) {
@@ -60,16 +59,16 @@ class GetMappingsByTagHandler implements
 			Collections.sort(dtos, action.getComparator());
 		}
 
-		List<TagMappingId> ids = new ArrayList<TagMappingId>();
+		List<Long> mappingIds = new ArrayList<Long>();
 
 		for (TagMappingDto dto : Iterables.filter(dtos, action)) {
-			ids.add(new TagMappingId(dto.getId()));
+			mappingIds.add(dto.getId());
 		}
 
 		log.info(
 				"handled request for mappings to tag {}, returning {} mappings",
-				tag.getName(), ids.size());
+				tagName, mappingIds.size());
 
-		return new GetMappingsResult(ids);
+		return new GetMappingsResult(mappingIds);
 	}
 }

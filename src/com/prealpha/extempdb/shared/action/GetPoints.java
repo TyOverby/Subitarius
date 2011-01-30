@@ -6,8 +6,8 @@
 
 package com.prealpha.extempdb.shared.action;
 
-import com.prealpha.dispatch.shared.Action;
+import com.prealpha.dispatch.shared.MergeableAction;
 
-public enum GetPoints implements Action<GetPointsResult> {
+public enum GetPoints implements MergeableAction<GetPointsResult> {
 	INSTANCE;
 }

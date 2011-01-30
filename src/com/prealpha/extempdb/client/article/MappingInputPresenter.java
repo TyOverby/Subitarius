@@ -20,13 +20,12 @@ import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.SessionEvent;
-import com.prealpha.extempdb.client.event.SessionHandler;
+import com.prealpha.extempdb.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.client.event.ActiveUserHandler;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 public class MappingInputPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
@@ -75,10 +74,10 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 			}
 		});
 
-		eventBus.addHandler(SessionEvent.getType(), new SessionHandler() {
+		eventBus.addHandler(ActiveUserEvent.getType(), new ActiveUserHandler() {
 			@Override
-			public void sessionUpdated(SessionEvent event) {
-				if (event.getSession() == null) {
+			public void activeUserChanged(ActiveUserEvent event) {
+				if (event.getUser() == null) {
 					display.setDisplayState(DisplayState.NO_PERMISSION);
 				} else if (display.getDisplayState().equals(
 						DisplayState.NO_PERMISSION)) {
@@ -86,7 +85,7 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 				}
 			}
 		});
-		sessionManager.fireCurrentSession();
+		sessionManager.fireActiveUser();
 	}
 
 	@Override
@@ -108,8 +107,11 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 		TagDto tag = display.getMappingInput().getValue();
 
 		if (tag != null) {
-			UserSessionToken sessionToken = sessionManager.getSessionToken();
-			AddMapping action = new AddMapping(tag, article, sessionToken);
+			String sessionId = sessionManager.getSessionId();
+			String tagName = tag.getName();
+			Long articleId = article.getId();
+
+			AddMapping action = new AddMapping(sessionId, tagName, articleId);
 			dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 				@Override
 				public void onSuccess(MutationResult result) {

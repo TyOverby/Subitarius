@@ -1,6 +1,6 @@
 /*
  * GetTagSuggestionsResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,22 +13,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.id.TagName;
 
 public class GetTagSuggestionsResult implements Result {
-	private HashSet<TagName> suggestions;
+	private HashSet<String> suggestions;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetTagSuggestionsResult() {
 	}
 
-	public GetTagSuggestionsResult(Set<TagName> suggestions) {
+	public GetTagSuggestionsResult(Set<String> suggestions) {
 		checkNotNull(suggestions);
-		this.suggestions = new HashSet<TagName>(suggestions);
+		this.suggestions = new HashSet<String>(suggestions);
 	}
 
-	public Set<TagName> getSuggestions() {
+	public Set<String> getSuggestions() {
 		return Collections.unmodifiableSet(suggestions);
 	}
 }

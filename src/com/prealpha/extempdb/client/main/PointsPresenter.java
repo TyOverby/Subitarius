@@ -21,9 +21,8 @@ import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetPoints;
 import com.prealpha.extempdb.shared.action.GetPointsResult;
 import com.prealpha.extempdb.shared.dto.UserDto;
-import com.prealpha.extempdb.shared.dto.UserSessionDto;
 
-public class PointsPresenter implements Presenter<UserSessionDto> {
+public class PointsPresenter implements Presenter<UserDto> {
 	public static interface Display extends IsWidget {
 		boolean isVisible();
 
@@ -50,8 +49,8 @@ public class PointsPresenter implements Presenter<UserSessionDto> {
 	}
 
 	@Override
-	public void bind(UserSessionDto session) {
-		display.setVisible(session != null);
+	public void bind(UserDto user) {
+		display.setVisible(user != null);
 
 		if (display.isVisible()) {
 			GetPoints action = GetPoints.INSTANCE;

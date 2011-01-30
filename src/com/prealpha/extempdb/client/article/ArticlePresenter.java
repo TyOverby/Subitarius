@@ -1,6 +1,6 @@
 /*
  * ArticlePresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -20,7 +20,6 @@ import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetArticleResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.id.ArticleId;
 
 public class ArticlePresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {
@@ -54,8 +53,8 @@ public class ArticlePresenter implements PlacePresenter {
 		checkArgument(parameters.size() == 1);
 
 		try {
-			ArticleId id = new ArticleId(Long.parseLong(parameters.get(0)));
-			GetArticle action = new GetArticle(id);
+			Long articleId = Long.parseLong(parameters.get(0));
+			GetArticle action = new GetArticle(articleId);
 			dispatcher.execute(action, new ManagedCallback<GetArticleResult>() {
 				@Override
 				public void onSuccess(GetArticleResult result) {

@@ -11,7 +11,7 @@
 	<g:HTMLPanel addStyleNames="{res.style.contentSection}">
 		<g:VerticalPanel>
 			<g:Label addStyleNames="{res.style.heading}" text="{msg.heading}" />
-			<g:Label text="{msg.message}" />
+			<g:Label ui:field="messageLabel" />
 			<g:HTML ui:field="stackTraceField" />
 			<g:Anchor text="{msg.back}" href="javascript:" ui:field="backLink" />
 		</g:VerticalPanel>

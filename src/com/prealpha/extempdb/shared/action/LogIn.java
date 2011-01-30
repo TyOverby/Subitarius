@@ -1,6 +1,6 @@
 /*
  * LogIn.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,9 +8,9 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Action;
+public class LogIn implements AuthenticatedAction<GetUserResult> {
+	private String sessionId;
 
-public class LogIn implements Action<GetSessionResult> {
 	private String name;
 
 	private String password;
@@ -20,11 +20,18 @@ public class LogIn implements Action<GetSessionResult> {
 	private LogIn() {
 	}
 
-	public LogIn(String name, String password) {
+	public LogIn(String sessionId, String name, String password) {
+		checkNotNull(sessionId);
 		checkNotNull(name);
 		checkNotNull(password);
+		this.sessionId = sessionId;
 		this.name = name;
 		this.password = password;
+	}
+
+	@Override
+	public String getSessionId() {
+		return sessionId;
 	}
 
 	public String getName() {

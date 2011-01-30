@@ -1,6 +1,6 @@
 /*
  * GetMappingsByTag.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
-import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
@@ -22,7 +21,7 @@ public class GetMappingsByTag extends GetMappings {
 	private static final Set<State> ALL_STATES = ImmutableSet.copyOf(State
 			.values());
 
-	private TagDto tag;
+	private String tagName;
 
 	private HashSet<State> states;
 
@@ -33,31 +32,31 @@ public class GetMappingsByTag extends GetMappings {
 	private GetMappingsByTag() {
 	}
 
-	public GetMappingsByTag(TagDto tag) {
-		this(tag, ALL_STATES, null);
+	public GetMappingsByTag(String tagName) {
+		this(tagName, ALL_STATES, null);
 	}
 
-	public GetMappingsByTag(TagDto tag, Set<State> states) {
-		this(tag, states, null);
+	public GetMappingsByTag(String tagName, Set<State> states) {
+		this(tagName, states, null);
 	}
 
-	public GetMappingsByTag(TagDto tag,
+	public GetMappingsByTag(String tagName,
 			Comparator<? super TagMappingDto> comparator) {
-		this(tag, ALL_STATES, comparator);
+		this(tagName, ALL_STATES, comparator);
 	}
 
-	public GetMappingsByTag(TagDto tag, Set<State> states,
+	public GetMappingsByTag(String tagName, Set<State> states,
 			Comparator<? super TagMappingDto> comparator) {
-		checkNotNull(tag);
+		checkNotNull(tagName);
 		checkNotNull(states);
 		checkArgument(!states.contains(null));
-		this.tag = tag;
+		this.tagName = tagName;
 		this.states = new HashSet<State>(states);
 		this.comparator = comparator;
 	}
 
-	public TagDto getTag() {
-		return tag;
+	public String getTagName() {
+		return tagName;
 	}
 
 	public Set<State> getStates() {
@@ -70,7 +69,7 @@ public class GetMappingsByTag extends GetMappings {
 
 	@Override
 	public boolean apply(TagMappingDto mapping) {
-		if (!tag.equals(mapping.getTag())) {
+		if (!tagName.equals(mapping.getTag().getName())) {
 			return false;
 		} else if (!states.contains(mapping.getState())) {
 			return false;
@@ -86,7 +85,7 @@ public class GetMappingsByTag extends GetMappings {
 		result = prime * result
 				+ ((comparator == null) ? 0 : comparator.hashCode());
 		result = prime * result + ((states == null) ? 0 : states.hashCode());
-		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
+		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
 		return result;
 	}
 
@@ -116,11 +115,11 @@ public class GetMappingsByTag extends GetMappings {
 		} else if (!states.equals(other.states)) {
 			return false;
 		}
-		if (tag == null) {
-			if (other.tag != null) {
+		if (tagName == null) {
+			if (other.tagName != null) {
 				return false;
 			}
-		} else if (!tag.equals(other.tag)) {
+		} else if (!tagName.equals(other.tagName)) {
 			return false;
 		}
 		return true;

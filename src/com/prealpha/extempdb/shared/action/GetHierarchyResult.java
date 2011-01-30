@@ -1,6 +1,6 @@
 /*
  * GetHierarchyResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,22 +13,21 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SetMultimap;
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.id.TagName;
 
 public class GetHierarchyResult implements Result {
-	private HashMultimap<TagName, TagName> hierarchy;
+	private HashMultimap<String, String> hierarchy;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetHierarchyResult() {
 	}
 
-	public GetHierarchyResult(Multimap<TagName, TagName> hierarchy) {
+	public GetHierarchyResult(Multimap<String, String> hierarchy) {
 		checkNotNull(hierarchy);
 		this.hierarchy = HashMultimap.create(hierarchy);
 	}
 
-	public SetMultimap<TagName, TagName> getHierarchy() {
+	public SetMultimap<String, String> getHierarchy() {
 		return Multimaps.unmodifiableSetMultimap(hierarchy);
 	}
 }

@@ -9,6 +9,12 @@ package com.prealpha.extempdb.server.action;
 import java.util.Collections;
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -22,74 +28,57 @@ import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMapping.State;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
 import com.prealpha.extempdb.server.domain.User;
-import com.prealpha.extempdb.server.domain.UserSession;
-import com.prealpha.extempdb.server.persistence.ArticleDao;
-import com.prealpha.extempdb.server.persistence.TagDao;
-import com.prealpha.extempdb.server.persistence.TagMappingActionDao;
-import com.prealpha.extempdb.server.persistence.TagMappingDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
-import com.prealpha.extempdb.server.persistence.UserSessionDao;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
+import com.wideplay.warp.persist.Transactional;
 
 class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final TagDao tagDao;
+	private final EntityManager entityManager;
 
-	private final ArticleDao articleDao;
-
-	private final TagMappingDao tagMappingDao;
-
-	private final TagMappingActionDao tagMappingActionDao;
-
-	private final UserSessionDao userSessionDao;
+	private final HttpSession httpSession;
 
 	@Inject
-	public AddMappingHandler(TagDao tagDao, ArticleDao articleDao,
-			TagMappingDao tagMappingDao,
-			TagMappingActionDao tagMappingActionDao,
-			UserSessionDao userSessionDao) {
-		this.tagDao = tagDao;
-		this.articleDao = articleDao;
-		this.tagMappingDao = tagMappingDao;
-		this.tagMappingActionDao = tagMappingActionDao;
-		this.userSessionDao = userSessionDao;
+	public AddMappingHandler(EntityManager entityManager,
+			HttpSession httpSession) {
+		this.entityManager = entityManager;
+		this.httpSession = httpSession;
 	}
 
 	@Transactional
 	@Override
 	public MutationResult execute(AddMapping action, Dispatcher dispatcher)
 			throws ActionException {
-		UserSessionToken sessionToken = action.getSessionToken();
-		UserSession session = userSessionDao.validateSession(sessionToken);
+		User user = (User) httpSession.getAttribute("user");
+		String tagName = action.getTagName();
+		Long articleId = action.getArticleId();
 
-		TagDto tagDto = action.getTag();
-		ArticleDto articleDto = action.getArticle();
-
-		if (session == null) {
+		if (user == null) {
 			log.info(
-					"rejected attempt to map tag \"{}\" to article ID {} due to invalid session",
-					tagDto.getName(), articleDto.getId());
-			return MutationResult.INVALID_SESSION;
+					"denied permission to map tag \"{}\" to article ID {} (not logged in)",
+					tagName, articleId);
+			return MutationResult.PERMISSION_DENIED;
 		}
 
-		Tag tag = tagDao.get(tagDto.getName());
-		Article article = articleDao.get(articleDto.getId());
-		User user = session.getUser();
+		Tag tag = entityManager.find(Tag.class, tagName);
+		Article article = entityManager.find(Article.class, articleId);
 
-		TagMapping mapping = tagMappingDao.get(tag, article);
-		if (mapping == null) {
+		TagMapping mapping;
+
+		try {
+			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<TagMapping> criteria = TagMapping.getCriteria(tag,
+					article, builder);
+			mapping = entityManager.createQuery(criteria).getSingleResult();
+		} catch (NoResultException nrx) {
 			mapping = new TagMapping();
 			mapping.setTag(tag);
 			mapping.setArticle(article);
 			mapping.setAdded(new Date());
 			mapping.setActions(Collections.<TagMappingAction> emptyList());
-			tagMappingDao.save(mapping);
+			entityManager.persist(mapping);
 		}
 
 		if (!mapping.getState().equals(State.PATROLLED)) {
@@ -98,11 +87,11 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 			mappingAction.setType(TagMappingAction.Type.PATROL);
 			mappingAction.setUser(user);
 			mappingAction.setTimestamp(new Date());
-			tagMappingActionDao.save(mappingAction);
+			entityManager.persist(mappingAction);
 		}
 
 		log.info("user \"{}\" mapped tag \"{}\" to article ID {}",
-				new Object[] { user.getName(), tag.getName(), article.getId() });
+				new Object[] { user.getName(), tagName, articleId });
 		return MutationResult.SUCCESS;
 	}
 }

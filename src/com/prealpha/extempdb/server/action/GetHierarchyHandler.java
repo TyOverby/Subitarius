@@ -1,10 +1,17 @@
 /*
  * GetHierarchyHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.action;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 
@@ -16,38 +23,42 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.extempdb.server.persistence.TagDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetHierarchy;
 import com.prealpha.extempdb.shared.action.GetHierarchyResult;
-import com.prealpha.extempdb.shared.id.TagName;
+import com.wideplay.warp.persist.Transactional;
 
 class GetHierarchyHandler implements
 		ActionHandler<GetHierarchy, GetHierarchyResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final TagDao tagDao;
+	private final EntityManager entityManager;
 
 	@Inject
-	public GetHierarchyHandler(TagDao tagDao) {
-		this.tagDao = tagDao;
+	public GetHierarchyHandler(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 	@Transactional
 	@Override
 	public GetHierarchyResult execute(GetHierarchy action, Dispatcher dispatcher)
 			throws ActionException {
-		Multimap<TagName, TagName> hierarchy = HashMultimap.create();
+		Multimap<String, String> hierarchy = HashMultimap.create();
 
-		for (Tag tag : tagDao.getAll()) {
-			TagName name = new TagName(tag.getName());
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteria = builder.createQuery(Tag.class);
+		Root<Tag> tagRoot = criteria.from(Tag.class);
+		criteria.select(tagRoot);
+		criteria.distinct(true);
+		List<Tag> tags = entityManager.createQuery(criteria).getResultList();
 
+		for (Tag tag : tags) {
+			String name = tag.getName();
 			if (tag.getParents().isEmpty()) {
 				hierarchy.put(null, name);
 			} else {
 				for (Tag parent : tag.getParents()) {
-					TagName parentName = new TagName(parent.getName());
+					String parentName = parent.getName();
 					hierarchy.put(parentName, name);
 				}
 			}

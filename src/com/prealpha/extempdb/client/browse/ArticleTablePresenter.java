@@ -1,6 +1,6 @@
 /*
  * ArticleTablePresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -26,9 +26,8 @@ import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetMapping;
 import com.prealpha.extempdb.shared.action.GetMappingResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.id.TagMappingId;
 
-public class ArticleTablePresenter implements Presenter<List<TagMappingId>> {
+public class ArticleTablePresenter implements Presenter<List<Long>> {
 	public static interface Display extends IsWidget, HasValue<ArticleSort> {
 		HasData<ArticleDto> getDataDisplay();
 
@@ -41,7 +40,7 @@ public class ArticleTablePresenter implements Presenter<List<TagMappingId>> {
 
 	private final DispatcherAsync dispatcher;
 
-	private List<TagMappingId> ids = Collections.emptyList();
+	private List<Long> mappingIds = Collections.emptyList();
 
 	@Inject
 	public ArticleTablePresenter(Display display, DispatcherAsync dispatcher) {
@@ -63,10 +62,10 @@ public class ArticleTablePresenter implements Presenter<List<TagMappingId>> {
 	}
 
 	@Override
-	public void bind(List<TagMappingId> ids) {
-		this.ids = ids;
-		display.setVisible(ids.size() > 0);
-		display.getDataDisplay().setRowCount(ids.size(), true);
+	public void bind(List<Long> mappingIds) {
+		this.mappingIds = mappingIds;
+		display.setVisible(mappingIds.size() > 0);
+		display.getDataDisplay().setRowCount(mappingIds.size(), true);
 		updateData();
 	}
 
@@ -74,22 +73,22 @@ public class ArticleTablePresenter implements Presenter<List<TagMappingId>> {
 		Range range = display.getDataDisplay().getVisibleRange();
 		int start = range.getStart();
 		int length = range.getLength();
-		List<TagMappingId> subList;
+		List<Long> subList;
 
-		if (start >= ids.size()) {
+		if (start >= mappingIds.size()) {
 			subList = Collections.emptyList();
-		} else if (start + length > ids.size()) {
-			subList = ids.subList(start, ids.size());
+		} else if (start + length > mappingIds.size()) {
+			subList = mappingIds.subList(start, mappingIds.size());
 		} else {
-			subList = ids.subList(start, start + length);
+			subList = mappingIds.subList(start, start + length);
 		}
 
 		final PendingState pendingState = new PendingState(start,
 				subList.size());
 
-		for (TagMappingId id : subList) {
-			final int index = subList.indexOf(id);
-			GetMapping action = new GetMapping(id);
+		for (Long mappingId : subList) {
+			final int index = subList.indexOf(mappingId);
+			GetMapping action = new GetMapping(mappingId);
 			dispatcher.execute(action, new ManagedCallback<GetMappingResult>() {
 				@Override
 				public void onSuccess(GetMappingResult result) {

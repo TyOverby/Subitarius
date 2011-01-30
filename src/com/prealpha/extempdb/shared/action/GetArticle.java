@@ -1,6 +1,6 @@
 /*
  * GetArticle.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -10,13 +10,12 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.CacheableAction;
 import com.prealpha.dispatch.shared.MergeableAction;
-import com.prealpha.extempdb.shared.id.ArticleId;
 
 public class GetArticle implements CacheableAction<GetArticleResult>,
 		MergeableAction<GetArticleResult> {
 	private static final long EXPIRY_INTERVAL = 1000 * 60 * 60 * 24; // 24 hours
 
-	private ArticleId id;
+	private Long articleId;
 
 	private long cacheExpiry;
 
@@ -25,17 +24,17 @@ public class GetArticle implements CacheableAction<GetArticleResult>,
 	private GetArticle() {
 	}
 
-	public GetArticle(ArticleId id) {
-		checkNotNull(id);
-		this.id = id;
+	public GetArticle(Long articleId) {
+		checkNotNull(articleId);
+		this.articleId = articleId;
 
 		// we want the next midnight UTC after the current time
 		cacheExpiry = (System.currentTimeMillis() / EXPIRY_INTERVAL)
 				* EXPIRY_INTERVAL + EXPIRY_INTERVAL;
 	}
 
-	public ArticleId getId() {
-		return id;
+	public Long getArticleId() {
+		return articleId;
 	}
 
 	@Override
@@ -47,7 +46,8 @@ public class GetArticle implements CacheableAction<GetArticleResult>,
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((articleId == null) ? 0 : articleId.hashCode());
 		return result;
 	}
 
@@ -63,11 +63,11 @@ public class GetArticle implements CacheableAction<GetArticleResult>,
 			return false;
 		}
 		GetArticle other = (GetArticle) obj;
-		if (id == null) {
-			if (other.id != null) {
+		if (articleId == null) {
+			if (other.articleId != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		} else if (!articleId.equals(other.articleId)) {
 			return false;
 		}
 		return true;

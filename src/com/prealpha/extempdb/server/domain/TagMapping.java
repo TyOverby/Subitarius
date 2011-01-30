@@ -22,8 +22,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-
-import org.hibernate.annotations.NaturalId;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "tag_name",
@@ -31,6 +32,20 @@ import org.hibernate.annotations.NaturalId;
 public class TagMapping {
 	public static enum State {
 		PATROLLED, UNPATROLLED, REMOVED;
+	}
+
+	/*
+	 * TODO: this doesn't feel right
+	 */
+	public static CriteriaQuery<TagMapping> getCriteria(Tag tag,
+			Article article, CriteriaBuilder builder) {
+		CriteriaQuery<TagMapping> criteria = builder
+				.createQuery(TagMapping.class);
+		Root<TagMapping> tagMappingRoot = criteria.from(TagMapping.class);
+		criteria.where(builder.and(
+				builder.equal(tagMappingRoot.get(TagMapping_.tag), tag),
+				builder.equal(tagMappingRoot.get(TagMapping_.article), article)));
+		return criteria;
 	}
 
 	private Long id;
@@ -57,7 +72,6 @@ public class TagMapping {
 		this.id = id;
 	}
 
-	@NaturalId
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	public Tag getTag() {
@@ -68,7 +82,6 @@ public class TagMapping {
 		this.tag = tag;
 	}
 
-	@NaturalId
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	public Article getArticle() {

@@ -1,6 +1,6 @@
 /*
  * PasswordChangePresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -18,7 +18,6 @@ import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.ChangePassword;
 import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 /*
  * TODO: doesn't present anything
@@ -60,15 +59,14 @@ public class PasswordChangePresenter implements Presenter<Void> {
 					display.getStatusLabel()
 							.setText(messages.confirmMismatch());
 				} else {
-					UserSessionToken sessionToken = sessionManager
-							.getSessionToken();
+					String sessionId = sessionManager.getSessionId();
 
-					if (sessionToken == null) {
+					if (sessionId == null) {
 						display.getStatusLabel()
 								.setText(messages.notLoggedIn());
 					} else {
-						ChangePassword action = new ChangePassword(
-								sessionToken, currentPassword, newPassword);
+						ChangePassword action = new ChangePassword(sessionId,
+								currentPassword, newPassword);
 						dispatcher
 								.execute(action, new PasswordChangeCallback());
 					}
@@ -98,9 +96,6 @@ public class PasswordChangePresenter implements Presenter<Void> {
 				break;
 			case INVALID_REQUEST:
 				statusMessage = messages.changeInvalid();
-				break;
-			case INVALID_SESSION:
-				statusMessage = messages.notLoggedIn();
 				break;
 			case PERMISSION_DENIED:
 				statusMessage = messages.changeDenied();

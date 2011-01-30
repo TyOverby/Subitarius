@@ -1,10 +1,12 @@
 /*
  * GetArticleHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.action;
+
+import javax.persistence.EntityManager;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -15,24 +17,22 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.persistence.ArticleDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetArticleResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.id.ArticleId;
+import com.wideplay.warp.persist.Transactional;
 
 class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final ArticleDao articleDao;
+	private final EntityManager entityManager;
 
 	private final Mapper mapper;
 
 	@Inject
-	public GetArticleHandler(ArticleDao articleDao, Mapper mapper) {
-		this.articleDao = articleDao;
+	public GetArticleHandler(EntityManager entityManager, Mapper mapper) {
+		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
@@ -40,15 +40,15 @@ class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
 	@Override
 	public GetArticleResult execute(GetArticle action, Dispatcher dispatcher)
 			throws ActionException {
-		ArticleId id = action.getId();
-		Article article = articleDao.get(id.getId());
+		Long articleId = action.getArticleId();
+		Article article = entityManager.find(Article.class, articleId);
 
 		if (article == null) {
 			log.info("handled request for non-existent article, ID {}",
-					id.getId());
+					articleId);
 			return new GetArticleResult(null);
 		} else {
-			log.info("handled request for article, ID {}", id.getId());
+			log.info("handled request for article, ID {}", articleId);
 			ArticleDto dto = mapper.map(article, ArticleDto.class);
 			return new GetArticleResult(dto);
 		}

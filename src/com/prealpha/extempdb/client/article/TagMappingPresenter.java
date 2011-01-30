@@ -18,15 +18,14 @@ import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.SessionEvent;
-import com.prealpha.extempdb.client.event.SessionHandler;
+import com.prealpha.extempdb.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.client.event.ActiveUserHandler;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
-import com.prealpha.extempdb.shared.dto.UserSessionDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
+import com.prealpha.extempdb.shared.dto.UserDto;
 
 public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	public static interface Display extends IsWidget {
@@ -54,10 +53,10 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 		this.dispatcher = dispatcher;
 		this.sessionManager = sessionManager;
 
-		eventBus.addHandler(SessionEvent.getType(), new SessionHandler() {
+		eventBus.addHandler(ActiveUserEvent.getType(), new ActiveUserHandler() {
 			@Override
-			public void sessionUpdated(SessionEvent event) {
-				updateState(event.getSession());
+			public void activeUserChanged(ActiveUserEvent event) {
+				updateState(event.getUser());
 			}
 		});
 
@@ -86,16 +85,16 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 		this.mapping = mapping;
 		display.getMappingLabel().setText(mapping.getTag().getName());
 
-		sessionManager.getSession(new ManagedCallback<UserSessionDto>() {
+		sessionManager.getActiveUser(new ManagedCallback<UserDto>() {
 			@Override
-			public void onSuccess(UserSessionDto session) {
-				updateState(session);
+			public void onSuccess(UserDto user) {
+				updateState(user);
 			}
 		});
 	}
 
-	private void updateState(UserSessionDto session) {
-		if (session == null) {
+	private void updateState(UserDto user) {
+		if (user == null) {
 			display.setMappingState(null);
 		} else {
 			display.setMappingState(mapping.getState());
@@ -103,9 +102,11 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	}
 
 	private void updateMapping(Type type) {
-		UserSessionToken sessionToken = sessionManager.getSessionToken();
-		AddMappingAction action = new AddMappingAction(mapping, type,
-				sessionToken);
+		String sessionId = sessionManager.getSessionId();
+		Long mappingId = mapping.getId();
+
+		AddMappingAction action = new AddMappingAction(sessionId, mappingId,
+				type);
 		dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 			@Override
 			public void onSuccess(MutationResult result) {

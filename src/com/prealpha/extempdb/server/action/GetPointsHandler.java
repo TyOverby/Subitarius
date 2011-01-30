@@ -7,7 +7,13 @@
 package com.prealpha.extempdb.server.action;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -19,24 +25,24 @@ import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
+import com.prealpha.extempdb.server.domain.TagMapping_;
 import com.prealpha.extempdb.server.domain.User;
-import com.prealpha.extempdb.server.persistence.TagMappingDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetPoints;
 import com.prealpha.extempdb.shared.action.GetPointsResult;
 import com.prealpha.extempdb.shared.dto.UserDto;
+import com.wideplay.warp.persist.Transactional;
 
 class GetPointsHandler implements ActionHandler<GetPoints, GetPointsResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final TagMappingDao tagMappingDao;
+	private final EntityManager entityManager;
 
 	private final Mapper mapper;
 
 	@Inject
-	public GetPointsHandler(TagMappingDao tagMappingDao, Mapper mapper) {
-		this.tagMappingDao = tagMappingDao;
+	public GetPointsHandler(EntityManager entityManager, Mapper mapper) {
+		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
@@ -46,7 +52,16 @@ class GetPointsHandler implements ActionHandler<GetPoints, GetPointsResult> {
 			throws ActionException {
 		Map<User, Integer> points = new HashMap<User, Integer>();
 
-		for (TagMapping mapping : tagMappingDao.getAllModified()) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<TagMapping> criteria = builder
+				.createQuery(TagMapping.class);
+		Root<TagMapping> tagMappingRoot = criteria.from(TagMapping.class);
+		criteria.where(builder.isNotEmpty(tagMappingRoot
+				.get(TagMapping_.actions)));
+		List<TagMapping> mappings = entityManager.createQuery(criteria)
+				.getResultList();
+
+		for (TagMapping mapping : mappings) {
 			TagMappingAction lastAction = mapping.getLastAction();
 			User user = lastAction.getUser();
 

@@ -1,6 +1,6 @@
 /*
  * ChangePassword.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,11 +8,8 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Action;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
-
-public class ChangePassword implements Action<MutationResult> {
-	private UserSessionToken sessionToken;
+public class ChangePassword implements AuthenticatedAction<MutationResult> {
+	private String sessionId;
 
 	private String currentPassword;
 
@@ -23,18 +20,19 @@ public class ChangePassword implements Action<MutationResult> {
 	private ChangePassword() {
 	}
 
-	public ChangePassword(UserSessionToken sessionToken,
-			String currentPassword, String newPassword) {
-		checkNotNull(sessionToken);
+	public ChangePassword(String sessionId, String currentPassword,
+			String newPassword) {
+		checkNotNull(sessionId);
 		checkNotNull(currentPassword);
 		checkNotNull(newPassword);
-		this.sessionToken = sessionToken;
+		this.sessionId = sessionId;
 		this.currentPassword = currentPassword;
 		this.newPassword = newPassword;
 	}
 
-	public UserSessionToken getSessionToken() {
-		return sessionToken;
+	@Override
+	public String getSessionId() {
+		return sessionId;
 	}
 
 	public String getCurrentPassword() {

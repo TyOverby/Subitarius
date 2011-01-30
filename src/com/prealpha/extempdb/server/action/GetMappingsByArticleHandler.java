@@ -1,6 +1,6 @@
 /*
  * GetMappingsByArticleHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,6 +8,8 @@ package com.prealpha.extempdb.server.action;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -20,26 +22,24 @@ import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.TagMapping;
-import com.prealpha.extempdb.server.persistence.ArticleDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
 import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.extempdb.shared.id.TagMappingId;
+import com.wideplay.warp.persist.Transactional;
 
 class GetMappingsByArticleHandler implements
 		ActionHandler<GetMappingsByArticle, GetMappingsResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final ArticleDao articleDao;
+	private final EntityManager entityManager;
 
 	private final Mapper mapper;
 
 	@Inject
-	public GetMappingsByArticleHandler(ArticleDao articleDao, Mapper mapper) {
-		this.articleDao = articleDao;
+	public GetMappingsByArticleHandler(EntityManager entityManager,
+			Mapper mapper) {
+		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
@@ -47,24 +47,24 @@ class GetMappingsByArticleHandler implements
 	@Override
 	public GetMappingsResult execute(GetMappingsByArticle action,
 			Dispatcher dispatcher) throws ActionException {
-		ArticleDto articleDto = action.getArticle();
-		Article article = articleDao.get(articleDto.getId());
+		Long articleId = action.getArticleId();
+		Article article = entityManager.find(Article.class, articleId);
 		List<TagMappingDto> dtos = new ArrayList<TagMappingDto>();
 
 		for (TagMapping mapping : article.getMappings()) {
 			dtos.add(mapper.map(mapping, TagMappingDto.class));
 		}
 
-		List<TagMappingId> ids = new ArrayList<TagMappingId>();
+		List<Long> mappingIds = new ArrayList<Long>();
 
 		for (TagMappingDto dto : Iterables.filter(dtos, action)) {
-			ids.add(new TagMappingId(dto.getId()));
+			mappingIds.add(dto.getId());
 		}
 
 		log.info(
 				"handled request for mappings to article ID {}, returning {} mappings",
-				article.getId(), ids.size());
+				articleId, mappingIds.size());
 
-		return new GetMappingsResult(ids);
+		return new GetMappingsResult(mappingIds);
 	}
 }

@@ -1,6 +1,6 @@
 /*
  * Article.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -21,8 +21,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.NaturalId;
 
 @Entity
 public class Article {
@@ -96,7 +94,6 @@ public class Article {
 		this.retrievalDate = retrievalDate;
 	}
 
-	@NaturalId
 	@Column(unique = true, nullable = false)
 	public String getUrl() {
 		return url;

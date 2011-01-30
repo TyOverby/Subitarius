@@ -10,6 +10,9 @@ import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
 import com.google.inject.Singleton;
+import com.google.inject.matcher.Matcher;
+import com.google.inject.matcher.Matchers;
+import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.server.ActionHandlerModule;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
@@ -21,10 +24,11 @@ import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.shared.action.GetParagraphs;
 import com.prealpha.extempdb.shared.action.GetPoints;
-import com.prealpha.extempdb.shared.action.GetSession;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
+import com.prealpha.extempdb.shared.action.GetUser;
 import com.prealpha.extempdb.shared.action.LogIn;
+import com.prealpha.extempdb.shared.action.LogOut;
 import com.prealpha.extempdb.shared.action.UpdateTag;
 
 public class ActionModule extends ActionHandlerModule {
@@ -46,10 +50,19 @@ public class ActionModule extends ActionHandlerModule {
 		bindHandler(GetMappingsByTag.class, GetMappingsByTagHandler.class);
 		bindHandler(GetParagraphs.class, GetParagraphsHandler.class);
 		bindHandler(GetPoints.class, GetPointsHandler.class);
-		bindHandler(GetSession.class, GetSessionHandler.class);
 		bindHandler(GetTag.class, GetTagHandler.class);
 		bindHandler(GetTagSuggestions.class, GetTagSuggestionsHandler.class);
+		bindHandler(GetUser.class, GetUserHandler.class);
 		bindHandler(LogIn.class, LogInHandler.class);
+		bindHandler(LogOut.class, LogOutHandler.class);
 		bindHandler(UpdateTag.class, UpdateTagHandler.class);
+
+		@SuppressWarnings("rawtypes")
+		Matcher<Class> classMatcher = Matchers.inPackage(
+				getClass().getPackage()).and(
+				Matchers.subclassesOf(ActionHandler.class));
+		SessionValidator interceptor = new SessionValidator();
+		requestInjection(interceptor);
+		bindInterceptor(classMatcher, Matchers.any(), interceptor);
 	}
 }

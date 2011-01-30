@@ -1,6 +1,6 @@
 /*
  * GetMapping.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -10,13 +10,12 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.CacheableAction;
 import com.prealpha.dispatch.shared.MergeableAction;
-import com.prealpha.extempdb.shared.id.TagMappingId;
 
 public class GetMapping implements CacheableAction<GetMappingResult>,
 		MergeableAction<GetMappingResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 
-	private TagMappingId id;
+	private Long mappingId;
 
 	private long cacheExpiry;
 
@@ -25,14 +24,14 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 	private GetMapping() {
 	}
 
-	public GetMapping(TagMappingId id) {
-		checkNotNull(id);
-		this.id = id;
+	public GetMapping(Long mappingId) {
+		checkNotNull(mappingId);
+		this.mappingId = mappingId;
 		cacheExpiry = System.currentTimeMillis() + EXPIRY_TIME;
 	}
 
-	public TagMappingId getId() {
-		return id;
+	public Long getMappingId() {
+		return mappingId;
 	}
 
 	@Override
@@ -44,7 +43,8 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result
+				+ ((mappingId == null) ? 0 : mappingId.hashCode());
 		return result;
 	}
 
@@ -60,11 +60,11 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 			return false;
 		}
 		GetMapping other = (GetMapping) obj;
-		if (id == null) {
-			if (other.id != null) {
+		if (mappingId == null) {
+			if (other.mappingId != null) {
 				return false;
 			}
-		} else if (!id.equals(other.id)) {
+		} else if (!mappingId.equals(other.mappingId)) {
 			return false;
 		}
 		return true;

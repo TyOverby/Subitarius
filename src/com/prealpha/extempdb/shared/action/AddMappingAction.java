@@ -8,43 +8,40 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Action;
 import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
 
-public class AddMappingAction implements Action<MutationResult> {
-	private TagMappingDto mapping;
+public class AddMappingAction implements AuthenticatedAction<MutationResult> {
+	private String sessionId;
+
+	private Long mappingId;
 
 	private Type type;
-
-	private UserSessionToken sessionToken;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private AddMappingAction() {
 	}
 
-	public AddMappingAction(TagMappingDto mapping, Type type,
-			UserSessionToken sessionToken) {
-		checkNotNull(mapping);
+	public AddMappingAction(String sessionId, Long mappingId, Type type) {
+		checkNotNull(sessionId);
+		checkNotNull(mappingId);
 		checkNotNull(type);
-		checkNotNull(sessionToken);
 
-		this.mapping = mapping;
+		this.sessionId = sessionId;
+		this.mappingId = mappingId;
 		this.type = type;
-		this.sessionToken = sessionToken;
 	}
 
-	public TagMappingDto getMapping() {
-		return mapping;
+	@Override
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public Long getMappingId() {
+		return mappingId;
 	}
 
 	public Type getType() {
 		return type;
-	}
-
-	public UserSessionToken getSessionToken() {
-		return sessionToken;
 	}
 }

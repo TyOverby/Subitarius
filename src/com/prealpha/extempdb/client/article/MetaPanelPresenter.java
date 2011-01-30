@@ -22,7 +22,6 @@ import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
-import com.prealpha.extempdb.shared.id.TagMappingId;
 
 /*
  * TODO: relies on DateTimeFormat, so would require GwtTestCase to unit test
@@ -81,15 +80,15 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 
 		mappingInputPresenter.bind(article);
 
-		GetMappingsByArticle action = new GetMappingsByArticle(article);
+		GetMappingsByArticle action = new GetMappingsByArticle(article.getId());
 		dispatcher.execute(action, new MappingsCallback());
 	}
 
 	private class MappingsCallback extends ManagedCallback<GetMappingsResult> {
 		@Override
 		public void onSuccess(GetMappingsResult result) {
-			for (TagMappingId id : result.getIds()) {
-				GetMapping action = new GetMapping(id);
+			for (Long mappingId : result.getMappingIds()) {
+				GetMapping action = new GetMapping(mappingId);
 				dispatcher.execute(action, new MappingCallback());
 			}
 		}

@@ -1,6 +1,6 @@
 /*
  * BrowseState.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -16,10 +16,9 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
-import com.prealpha.extempdb.shared.id.TagName;
 
 final class BrowseState {
-	public static BrowseState getInstance(TagName tagName, Set<State> states,
+	public static BrowseState getInstance(String tagName, Set<State> states,
 			ArticleSort sort, int pageStart) {
 		states = new HashSet<State>(states);
 		return new BrowseState(tagName, states, sort, pageStart);
@@ -48,7 +47,7 @@ final class BrowseState {
 		checkArgument(parameters.size() <= 4);
 
 		// initialize all values to defaults
-		TagName tagName = null;
+		String tagName = null;
 		Set<State> states = ImmutableSet.of(State.PATROLLED, State.UNPATROLLED);
 		ArticleSort sort = ArticleSort.DEFAULT_SORT;
 		int pageStart = 0;
@@ -66,13 +65,13 @@ final class BrowseState {
 		case 2:
 			states = deserializeStates(parameters.get(1));
 		case 1:
-			tagName = new TagName(parameters.get(0));
+			tagName = parameters.get(0);
 		}
 
 		return new BrowseState(tagName, states, sort, pageStart);
 	}
 
-	private final TagName tagName;
+	private final String tagName;
 
 	private final Set<State> states;
 
@@ -80,7 +79,7 @@ final class BrowseState {
 
 	private final int pageStart;
 
-	private BrowseState(TagName tagName, Set<State> states, ArticleSort sort,
+	private BrowseState(String tagName, Set<State> states, ArticleSort sort,
 			int pageStart) {
 		checkNotNull(states);
 		checkNotNull(sort);
@@ -93,7 +92,7 @@ final class BrowseState {
 		this.pageStart = pageStart;
 	}
 
-	public TagName getTagName() {
+	public String getTagName() {
 		return tagName;
 	}
 

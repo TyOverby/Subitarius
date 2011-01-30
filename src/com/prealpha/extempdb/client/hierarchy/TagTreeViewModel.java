@@ -1,6 +1,6 @@
 /*
  * TagTreeViewModel.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -23,7 +23,6 @@ import com.google.inject.Provider;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.TagName;
 
 public class TagTreeViewModel implements TreeViewModel {
 	private static final ProvidesKey<TagDto> PROVIDES_KEY = new ProvidesKey<TagDto>() {
@@ -118,7 +117,6 @@ public class TagTreeViewModel implements TreeViewModel {
 	@Override
 	public boolean isLeaf(Object value) {
 		TagDto tag = (TagDto) value;
-		TagName tagName = new TagName(tag.getName());
-		return ChildTagDataProvider.isKnownLeaf(tagName);
+		return ChildTagDataProvider.isKnownLeaf(tag.getName());
 	}
 }

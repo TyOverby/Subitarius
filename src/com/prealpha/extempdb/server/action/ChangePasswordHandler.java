@@ -1,10 +1,13 @@
 /*
  * ChangePasswordHandler.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.action;
+
+import javax.persistence.EntityManager;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 
@@ -14,14 +17,10 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.User;
-import com.prealpha.extempdb.server.domain.UserSession;
-import com.prealpha.extempdb.server.persistence.Transactional;
-import com.prealpha.extempdb.server.persistence.UserDao;
-import com.prealpha.extempdb.server.persistence.UserSessionDao;
 import com.prealpha.extempdb.server.util.BCrypt;
 import com.prealpha.extempdb.shared.action.ChangePassword;
 import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
+import com.wideplay.warp.persist.Transactional;
 
 class ChangePasswordHandler implements
 		ActionHandler<ChangePassword, MutationResult> {
@@ -30,26 +29,26 @@ class ChangePasswordHandler implements
 	@InjectLogger
 	private Logger log;
 
-	private final UserDao userDao;
+	private final EntityManager entityManager;
 
-	private final UserSessionDao userSessionDao;
+	private final HttpSession httpSession;
 
 	@Inject
-	public ChangePasswordHandler(UserDao userDao, UserSessionDao userSessionDao) {
-		this.userDao = userDao;
-		this.userSessionDao = userSessionDao;
+	public ChangePasswordHandler(EntityManager entityManager,
+			HttpSession httpSession) {
+		this.entityManager = entityManager;
+		this.httpSession = httpSession;
 	}
 
 	@Transactional
 	@Override
 	public MutationResult execute(ChangePassword action, Dispatcher dispatcher)
 			throws ActionException {
-		UserSessionToken sessionToken = action.getSessionToken();
-		UserSession session = userSessionDao.validateSession(sessionToken);
+		User user = (User) httpSession.getAttribute("user");
 
-		if (session == null) {
-			log.info("rejected a password change attempt due to invalid session token");
-			return MutationResult.INVALID_SESSION;
+		if (user == null) {
+			log.info("denied permission to change passwords (not logged in)");
+			return MutationResult.PERMISSION_DENIED;
 		}
 
 		String currentPassword = action.getCurrentPassword();
@@ -60,14 +59,13 @@ class ChangePasswordHandler implements
 			return MutationResult.INVALID_REQUEST;
 		}
 
-		User user = session.getUser();
 		String currentHash = user.getHash();
 
 		if (BCrypt.checkpw(currentPassword, currentHash)) {
 			String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
 			String newHash = BCrypt.hashpw(newPassword, salt);
 			user.setHash(newHash);
-			userDao.save(user);
+			entityManager.persist(user);
 
 			log.info("changed password for user \"{}\" on request",
 					user.getName());

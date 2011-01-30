@@ -1,6 +1,6 @@
 /*
  * TagManagerPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -28,7 +28,6 @@ import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.action.UpdateTag;
 import com.prealpha.extempdb.shared.action.UpdateTag.UpdateType;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
 
 /*
  * TODO: doesn't present anything
@@ -163,8 +162,8 @@ public class TagManagerPresenter implements Presenter<Void> {
 		// workaround for serialization issue
 		tag.setParents(new HashSet<TagDto>(tag.getParents()));
 
-		UserSessionToken token = sessionManager.getSessionToken();
-		UpdateTag action = new UpdateTag(tag, updateType, token);
+		String sessionId = sessionManager.getSessionId();
+		UpdateTag action = new UpdateTag(sessionId, tag, updateType);
 		dispatcher.execute(action, new UpdateCallback());
 
 		display.getErrorLabel().setText(null);

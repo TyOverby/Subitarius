@@ -1,6 +1,6 @@
 /*
  * XmlTagInput.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -23,13 +25,15 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.extempdb.server.persistence.PersistenceModule;
-import com.prealpha.extempdb.server.persistence.TagDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
+import com.wideplay.warp.persist.PersistenceService;
+import com.wideplay.warp.persist.Transactional;
+import com.wideplay.warp.persist.UnitOfWork;
 
-class XmlTagInput {
+final class XmlTagInput {
 	public static void main(String[] args) throws IOException, JDOMException {
-		Injector injector = Guice.createInjector(new PersistenceModule());
+		Injector injector = Guice.createInjector(PersistenceService.usingJpa()
+				.across(UnitOfWork.REQUEST).buildModule(),
+				new ExtempDbServerModule());
 		XmlTagInput tagInput = injector.getInstance(XmlTagInput.class);
 		InputStream stream = new FileInputStream(args[0]);
 		tagInput.input(stream);
@@ -37,13 +41,13 @@ class XmlTagInput {
 
 	private final SAXBuilder builder;
 
-	private final TagDao tagDao;
+	private final EntityManager entityManager;
 
 	private final Map<String, Tag> tags;
 
 	@Inject
-	public XmlTagInput(SAXBuilder builder, TagDao tagDao) {
-		this.tagDao = tagDao;
+	public XmlTagInput(SAXBuilder builder, EntityManager entityManager) {
+		this.entityManager = entityManager;
 		this.builder = builder;
 		tags = new HashMap<String, Tag>();
 	}
@@ -52,7 +56,7 @@ class XmlTagInput {
 	public void input(InputStream stream) throws IOException, JDOMException {
 		Document document = builder.build(stream);
 		Tag tag = parseElement(document.getRootElement());
-		tagDao.save(tag);
+		entityManager.persist(tag);
 	}
 
 	private Tag parseElement(Element element) {
@@ -81,7 +85,7 @@ class XmlTagInput {
 			tag.setSearched(searched);
 			tag.setChildren(children);
 
-			tagDao.save(tag);
+			entityManager.persist(tag);
 			tags.put(name, tag);
 		}
 

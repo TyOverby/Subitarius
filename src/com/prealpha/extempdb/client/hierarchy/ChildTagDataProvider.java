@@ -1,6 +1,6 @@
 /*
  * ChildTagDataProvider.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -23,12 +23,11 @@ import com.prealpha.extempdb.shared.action.GetHierarchyResult;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.TagName;
 
 public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
-	private static SetMultimap<TagName, TagName> hierarchy;
+	private static SetMultimap<String, String> hierarchy;
 
-	public static boolean isKnownLeaf(TagName tagName) {
+	public static boolean isKnownLeaf(String tagName) {
 		if (hierarchy == null) {
 			return false;
 		} else if (!hierarchy.containsKey(tagName)) {
@@ -73,21 +72,20 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 					@Override
 					public void onSuccess(GetHierarchyResult result) {
 						hierarchy = result.getHierarchy();
-						Set<TagName> children;
+						Set<String> children;
 
 						if (parent == null) {
 							children = hierarchy.get(null);
 						} else {
-							children = hierarchy.get(new TagName(parent
-									.getName()));
+							children = hierarchy.get(parent.getName());
 						}
 
 						display.setRowCount(children.size());
 						final PendingState pending = new PendingState(display,
 								children.size());
 
-						for (TagName name : children) {
-							GetTag action = new GetTag(name);
+						for (String tagName : children) {
+							GetTag action = new GetTag(tagName);
 							dispatcher.execute(action,
 									new ManagedCallback<GetTagResult>() {
 										@Override

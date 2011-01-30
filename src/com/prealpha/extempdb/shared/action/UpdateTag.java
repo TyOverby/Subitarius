@@ -8,35 +8,37 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Action;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
 
-public class UpdateTag implements Action<MutationResult> {
+public class UpdateTag implements AuthenticatedAction<MutationResult> {
 	public static enum UpdateType {
 		SAVE, DELETE;
 	}
 
+	private String sessionId;
+
 	private TagDto tag;
 
 	private UpdateType updateType;
-
-	private UserSessionToken sessionToken;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private UpdateTag() {
 	}
 
-	public UpdateTag(TagDto tag, UpdateType updateType,
-			UserSessionToken sessionToken) {
+	public UpdateTag(String sessionId, TagDto tag, UpdateType updateType) {
+		checkNotNull(sessionId);
 		checkNotNull(tag);
 		checkNotNull(updateType);
-		checkNotNull(sessionToken);
 
+		this.sessionId = sessionId;
 		this.tag = tag;
 		this.updateType = updateType;
-		this.sessionToken = sessionToken;
+	}
+
+	@Override
+	public String getSessionId() {
+		return sessionId;
 	}
 
 	public TagDto getTag() {
@@ -45,9 +47,5 @@ public class UpdateTag implements Action<MutationResult> {
 
 	public UpdateType getUpdateType() {
 		return updateType;
-	}
-
-	public UserSessionToken getSessionToken() {
-		return sessionToken;
 	}
 }

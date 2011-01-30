@@ -8,6 +8,9 @@ package com.prealpha.extempdb.server.action;
 
 import java.util.Date;
 
+import javax.persistence.EntityManager;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -18,62 +21,51 @@ import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
 import com.prealpha.extempdb.server.domain.TagMappingAction.Type;
-import com.prealpha.extempdb.server.domain.UserSession;
-import com.prealpha.extempdb.server.persistence.TagMappingActionDao;
-import com.prealpha.extempdb.server.persistence.TagMappingDao;
-import com.prealpha.extempdb.server.persistence.Transactional;
-import com.prealpha.extempdb.server.persistence.UserSessionDao;
+import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.extempdb.shared.id.UserSessionToken;
+import com.wideplay.warp.persist.Transactional;
 
 class AddMappingActionHandler implements
 		ActionHandler<AddMappingAction, MutationResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final UserSessionDao userSessionDao;
+	private final EntityManager entityManager;
 
-	private final TagMappingDao tagMappingDao;
-
-	private final TagMappingActionDao tagMappingActionDao;
+	private final HttpSession httpSession;
 
 	@Inject
-	public AddMappingActionHandler(UserSessionDao userSessionDao,
-			TagMappingDao tagMappingDao, TagMappingActionDao tagMappingActionDao) {
-		this.userSessionDao = userSessionDao;
-		this.tagMappingDao = tagMappingDao;
-		this.tagMappingActionDao = tagMappingActionDao;
+	public AddMappingActionHandler(EntityManager entityManager,
+			HttpSession httpSession) {
+		this.entityManager = entityManager;
+		this.httpSession = httpSession;
 	}
 
 	@Transactional
 	@Override
 	public MutationResult execute(AddMappingAction action, Dispatcher dispatcher)
 			throws ActionException {
-		UserSessionToken sessionToken = action.getSessionToken();
-		UserSession session = userSessionDao.validateSession(sessionToken);
+		User user = (User) httpSession.getAttribute("user");
+		Long mappingId = action.getMappingId();
 
-		TagMappingDto mappingDto = action.getMapping();
-		Long mappingId = mappingDto.getId();
-
-		if (session == null) {
+		if (user == null) {
 			log.info(
-					"rejected attempt to patrol/delete on mapping ID {} because of invalid session",
+					"denied permission to patrol/delete on mapping ID {} (not logged in)",
 					mappingId);
-			return MutationResult.INVALID_SESSION;
+			return MutationResult.PERMISSION_DENIED;
 		}
 
-		TagMapping mapping = tagMappingDao.get(mappingId);
+		TagMapping mapping = entityManager.find(TagMapping.class, mappingId);
 		TagMappingAction mappingAction = new TagMappingAction();
 		Type type = Type.valueOf(action.getType().name());
 		mappingAction.setMapping(mapping);
 		mappingAction.setType(type);
-		mappingAction.setUser(session.getUser());
+		mappingAction.setUser(user);
 		mappingAction.setTimestamp(new Date());
-		tagMappingActionDao.save(mappingAction);
+		entityManager.persist(mappingAction);
 
-		String userName = session.getUser().getName();
+		String userName = user.getName();
 		switch (mappingAction.getType()) {
 		case PATROL:
 			log.info("user \"{}\" patrolled mapping ID {}", userName, mappingId);

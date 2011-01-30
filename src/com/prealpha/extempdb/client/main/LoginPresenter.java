@@ -1,6 +1,6 @@
 /*
  * LoginPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -9,6 +9,8 @@ package com.prealpha.extempdb.client.main;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
@@ -16,11 +18,12 @@ import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.shared.action.GetSessionResult;
+import com.prealpha.extempdb.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.shared.action.GetUserResult;
 import com.prealpha.extempdb.shared.action.LogIn;
-import com.prealpha.extempdb.shared.dto.UserSessionDto;
+import com.prealpha.extempdb.shared.dto.UserDto;
 
-public class LoginPresenter implements Presenter<UserSessionDto> {
+public class LoginPresenter implements Presenter<UserDto> {
 	public static interface Display extends IsWidget {
 		boolean isVisible();
 
@@ -41,14 +44,18 @@ public class LoginPresenter implements Presenter<UserSessionDto> {
 
 	private final SessionManager sessionManager;
 
+	private final EventBus eventBus;
+
 	private final MainMessages messages;
 
 	@Inject
 	public LoginPresenter(Display display, DispatcherAsync dispatcher,
-			SessionManager sessionManager, MainMessages messages) {
+			SessionManager sessionManager, EventBus eventBus,
+			MainMessages messages) {
 		this.display = display;
 		this.dispatcher = dispatcher;
 		this.sessionManager = sessionManager;
+		this.eventBus = eventBus;
 		this.messages = messages;
 
 		display.setVisible(false);
@@ -66,8 +73,8 @@ public class LoginPresenter implements Presenter<UserSessionDto> {
 	}
 
 	@Override
-	public void bind(UserSessionDto session) {
-		if (session == null) {
+	public void bind(UserDto user) {
+		if (user == null) {
 			display.setVisible(true);
 			display.getNameBox().setText(null);
 			display.getPasswordBox().setText(null);
@@ -78,20 +85,28 @@ public class LoginPresenter implements Presenter<UserSessionDto> {
 	}
 
 	private void submit() {
+		String sessionId = sessionManager.getSessionId();
+
+		if (sessionId == null) {
+			Window.alert(messages.noCookies());
+			return;
+		}
+
 		String name = display.getNameBox().getText();
 		String password = display.getPasswordBox().getText();
-		LogIn action = new LogIn(name, password);
+		LogIn action = new LogIn(sessionId, name, password);
 
-		dispatcher.execute(action, new ManagedCallback<GetSessionResult>() {
+		dispatcher.execute(action, new ManagedCallback<GetUserResult>() {
 			@Override
-			public void onSuccess(GetSessionResult result) {
-				UserSessionDto session = result.getSession();
+			public void onSuccess(GetUserResult result) {
+				UserDto user = result.getUser();
 
-				if (session == null) {
+				if (user == null) {
 					display.getStatusLabel().setText(
 							messages.logInTextInvalid());
 				} else {
-					sessionManager.setSession(session);
+					eventBus.fireEventFromSource(new ActiveUserEvent(user),
+							LoginPresenter.this);
 				}
 			}
 		});

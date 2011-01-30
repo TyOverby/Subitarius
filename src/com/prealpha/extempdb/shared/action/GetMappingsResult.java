@@ -1,6 +1,6 @@
 /*
  * GetMappingsResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,22 +13,21 @@ import java.util.Collections;
 import java.util.List;
 
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.id.TagMappingId;
 
 public class GetMappingsResult implements Result {
-	private ArrayList<TagMappingId> ids;
+	private ArrayList<Long> mappingIds;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetMappingsResult() {
 	}
 
-	public GetMappingsResult(List<TagMappingId> ids) {
-		checkNotNull(ids);
-		this.ids = new ArrayList<TagMappingId>(ids);
+	public GetMappingsResult(List<Long> mappingIds) {
+		checkNotNull(mappingIds);
+		this.mappingIds = new ArrayList<Long>(mappingIds);
 	}
 
-	public List<TagMappingId> getIds() {
-		return Collections.unmodifiableList(ids);
+	public List<Long> getMappingIds() {
+		return Collections.unmodifiableList(mappingIds);
 	}
 }
