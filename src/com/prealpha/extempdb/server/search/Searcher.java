@@ -73,14 +73,13 @@ public class Searcher implements Runnable {
 	@Transactional
 	void execute(SearchQuery query) throws SearchUnavailableException {
 		int resultCount = 0;
-		
-		List<String> urls = searchProvider.search(query);
+		List<String> urls = searchProvider.search(query, 1);
 		ArticleParser parser = query.getArticleParser(injector);
 		
-		Iterator<String> i1 = urls.iterator();
-		double limit = Math.log(urls.size());
-		while (i1.hasNext() && resultCount < limit) {
-			String url = parser.getCanonicalUrl(i1.next());
+		if (urls.isEmpty()) {
+			log.info("found no results for query {}", query);
+		} else {
+			String url = parser.getCanonicalUrl(urls.get(0));
 			Article existing = getExistingArticle(url);
 			
 			if (existing == null) {
@@ -112,9 +111,9 @@ public class Searcher implements Runnable {
 				persistIfNew(query.createTagMapping(article));
 				resultCount++;
 			}
+			
+			log.info("handled {} result(s) for query {}", resultCount, query);
 		}
-		
-		log.info("handled {} result(s) for query {}", resultCount, query);
 	}
 	
 	private Article getExistingArticle(String url) {
