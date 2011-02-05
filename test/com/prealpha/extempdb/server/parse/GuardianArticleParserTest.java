@@ -1,6 +1,6 @@
 /*
- * ReutersSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * GuardianArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner, Ty Overby
  * All rights reserved.
  */
 
@@ -36,15 +36,17 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class ReutersSourceParserTest implements Module {
-	private static final String URL = "http://www.reuters.com/article/idUSTRE6823Q420100905";
+public class GuardianArticleParserTest implements Module {
+	private static final String ORIGINAL_URL = "http://www.guardian.co.uk/world/2011/jan/27/egypt-riot-security-force-action";
+	
+	private static final String URL = "http://www.guardian.co.uk/world/2011/jan/27/egypt-riot-security-force-action/print";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
 
 	@Inject
 	@Unit
-	private ReutersSourceParser sourceParser;
+	private GuardianArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -56,13 +58,13 @@ public class ReutersSourceParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./reuters.html"));
+		InputStream stream = new FileInputStream(new File("./guardian.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -89,28 +91,27 @@ public class ReutersSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL);
+		ProtoArticle article = articleParser.parse(ORIGINAL_URL);
 
 		assertNotNull(article);
 
-		assertEquals("Gales, aftershocks shake quake hit New Zealand city",
+		assertEquals(
+				"Bloody and bruised: the journalist caught in Egypt unrest",
 				article.getTitle());
 
-		assertEquals("By Gyles Beckford", article.getByline());
+		assertEquals("Jack Shenker", article.getByline());
 
-		/* Note that the PM was changed to uppercase from the original. */
 		Date date = article.getDate();
-		assertEquals("Sun Sep 5, 2010 12:01PM EDT",
-				ReutersSourceParser.DATE_FORMAT.format(date));
+		assertEquals("Thursday 27 January 2011",
+				GuardianArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
-
-		assertEquals(21, paragraphCount);
-		assertTrue(firstParagraph.startsWith("WELLINGTON (Reuters) - Strong"));
-		assertTrue(lastParagraph.endsWith("Editing by David Fox)"));
+		assertEquals(23, paragraphCount);
+		assertTrue(firstParagraph.startsWith("In the streets"));
+		assertTrue(lastParagraph.endsWith("his condition."));
 
 		verify(mockHttpClient);
 	}

@@ -1,6 +1,6 @@
 /*
- * NyTimesSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * NyTimesArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -36,7 +36,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class NyTimesSourceParserTest implements Module {
+public class NyTimesArticleParserTest implements Module {
 	private static final String URL = "http://www.nytimes.com/2010/08/05/technology/05secret.html";
 
 	private static final Map<String, String> PARAMETERS = Collections
@@ -44,7 +44,7 @@ public class NyTimesSourceParserTest implements Module {
 
 	@Inject
 	@Unit
-	private NyTimesSourceParser sourceParser;
+	private NyTimesArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -56,7 +56,7 @@ public class NyTimesSourceParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class NyTimesSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL);
+		ProtoArticle article = articleParser.parse(URL);
 
 		assertNotNull(article);
 
@@ -99,7 +99,7 @@ public class NyTimesSourceParserTest implements Module {
 		assertEquals("By EDWARD WYATT", article.getByline());
 
 		Date date = article.getDate();
-		assertEquals("20100804", NyTimesSourceParser.DATE_FORMAT.format(date));
+		assertEquals("20100804", NyTimesArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();

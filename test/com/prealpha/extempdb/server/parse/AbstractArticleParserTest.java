@@ -1,6 +1,6 @@
 /*
- * AbstractSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * AbstractArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -22,26 +22,26 @@ import com.google.inject.Provider;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-public class AbstractSourceParserTest implements Module {
+public class AbstractArticleParserTest implements Module {
 	private static final String URL = "http://www.nytimes.com/interactive/2010/11/13/weekinreview/deficits-graphic.html";
 
 	@Unit
 	@Inject
-	private AbstractSourceParser parser;
+	private AbstractArticleParser parser;
 
 	@Override
 	public void configure(Binder binder) {
-		final AbstractSourceParser parser = new AbstractSourceParser() {
+		final AbstractArticleParser parser = new AbstractArticleParser() {
 			@Override
 			public ProtoArticle parse(String url) throws ArticleParseException {
 				return null;
 			}
 		};
 
-		binder.bind(AbstractSourceParser.class).toProvider(
-				new Provider<AbstractSourceParser>() {
+		binder.bind(AbstractArticleParser.class).toProvider(
+				new Provider<AbstractArticleParser>() {
 					@Override
-					public AbstractSourceParser get() {
+					public AbstractArticleParser get() {
 						return parser;
 					}
 				});

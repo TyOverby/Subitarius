@@ -1,6 +1,6 @@
 /*
- * WaPostSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * ReutersArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -33,23 +33,18 @@ import com.google.inject.Module;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-/*
- * TODO: test getCanonicalUrl(); also, when we do that, make sure it tests for _pf in the URL already
- */
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class WaPostSourceParserTest implements Module {
-	private static final String ORIGINAL_URL = "http://www.washingtonpost.com/wp-dyn/content/article/2010/09/18/AR2010091800482.html";
-
-	private static final String URL = "http://www.washingtonpost.com/wp-dyn/content/article/2010/09/18/AR2010091800482_pf.html";
+public class ReutersArticleParserTest implements Module {
+	private static final String URL = "http://www.reuters.com/article/idUSTRE6823Q420100905";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
 
 	@Inject
 	@Unit
-	private WaPostSourceParser sourceParser;
+	private ReutersArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -61,13 +56,13 @@ public class WaPostSourceParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./wapost.html"));
+		InputStream stream = new FileInputStream(new File("./reuters.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -94,30 +89,28 @@ public class WaPostSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(ORIGINAL_URL);
+		ProtoArticle article = articleParser.parse(URL);
 
 		assertNotNull(article);
 
-		assertEquals(
-				"Afghan elections marked by violence, 'irregularities,' modest turnout",
+		assertEquals("Gales, aftershocks shake quake hit New Zealand city",
 				article.getTitle());
 
-		assertEquals("By David Nakamura and Ernesto Londoño",
-				article.getByline());
+		assertEquals("By Gyles Beckford", article.getByline());
 
+		/* Note that the PM was changed to uppercase from the original. */
 		Date date = article.getDate();
-		assertEquals("Saturday, September 18, 2010",
-				WaPostSourceParser.DATE_FORMAT.format(date));
+		assertEquals("Sun Sep 5, 2010 12:01PM EDT",
+				ReutersArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(34, paragraphCount);
-		assertTrue(firstParagraph.startsWith("KABUL - There were"));
-		assertTrue(lastParagraph
-				.endsWith("Javed Hamdard contributed to this report."));
+		assertEquals(21, paragraphCount);
+		assertTrue(firstParagraph.startsWith("WELLINGTON (Reuters) - Strong"));
+		assertTrue(lastParagraph.endsWith("Editing by David Fox)"));
 
 		verify(mockHttpClient);
 	}

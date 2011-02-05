@@ -1,6 +1,6 @@
 /*
- * CsmSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * CsmArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -36,7 +36,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class CsmSourceParserTest implements Module {
+public class CsmArticleParserTest implements Module {
 	private static final String URL = "http://www.csmonitor.com/USA/Election-2010/Vox-News/2010/0907/Restoring-Truthiness-Could-spoof-of-Glenn-Beck-rally-happen";
 
 	private static final Map<String, String> PARAMETERS = Collections
@@ -44,7 +44,7 @@ public class CsmSourceParserTest implements Module {
 
 	@Inject
 	@Unit
-	private CsmSourceParser sourceParser;
+	private CsmArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -56,7 +56,7 @@ public class CsmSourceParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class CsmSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL);
+		ProtoArticle article = articleParser.parse(URL);
 
 		assertNotNull(article);
 
@@ -101,7 +101,7 @@ public class CsmSourceParserTest implements Module {
 
 		Date date = article.getDate();
 		assertEquals("September 7, 2010",
-				CsmSourceParser.DATE_FORMAT.format(date));
+				CsmArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
