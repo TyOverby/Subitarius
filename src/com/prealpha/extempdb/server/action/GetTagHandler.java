@@ -48,7 +48,7 @@ class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 					tagName);
 			return new GetTagResult(null);
 		} else {
-			log.info("handled request for tag, name \"{}\"", tagName);
+			log.info("handled request for tag, name \"{}\"", tag.getName());
 			TagDto dto = mapper.map(tag, TagDto.class);
 			return new GetTagResult(dto);
 		}

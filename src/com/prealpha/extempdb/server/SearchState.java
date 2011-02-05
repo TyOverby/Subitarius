@@ -61,7 +61,7 @@ final class SearchState {
 		return initialized;
 	}
 
-	public void init(Tag tag, Source source) {
+	public void init(Tag tag, Source source) throws ClassNotFoundException {
 		checkState(!initialized);
 		checkNotNull(tag);
 		checkNotNull(source);
@@ -70,8 +70,9 @@ final class SearchState {
 		this.source = source;
 		initialized = true;
 
-		Class<? extends SourceParser> parserClass = source.getParserClass();
-		parser = injector.getInstance(parserClass);
+		String parserClassName = source.getParserClass();
+		Class<?> parserClass = Class.forName(parserClassName);
+		parser = (SourceParser) injector.getInstance(parserClass);
 		mappedUrls = new HashSet<String>();
 	}
 

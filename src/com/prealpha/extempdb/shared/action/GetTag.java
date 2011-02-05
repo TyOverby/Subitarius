@@ -11,6 +11,9 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.dispatch.shared.CacheableAction;
 import com.prealpha.dispatch.shared.MergeableAction;
 
+/*
+ * Note that hashCode() and equals() ignore the tag name's case.
+ */
 public class GetTag implements CacheableAction<GetTagResult>,
 		MergeableAction<GetTagResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
@@ -43,7 +46,8 @@ public class GetTag implements CacheableAction<GetTagResult>,
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
+		result = prime * result
+				+ ((tagName == null) ? 0 : tagName.toUpperCase().hashCode());
 		return result;
 	}
 
@@ -63,7 +67,7 @@ public class GetTag implements CacheableAction<GetTagResult>,
 			if (other.tagName != null) {
 				return false;
 			}
-		} else if (!tagName.equals(other.tagName)) {
+		} else if (!tagName.equalsIgnoreCase(other.tagName)) {
 			return false;
 		}
 		return true;

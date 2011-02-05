@@ -11,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import com.prealpha.extempdb.server.parse.SourceParser;
-
 @Entity
 public class Source {
 	private Long id;
@@ -21,7 +19,7 @@ public class Source {
 
 	private String displayName;
 
-	private Class<? extends SourceParser> parserClass;
+	private String parserClass;
 
 	public Source() {
 	}
@@ -47,7 +45,7 @@ public class Source {
 		this.domainName = domainName;
 	}
 
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	public String getDisplayName() {
 		return displayName;
 	}
@@ -57,11 +55,11 @@ public class Source {
 	}
 
 	@Column(unique = true, nullable = false)
-	public Class<? extends SourceParser> getParserClass() {
+	public String getParserClass() {
 		return parserClass;
 	}
 
-	public void setParserClass(Class<? extends SourceParser> parserClass) {
+	public void setParserClass(String parserClass) {
 		this.parserClass = parserClass;
 	}
 

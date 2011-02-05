@@ -17,6 +17,9 @@ import com.google.common.collect.ImmutableSet;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
+/*
+ * Note that hashCode() and equals() ignore the tag name's case.
+ */
 public class GetMappingsByTag extends GetMappings {
 	private static final Set<State> ALL_STATES = ImmutableSet.copyOf(State
 			.values());
@@ -85,7 +88,8 @@ public class GetMappingsByTag extends GetMappings {
 		result = prime * result
 				+ ((comparator == null) ? 0 : comparator.hashCode());
 		result = prime * result + ((states == null) ? 0 : states.hashCode());
-		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
+		result = prime * result
+				+ ((tagName == null) ? 0 : tagName.toUpperCase().hashCode());
 		return result;
 	}
 
@@ -119,7 +123,7 @@ public class GetMappingsByTag extends GetMappings {
 			if (other.tagName != null) {
 				return false;
 			}
-		} else if (!tagName.equals(other.tagName)) {
+		} else if (!tagName.equalsIgnoreCase(other.tagName)) {
 			return false;
 		}
 		return true;

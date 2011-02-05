@@ -83,7 +83,8 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	@Override
 	public void bind(TagMappingDto mapping) {
 		this.mapping = mapping;
-		display.getMappingLabel().setText(mapping.getTag().getName());
+		String tagName = mapping.getTag().getName();
+		display.getMappingLabel().setText(tagName);
 
 		sessionManager.getActiveUser(new ManagedCallback<UserDto>() {
 			@Override

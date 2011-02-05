@@ -65,7 +65,7 @@ class ChangePasswordHandler implements
 			String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
 			String newHash = BCrypt.hashpw(newPassword, salt);
 			user.setHash(newHash);
-			entityManager.persist(user);
+			entityManager.persist(entityManager.merge(user));
 
 			log.info("changed password for user \"{}\" on request",
 					user.getName());

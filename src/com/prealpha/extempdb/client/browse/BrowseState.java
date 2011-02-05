@@ -17,6 +17,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
+/*
+ * Note that hashCode() and equals() ignore the tag name's case.
+ */
 final class BrowseState {
 	public static BrowseState getInstance(String tagName, Set<State> states,
 			ArticleSort sort, int pageStart) {
@@ -112,9 +115,8 @@ final class BrowseState {
 		if (tagName == null) {
 			return Collections.emptyList();
 		} else {
-			return ImmutableList.of(tagName.toString(),
-					serializeStates(states), serializeSort(sort),
-					Integer.toString(pageStart));
+			return ImmutableList.of(tagName, serializeStates(states),
+					serializeSort(sort), Integer.toString(pageStart));
 		}
 	}
 
@@ -125,7 +127,8 @@ final class BrowseState {
 		result = prime * result + pageStart;
 		result = prime * result + ((sort == null) ? 0 : sort.hashCode());
 		result = prime * result + ((states == null) ? 0 : states.hashCode());
-		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
+		result = prime * result
+				+ ((tagName == null) ? 0 : tagName.toUpperCase().hashCode());
 		return result;
 	}
 
@@ -162,7 +165,7 @@ final class BrowseState {
 			if (other.tagName != null) {
 				return false;
 			}
-		} else if (!tagName.equals(other.tagName)) {
+		} else if (!tagName.equalsIgnoreCase(other.tagName)) {
 			return false;
 		}
 		return true;

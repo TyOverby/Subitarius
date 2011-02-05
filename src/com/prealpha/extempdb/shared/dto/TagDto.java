@@ -12,7 +12,7 @@ import java.util.Set;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /*
- * Note that equals() and hashCode() for this class ignore the tag name's case.
+ * Note that hashCode() and equals() ignore the tag name's case.
  */
 public class TagDto implements IsSerializable {
 	private String name;
@@ -53,7 +53,7 @@ public class TagDto implements IsSerializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((name == null) ? 0 : name.toLowerCase().hashCode());
+				+ ((name == null) ? 0 : name.toUpperCase().hashCode());
 		return result;
 	}
 

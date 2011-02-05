@@ -46,17 +46,19 @@ class GetTagSuggestionsHandler implements
 	@Override
 	public GetTagSuggestionsResult execute(GetTagSuggestions action,
 			Dispatcher dispatcher) throws ActionException {
-		String namePrefix = action.getNamePrefix().trim();
+		String namePrefix = action.getNamePrefix();
+		String strictPrefix = namePrefix.trim();
+		String wordPrefix = ' ' + strictPrefix;
 		Set<String> suggestions = new HashSet<String>();
 
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> criteria = builder.createQuery(Tag.class);
 		Root<Tag> tagRoot = criteria.from(Tag.class);
-		Predicate strictPrefix = builder.equal(
-				builder.locate(tagRoot.get(Tag_.name), namePrefix), 1);
-		Predicate wordPrefix = builder.greaterThan(
-				builder.locate(tagRoot.get(Tag_.name), ' ' + namePrefix), 0);
-		criteria.where(builder.or(strictPrefix, wordPrefix));
+		Predicate strict = builder.equal(
+				builder.locate(tagRoot.get(Tag_.name), strictPrefix), 1);
+		Predicate word = builder.greaterThan(
+				builder.locate(tagRoot.get(Tag_.name), wordPrefix), 0);
+		criteria.where(builder.or(strict, word));
 		List<Tag> tags = entityManager.createQuery(criteria).getResultList();
 
 		Iterator<Tag> i1 = tags.iterator();
@@ -67,7 +69,7 @@ class GetTagSuggestionsHandler implements
 			count++;
 		}
 
-		log.info("returned {} tag suggestions on request for prefix {}",
+		log.info("returned {} tag suggestions on request for prefix \"{}\"",
 				suggestions.size(), namePrefix);
 
 		return new GetTagSuggestionsResult(suggestions);

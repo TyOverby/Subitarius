@@ -109,10 +109,8 @@ public class TagInputBox extends Composite implements HasValue<TagDto> {
 		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
-	public TagDto create() {
-		TagDto tag = new TagDto();
-		tag.setName(nameBox.getValue());
-		return tag;
+	public String getTagName() {
+		return nameBox.getValue();
 	}
 
 	public LoadingStatus getLoadingStatus() {
@@ -127,9 +125,9 @@ public class TagInputBox extends Composite implements HasValue<TagDto> {
 
 	private void fetchTag() {
 		setLoadingStatus(LoadingStatus.PENDING);
-		String name = nameBox.getValue();
-		GetTag action = new GetTag(name);
-		dispatcher.execute(action, new TagCallback(name));
+		String tagName = getTagName();
+		GetTag action = new GetTag(tagName);
+		dispatcher.execute(action, new TagCallback(tagName));
 	}
 
 	private class NameHandler implements KeyPressHandler,

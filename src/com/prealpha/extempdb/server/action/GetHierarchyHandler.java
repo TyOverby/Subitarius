@@ -53,13 +53,13 @@ class GetHierarchyHandler implements
 		List<Tag> tags = entityManager.createQuery(criteria).getResultList();
 
 		for (Tag tag : tags) {
-			String name = tag.getName();
+			String tagName = tag.getName();
 			if (tag.getParents().isEmpty()) {
-				hierarchy.put(null, name);
+				hierarchy.put(null, tagName);
 			} else {
 				for (Tag parent : tag.getParents()) {
 					String parentName = parent.getName();
-					hierarchy.put(parentName, name);
+					hierarchy.put(parentName, tagName);
 				}
 			}
 		}

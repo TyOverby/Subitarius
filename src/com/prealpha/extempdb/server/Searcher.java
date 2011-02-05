@@ -80,21 +80,25 @@ class Searcher implements Runnable {
 	@Transactional
 	protected void doSearch(Tag tag, Source source)
 			throws SearchUnavailableException {
-		List<String> urls = searchProvider.search(tag, source);
-		SearchState searchState = stateProvider.get();
-		searchState.init(tag, source);
+		try {
+			List<String> urls = searchProvider.search(tag, source);
+			SearchState searchState = stateProvider.get();
+			searchState.init(tag, source);
 
-		Iterator<String> i1 = urls.iterator();
-		int count = urls.size();
-		while (i1.hasNext() && searchState.shouldContinue(count)) {
-			searchState.handle(i1.next());
+			Iterator<String> i1 = urls.iterator();
+			int count = urls.size();
+			while (i1.hasNext() && searchState.shouldContinue(count)) {
+				searchState.handle(i1.next());
+			}
+
+			Object[] params = new Object[] { searchState.getMappingCount(),
+					searchState.getParseCount(), source.getDisplayName(),
+					tag.getName() };
+			log.info(
+					"mapped {} articles (including {} newly parsed) from source \"{}\" to tag \"{}\"",
+					params);
+		} catch (ClassNotFoundException cnfx) {
+			throw new SearchUnavailableException(cnfx);
 		}
-
-		Object[] params = new Object[] { searchState.getMappingCount(),
-				searchState.getParseCount(), source.getDisplayName(),
-				tag.getName() };
-		log.info(
-				"mapped {} articles (including {} newly parsed) from source \"{}\" to tag \"{}\"",
-				params);
 	}
 }

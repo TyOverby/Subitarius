@@ -10,6 +10,9 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.MergeableAction;
 
+/*
+ * Note that hashCode() and equals() ignore the tag name's case.
+ */
 public class GetTagSuggestions implements
 		MergeableAction<GetTagSuggestionsResult> {
 	private String namePrefix;
@@ -21,10 +24,10 @@ public class GetTagSuggestions implements
 	private GetTagSuggestions() {
 	}
 
-	public GetTagSuggestions(String nameFragment, int limit) {
-		checkNotNull(nameFragment);
+	public GetTagSuggestions(String namePrefix, int limit) {
+		checkNotNull(namePrefix);
 		checkArgument(limit >= 0);
-		this.namePrefix = nameFragment;
+		this.namePrefix = namePrefix;
 		this.limit = limit;
 	}
 
@@ -41,8 +44,10 @@ public class GetTagSuggestions implements
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + limit;
-		result = prime * result
-				+ ((namePrefix == null) ? 0 : namePrefix.hashCode());
+		result = prime
+				* result
+				+ ((namePrefix == null) ? 0 : namePrefix.toUpperCase()
+						.hashCode());
 		return result;
 	}
 
@@ -65,7 +70,7 @@ public class GetTagSuggestions implements
 			if (other.namePrefix != null) {
 				return false;
 			}
-		} else if (!namePrefix.equals(other.namePrefix)) {
+		} else if (!namePrefix.equalsIgnoreCase(other.namePrefix)) {
 			return false;
 		}
 		return true;
