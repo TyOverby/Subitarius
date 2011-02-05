@@ -33,7 +33,6 @@ import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.parse.ArticleParseException;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
@@ -58,22 +57,14 @@ public class BingSearchProviderTest implements Module {
 	}
 
 	@Test(expected = NullPointerException.class)
-	public void testNullTag() throws SearchUnavailableException,
-			ArticleParseException {
-		searchProvider.search(null, mockSource);
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testNullSource() throws SearchUnavailableException,
-			ArticleParseException {
-		searchProvider.search(mockTag, null);
+	public void testNullQuery() throws SearchUnavailableException {
+		searchProvider.search(null);
 	}
 
 	@Test
 	public void testSearch() throws SearchUnavailableException, IOException,
 			RobotsExclusionException {
 		expect(mockTag.getName()).andReturn("network neutrality");
-
 		expect(mockSource.getDomainName()).andReturn("www.nytimes.com");
 
 		InputStream stream = new FileInputStream(new File("./bing.json"));
@@ -85,7 +76,8 @@ public class BingSearchProviderTest implements Module {
 
 		replay(mockHttpClient, mockTag, mockSource);
 
-		List<String> urls = searchProvider.search(mockTag, mockSource);
+		SearchQuery query = new SearchQuery(mockSource, mockTag);
+		List<String> urls = searchProvider.search(query);
 		assertNotNull(urls);
 		assertEquals(1, urls.size());
 
@@ -105,7 +97,8 @@ public class BingSearchProviderTest implements Module {
 
 		replay(mockHttpClient);
 
-		searchProvider.search(mockTag, mockSource);
+		SearchQuery query = new SearchQuery(mockSource, mockTag);
+		searchProvider.search(query);
 
 		verify(mockHttpClient);
 	}
@@ -120,7 +113,8 @@ public class BingSearchProviderTest implements Module {
 
 		replay(mockHttpClient);
 
-		searchProvider.search(mockTag, mockSource);
+		SearchQuery query = new SearchQuery(mockSource, mockTag);
+		searchProvider.search(query);
 
 		verify(mockHttpClient);
 	}

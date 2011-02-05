@@ -1,14 +1,12 @@
 /*
- * SourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * ArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.parse;
 
-import com.prealpha.extempdb.server.domain.Article;
-
-public interface SourceParser {
+public interface ArticleParser {
 	/**
 	 * Returns the canonical form of the given URL. The canonical form uniquely
 	 * identifies a particular article such that no other canonical URL will
@@ -23,11 +21,10 @@ public interface SourceParser {
 
 	/**
 	 * Parses the article located at the given canonical URL into a
-	 * {@link ProtoArticle}. The parsing handles all of the source-specific
-	 * aspects of producing an {@link Article} from a URL. Generally, this
-	 * involves turning the HTML markup into a parseable XML DOM, and retrieving
-	 * specific elements from the DOM in order to fill the {@link ProtoArticle}
-	 * fields. Parsers do, occasionally, have bugs or run into problems, so an
+	 * {@link ProtoArticle}. Generally, this involves turning the HTML markup
+	 * into a parseable XML DOM, and retrieving specific elements from the DOM
+	 * in order to fill the {@link ProtoArticle} fields. Parsers do,
+	 * occasionally, have bugs or run into problems, so an
 	 * {@link ArticleParseException} can be thrown and should be handled
 	 * appropriately by callers.
 	 * <p>

@@ -1,13 +1,13 @@
 /*
- * AbstractSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * AbstractArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.parse;
 
-abstract class AbstractSourceParser implements SourceParser {
-	protected AbstractSourceParser() {
+abstract class AbstractArticleParser implements ArticleParser {
+	protected AbstractArticleParser() {
 	}
 
 	@Override

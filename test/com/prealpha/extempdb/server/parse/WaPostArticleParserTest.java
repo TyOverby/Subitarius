@@ -1,6 +1,6 @@
 /*
- * CsmSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * WaPostArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -36,15 +36,19 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class CsmSourceParserTest implements Module {
-	private static final String URL = "http://www.csmonitor.com/USA/Election-2010/Vox-News/2010/0907/Restoring-Truthiness-Could-spoof-of-Glenn-Beck-rally-happen";
+public class WaPostArticleParserTest implements Module {
+	private static final String ORIGINAL_URL = "http://www.washingtonpost.com/wp-dyn/content/article/2010/09/18/AR2010091800482.html";
+
+	private static final String URL = "http://www.washingtonpost.com/wp-dyn/content/article/2010/09/18/AR2010091800482_pf.html";
+
+	private static final String CANONICAL_URL = "http://www.washingtonpost.com/wp-dyn/content/article/2011/01/31/AR2011013103692.html";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
 
 	@Inject
 	@Unit
-	private CsmSourceParser sourceParser;
+	private WaPostArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -54,15 +58,34 @@ public class CsmSourceParserTest implements Module {
 		binder.install(new ParseModule());
 	}
 
+	@Test
+	public void testGetCanonicalUrl() {
+		String page = articleParser
+				.getCanonicalUrl("http://www.washingtonpost.com/wp-dyn/content/article/2011/01/31/AR2011013103692_2.html");
+		assertEquals(CANONICAL_URL, page);
+
+		String printable = articleParser
+				.getCanonicalUrl("http://www.washingtonpost.com/wp-dyn/content/article/2011/01/31/AR2011013103692_pf.html");
+		assertEquals(CANONICAL_URL, printable);
+
+		String parameters = articleParser
+				.getCanonicalUrl("http://www.washingtonpost.com/wp-dyn/content/article/2011/01/31/AR2011013103692.html?nav=hcmodule");
+		assertEquals(CANONICAL_URL, parameters);
+
+		String pageAndParameters = articleParser
+				.getCanonicalUrl("http://www.washingtonpost.com/wp-dyn/content/article/2011/01/31/AR2011013103692_2.html?nav=hcmodule");
+		assertEquals(CANONICAL_URL, pageAndParameters);
+	}
+
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./csm.html"));
+		InputStream stream = new FileInputStream(new File("./wapost.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -89,28 +112,30 @@ public class CsmSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL);
+		ProtoArticle article = articleParser.parse(ORIGINAL_URL);
 
 		assertNotNull(article);
 
 		assertEquals(
-				"'Restoring Truthiness': Could spoof of Glenn Beck rally happen?",
+				"Afghan elections marked by violence, 'irregularities,' modest turnout",
 				article.getTitle());
 
-		assertEquals("By Gloria Goodale", article.getByline());
+		assertEquals("By David Nakamura and Ernesto Londoño",
+				article.getByline());
 
 		Date date = article.getDate();
-		assertEquals("September 7, 2010",
-				CsmSourceParser.DATE_FORMAT.format(date));
+		assertEquals("Saturday, September 18, 2010",
+				WaPostArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(11, paragraphCount);
-		assertTrue(firstParagraph.startsWith("Can the Internet"));
-		assertTrue(lastParagraph.endsWith("a real politician.”"));
+		assertEquals(34, paragraphCount);
+		assertTrue(firstParagraph.startsWith("KABUL - There were"));
+		assertTrue(lastParagraph
+				.endsWith("Javed Hamdard contributed to this report."));
 
 		verify(mockHttpClient);
 	}

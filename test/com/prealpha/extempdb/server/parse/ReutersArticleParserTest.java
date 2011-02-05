@@ -1,6 +1,6 @@
 /*
- * NyTimesSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * ReutersArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -36,15 +36,15 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class NyTimesSourceParserTest implements Module {
-	private static final String URL = "http://www.nytimes.com/2010/08/05/technology/05secret.html";
+public class ReutersArticleParserTest implements Module {
+	private static final String URL = "http://www.reuters.com/article/idUSTRE6823Q420100905";
 
 	private static final Map<String, String> PARAMETERS = Collections
-			.singletonMap("pagewanted", "all");
+			.emptyMap();
 
 	@Inject
 	@Unit
-	private NyTimesSourceParser sourceParser;
+	private ReutersArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -56,13 +56,13 @@ public class NyTimesSourceParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./nytimes.html"));
+		InputStream stream = new FileInputStream(new File("./reuters.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -89,26 +89,28 @@ public class NyTimesSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL);
+		ProtoArticle article = articleParser.parse(URL);
 
 		assertNotNull(article);
 
-		assertEquals("Google and Verizon Near Deal on Web Pay Tiers",
+		assertEquals("Gales, aftershocks shake quake hit New Zealand city",
 				article.getTitle());
 
-		assertEquals("By EDWARD WYATT", article.getByline());
+		assertEquals("By Gyles Beckford", article.getByline());
 
+		/* Note that the PM was changed to uppercase from the original. */
 		Date date = article.getDate();
-		assertEquals("20100804", NyTimesSourceParser.DATE_FORMAT.format(date));
+		assertEquals("Sun Sep 5, 2010 12:01PM EDT",
+				ReutersArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(24, paragraphCount);
-		assertTrue(firstParagraph.startsWith("WASHINGTON"));
-		assertTrue(lastParagraph.endsWith("the Internet.”"));
+		assertEquals(21, paragraphCount);
+		assertTrue(firstParagraph.startsWith("WELLINGTON (Reuters) - Strong"));
+		assertTrue(lastParagraph.endsWith("Editing by David Fox)"));
 
 		verify(mockHttpClient);
 	}

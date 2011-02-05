@@ -1,6 +1,6 @@
 /*
- * WsjSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * WsjArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -30,7 +30,7 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
-class WsjSourceParser extends AbstractSourceParser {
+class WsjArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
 		COMPLETE, ABRIDGED, NEWSWIRE;
 	}
@@ -47,7 +47,7 @@ class WsjSourceParser extends AbstractSourceParser {
 	private final DOMBuilder builder;
 
 	@Inject
-	public WsjSourceParser(HttpClient httpClient, Tidy tidy, DOMBuilder builder) {
+	public WsjArticleParser(HttpClient httpClient, Tidy tidy, DOMBuilder builder) {
 		this.httpClient = httpClient;
 		this.tidy = tidy;
 		this.builder = builder;

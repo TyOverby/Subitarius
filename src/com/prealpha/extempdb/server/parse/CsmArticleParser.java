@@ -1,6 +1,6 @@
 /*
- * CsmSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * CsmArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -29,7 +29,7 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
-class CsmSourceParser extends AbstractSourceParser {
+class CsmArticleParser extends AbstractArticleParser {
 	/*
 	 * Package visibility for unit testing.
 	 */
@@ -42,7 +42,7 @@ class CsmSourceParser extends AbstractSourceParser {
 	private final DOMBuilder builder;
 
 	@Inject
-	public CsmSourceParser(HttpClient httpClient, Tidy tidy, DOMBuilder builder) {
+	public CsmArticleParser(HttpClient httpClient, Tidy tidy, DOMBuilder builder) {
 		this.httpClient = httpClient;
 		this.tidy = tidy;
 		this.builder = builder;

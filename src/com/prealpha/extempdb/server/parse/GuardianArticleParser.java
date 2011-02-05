@@ -1,6 +1,6 @@
 /*
- * NyTimesSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * GuardianArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner, Ty Overby
  * All rights reserved.
  */
 
@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.filter.Filter;
 import org.jdom.input.DOMBuilder;
 import org.w3c.tidy.Tidy;
@@ -29,22 +30,12 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
-class NyTimesSourceParser extends AbstractSourceParser {
-	private static final String TYPE_KEY = "PST";
-
-	private static final String[] UNPARSEABLE_TYPES = { "Interactive",
-			"blog post", "Subject", "Gift Guide", "Login" };
-
-	private static final String TITLE_KEY = "hdl_p";
-
-	private static final String BYLINE_KEY = "byl";
-
-	private static final String DATE_KEY = "pdate";
-
+class GuardianArticleParser extends AbstractArticleParser {
 	/*
 	 * Package visibility for unit testing.
 	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"EEEEE d MMMMM yyyy");
 
 	private final HttpClient httpClient;
 
@@ -53,7 +44,7 @@ class NyTimesSourceParser extends AbstractSourceParser {
 	private final DOMBuilder builder;
 
 	@Inject
-	public NyTimesSourceParser(HttpClient httpClient, Tidy tidy,
+	public GuardianArticleParser(HttpClient httpClient, Tidy tidy,
 			DOMBuilder builder) {
 		this.httpClient = httpClient;
 		this.tidy = tidy;
@@ -62,9 +53,11 @@ class NyTimesSourceParser extends AbstractSourceParser {
 
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
+		// we want the printable version
+		url += "/print";
+
 		try {
-			Map<String, String> params = Collections.singletonMap("pagewanted",
-					"all");
+			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
 			return getFromHtml(stream);
 		} catch (IOException iox) {
@@ -80,47 +73,45 @@ class NyTimesSourceParser extends AbstractSourceParser {
 		doc.removeChild(doc.getDoctype());
 		Document document = builder.build(doc);
 
-		// they are evil and sometimes give us an ad page
-		// fortunately, the ads have a meta tag that gives us a URL we can use
-		Filter adMetaFilter = XmlUtils.getElementFilter("meta", "http-equiv",
-				"refresh");
-		Iterator<?> adMetaIterator = document.getDescendants(adMetaFilter);
-		if (adMetaIterator.hasNext()) {
-			Element adMeta = (Element) adMetaIterator.next();
-			String content = adMeta.getAttributeValue("content");
-			String urlFragment = content.split(";")[1];
-			return parse("http://www.nytimes.com" + urlFragment);
-		}
+		Namespace namespace = document.getRootElement().getNamespace();
 
-		Element headElement = document.getRootElement().getChild("head");
-		Map<String, String> metaMap = XmlUtils.getMetaMap(headElement);
+		// get the title
+		Filter titleElementFilter = XmlUtils.getElementFilter("div", "id",
+				"main-article-info");
+		Element titleElement = (Element) (document
+				.getDescendants(titleElementFilter)).next();
+		Element heading = titleElement.getChild("h1", namespace);
+		String title = heading.getValue();
 
-		// strangely, the Times sometimes gives us responses of all newlines
-		// Tidy parses this into an empty document with a single meta tag
-		// if the document only has that meta tag, it's invalid and we skip it
-		if (metaMap.size() <= 1) {
-			return null;
-		}
+		// get the byline
+		Filter bylineElementFilter = XmlUtils.getElementFilter("a", "class",
+				"contributor");
+		Element bylineElement = (Element) (document
+				.getDescendants(bylineElementFilter)).next();
+		String byline = bylineElement.getValue();
 
-		String typeCheck = metaMap.get(TYPE_KEY);
-		for (String type : UNPARSEABLE_TYPES) {
-			if (type.equals(typeCheck)) {
-				return null;
-			}
-		}
-
-		String title = metaMap.get(TITLE_KEY);
-		String byline = metaMap.get(BYLINE_KEY);
+		/*
+		 * Get the date. The actual date is in a non-standard <time> element,
+		 * which JTidy doesn't like and seems to remove. So we use the parent
+		 * element and parse out the date. For example, the parent element might
+		 * contain "The Guardian, Thursday 27 January 2011". So we split() on
+		 * the comma and take the second fragment for parsing.
+		 */
+		Filter dateElementFilter = XmlUtils.getElementFilter("li", "class",
+				"publication");
+		Element dateElement = (Element) (document
+				.getDescendants(dateElementFilter)).next();
+		String dateString = dateElement.getValue().split(",")[1].trim();
 		Date date;
-
 		try {
-			date = DATE_FORMAT.parse(metaMap.get(DATE_KEY));
+			date = DATE_FORMAT.parse(dateString);
 		} catch (ParseException px) {
 			throw new ArticleParseException(px);
 		}
 
-		Filter bodyElementFilter = XmlUtils.getElementFilter("div", "class",
-				"articleBody");
+		// get the body text
+		Filter bodyElementFilter = XmlUtils.getElementFilter("div", "id",
+				"article-wrapper");
 		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
 		while (i1.hasNext()) {
@@ -131,9 +122,6 @@ class NyTimesSourceParser extends AbstractSourceParser {
 			while (i2.hasNext()) {
 				Element paragraph = (Element) i2.next();
 				String text = paragraph.getValue().trim();
-
-				// NY Times uses U+0095 as a dot, which MySQL doesn't like
-				text = text.replace('\u0095', '\u2022');
 
 				if (!text.isEmpty()) {
 					paragraphs.add(text);

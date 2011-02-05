@@ -1,6 +1,6 @@
 /*
- * ReutersSourceParser.java
- * Copyright (C) 2010 Meyer Kizner
+ * ReutersArticleParser.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -29,7 +29,7 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
-class ReutersSourceParser extends AbstractSourceParser {
+class ReutersArticleParser extends AbstractArticleParser {
 	/*
 	 * Package visibility for unit testing.
 	 */
@@ -43,7 +43,7 @@ class ReutersSourceParser extends AbstractSourceParser {
 	private final DOMBuilder builder;
 
 	@Inject
-	public ReutersSourceParser(HttpClient httpClient, Tidy tidy,
+	public ReutersArticleParser(HttpClient httpClient, Tidy tidy,
 			DOMBuilder builder) {
 		this.httpClient = httpClient;
 		this.tidy = tidy;

@@ -1,6 +1,6 @@
 /*
- * WsjSourceParserTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * WsjArticleParserTest.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -36,7 +36,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class WsjSourceParserTest implements Module {
+public class WsjArticleParserTest implements Module {
 	private static final String URL = "http://online.wsj.com/article/SB10001424052748704281204575002852055561406.html";
 
 	private static final String URL_ABRIDGED = "http://online.wsj.com/article/SB10001424052748703384204575509630629800258.html";
@@ -48,7 +48,7 @@ public class WsjSourceParserTest implements Module {
 
 	@Inject
 	@Unit
-	private WsjSourceParser sourceParser;
+	private WsjArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -60,7 +60,7 @@ public class WsjSourceParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		sourceParser.parse(null);
+		articleParser.parse(null);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class WsjSourceParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL);
+		ProtoArticle article = articleParser.parse(URL);
 
 		assertNotNull(article);
 
@@ -126,7 +126,7 @@ public class WsjSourceParserTest implements Module {
 		/* The month was originally all caps. */
 		Date date = article.getDate();
 		assertEquals("January 15, 2010",
-				WsjSourceParser.DATE_FORMAT.format(date));
+				WsjArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
@@ -144,7 +144,7 @@ public class WsjSourceParserTest implements Module {
 	private void doTestAbridged() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL_ABRIDGED);
+		ProtoArticle article = articleParser.parse(URL_ABRIDGED);
 
 		assertNotNull(article);
 
@@ -156,7 +156,7 @@ public class WsjSourceParserTest implements Module {
 		/* The month was originally all caps. */
 		Date date = article.getDate();
 		assertEquals("September 24, 2010",
-				WsjSourceParser.DATE_FORMAT.format(date));
+				WsjArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
@@ -173,7 +173,7 @@ public class WsjSourceParserTest implements Module {
 	private void doTestNewswire() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = sourceParser.parse(URL_NEWSWIRE);
+		ProtoArticle article = articleParser.parse(URL_NEWSWIRE);
 
 		assertNotNull(article);
 
@@ -186,7 +186,7 @@ public class WsjSourceParserTest implements Module {
 		/* The month was originally all caps. Also, there was a time after this. */
 		Date date = article.getDate();
 		assertEquals("September 24, 2010",
-				WsjSourceParser.DATE_FORMAT.format(date));
+				WsjArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
