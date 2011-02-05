@@ -41,10 +41,6 @@
 		<!-- gwt-dispatch -->
 		<pathelement location="${workspace}/gwt-dispatch.jar" />
 		
-		<!-- GwtUtil -->
-		<pathelement location="${workspace}/GwtUtil/src" />
-		<pathelement location="${workspace}/GwtUtil/bin" />
-		
 		<!-- Guava -->
 		<pathelement location="${workspace}/guava-r07/guava-r07.jar" />
 		<pathelement location="${workspace}/guava-r07/guava-r07-gwt.jar" />
