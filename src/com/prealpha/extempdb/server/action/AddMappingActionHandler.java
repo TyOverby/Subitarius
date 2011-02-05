@@ -11,6 +11,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -24,6 +25,7 @@ import com.prealpha.extempdb.server.domain.TagMappingAction.Type;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
+import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.wideplay.warp.persist.Transactional;
 
 class AddMappingActionHandler implements
@@ -35,11 +37,14 @@ class AddMappingActionHandler implements
 
 	private final HttpSession httpSession;
 
+	private final Mapper mapper;
+
 	@Inject
 	public AddMappingActionHandler(EntityManager entityManager,
-			HttpSession httpSession) {
+			HttpSession httpSession, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.httpSession = httpSession;
+		this.mapper = mapper;
 	}
 
 	@Transactional
@@ -47,16 +52,17 @@ class AddMappingActionHandler implements
 	public MutationResult execute(AddMappingAction action, Dispatcher dispatcher)
 			throws ActionException {
 		User user = (User) httpSession.getAttribute("user");
-		Long mappingId = action.getMappingId();
+		TagMappingDto.Key dtoKey = action.getMappingKey();
+		TagMapping.Key mappingKey = mapper.map(dtoKey, TagMapping.Key.class);
 
 		if (user == null) {
 			log.info(
-					"denied permission to patrol/delete on mapping ID {} (not logged in)",
-					mappingId);
+					"denied permission to patrol/delete on mapping key {} (not logged in)",
+					mappingKey);
 			return MutationResult.PERMISSION_DENIED;
 		}
 
-		TagMapping mapping = entityManager.find(TagMapping.class, mappingId);
+		TagMapping mapping = entityManager.find(TagMapping.class, mappingKey);
 		TagMappingAction mappingAction = new TagMappingAction();
 		Type type = Type.valueOf(action.getType().name());
 		mappingAction.setMapping(mapping);
@@ -68,10 +74,11 @@ class AddMappingActionHandler implements
 		String userName = user.getName();
 		switch (mappingAction.getType()) {
 		case PATROL:
-			log.info("user \"{}\" patrolled mapping ID {}", userName, mappingId);
+			log.info("user \"{}\" patrolled mapping key {}", userName,
+					mappingKey);
 			break;
 		case REMOVE:
-			log.info("user \"{}\" removed mapping ID {}", userName, mappingId);
+			log.info("user \"{}\" removed mapping key {}", userName, mappingKey);
 			break;
 		default:
 			throw new IllegalStateException();

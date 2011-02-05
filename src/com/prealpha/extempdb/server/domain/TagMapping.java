@@ -6,15 +6,22 @@
 
 package com.prealpha.extempdb.server.domain;
 
+import static com.google.common.base.Preconditions.*;
+
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -22,33 +29,111 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "tag_name",
-		"article_id" }) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "TAG_NAME",
+		"ARTICLE_ID" }) })
 public class TagMapping {
+	/*
+	 * Note that hashCode() and equals() ignore the tag name's case.
+	 */
+	@Embeddable
+	public static final class Key implements Serializable {
+		private static final long serialVersionUID = 1139347306367529620L;
+
+		private String tagName;
+
+		private Long articleId;
+
+		// persistence support
+		@SuppressWarnings("unused")
+		private Key() {
+		}
+
+		public Key(String tagName, Long articleId) {
+			setTagName(tagName);
+			setArticleId(articleId);
+		}
+
+		public String getTagName() {
+			return tagName;
+		}
+
+		public void setTagName(String tagName) {
+			checkNotNull(tagName);
+			this.tagName = tagName;
+		}
+
+		public Long getArticleId() {
+			return articleId;
+		}
+
+		public void setArticleId(Long articleId) {
+			checkNotNull(articleId);
+			this.articleId = articleId;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((articleId == null) ? 0 : articleId.hashCode());
+			result = prime
+					* result
+					+ ((tagName == null) ? 0 : tagName.toUpperCase().hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (!(obj instanceof Key)) {
+				return false;
+			}
+			Key other = (Key) obj;
+			if (articleId == null) {
+				if (other.articleId != null) {
+					return false;
+				}
+			} else if (!articleId.equals(other.articleId)) {
+				return false;
+			}
+			if (tagName == null) {
+				if (other.tagName != null) {
+					return false;
+				}
+			} else if (!tagName.equalsIgnoreCase(other.tagName)) {
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("{ %s; %d }", tagName, articleId);
+		}
+
+		private void readObject(ObjectInputStream ois) throws IOException,
+				ClassNotFoundException {
+			ois.defaultReadObject();
+
+			if (tagName == null || articleId == null) {
+				throw new InvalidObjectException("null instance field");
+			}
+		}
+	}
+
 	public static enum State {
 		PATROLLED, UNPATROLLED, REMOVED;
 	}
 
-	/*
-	 * TODO: this doesn't feel right
-	 */
-	public static CriteriaQuery<TagMapping> getCriteria(Tag tag,
-			Article article, CriteriaBuilder builder) {
-		CriteriaQuery<TagMapping> criteria = builder
-				.createQuery(TagMapping.class);
-		Root<TagMapping> tagMappingRoot = criteria.from(TagMapping.class);
-		criteria.where(builder.and(
-				builder.equal(tagMappingRoot.get(TagMapping_.tag), tag),
-				builder.equal(tagMappingRoot.get(TagMapping_.article), article)));
-		return criteria;
-	}
-
-	private Long id;
+	private Key key;
 
 	private Tag tag;
 
@@ -61,17 +146,16 @@ public class TagMapping {
 	public TagMapping() {
 	}
 
-	@Id
-	@GeneratedValue
-	public Long getId() {
-		return id;
+	@EmbeddedId
+	public Key getKey() {
+		return key;
 	}
 
-	@SuppressWarnings("unused")
-	private void setId(Long id) {
-		this.id = id;
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
+	@MapsId("tagName")
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	public Tag getTag() {
@@ -82,6 +166,7 @@ public class TagMapping {
 		this.tag = tag;
 	}
 
+	@MapsId("articleId")
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	public Article getArticle() {

@@ -29,7 +29,7 @@ public class GetMappingsByArticle extends GetMappings {
 
 	@Override
 	public boolean apply(TagMappingDto mapping) {
-		return (articleId.equals(mapping.getArticle().getId()));
+		return (articleId.equals(mapping.getKey().getArticleId()));
 	}
 
 	@Override

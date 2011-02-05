@@ -133,7 +133,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 		String tagName = browseState.getTagName();
 		if (tagName == null) {
 			inputWidget.setValue(null);
-			tablePresenter.bind(Collections.<Long> emptyList());
+			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
 		} else {
 			GetTag tagAction = new GetTag(tagName);
 			dispatcher.execute(tagAction, new ManagedCallback<GetTagResult>() {
@@ -151,7 +151,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 							new ManagedCallback<GetMappingsResult>() {
 								@Override
 								public void onSuccess(GetMappingsResult result) {
-									tablePresenter.bind(result.getMappingIds());
+									tablePresenter.bind(result.getMappingKeys());
 								}
 							});
 				}

@@ -6,9 +6,14 @@
 
 package com.prealpha.extempdb.server.action;
 
+import java.util.List;
+
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
+import com.google.common.collect.ImmutableList;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
@@ -37,8 +42,6 @@ public class ActionModule extends ActionHandlerModule {
 
 	@Override
 	protected void configure() {
-		bind(Mapper.class).to(DozerBeanMapper.class).in(Singleton.class);
-
 		bindHandler(AddMapping.class, AddMappingHandler.class);
 		bindHandler(AddMappingAction.class, AddMappingActionHandler.class);
 		bindHandler(ChangePassword.class, ChangePasswordHandler.class);
@@ -64,5 +67,14 @@ public class ActionModule extends ActionHandlerModule {
 		SessionValidator interceptor = new SessionValidator();
 		requestInjection(interceptor);
 		bindInterceptor(classMatcher, Matchers.any(), interceptor);
+	}
+
+	@Provides
+	@Singleton
+	@Inject
+	Mapper getMapper(DozerBeanMapper mapper) {
+		List<String> mappingFiles = ImmutableList.of("bean-mapping.xml");
+		mapper.setMappingFiles(mappingFiles);
+		return mapper;
 	}
 }

@@ -10,12 +10,13 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.CacheableAction;
 import com.prealpha.dispatch.shared.MergeableAction;
+import com.prealpha.extempdb.shared.dto.TagMappingDto;
 
 public class GetMapping implements CacheableAction<GetMappingResult>,
 		MergeableAction<GetMappingResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 
-	private Long mappingId;
+	private TagMappingDto.Key mappingKey;
 
 	private long cacheExpiry;
 
@@ -24,14 +25,14 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 	private GetMapping() {
 	}
 
-	public GetMapping(Long mappingId) {
-		checkNotNull(mappingId);
-		this.mappingId = mappingId;
+	public GetMapping(TagMappingDto.Key mappingKey) {
+		checkNotNull(mappingKey);
+		this.mappingKey = mappingKey;
 		cacheExpiry = System.currentTimeMillis() + EXPIRY_TIME;
 	}
 
-	public Long getMappingId() {
-		return mappingId;
+	public TagMappingDto.Key getMappingKey() {
+		return mappingKey;
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((mappingId == null) ? 0 : mappingId.hashCode());
+				+ ((mappingKey == null) ? 0 : mappingKey.hashCode());
 		return result;
 	}
 
@@ -60,11 +61,11 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 			return false;
 		}
 		GetMapping other = (GetMapping) obj;
-		if (mappingId == null) {
-			if (other.mappingId != null) {
+		if (mappingKey == null) {
+			if (other.mappingKey != null) {
 				return false;
 			}
-		} else if (!mappingId.equals(other.mappingId)) {
+		} else if (!mappingKey.equals(other.mappingKey)) {
 			return false;
 		}
 		return true;

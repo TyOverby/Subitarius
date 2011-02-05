@@ -55,16 +55,15 @@ class GetMappingsByArticleHandler implements
 			dtos.add(mapper.map(mapping, TagMappingDto.class));
 		}
 
-		List<Long> mappingIds = new ArrayList<Long>();
-
+		List<TagMappingDto.Key> mappingKeys = new ArrayList<TagMappingDto.Key>();
 		for (TagMappingDto dto : Iterables.filter(dtos, action)) {
-			mappingIds.add(dto.getId());
+			mappingKeys.add(dto.getKey());
 		}
 
 		log.info(
-				"handled request for mappings to article ID {}, returning {} mappings",
-				articleId, mappingIds.size());
+				"handled request for mappings to article ID {}, returning {} mapping keys",
+				articleId, mappingKeys.size());
 
-		return new GetMappingsResult(mappingIds);
+		return new GetMappingsResult(mappingKeys);
 	}
 }

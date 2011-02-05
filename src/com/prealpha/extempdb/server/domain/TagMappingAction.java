@@ -1,6 +1,6 @@
 /*
  * TagMappingAction.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -15,6 +15,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,7 +51,9 @@ public class TagMappingAction {
 	}
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumns({
+			@JoinColumn(nullable = false, name = "MAPPING_TAG_NAME", referencedColumnName = "TAG_NAME"),
+			@JoinColumn(nullable = false, name = "MAPPING_ARTICLE_ID", referencedColumnName = "ARTICLE_ID") })
 	public TagMapping getMapping() {
 		return mapping;
 	}

@@ -87,8 +87,8 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	private class MappingsCallback extends ManagedCallback<GetMappingsResult> {
 		@Override
 		public void onSuccess(GetMappingsResult result) {
-			for (Long mappingId : result.getMappingIds()) {
-				GetMapping action = new GetMapping(mappingId);
+			for (TagMappingDto.Key mappingKey : result.getMappingKeys()) {
+				GetMapping action = new GetMapping(mappingKey);
 				dispatcher.execute(action, new MappingCallback());
 			}
 		}

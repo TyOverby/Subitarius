@@ -105,10 +105,9 @@ final class SearchState {
 				.getSingleResult();
 
 		if (existing != null) {
-			CriteriaQuery<TagMapping> mappingCriteria = TagMapping.getCriteria(
-					tag, existing, builder);
-			TagMapping mapping = entityManager.createQuery(mappingCriteria)
-					.getSingleResult();
+			TagMapping.Key key = new TagMapping.Key(tag.getName(),
+					existing.getId());
+			TagMapping mapping = entityManager.find(TagMapping.class, key);
 
 			if (mapping == null) {
 				mapArticle(existing);

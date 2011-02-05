@@ -104,9 +104,9 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 
 	private void updateMapping(Type type) {
 		String sessionId = sessionManager.getSessionId();
-		Long mappingId = mapping.getId();
+		TagMappingDto.Key mappingKey = mapping.getKey();
 
-		AddMappingAction action = new AddMappingAction(sessionId, mappingId,
+		AddMappingAction action = new AddMappingAction(sessionId, mappingKey,
 				type);
 		dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 			@Override

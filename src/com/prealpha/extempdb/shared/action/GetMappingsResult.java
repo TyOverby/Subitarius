@@ -13,21 +13,22 @@ import java.util.Collections;
 import java.util.List;
 
 import com.prealpha.dispatch.shared.Result;
+import com.prealpha.extempdb.shared.dto.TagMappingDto;
 
 public class GetMappingsResult implements Result {
-	private ArrayList<Long> mappingIds;
+	private ArrayList<TagMappingDto.Key> mappingKeys;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetMappingsResult() {
 	}
 
-	public GetMappingsResult(List<Long> mappingIds) {
-		checkNotNull(mappingIds);
-		this.mappingIds = new ArrayList<Long>(mappingIds);
+	public GetMappingsResult(List<TagMappingDto.Key> mappingKeys) {
+		checkNotNull(mappingKeys);
+		this.mappingKeys = new ArrayList<TagMappingDto.Key>(mappingKeys);
 	}
 
-	public List<Long> getMappingIds() {
-		return Collections.unmodifiableList(mappingIds);
+	public List<TagMappingDto.Key> getMappingKeys() {
+		return Collections.unmodifiableList(mappingKeys);
 	}
 }

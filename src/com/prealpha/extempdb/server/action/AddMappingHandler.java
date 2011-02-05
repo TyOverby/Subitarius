@@ -10,9 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -22,8 +19,6 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
-import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMapping.State;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
@@ -62,20 +57,12 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 			return MutationResult.PERMISSION_DENIED;
 		}
 
-		Tag tag = entityManager.find(Tag.class, tagName);
-		Article article = entityManager.find(Article.class, articleId);
+		TagMapping.Key key = new TagMapping.Key(tagName, articleId);
+		TagMapping mapping = entityManager.find(TagMapping.class, key);
 
-		TagMapping mapping;
-
-		try {
-			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-			CriteriaQuery<TagMapping> criteria = TagMapping.getCriteria(tag,
-					article, builder);
-			mapping = entityManager.createQuery(criteria).getSingleResult();
-		} catch (NoResultException nrx) {
+		if (mapping == null) {
 			mapping = new TagMapping();
-			mapping.setTag(tag);
-			mapping.setArticle(article);
+			mapping.setKey(key);
 			mapping.setAdded(new Date());
 			mapping.setActions(Collections.<TagMappingAction> emptyList());
 			entityManager.persist(mapping);

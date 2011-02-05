@@ -40,13 +40,15 @@ class GetMappingHandler implements ActionHandler<GetMapping, GetMappingResult> {
 	@Override
 	public GetMappingResult execute(GetMapping action, Dispatcher dispatcher)
 			throws ActionException {
-		Long mappingId = action.getMappingId();
-		TagMapping mapping = entityManager.find(TagMapping.class, mappingId);
+		TagMappingDto.Key dtoKey = action.getMappingKey();
+		TagMapping.Key mappingKey = mapper.map(dtoKey, TagMapping.Key.class);
+		TagMapping mapping = entityManager.find(TagMapping.class, mappingKey);
+
 		if (mapping == null) {
-			log.info("handled request for non-existent tag mapping, ID {}",
-					mappingId);
+			log.info("handled request for non-existent tag mapping, key {}",
+					mappingKey);
 		} else {
-			log.info("handled request for tag mapping, ID {}", mappingId);
+			log.info("handled request for tag mapping, key {}", mappingKey);
 		}
 		TagMappingDto mappingDto = mapper.map(mapping, TagMappingDto.class);
 		return new GetMappingResult(mappingDto);

@@ -59,16 +59,15 @@ class GetMappingsByTagHandler implements
 			Collections.sort(dtos, action.getComparator());
 		}
 
-		List<Long> mappingIds = new ArrayList<Long>();
-
+		List<TagMappingDto.Key> mappingKeys = new ArrayList<TagMappingDto.Key>();
 		for (TagMappingDto dto : Iterables.filter(dtos, action)) {
-			mappingIds.add(dto.getId());
+			mappingKeys.add(dto.getKey());
 		}
 
 		log.info(
-				"handled request for mappings to tag {}, returning {} mappings",
-				tagName, mappingIds.size());
+				"handled request for mappings to tag \"{}\", returning {} mapping keys",
+				tagName, mappingKeys.size());
 
-		return new GetMappingsResult(mappingIds);
+		return new GetMappingsResult(mappingKeys);
 	}
 }

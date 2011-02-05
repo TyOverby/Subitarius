@@ -72,7 +72,7 @@ public class GetMappingsByTag extends GetMappings {
 
 	@Override
 	public boolean apply(TagMappingDto mapping) {
-		if (!tagName.equals(mapping.getTag().getName())) {
+		if (!tagName.equals(mapping.getKey().getTagName())) {
 			return false;
 		} else if (!states.contains(mapping.getState())) {
 			return false;

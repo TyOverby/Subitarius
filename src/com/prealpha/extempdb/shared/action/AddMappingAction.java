@@ -9,11 +9,12 @@ package com.prealpha.extempdb.shared.action;
 import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
+import com.prealpha.extempdb.shared.dto.TagMappingDto;
 
 public class AddMappingAction implements AuthenticatedAction<MutationResult> {
 	private String sessionId;
 
-	private Long mappingId;
+	private TagMappingDto.Key mappingKey;
 
 	private Type type;
 
@@ -22,13 +23,14 @@ public class AddMappingAction implements AuthenticatedAction<MutationResult> {
 	private AddMappingAction() {
 	}
 
-	public AddMappingAction(String sessionId, Long mappingId, Type type) {
+	public AddMappingAction(String sessionId, TagMappingDto.Key mappingKey,
+			Type type) {
 		checkNotNull(sessionId);
-		checkNotNull(mappingId);
+		checkNotNull(mappingKey);
 		checkNotNull(type);
 
 		this.sessionId = sessionId;
-		this.mappingId = mappingId;
+		this.mappingKey = mappingKey;
 		this.type = type;
 	}
 
@@ -37,8 +39,8 @@ public class AddMappingAction implements AuthenticatedAction<MutationResult> {
 		return sessionId;
 	}
 
-	public Long getMappingId() {
-		return mappingId;
+	public TagMappingDto.Key getMappingKey() {
+		return mappingKey;
 	}
 
 	public Type getType() {
