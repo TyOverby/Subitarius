@@ -1,10 +1,12 @@
 /*
  * TagManagerWidget.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.client.settings;
+
+import java.util.Set;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.common.TagInputBox;
+import com.prealpha.extempdb.shared.dto.TagDto;
 
 public class TagManagerWidget extends Composite implements
 		TagManagerPresenter.Display {
@@ -33,7 +36,7 @@ public class TagManagerWidget extends Composite implements
 	final MultiTagInputBox parentInput;
 
 	@UiField
-	FocusWidget saveButton;
+	FocusWidget updateButton;
 
 	@UiField
 	FocusWidget deleteButton;
@@ -64,13 +67,13 @@ public class TagManagerWidget extends Composite implements
 	}
 
 	@Override
-	public MultiTagInputBox getParentInput() {
+	public HasValue<Set<TagDto>> getParentInput() {
 		return parentInput;
 	}
 
 	@Override
-	public HasClickHandlers getSaveButton() {
-		return saveButton;
+	public HasClickHandlers getUpdateButton() {
+		return updateButton;
 	}
 
 	@Override

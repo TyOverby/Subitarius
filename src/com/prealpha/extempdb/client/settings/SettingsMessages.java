@@ -1,6 +1,6 @@
 /*
  * SettingsMessages.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -22,7 +22,7 @@ public interface SettingsMessages extends Messages {
 
 	String parentLabel();
 
-	String saveButton();
+	String updateButton();
 
 	String deleteButton();
 

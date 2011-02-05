@@ -21,6 +21,8 @@ import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
 public class TagInputSuggestOracle extends SuggestOracle {
 	private final DispatcherAsync dispatcher;
 
+	private String lastPrefix;
+
 	@Inject
 	public TagInputSuggestOracle(DispatcherAsync dispatcher) {
 		this.dispatcher = dispatcher;
@@ -28,7 +30,8 @@ public class TagInputSuggestOracle extends SuggestOracle {
 
 	@Override
 	public void requestSuggestions(Request request, Callback callback) {
-		GetTagSuggestions action = new GetTagSuggestions(request.getQuery(),
+		lastPrefix = request.getQuery();
+		GetTagSuggestions action = new GetTagSuggestions(lastPrefix,
 				request.getLimit());
 		dispatcher.execute(action, new SuggestionCallback(request, callback));
 	}
@@ -46,6 +49,12 @@ public class TagInputSuggestOracle extends SuggestOracle {
 
 		@Override
 		public void onSuccess(GetTagSuggestionsResult result) {
+			String requestPrefix = request.getQuery();
+			if (!requestPrefix.equals(lastPrefix)) {
+				// this result is already out of date
+				return;
+			}
+
 			Set<String> tagNames = result.getSuggestions();
 			Set<Suggestion> suggestions = new HashSet<Suggestion>();
 

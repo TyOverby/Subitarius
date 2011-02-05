@@ -7,6 +7,7 @@
 package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
+
 import com.prealpha.dispatch.shared.ActionException;
 
 public class InvalidSessionException extends ActionException {
@@ -15,7 +16,8 @@ public class InvalidSessionException extends ActionException {
 	private final String payloadId;
 
 	public InvalidSessionException(String cookieId, String payloadId) {
-		super("invalid session ID in payload", null);
+		super("invalid session ID in payload");
+		initCause(null);
 
 		checkNotNull(cookieId);
 		checkArgument(!cookieId.equals(payloadId));

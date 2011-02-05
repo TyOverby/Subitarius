@@ -1,6 +1,6 @@
 /*
  * UpdateTag.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,32 +8,34 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.extempdb.shared.dto.TagDto;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UpdateTag implements AuthenticatedAction<MutationResult> {
-	public static enum UpdateType {
-		SAVE, DELETE;
-	}
-
 	private String sessionId;
 
-	private TagDto tag;
+	private String tagName;
 
-	private UpdateType updateType;
+	private boolean searched;
+
+	private HashSet<String> parents;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private UpdateTag() {
 	}
 
-	public UpdateTag(String sessionId, TagDto tag, UpdateType updateType) {
+	public UpdateTag(String sessionId, String tagName, boolean searched,
+			Set<String> parents) {
 		checkNotNull(sessionId);
-		checkNotNull(tag);
-		checkNotNull(updateType);
+		checkNotNull(tagName);
+		checkNotNull(parents);
 
 		this.sessionId = sessionId;
-		this.tag = tag;
-		this.updateType = updateType;
+		this.tagName = tagName;
+		this.searched = searched;
+		this.parents = new HashSet<String>(parents);
 	}
 
 	@Override
@@ -41,11 +43,15 @@ public class UpdateTag implements AuthenticatedAction<MutationResult> {
 		return sessionId;
 	}
 
-	public TagDto getTag() {
-		return tag;
+	public String getTagName() {
+		return tagName;
 	}
 
-	public UpdateType getUpdateType() {
-		return updateType;
+	public boolean isSearched() {
+		return searched;
+	}
+
+	public Set<String> getParents() {
+		return Collections.unmodifiableSet(parents);
 	}
 }

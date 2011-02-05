@@ -22,6 +22,7 @@ import com.prealpha.dispatch.server.ActionHandlerModule;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.ChangePassword;
+import com.prealpha.extempdb.shared.action.DeleteTag;
 import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetHierarchy;
 import com.prealpha.extempdb.shared.action.GetMapping;
@@ -45,6 +46,7 @@ public class ActionModule extends ActionHandlerModule {
 		bindHandler(AddMapping.class, AddMappingHandler.class);
 		bindHandler(AddMappingAction.class, AddMappingActionHandler.class);
 		bindHandler(ChangePassword.class, ChangePasswordHandler.class);
+		bindHandler(DeleteTag.class, DeleteTagHandler.class);
 		bindHandler(GetArticle.class, GetArticleHandler.class);
 		bindHandler(GetHierarchy.class, GetHierarchyHandler.class);
 		bindHandler(GetMapping.class, GetMappingHandler.class);

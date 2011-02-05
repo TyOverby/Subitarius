@@ -61,8 +61,8 @@ class LogInHandler implements ActionHandler<LogIn, GetUserResult> {
 		String hash = user.getHash();
 		if (BCrypt.checkpw(password, hash)) {
 			httpSession.setAttribute("user", user);
-			log.info("successful login for user \"{}\", session ID \"{}\"",
-					name, httpSession.getId());
+			log.info("successful login for user \"{}\", session ID {}", name,
+					httpSession.getId());
 			UserDto dto = mapper.map(user, UserDto.class);
 			return new GetUserResult(dto);
 		} else {

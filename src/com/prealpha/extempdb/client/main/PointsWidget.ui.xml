@@ -7,7 +7,7 @@
 		type="com.prealpha.extempdb.client.common.CommonResources" />
 	<ui:with field="msg" type="com.prealpha.extempdb.client.main.MainMessages" />
 
-	<g:VerticalPanel>
+	<g:VerticalPanel visible="false">
 		<g:Label addStyleNames="{res.style.heading}" text="{msg.pointsHeading}" />
 		<g:Grid ui:field="pointsGrid" />
 	</g:VerticalPanel>

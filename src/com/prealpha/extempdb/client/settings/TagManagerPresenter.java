@@ -7,6 +7,7 @@
 package com.prealpha.extempdb.client.settings;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -24,14 +25,14 @@ import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.common.LoadingStatus;
 import com.prealpha.extempdb.client.common.TagInputBox;
 import com.prealpha.extempdb.client.error.ManagedCallback;
+import com.prealpha.extempdb.shared.action.DeleteTag;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.action.UpdateTag;
-import com.prealpha.extempdb.shared.action.UpdateTag.UpdateType;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
 /*
  * TODO: doesn't present anything
- * TODO: relies on Widgets directly, so would require GwtTestCase to unit test
+ * TODO: relies on TagInputBox directly, so would require GwtTestCase to unit test
  */
 public class TagManagerPresenter implements Presenter<Void> {
 	public static interface Display extends IsWidget {
@@ -39,9 +40,9 @@ public class TagManagerPresenter implements Presenter<Void> {
 
 		HasValue<Boolean> getSearchedBox();
 
-		MultiTagInputBox getParentInput();
+		HasValue<Set<TagDto>> getParentInput();
 
-		HasClickHandlers getSaveButton();
+		HasClickHandlers getUpdateButton();
 
 		HasClickHandlers getDeleteButton();
 
@@ -76,10 +77,10 @@ public class TagManagerPresenter implements Presenter<Void> {
 					}
 				});
 
-		display.getSaveButton().addClickHandler(new ClickHandler() {
+		display.getUpdateButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				save();
+				update();
 			}
 		});
 
@@ -119,18 +120,35 @@ public class TagManagerPresenter implements Presenter<Void> {
 		}
 	}
 
-	private void save() {
+	private void update() {
 		if (display.getParentInput().getValue().size() == 0) {
 			if (!Window.confirm(messages.saveNoParent())) {
 				return;
 			}
 		}
 
-		doUpdate(UpdateType.SAVE);
+		if (isStatusValid(true)) {
+			String tagName = display.getTagInput().getTagName();
+			boolean searched = display.getSearchedBox().getValue();
+			Set<String> parents = new HashSet<String>();
+			for (TagDto parentDto : display.getParentInput().getValue()) {
+				parents.add(parentDto.getName());
+			}
+
+			String sessionId = sessionManager.getSessionId();
+			UpdateTag action = new UpdateTag(sessionId, tagName, searched,
+					parents);
+			dispatcher.execute(action, new ActionCallback());
+		}
 	}
 
 	private void delete() {
-		doUpdate(UpdateType.DELETE);
+		if (isStatusValid(false)) {
+			String sessionId = sessionManager.getSessionId();
+			String tagName = display.getTagInput().getTagName();
+			DeleteTag action = new DeleteTag(sessionId, tagName);
+			dispatcher.execute(action, new ActionCallback());
+		}
 	}
 
 	private void reset() {
@@ -139,37 +157,25 @@ public class TagManagerPresenter implements Presenter<Void> {
 		display.getErrorLabel().setText(null);
 	}
 
-	private void doUpdate(UpdateType updateType) {
-		LoadingStatus loadingStatus = display.getTagInput().getLoadingStatus();
-
-		switch (loadingStatus) {
+	private boolean isStatusValid(boolean notFoundValid) {
+		switch (display.getTagInput().getLoadingStatus()) {
 		case NOT_FOUND:
-			if (updateType.equals(UpdateType.SAVE)) {
+			if (notFoundValid) {
 				break;
 			}
 		case NONE:
 			display.getErrorLabel().setText(messages.noTagInput());
-			return;
+			return false;
 		case PENDING:
 			display.getErrorLabel().setText(messages.noTagLoaded());
-			return;
+			return false;
 		}
 
-		TagDto tag = display.getTagInput().create();
-		tag.setSearched(display.getSearchedBox().getValue());
-		tag.setParents(display.getParentInput().getValue());
-
-		// workaround for serialization issue
-		tag.setParents(new HashSet<TagDto>(tag.getParents()));
-
-		String sessionId = sessionManager.getSessionId();
-		UpdateTag action = new UpdateTag(sessionId, tag, updateType);
-		dispatcher.execute(action, new UpdateCallback());
-
 		display.getErrorLabel().setText(null);
+		return true;
 	}
 
-	private class UpdateCallback extends ManagedCallback<MutationResult> {
+	private static class ActionCallback extends ManagedCallback<MutationResult> {
 		@Override
 		public void onSuccess(MutationResult result) {
 			Window.Location.reload();

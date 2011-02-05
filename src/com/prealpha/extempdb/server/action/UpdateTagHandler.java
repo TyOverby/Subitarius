@@ -23,7 +23,6 @@ import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.action.UpdateTag;
-import com.prealpha.extempdb.shared.dto.TagDto;
 import com.wideplay.warp.persist.Transactional;
 
 class UpdateTagHandler implements ActionHandler<UpdateTag, MutationResult> {
@@ -55,38 +54,34 @@ class UpdateTagHandler implements ActionHandler<UpdateTag, MutationResult> {
 			return MutationResult.PERMISSION_DENIED;
 		}
 
-		TagDto dto = action.getTag();
-		Tag tag = entityManager.find(Tag.class, dto.getName());
+		String tagName = action.getTagName();
+		Tag tag = entityManager.find(Tag.class, tagName);
 
 		if (tag == null) {
 			tag = new Tag();
-			tag.setName(dto.getName());
+			tag.setName(tagName);
 		}
 
-		switch (action.getUpdateType()) {
-		case SAVE:
-			tag.setSearched(dto.isSearched());
+		tag.setSearched(action.isSearched());
 
-			Set<Tag> parents = new HashSet<Tag>();
-			for (TagDto parentDto : dto.getParents()) {
-				Tag parent = entityManager.find(Tag.class, parentDto.getName());
+		Set<Tag> parents = new HashSet<Tag>();
+		for (String parentName : action.getParents()) {
+			Tag parent = entityManager.find(Tag.class, parentName);
+			if (parent == null) {
+				Object[] params = { user.getName(), parentName, tagName };
+				log.info(
+						"rejected attempt by user \"{}\" to add non-existent tag name \"{}\" as parent to tag \"{}\"",
+						params);
+				return MutationResult.INVALID_REQUEST;
+			} else {
 				parents.add(parent);
 			}
-			tag.setParents(parents);
-
-			entityManager.persist(tag);
-			log.info("user \"{}\" created or updated tag with new values: {}",
-					user.getName(), tag);
-			break;
-		case DELETE:
-			entityManager.remove(tag);
-			log.info("user \"{}\" deleted tag \"{}\"", user.getName(),
-					tag.getName());
-			break;
-		default:
-			throw new IllegalStateException();
 		}
+		tag.setParents(parents);
 
+		entityManager.persist(tag);
+		log.info("user \"{}\" created or updated tag with new values: {}",
+				user.getName(), tag);
 		return MutationResult.SUCCESS;
 	}
 }
