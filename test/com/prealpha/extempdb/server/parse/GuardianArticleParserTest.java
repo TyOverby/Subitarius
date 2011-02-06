@@ -37,8 +37,6 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
 public class GuardianArticleParserTest implements Module {
-	private static final String ORIGINAL_URL = "http://www.guardian.co.uk/world/2011/jan/27/egypt-riot-security-force-action";
-
 	private static final String URL = "http://www.guardian.co.uk/world/2011/jan/27/egypt-riot-security-force-action/print";
 
 	private static final Map<String, String> PARAMETERS = Collections
@@ -91,7 +89,7 @@ public class GuardianArticleParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = articleParser.parse(ORIGINAL_URL);
+		ProtoArticle article = articleParser.parse(URL);
 
 		assertNotNull(article);
 

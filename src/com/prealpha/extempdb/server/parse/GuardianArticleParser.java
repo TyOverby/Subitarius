@@ -53,9 +53,6 @@ class GuardianArticleParser extends AbstractArticleParser {
 
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
-		// we want the printable version
-		url += "/print";
-
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
