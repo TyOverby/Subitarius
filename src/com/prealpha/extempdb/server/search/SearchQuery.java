@@ -8,6 +8,7 @@ package com.prealpha.extempdb.server.search;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.util.Collections;
 import java.util.Date;
 
 import com.google.inject.Injector;
@@ -15,6 +16,7 @@ import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
+import com.prealpha.extempdb.server.domain.TagMappingAction;
 import com.prealpha.extempdb.server.parse.ArticleParser;
 
 final class SearchQuery {
@@ -47,9 +49,13 @@ final class SearchQuery {
 	public TagMapping createTagMapping(Article article) {
 		checkNotNull(article);
 		TagMapping mapping = new TagMapping();
+		TagMapping.Key mappingKey = new TagMapping.Key(tag.getName(),
+				article.getId());
+		mapping.setKey(mappingKey);
 		mapping.setTag(tag);
 		mapping.setArticle(article);
 		mapping.setAdded(new Date());
+		mapping.setActions(Collections.<TagMappingAction> emptyList());
 		return mapping;
 	}
 
