@@ -80,12 +80,19 @@ class GuardianArticleParser extends AbstractArticleParser {
 		Element heading = titleElement.getChild("h1", namespace);
 		String title = heading.getValue();
 
-		// get the byline
+		// get the byline, if there is one
+		// http://www.guardian.co.uk/world/feedarticle/9475892
+		String byline;
 		Filter bylineElementFilter = XmlUtils.getElementFilter("a", "class",
 				"contributor");
-		Element bylineElement = (Element) (document
-				.getDescendants(bylineElementFilter)).next();
-		String byline = bylineElement.getValue();
+		Iterator<?> bylineIterator = document
+				.getDescendants(bylineElementFilter);
+		if (bylineIterator.hasNext()) {
+			Element bylineElement = (Element) bylineIterator.next();
+			byline = bylineElement.getValue();
+		} else {
+			byline = null;
+		}
 
 		/*
 		 * Get the date. The actual date is in a non-standard <time> element,
