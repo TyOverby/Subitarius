@@ -8,7 +8,7 @@ package com.prealpha.extempdb.server.search;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.prealpha.extempdb.server.domain.Article;
@@ -46,7 +46,7 @@ final class SearchQuery {
 		mapping.setTag(tag);
 		mapping.setArticle(article);
 		mapping.setAdded(new Date());
-		mapping.setActions(Collections.<TagMappingAction> emptyList());
+		mapping.setActions(new ArrayList<TagMappingAction>());
 		return mapping;
 	}
 
