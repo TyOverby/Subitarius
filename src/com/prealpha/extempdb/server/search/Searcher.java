@@ -100,6 +100,7 @@ public class Searcher implements Runnable {
 								"result article at URL {} parsed and persisted",
 								url);
 						entityManager.persist(article);
+						entityManager.flush(); // load the article ID
 						persistIfNew(query.createTagMapping(article));
 						resultCount++;
 					}
