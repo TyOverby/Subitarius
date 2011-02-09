@@ -101,7 +101,7 @@ public class GuardianArticleParserTest implements Module {
 
 		Date date = article.getDate();
 		assertEquals("Thursday 27 January 2011",
-				GuardianArticleParser.DATE_FORMAT.format(date));
+				GuardianArticleParser.DATE_FORMAT_UK.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
