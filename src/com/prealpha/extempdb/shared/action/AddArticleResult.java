@@ -24,7 +24,7 @@ public class AddArticleResult implements Result {
 
 		PERMISSION_DENIED(false);
 
-		private final boolean success;
+		private boolean success;
 
 		private Type(boolean success) {
 			this.success = success;
