@@ -11,13 +11,11 @@ import static com.google.common.base.Preconditions.*;
 import java.util.Collections;
 import java.util.Date;
 
-import com.google.inject.Injector;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
-import com.prealpha.extempdb.server.parse.ArticleParser;
 
 final class SearchQuery {
 	private final Source source;
@@ -37,13 +35,6 @@ final class SearchQuery {
 
 	public Tag getTag() {
 		return tag;
-	}
-
-	public ArticleParser getArticleParser(Injector injector)
-			throws ClassNotFoundException {
-		String parserClassName = source.getParserClass();
-		Class<?> parserClass = Class.forName(parserClassName);
-		return (ArticleParser) injector.getInstance(parserClass);
 	}
 
 	public TagMapping createTagMapping(Article article) {

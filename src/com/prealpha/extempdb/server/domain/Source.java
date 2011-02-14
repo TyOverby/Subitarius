@@ -10,6 +10,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import com.google.inject.Injector;
+import com.prealpha.extempdb.server.parse.ArticleParser;
 
 @Entity
 public class Source {
@@ -20,6 +24,8 @@ public class Source {
 	private String displayName;
 
 	private String parserClass;
+	
+	private ArticleParser parser;
 
 	public Source() {
 	}
@@ -61,6 +67,16 @@ public class Source {
 
 	public void setParserClass(String parserClass) {
 		this.parserClass = parserClass;
+	}
+	
+	@Transient
+	public ArticleParser getParser(Injector injector) throws ClassNotFoundException {
+		if (parser == null) {
+			String parserClassName = source.getParserClass();
+			Class<?> parserClass = Class.forName(parserClassName);
+			parser = (ArticleParser) injector.getInstance(parserClass);
+		}
+		return parser;
 	}
 
 	@Override

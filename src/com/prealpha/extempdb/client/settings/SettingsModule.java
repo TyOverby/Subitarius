@@ -1,6 +1,6 @@
 /*
  * SettingsModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -18,5 +18,6 @@ public class SettingsModule extends AbstractGinModule {
 		bind(TagManagerPresenter.Display.class).to(TagManagerWidget.class);
 		bind(PasswordChangePresenter.Display.class).to(
 				PasswordChangeWidget.class);
+		bind(AddArticlePresenter.Display.class).to(AddArticleWidget.class);
 	}
 }

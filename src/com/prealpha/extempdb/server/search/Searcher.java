@@ -6,11 +6,8 @@
 
 package com.prealpha.extempdb.server.search;
 
-import java.util.Date;
 import java.util.List;
-
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -18,35 +15,27 @@ import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.domain.Article_;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
-import com.prealpha.extempdb.server.http.StatusCodeException;
-import com.prealpha.extempdb.server.parse.ArticleParseException;
-import com.prealpha.extempdb.server.parse.ArticleParser;
-import com.prealpha.extempdb.server.parse.ProtoArticle;
 import com.wideplay.warp.persist.Transactional;
 
 public class Searcher implements Runnable {
 	@InjectLogger
 	private Logger log;
-
+	
 	private final EntityManager entityManager;
 
 	private final SearchProvider searchProvider;
 
-	private final Injector injector;
+	private final ArticleProcessor articleProcessor;
 
 	@Inject
-	public Searcher(EntityManager entityManager, SearchProvider searchProvider,
-			Injector injector) {
-		this.entityManager = entityManager;
+	public Searcher(SearchProvider searchProvider, ArticleProcessor articleProcessor) {
 		this.searchProvider = searchProvider;
-		this.injector = injector;
+		this.articleProcessor = articleProcessor;
 	}
 
 	@Override
@@ -74,69 +63,31 @@ public class Searcher implements Runnable {
 	}
 
 	@Transactional
-	void execute(SearchQuery query) throws SearchUnavailableException,
-			ClassNotFoundException {
+	void execute(SearchQuery query) throws SearchUnavailableException, ClassNotFoundException {
 		int resultCount = 0;
 		List<String> urls = searchProvider.search(query, 1);
-		ArticleParser parser = query.getArticleParser(injector);
 
 		if (urls.isEmpty()) {
 			log.info("found no results for query {}", query);
 		} else {
-			String url = parser.getCanonicalUrl(urls.get(0));
-			Article existing = getExistingArticle(url);
-
-			if (existing == null) {
+			for (String url : urls) {
 				try {
-					ProtoArticle protoArticle = parser.parse(url);
-					if (protoArticle != null) {
-						Article article = new Article();
-						protoArticle.fill(article);
-						article.setRetrievalDate(new Date());
-						article.setUrl(url);
-						article.setSource(query.getSource());
-
-						log.debug(
-								"result article at URL {} parsed and persisted",
-								url);
-						entityManager.persist(article);
+					Article article = articleProcessor.process(url, query.getSource());
+					if (article != null) {
 						persistIfNew(query.createTagMapping(article));
 						resultCount++;
 					}
 				} catch (ArticleParseException apx) {
 					if (apx.getCause() instanceof StatusCodeException) {
-						StatusCodeException scx = (StatusCodeException) apx
-								.getCause();
+						StatusCodeException scx = (StatusCodeException) apx.getCause();
 						int statusCode = scx.getStatusCode();
-						log.warn(
-								"article parse failed due to HTTP status code {}, URL {}",
-								statusCode, url);
+						log.warn("article parse failed due to HTTP status code {}, URL {}", statusCode, url);
 					} else {
 						log.warn("article parse failed, URL " + url + ": ", apx);
 					}
 				}
-			} else {
-				log.debug("result article at URL {} was previously parsed", url);
-				persistIfNew(query.createTagMapping(existing));
-				resultCount++;
 			}
-
 			log.info("handled {} result(s) for query {}", resultCount, query);
-		}
-	}
-
-	private Article getExistingArticle(String url) {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Article> criteria = builder.createQuery(Article.class);
-		Root<Article> articleRoot = criteria.from(Article.class);
-		criteria.where(builder.equal(articleRoot.get(Article_.url), url));
-
-		try {
-			Article existing = entityManager.createQuery(criteria)
-					.getSingleResult();
-			return existing;
-		} catch (NoResultException nrx) {
-			return null;
 		}
 	}
 

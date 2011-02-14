@@ -11,6 +11,8 @@
 			ui:field="passwordChangeWidget" />
 		<g:Widget addStyleNames="{res.style.contentSection}"
 			ui:field="tagManagerWidget" />
+		<g:Widget addStyleNames="{res.style.contentSection}"
+			ui:field="addArticleWidget" />
 	</g:HorizontalPanel>
 
 </ui:UiBinder>
