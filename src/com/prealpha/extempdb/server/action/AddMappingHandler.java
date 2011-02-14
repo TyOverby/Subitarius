@@ -6,7 +6,7 @@
 
 package com.prealpha.extempdb.server.action;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
@@ -19,6 +19,8 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
+import com.prealpha.extempdb.server.domain.Article;
+import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.domain.TagMapping.State;
 import com.prealpha.extempdb.server.domain.TagMappingAction;
@@ -61,10 +63,22 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 		TagMapping mapping = entityManager.find(TagMapping.class, key);
 
 		if (mapping == null) {
+			Tag tag = entityManager.find(Tag.class, tagName);
+			Article article = entityManager.find(Article.class, articleId);
+
+			if (tag == null || article == null) {
+				log.info(
+						"rejected mapping attempt; invalid tag (\"{}\") or article ({})",
+						tagName, articleId);
+				return MutationResult.INVALID_REQUEST;
+			}
+
 			mapping = new TagMapping();
 			mapping.setKey(key);
+			mapping.setTag(tag);
+			mapping.setArticle(article);
 			mapping.setAdded(new Date());
-			mapping.setActions(Collections.<TagMappingAction> emptyList());
+			mapping.setActions(new ArrayList<TagMappingAction>());
 			entityManager.persist(mapping);
 		}
 

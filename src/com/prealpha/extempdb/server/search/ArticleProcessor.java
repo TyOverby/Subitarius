@@ -89,6 +89,7 @@ public class ArticleProcessor {
 
 				log.debug("result article at URL {} parsed and persisted", url);
 				entityManager.persist(article);
+				entityManager.flush();
 				return article;
 			} else {
 				return null;

@@ -34,8 +34,11 @@ class GuardianArticleParser extends AbstractArticleParser {
 	/*
 	 * Package visibility for unit testing.
 	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+	static final DateFormat DATE_FORMAT_UK = new SimpleDateFormat(
 			"EEEEE d MMMMM yyyy");
+
+	private static final DateFormat DATE_FORMAT_US = new SimpleDateFormat(
+			"EEEEE MMMMM d yyyy");
 
 	private final HttpClient httpClient;
 
@@ -108,9 +111,15 @@ class GuardianArticleParser extends AbstractArticleParser {
 		String dateString = dateElement.getValue().split(",")[1].trim();
 		Date date;
 		try {
-			date = DATE_FORMAT.parse(dateString);
-		} catch (ParseException px) {
-			throw new ArticleParseException(px);
+			date = DATE_FORMAT_UK.parse(dateString);
+		} catch (ParseException px1) {
+			// US style dates are sometimes also used
+			// http://www.guardian.co.uk/world/feedarticle/9485574
+			try {
+				date = DATE_FORMAT_US.parse(dateString);
+			} catch (ParseException px2) {
+				throw new ArticleParseException(px2);
+			}
 		}
 
 		// get the body text
