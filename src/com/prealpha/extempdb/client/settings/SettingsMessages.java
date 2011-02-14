@@ -53,20 +53,20 @@ public interface SettingsMessages extends Messages {
 	String notLoggedIn();
 
 	String changeDenied();
-	
+
 	String addArticle();
-	
+
 	String statusLabel();
-	
+
 	String statusLabelInvalid();
-	
+
 	String statusLabelNoParser();
-	
+
 	String statusLabelNoArticle();
-	
+
 	String statusLabelFailed();
-	
+
 	String urlLabel();
-	
+
 	String addButton();
 }

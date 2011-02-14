@@ -14,34 +14,36 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-class AddArticleWidget extends Composite implements AddArticlePresenter.Display {
-	static interface AddArticleUiBinder extends UiBinder<Widget, AddArticleWidget> {
+public class AddArticleWidget extends Composite implements
+		AddArticlePresenter.Display {
+	public static interface AddArticleUiBinder extends
+			UiBinder<Widget, AddArticleWidget> {
 	}
-	
+
 	@UiField
 	HasText statusLabel;
-	
+
 	@UiField
 	HasText urlBox;
-	
+
 	@UiField
 	HasClickHandlers addButton;
-	
+
 	@Inject
 	public AddArticleWidget(AddArticleUiBinder uiBinder) {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
+
 	@Override
 	public HasText getStatusLabel() {
 		return statusLabel;
 	}
-	
+
 	@Override
 	public HasText getUrlBox() {
 		return urlBox;
 	}
-	
+
 	@Override
 	public HasClickHandlers getAddButton() {
 		return addButton;

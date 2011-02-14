@@ -24,7 +24,7 @@ public class Source {
 	private String displayName;
 
 	private String parserClass;
-	
+
 	private ArticleParser parser;
 
 	public Source() {
@@ -68,11 +68,12 @@ public class Source {
 	public void setParserClass(String parserClass) {
 		this.parserClass = parserClass;
 	}
-	
+
 	@Transient
-	public ArticleParser getParser(Injector injector) throws ClassNotFoundException {
+	public ArticleParser getParser(Injector injector)
+			throws ClassNotFoundException {
 		if (parser == null) {
-			String parserClassName = source.getParserClass();
+			String parserClassName = getParserClass();
 			Class<?> parserClass = Class.forName(parserClassName);
 			parser = (ArticleParser) injector.getInstance(parserClass);
 		}

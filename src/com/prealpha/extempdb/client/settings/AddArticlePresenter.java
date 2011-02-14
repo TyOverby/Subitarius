@@ -6,9 +6,12 @@
 
 package com.prealpha.extempdb.client.settings;
 
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
@@ -16,8 +19,8 @@ import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
 import com.prealpha.extempdb.client.HistoryManager;
-import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.Presenter;
+import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.AddArticle;
 import com.prealpha.extempdb.shared.action.AddArticleResult;
@@ -25,33 +28,35 @@ import com.prealpha.extempdb.shared.action.AddArticleResult;
 /*
  * TODO: doesn't present anything
  */
-class AddArticlePresenter implements Presenter<Void> {
-	static interface Display extends IsWidget {
-		HasTest getStatusLabel();
-		
+public class AddArticlePresenter implements Presenter<Void> {
+	public static interface Display extends IsWidget {
+		HasText getStatusLabel();
+
 		HasText getUrlBox();
-		
+
 		HasClickHandlers getAddButton();
 	}
-	
+
 	private final Display display;
-	
+
 	private final DispatcherAsync dispatcher;
-	
+
 	private final SessionManager sessionManager;
-	
+
 	private final HistoryManager historyManager;
-	
+
 	private final SettingsMessages messages;
-	
+
 	@Inject
-	public AddArticlePresenter(Display display, DispatcherAsync dispatcher, SessionManager sessionManager, HistoryManager historyManager, SettingsMessages messages) {
+	public AddArticlePresenter(Display display, DispatcherAsync dispatcher,
+			SessionManager sessionManager, HistoryManager historyManager,
+			SettingsMessages messages) {
 		this.display = display;
 		this.dispatcher = dispatcher;
 		this.sessionManager = sessionManager;
 		this.historyManager = historyManager;
 		this.messages = messages;
-		
+
 		display.getAddButton().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
@@ -59,16 +64,16 @@ class AddArticlePresenter implements Presenter<Void> {
 			}
 		});
 	}
-	
+
 	@Override
 	public Display getDisplay() {
 		return display;
 	}
-	
+
 	@Override
 	public void bind(Void v) {
 	}
-	
+
 	private void add() {
 		String sessionId = sessionManager.getSessionId();
 		String url = display.getUrlBox().getText();
@@ -76,9 +81,12 @@ class AddArticlePresenter implements Presenter<Void> {
 		dispatcher.execute(action, new ManagedCallback<AddArticleResult>() {
 			@Override
 			public void onSuccess(AddArticleResult result) {
-				if (result.isSuccess()) {
+				if (result.getType().isSuccess()) {
 					Long articleId = result.getArticleId();
-					AppState appState = new AppState(AppPlace.ARTICLE, articleId);
+					List<String> parameters = ImmutableList.of(articleId
+							.toString());
+					AppState appState = new AppState(AppPlace.ARTICLE,
+							parameters);
 					historyManager.setAppState(appState);
 				} else {
 					String message;
@@ -95,7 +103,7 @@ class AddArticlePresenter implements Presenter<Void> {
 					case PARSE_FAILED:
 						message = messages.statusLabelFailed();
 						break;
-					case NO_PERMISSION:
+					case PERMISSION_DENIED:
 						message = messages.notLoggedIn();
 						break;
 					default:

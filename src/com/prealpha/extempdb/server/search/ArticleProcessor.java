@@ -27,7 +27,6 @@ import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Article_;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Source_;
-import com.prealpha.extempdb.server.http.StatusCodeException;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.prealpha.extempdb.server.parse.ArticleParser;
 import com.prealpha.extempdb.server.parse.ProtoArticle;
@@ -36,45 +35,49 @@ import com.wideplay.warp.persist.Transactional;
 public class ArticleProcessor {
 	@InjectLogger
 	private Logger log;
-	
+
 	private final EntityManager entityManager;
-	
+
 	private final Injector injector;
-	
+
 	@Inject
 	public ArticleProcessor(EntityManager entityManager, Injector injector) {
 		this.entityManager = entityManager;
 		this.injector = injector;
 	}
-	
+
 	@Transactional
-	public Article process(String url) throws ArticleParseException, ClassNotFoundException, ParserNotFoundException, URISyntaxException {
+	public Article process(String url) throws ArticleParseException,
+			ClassNotFoundException, ParserNotFoundException, URISyntaxException {
 		checkNotNull(url);
 		URI uri = new URI(url);
 		String domainName = uri.getHost();
-		
+
 		try {
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Source> criteria = builder.createQuery(Source.class);
 			Root<Source> sourceRoot = criteria.from(Source.class);
-			criteria.where(builder.equal(sourceRoot.get(Source_.domainName), domainName));
-			Source source = entityManager.createQuery(criteria).getSingleResult();
-			
+			criteria.where(builder.equal(sourceRoot.get(Source_.domainName),
+					domainName));
+			Source source = entityManager.createQuery(criteria)
+					.getSingleResult();
+
 			return process(url, source);
 		} catch (NoResultException nrx) {
 			throw new ParserNotFoundException(domainName);
 		}
 	}
-	
+
 	@Transactional
-	public Article process(String url, Source source) throws ArticleParseException, ClassNotFoundException {
+	public Article process(String url, Source source)
+			throws ArticleParseException, ClassNotFoundException {
 		checkNotNull(url);
 		checkNotNull(source);
-		
+
 		ArticleParser parser = source.getParser(injector);
 		String canonicalUrl = parser.getCanonicalUrl(url);
 		Article existing = getExistingArticle(canonicalUrl);
-		
+
 		if (existing == null) {
 			ProtoArticle protoArticle = parser.parse(url);
 			if (protoArticle != null) {
@@ -95,7 +98,7 @@ public class ArticleProcessor {
 			return existing;
 		}
 	}
-	
+
 	private Article getExistingArticle(String url) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Article> criteria = builder.createQuery(Article.class);
@@ -103,7 +106,8 @@ public class ArticleProcessor {
 		criteria.where(builder.equal(articleRoot.get(Article_.url), url));
 
 		try {
-			Article existing = entityManager.createQuery(criteria).getSingleResult();
+			Article existing = entityManager.createQuery(criteria)
+					.getSingleResult();
 			return existing;
 		} catch (NoResultException nrx) {
 			return null;

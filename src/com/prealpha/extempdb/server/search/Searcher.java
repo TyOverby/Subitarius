@@ -7,6 +7,7 @@
 package com.prealpha.extempdb.server.search;
 
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,12 +21,14 @@ import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
+import com.prealpha.extempdb.server.http.StatusCodeException;
+import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.wideplay.warp.persist.Transactional;
 
 public class Searcher implements Runnable {
 	@InjectLogger
 	private Logger log;
-	
+
 	private final EntityManager entityManager;
 
 	private final SearchProvider searchProvider;
@@ -33,7 +36,9 @@ public class Searcher implements Runnable {
 	private final ArticleProcessor articleProcessor;
 
 	@Inject
-	public Searcher(SearchProvider searchProvider, ArticleProcessor articleProcessor) {
+	public Searcher(EntityManager entityManager, SearchProvider searchProvider,
+			ArticleProcessor articleProcessor) {
+		this.entityManager = entityManager;
 		this.searchProvider = searchProvider;
 		this.articleProcessor = articleProcessor;
 	}
@@ -63,7 +68,8 @@ public class Searcher implements Runnable {
 	}
 
 	@Transactional
-	void execute(SearchQuery query) throws SearchUnavailableException, ClassNotFoundException {
+	void execute(SearchQuery query) throws SearchUnavailableException,
+			ClassNotFoundException {
 		int resultCount = 0;
 		List<String> urls = searchProvider.search(query, 1);
 
@@ -72,16 +78,20 @@ public class Searcher implements Runnable {
 		} else {
 			for (String url : urls) {
 				try {
-					Article article = articleProcessor.process(url, query.getSource());
+					Article article = articleProcessor.process(url,
+							query.getSource());
 					if (article != null) {
 						persistIfNew(query.createTagMapping(article));
 						resultCount++;
 					}
 				} catch (ArticleParseException apx) {
 					if (apx.getCause() instanceof StatusCodeException) {
-						StatusCodeException scx = (StatusCodeException) apx.getCause();
+						StatusCodeException scx = (StatusCodeException) apx
+								.getCause();
 						int statusCode = scx.getStatusCode();
-						log.warn("article parse failed due to HTTP status code {}, URL {}", statusCode, url);
+						log.warn(
+								"article parse failed due to HTTP status code {}, URL {}",
+								statusCode, url);
 					} else {
 						log.warn("article parse failed, URL " + url + ": ", apx);
 					}

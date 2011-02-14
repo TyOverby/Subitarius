@@ -10,10 +10,13 @@ import java.net.URISyntaxException;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+
 import com.google.inject.Inject;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
@@ -27,27 +30,30 @@ import com.wideplay.warp.persist.Transactional;
 class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	@InjectLogger
 	private Logger log;
-	
+
 	private final HttpSession httpSession;
-	
+
 	private final ArticleProcessor articleProcessor;
-	
+
 	@Inject
-	public AddArticleHandler(HttpSession httpSession, ArticleProcessor articleProcessor) {
+	public AddArticleHandler(HttpSession httpSession,
+			ArticleProcessor articleProcessor) {
 		this.httpSession = httpSession;
 		this.articleProcessor = articleProcessor;
 	}
-	
+
 	@Transactional
 	@Override
-	public AddArticleResult execute(AddArticle action, Dispatcher dispatcher) throws ActionException {
+	public AddArticleResult execute(AddArticle action, Dispatcher dispatcher)
+			throws ActionException {
 		String url = action.getUrl();
 		User user = (User) httpSession.getAttribute("user");
 		if (user == null) {
-			log.info("rejected attempt to add article, URL {} (not logged in)", url);
+			log.info("rejected attempt to add article, URL {} (not logged in)",
+					url);
 			return new AddArticleResult(Type.PERMISSION_DENIED);
 		}
-		
+
 		try {
 			Article article = articleProcessor.process(url);
 			if (article == null) {

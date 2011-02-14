@@ -19,6 +19,7 @@ import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.server.ActionHandlerModule;
+import com.prealpha.extempdb.shared.action.AddArticle;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.ChangePassword;
@@ -43,6 +44,7 @@ public class ActionModule extends ActionHandlerModule {
 
 	@Override
 	protected void configure() {
+		bindHandler(AddArticle.class, AddArticleHandler.class);
 		bindHandler(AddMapping.class, AddMappingHandler.class);
 		bindHandler(AddMappingAction.class, AddMappingActionHandler.class);
 		bindHandler(ChangePassword.class, ChangePasswordHandler.class);
