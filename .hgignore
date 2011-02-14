@@ -1,2 +1,7 @@
 ﻿glob:war/WEB-INF/classes/*
 glob:.apt_generated/*
+
+syntax: regexp
+^war/module$
+syntax: regexp
+^dist$
