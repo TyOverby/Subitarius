@@ -1,6 +1,6 @@
 /*
  * ErrorModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -15,5 +15,6 @@ public class ErrorModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
 		bind(ErrorPresenter.Display.class).to(ErrorWidget.class);
+		requestStaticInjection(ManagedCallback.class);
 	}
 }

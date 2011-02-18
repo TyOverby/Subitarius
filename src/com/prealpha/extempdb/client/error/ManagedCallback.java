@@ -1,15 +1,21 @@
 /*
  * ManagedCallback.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.client.error;
 
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.prealpha.extempdb.client.AppPlace;
+import com.prealpha.extempdb.client.AppState;
+import com.prealpha.extempdb.client.HistoryManager;
 
 public abstract class ManagedCallback<T> implements AsyncCallback<T> {
+	@Inject
+	private static HistoryManager historyManager;
+
 	private static Throwable caught;
 
 	static Throwable getCaught() {
@@ -24,6 +30,7 @@ public abstract class ManagedCallback<T> implements AsyncCallback<T> {
 	@Override
 	public void onFailure(Throwable caught) {
 		ManagedCallback.caught = caught;
-		History.newItem("ERROR"); // TODO: not structured
+		AppState appState = new AppState(AppPlace.ERROR);
+		historyManager.setAppState(appState);
 	}
 }
