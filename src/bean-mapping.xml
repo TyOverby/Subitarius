@@ -2,9 +2,15 @@
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
+	<!-- NOTE: the client depends on lexicographical ordering to sort dates -->
+	<mapping date-format="yyyy-MM-dd">
+		<class-a>com.prealpha.extempdb.server.domain.Article</class-a>
+		<class-b>com.prealpha.extempdb.shared.dto.ArticleDto</class-b>
+	</mapping>
+
 	<mapping>
 		<class-a>com.prealpha.extempdb.server.domain.TagMapping$Key</class-a>
 		<class-b>com.prealpha.extempdb.shared.dto.TagMappingDto$Key</class-b>
 	</mapping>
-	
+
 </mappings>

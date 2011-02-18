@@ -18,7 +18,6 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.impl.SchedulerImpl;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.inject.BindingAnnotation;
@@ -75,11 +74,6 @@ public final class ClientModule extends AbstractGinModule {
 	@BatchDelay
 	Integer getBatchDelay() {
 		return 200;
-	}
-
-	@Provides
-	DateTimeFormat getDateTimeFormat() {
-		return DateTimeFormat.getFormat("yyyy-MM-dd");
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

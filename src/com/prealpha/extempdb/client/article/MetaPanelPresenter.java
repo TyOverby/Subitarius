@@ -6,7 +6,6 @@
 
 package com.prealpha.extempdb.client.article;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -23,9 +22,6 @@ import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
-/*
- * TODO: relies on DateTimeFormat, so would require GwtTestCase to unit test
- */
 public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
 		HasText getIdLabel();
@@ -43,20 +39,16 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 
 	private final DispatcherAsync dispatcher;
 
-	private final DateTimeFormat dateTimeFormat;
-
 	private final MappingInputPresenter mappingInputPresenter;
 
 	private final Provider<TagMappingPresenter> mappingPresenterProvider;
 
 	@Inject
 	public MetaPanelPresenter(Display display, DispatcherAsync dispatcher,
-			DateTimeFormat dateTimeFormat,
 			MappingInputPresenter mappingInputPresenter,
 			Provider<TagMappingPresenter> mappingPresenterProvider) {
 		this.display = display;
 		this.dispatcher = dispatcher;
-		this.dateTimeFormat = dateTimeFormat;
 		this.mappingInputPresenter = mappingInputPresenter;
 		this.mappingPresenterProvider = mappingPresenterProvider;
 
@@ -72,10 +64,8 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	@Override
 	public void bind(ArticleDto article) {
 		display.getIdLabel().setText(article.getId().toString());
-		display.getDateLabel()
-				.setText(dateTimeFormat.format(article.getDate()));
-		display.getRetrievalDateLabel().setText(
-				dateTimeFormat.format(article.getRetrievalDate()));
+		display.getDateLabel().setText(article.getDate());
+		display.getRetrievalDateLabel().setText(article.getRetrievalDate());
 		display.getTagsPanel().clear();
 
 		mappingInputPresenter.bind(article);

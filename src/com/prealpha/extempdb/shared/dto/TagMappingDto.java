@@ -8,8 +8,6 @@ package com.prealpha.extempdb.shared.dto;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Date;
-
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class TagMappingDto implements IsSerializable {
@@ -101,8 +99,6 @@ public class TagMappingDto implements IsSerializable {
 
 	private ArticleDto article;
 
-	private Date added;
-
 	private State state;
 
 	public TagMappingDto() {
@@ -130,14 +126,6 @@ public class TagMappingDto implements IsSerializable {
 
 	public void setArticle(ArticleDto article) {
 		this.article = article;
-	}
-
-	public Date getAdded() {
-		return added;
-	}
-
-	public void setAdded(Date added) {
-		this.added = added;
 	}
 
 	public State getState() {

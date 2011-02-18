@@ -1,12 +1,10 @@
 /*
  * ArticleDto.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.shared.dto;
-
-import java.util.Date;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -17,9 +15,9 @@ public class ArticleDto implements IsSerializable {
 
 	private String byline;
 
-	private Date date;
+	private String date;
 
-	private Date retrievalDate;
+	private String retrievalDate;
 
 	private String url;
 
@@ -52,19 +50,19 @@ public class ArticleDto implements IsSerializable {
 		this.byline = byline;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
-	public Date getRetrievalDate() {
+	public String getRetrievalDate() {
 		return retrievalDate;
 	}
 
-	public void setRetrievalDate(Date retrievalDate) {
+	public void setRetrievalDate(String retrievalDate) {
 		this.retrievalDate = retrievalDate;
 	}
 
