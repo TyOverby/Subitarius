@@ -10,7 +10,7 @@
 		Compiles, packages, and deploys the project to the remote Tomcat instance.
 		Can be used for other GWT projects by modifying properties accordingly.
 	</description>
-	
+
 	<property environment="env" />
 
 	<property name="dist" location="./dist" />
@@ -40,7 +40,7 @@
 
 		<!-- gwt-dispatch -->
 		<pathelement location="${workspace}/gwt-dispatch.jar" />
-		
+
 		<!-- Guava -->
 		<pathelement location="${workspace}/guava-r07/guava-r07.jar" />
 		<pathelement location="${workspace}/guava-r07/guava-r07-gwt.jar" />
@@ -79,7 +79,7 @@
 			<fileset file="${dist.war}" />
 		</ftp>
 
-		<sshexec host="${deploy.server}" username="${deploy.username}" password="${deploy.password}" knownhosts="../known_hosts" command="sudo /sbin/service tomcat6 restart" />
+		<sshexec host="${deploy.server}" username="${deploy.username}" password="${deploy.password}" knownhosts="../known_hosts" command="mv ${deploy.dir}/${dist.war} ${deploy.dir}/ROOT.war; sudo /sbin/service tomcat6 restart" />
 	</target>
 
 </project>
