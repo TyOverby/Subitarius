@@ -48,7 +48,7 @@
 	</path>
 
 	<property name="deploy.server" value="meyer.pre-alpha.com" />
-	<property name="deploy.dir" value="/usr/share/tomcat6/webapps" />
+	<property name="deploy.dir" value="/var/lib/tomcat6/webapps" />
 	<property name="deploy.username" value="deploy" />
 	<property name="deploy.password" value="33025333319833233433" />
 
@@ -75,7 +75,7 @@
 	</target>
 
 	<target name="deploy" depends="init, war">
-		<ftp server="${deploy.server}" userid="${deploy.username}" password="${deploy.password}" remoteDir="${deploy.dir}" verbose="yes" depends="yes">
+		<ftp server="${deploy.server}" userid="${deploy.username}" password="${deploy.password}" remoteDir="${deploy.dir}" chmod="004" verbose="yes" depends="yes">
 			<fileset file="${dist.war}" />
 		</ftp>
 
