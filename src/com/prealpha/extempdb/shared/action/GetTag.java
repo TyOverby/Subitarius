@@ -8,8 +8,8 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.CacheableAction;
-import com.prealpha.dispatch.shared.MergeableAction;
+import com.prealpha.dispatch.shared.filter.CacheableAction;
+import com.prealpha.dispatch.shared.filter.MergeableAction;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.

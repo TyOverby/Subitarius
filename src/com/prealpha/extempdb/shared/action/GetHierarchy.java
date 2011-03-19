@@ -6,8 +6,8 @@
 
 package com.prealpha.extempdb.shared.action;
 
-import com.prealpha.dispatch.shared.CacheableAction;
-import com.prealpha.dispatch.shared.MergeableAction;
+import com.prealpha.dispatch.shared.filter.CacheableAction;
+import com.prealpha.dispatch.shared.filter.MergeableAction;
 
 public class GetHierarchy implements CacheableAction<GetHierarchyResult>,
 		MergeableAction<GetHierarchyResult> {

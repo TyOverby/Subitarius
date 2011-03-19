@@ -7,8 +7,8 @@
 package com.prealpha.extempdb.shared.action;
 
 import com.google.common.base.Predicate;
-import com.prealpha.dispatch.shared.CacheableAction;
-import com.prealpha.dispatch.shared.MergeableAction;
+import com.prealpha.dispatch.shared.filter.CacheableAction;
+import com.prealpha.dispatch.shared.filter.MergeableAction;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 
 /*

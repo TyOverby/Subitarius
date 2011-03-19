@@ -1,6 +1,6 @@
 /*
  * ClientModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -24,11 +24,13 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.prealpha.dispatch.client.filter.ActionCache;
 import com.prealpha.dispatch.client.filter.ActionFilter;
 import com.prealpha.dispatch.client.filter.CachingActionFilter;
 import com.prealpha.dispatch.client.filter.ChainingFilter;
 import com.prealpha.dispatch.client.filter.DelayedBatchingFilter;
 import com.prealpha.dispatch.client.filter.DelayedBatchingFilter.BatchDelay;
+import com.prealpha.dispatch.client.filter.MemoryActionCache;
 import com.prealpha.dispatch.client.filter.MergingActionFilter;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.dispatch.shared.DispatcherAsync;
@@ -50,6 +52,7 @@ public final class ClientModule extends AbstractGinModule {
 				.to(MergingActionFilter.class).in(Singleton.class);
 		bind(ActionFilter.class).annotatedWith(BatchingFilter.class)
 				.to(DelayedBatchingFilter.class).in(Singleton.class);
+		bind(ActionCache.class).to(MemoryActionCache.class).in(Singleton.class);
 		bind(Scheduler.class).to(SchedulerImpl.class).in(Singleton.class);
 	}
 

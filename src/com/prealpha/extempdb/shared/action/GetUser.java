@@ -8,7 +8,7 @@ package com.prealpha.extempdb.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.MergeableAction;
+import com.prealpha.dispatch.shared.filter.MergeableAction;
 
 public class GetUser implements AuthenticatedAction<GetUserResult>,
 		MergeableAction<GetUserResult> {
