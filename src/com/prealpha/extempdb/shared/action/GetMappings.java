@@ -1,6 +1,6 @@
 /*
  * GetMappings.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -29,24 +29,5 @@ abstract class GetMappings implements CacheableAction<GetMappingsResult>,
 	@Override
 	public long getCacheExpiry(GetMappingsResult result) {
 		return cacheExpiry;
-	}
-
-	@Override
-	public int hashCode() {
-		return 1;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof GetMappings)) {
-			return false;
-		}
-		return true;
 	}
 }
