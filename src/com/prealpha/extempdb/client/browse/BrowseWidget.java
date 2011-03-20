@@ -80,9 +80,14 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 					@Override
 					public void onValueChange(
 							ValueChangeEvent<LoadingStatus> event) {
+						/*
+						 * Don't use inputPresenter.getTagName(), because that
+						 * returns a non-null value if the tag doesn't exist.
+						 */
 						String oldTagName = browseState.getTagName();
-						String tagName = (event.getValue().isLoaded() ? inputPresenter
-								.getTagName() : null);
+						TagDto tag = (event.getValue().isLoaded() ? inputPresenter
+								.getTag() : null);
+						String tagName = (tag == null ? null : tag.getName());
 
 						BrowseState newState = BrowseState.getInstance(tagName,
 								browseState.getStates(), browseState.getSort(),
