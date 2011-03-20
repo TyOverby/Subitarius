@@ -15,8 +15,7 @@
 		}
 	</ui:style>
 
-	<ui:with field="res"
-		type="com.prealpha.extempdb.client.common.CommonResources" />
+	<ui:with field="res" type="com.prealpha.extempdb.client.CommonResources" />
 	<ui:with field="msg"
 		type="com.prealpha.extempdb.client.hierarchy.HierarchyMessages" />
 

@@ -1,6 +1,6 @@
 /*
  * CoreResources.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -10,6 +10,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
 public interface CoreResources extends ClientBundle {
+	@Source("core.css")
 	Style style();
 
 	static interface Style extends CssResource {

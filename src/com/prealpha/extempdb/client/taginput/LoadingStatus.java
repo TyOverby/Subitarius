@@ -1,16 +1,17 @@
 /*
  * LoadingStatus.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.common;
+package com.prealpha.extempdb.client.taginput;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
+import com.prealpha.extempdb.client.CommonResources;
 
 public enum LoadingStatus {
-	NONE {
+	NONE(false) {
 		@Override
 		ImageResource getIcon() {
 			return resources.placeholderIcon();
@@ -22,10 +23,10 @@ public enum LoadingStatus {
 		}
 	},
 
-	LOADED {
+	LOADED(true) {
 		@Override
 		ImageResource getIcon() {
-			return resources.loadedIcon();
+			return resources.checkMarkIcon();
 		}
 
 		@Override
@@ -34,10 +35,10 @@ public enum LoadingStatus {
 		}
 	},
 
-	NOT_FOUND {
+	NOT_FOUND(true) {
 		@Override
 		ImageResource getIcon() {
-			return resources.notFoundIcon();
+			return resources.crossIcon();
 		}
 
 		@Override
@@ -46,7 +47,7 @@ public enum LoadingStatus {
 		}
 	},
 
-	PENDING {
+	PENDING(false) {
 		@Override
 		ImageResource getIcon() {
 			return resources.pendingIcon();
@@ -62,7 +63,17 @@ public enum LoadingStatus {
 	private static CommonResources resources;
 
 	@Inject
-	private static CommonMessages messages;
+	private static TagInputMessages messages;
+
+	private final boolean loaded;
+
+	private LoadingStatus(boolean loaded) {
+		this.loaded = loaded;
+	}
+
+	public boolean isLoaded() {
+		return loaded;
+	}
 
 	abstract ImageResource getIcon();
 

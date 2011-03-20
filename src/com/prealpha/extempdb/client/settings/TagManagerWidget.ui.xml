@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:common="urn:import:com.prealpha.extempdb.client.common"
-	xmlns:settings="urn:import:com.prealpha.extempdb.client.settings">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:settings="urn:import:com.prealpha.extempdb.client.settings">
 
-	<ui:with field="res"
-		type="com.prealpha.extempdb.client.common.CommonResources" />
+	<ui:with field="res" type="com.prealpha.extempdb.client.CommonResources" />
 	<ui:with field="msg"
 		type="com.prealpha.extempdb.client.settings.SettingsMessages" />
 
@@ -23,7 +21,7 @@
 				</td>
 
 				<td>
-					<common:TagInputBox ui:field="tagInput" />
+					<g:Widget ui:field="tagInputWidget" />
 				</td>
 			</tr>
 

@@ -1,6 +1,6 @@
 /*
  * TagMappingWidget.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.AppPlace;
 import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.client.common.CommonResources;
+import com.prealpha.extempdb.client.CommonResources;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
 public class TagMappingWidget extends Composite implements
@@ -44,8 +44,8 @@ public class TagMappingWidget extends Composite implements
 			CommonResources resources) {
 		initWidget(uiBinder.createAndBindUi(this));
 
-		Image patrolImage = new Image(resources.loadedIcon());
-		Image removeImage = new Image(resources.notFoundIcon());
+		Image patrolImage = new Image(resources.checkMarkIcon());
+		Image removeImage = new Image(resources.crossIcon());
 
 		patrolLink.getElement().appendChild(patrolImage.getElement());
 		removeLink.getElement().appendChild(removeImage.getElement());

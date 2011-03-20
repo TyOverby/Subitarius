@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
@@ -22,6 +21,7 @@ import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.client.event.ActiveUserEvent;
 import com.prealpha.extempdb.client.event.ActiveUserHandler;
+import com.prealpha.extempdb.client.taginput.TagInputPresenter;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
@@ -33,7 +33,7 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 
 		void setDisplayState(DisplayState displayState);
 
-		HasValue<TagDto> getMappingInput();
+		TagInputPresenter getMappingInput();
 
 		HasClickHandlers getAddButton();
 
@@ -104,7 +104,13 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 	}
 
 	private void submit() {
-		TagDto tag = display.getMappingInput().getValue();
+		TagInputPresenter mappingInput = display.getMappingInput();
+		if (!mappingInput.getLoadingStatus().isLoaded()) {
+			// no tag is loaded, so no action
+			return;
+		}
+
+		TagDto tag = mappingInput.getTag();
 
 		if (tag != null) {
 			String sessionId = sessionManager.getSessionId();
@@ -115,7 +121,7 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 			dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 				@Override
 				public void onSuccess(MutationResult result) {
-					// TODO: should be some better way to do this
+					// TODO: on success, we shouldn't need to reload
 					Window.Location.reload();
 				}
 			});

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.common;
+package com.prealpha.extempdb.client.taginput;
 
 import static com.google.common.base.Preconditions.*;
 

@@ -1,10 +1,10 @@
 /*
  * LoadingStatusPresenter.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.common;
+package com.prealpha.extempdb.client.taginput;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Image;

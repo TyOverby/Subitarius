@@ -3,8 +3,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field="res"
-		type="com.prealpha.extempdb.client.common.CommonResources" />
+	<ui:with field="res" type="com.prealpha.extempdb.client.CommonResources" />
 	<ui:with field="msg" type="com.prealpha.extempdb.client.main.MainMessages" />
 
 	<g:VerticalPanel visible="false">

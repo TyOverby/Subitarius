@@ -1,6 +1,6 @@
 /*
  * ArticleTableHeader.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -16,7 +16,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.common.CommonResources;
+import com.prealpha.extempdb.client.CommonResources;
 
 public class ArticleTableHeader extends Header<String> {
 	private final CommonResources resources;

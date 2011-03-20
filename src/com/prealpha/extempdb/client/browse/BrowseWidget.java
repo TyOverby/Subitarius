@@ -22,8 +22,9 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.common.TagInputBox;
 import com.prealpha.extempdb.client.error.ManagedCallback;
+import com.prealpha.extempdb.client.taginput.LoadingStatus;
+import com.prealpha.extempdb.client.taginput.TagInputPresenter;
 import com.prealpha.extempdb.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.action.GetTag;
@@ -39,7 +40,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	}
 
 	@UiField(provided = true)
-	final TagInputBox inputWidget;
+	final Widget inputWidget;
 
 	@UiField(provided = true)
 	final MappingStateSelector stateSelector;
@@ -50,6 +51,8 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	@UiField(provided = true)
 	final SimpleEventPager pager;
 
+	private final TagInputPresenter inputPresenter;
+
 	private final ArticleTablePresenter tablePresenter;
 
 	private final DispatcherAsync dispatcher;
@@ -57,29 +60,47 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 	private BrowseState browseState;
 
 	@Inject
-	public BrowseWidget(BrowseUiBinder uiBinder, TagInputBox inputWidget,
+	public BrowseWidget(BrowseUiBinder uiBinder,
+			final TagInputPresenter inputPresenter,
 			MappingStateSelector stateSelector,
 			ArticleTablePresenter tablePresenter, SimpleEventPager pager,
 			DispatcherAsync dispatcher) {
-		this.inputWidget = inputWidget;
+		this.inputPresenter = inputPresenter;
 		this.stateSelector = stateSelector;
 		this.tablePresenter = tablePresenter;
 		this.pager = pager;
 		this.dispatcher = dispatcher;
+		inputWidget = inputPresenter.getDisplay().asWidget();
 		articleTable = tablePresenter.getDisplay().asWidget();
 		pager.setDisplay(tablePresenter.getDisplay().getDataDisplay());
 		initWidget(uiBinder.createAndBindUi(this));
 
-		inputWidget.addValueChangeHandler(new ValueChangeHandler<TagDto>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<TagDto> event) {
-				TagDto tag = event.getValue();
-				String tagName = (tag == null ? null : tag.getName());
-				BrowseState newState = BrowseState.getInstance(tagName,
-						browseState.getStates(), browseState.getSort(), 0);
-				setValue(newState, true);
-			}
-		});
+		inputPresenter
+				.addValueChangeHandler(new ValueChangeHandler<LoadingStatus>() {
+					@Override
+					public void onValueChange(
+							ValueChangeEvent<LoadingStatus> event) {
+						String oldTagName = browseState.getTagName();
+						String tagName = (event.getValue().isLoaded() ? inputPresenter
+								.getTagName() : null);
+
+						BrowseState newState = BrowseState.getInstance(tagName,
+								browseState.getStates(), browseState.getSort(),
+								0);
+
+						/*
+						 * setValue() calls inputPresenter.bind(), so we have to
+						 * check for equality here to prevent an infinite loop.
+						 */
+						if (oldTagName == null) {
+							if (tagName != null) {
+								setValue(newState, true);
+							}
+						} else if (!oldTagName.equals(tagName)) {
+							setValue(newState, true);
+						}
+					}
+				});
 
 		stateSelector
 				.addValueChangeHandler(new ValueChangeHandler<Set<State>>() {
@@ -132,7 +153,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 
 		String tagName = browseState.getTagName();
 		if (tagName == null) {
-			inputWidget.setValue(null);
+			inputPresenter.bind(null);
 			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
 		} else {
 			GetTag tagAction = new GetTag(tagName);
@@ -141,7 +162,7 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 				public void onSuccess(GetTagResult result) {
 					TagDto tag = result.getTag();
 
-					inputWidget.setValue(tag);
+					inputPresenter.bind(tag);
 
 					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
 							browseState.getSort());

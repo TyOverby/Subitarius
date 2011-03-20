@@ -1,14 +1,14 @@
 /*
- * CommonMessages.java
- * Copyright (C) 2010 Meyer Kizner
+ * TagInputMessages.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.common;
+package com.prealpha.extempdb.client.taginput;
 
 import com.google.gwt.i18n.client.Messages;
 
-public interface CommonMessages extends Messages {
+public interface TagInputMessages extends Messages {
 	String loadedAltText();
 
 	String notFoundAltText();

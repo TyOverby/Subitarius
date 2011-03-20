@@ -1,10 +1,10 @@
 /*
  * CommonResources.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.common;
+package com.prealpha.extempdb.client;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -17,10 +17,10 @@ public interface CommonResources extends ClientBundle {
 	ImageResource placeholderIcon();
 
 	@Source("accept.png")
-	ImageResource loadedIcon();
+	ImageResource checkMarkIcon();
 
 	@Source("cross.png")
-	ImageResource notFoundIcon();
+	ImageResource crossIcon();
 
 	@Source("hourglass.png")
 	ImageResource pendingIcon();

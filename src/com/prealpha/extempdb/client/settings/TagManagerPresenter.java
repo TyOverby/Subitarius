@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.Presenter;
 import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.common.LoadingStatus;
-import com.prealpha.extempdb.client.common.TagInputBox;
 import com.prealpha.extempdb.client.error.ManagedCallback;
+import com.prealpha.extempdb.client.taginput.LoadingStatus;
+import com.prealpha.extempdb.client.taginput.TagInputPresenter;
 import com.prealpha.extempdb.shared.action.DeleteTag;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.action.UpdateTag;
@@ -32,11 +32,10 @@ import com.prealpha.extempdb.shared.dto.TagDto;
 
 /*
  * TODO: doesn't present anything
- * TODO: relies on TagInputBox directly, so would require GwtTestCase to unit test
  */
 public class TagManagerPresenter implements Presenter<Void> {
 	public static interface Display extends IsWidget {
-		TagInputBox getTagInput();
+		TagInputPresenter getTagInput();
 
 		HasValue<Boolean> getSearchedBox();
 
@@ -60,20 +59,32 @@ public class TagManagerPresenter implements Presenter<Void> {
 	private final SettingsMessages messages;
 
 	@Inject
-	public TagManagerPresenter(Display display, SessionManager sessionManager,
-			DispatcherAsync dispatcher, SettingsMessages messages) {
+	public TagManagerPresenter(final Display display,
+			SessionManager sessionManager, DispatcherAsync dispatcher,
+			SettingsMessages messages) {
 		this.display = display;
 		this.sessionManager = sessionManager;
 		this.dispatcher = dispatcher;
 		this.messages = messages;
 
 		display.getTagInput().addValueChangeHandler(
-				new ValueChangeHandler<TagDto>() {
+				new ValueChangeHandler<LoadingStatus>() {
 					@Override
-					public void onValueChange(ValueChangeEvent<TagDto> event) {
-						LoadingStatus loadingStatus = TagManagerPresenter.this.display
-								.getTagInput().getLoadingStatus();
-						setTagFound(loadingStatus.equals(LoadingStatus.LOADED));
+					public void onValueChange(
+							ValueChangeEvent<LoadingStatus> event) {
+						LoadingStatus loadingStatus = event.getValue();
+						if (loadingStatus.isLoaded()) {
+							TagDto tag = display.getTagInput().getTag();
+							if (tag != null) {
+								display.getSearchedBox().setValue(
+										tag.isSearched());
+								display.getParentInput().setValue(
+										tag.getParents());
+							}
+						} else {
+							display.getSearchedBox().setValue(true);
+							display.getParentInput().setValue(null);
+						}
 					}
 				});
 
@@ -108,18 +119,6 @@ public class TagManagerPresenter implements Presenter<Void> {
 	public void bind(Void v) {
 	}
 
-	private void setTagFound(boolean tagFound) {
-		TagDto tag = display.getTagInput().getValue();
-
-		if (tagFound && tag != null) {
-			display.getSearchedBox().setValue(tag.isSearched());
-			display.getParentInput().setValue(tag.getParents());
-		} else {
-			display.getSearchedBox().setValue(true);
-			display.getParentInput().setValue(null);
-		}
-	}
-
 	private void update() {
 		if (display.getParentInput().getValue().size() == 0) {
 			if (!Window.confirm(messages.saveNoParent())) {
@@ -127,7 +126,7 @@ public class TagManagerPresenter implements Presenter<Void> {
 			}
 		}
 
-		if (isStatusValid(true)) {
+		if (isStatusValid(true)) { // only true if status.isLoaded()
 			String tagName = display.getTagInput().getTagName();
 			boolean searched = display.getSearchedBox().getValue();
 			Set<String> parents = new HashSet<String>();
@@ -143,7 +142,7 @@ public class TagManagerPresenter implements Presenter<Void> {
 	}
 
 	private void delete() {
-		if (isStatusValid(false)) {
+		if (isStatusValid(false)) { // only true if status.isLoaded()
 			String sessionId = sessionManager.getSessionId();
 			String tagName = display.getTagInput().getTagName();
 			DeleteTag action = new DeleteTag(sessionId, tagName);
@@ -152,7 +151,7 @@ public class TagManagerPresenter implements Presenter<Void> {
 	}
 
 	private void reset() {
-		display.getTagInput().setValue(null, true);
+		display.getTagInput().bind(null);
 		display.getParentInput().setValue(null, true);
 		display.getErrorLabel().setText(null);
 	}
@@ -178,6 +177,7 @@ public class TagManagerPresenter implements Presenter<Void> {
 	private static class ActionCallback extends ManagedCallback<MutationResult> {
 		@Override
 		public void onSuccess(MutationResult result) {
+			// TODO: on success, we shouldn't need to reload
 			Window.Location.reload();
 		}
 	}
