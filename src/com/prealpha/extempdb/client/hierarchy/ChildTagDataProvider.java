@@ -15,6 +15,7 @@ import java.util.Set;
 import com.google.common.collect.SetMultimap;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
@@ -45,6 +46,12 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 
 	@Inject
 	public ChildTagDataProvider(DispatcherAsync dispatcher) {
+		super(new ProvidesKey<TagDto>() {
+			@Override
+			public Object getKey(TagDto tag) {
+				return (tag == null ? null : tag.getName());
+			}
+		});
 		this.dispatcher = dispatcher;
 	}
 
@@ -99,7 +106,7 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 				});
 	}
 
-	private class PendingState {
+	private static final class PendingState {
 		private final HasData<TagDto> display;
 
 		private final List<TagDto> tags;
