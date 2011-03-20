@@ -11,9 +11,14 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.dispatch.shared.ActionException;
 
 public class InvalidSessionException extends ActionException {
-	private final String cookieId;
+	private String cookieId;
 
-	private final String payloadId;
+	private String payloadId;
+
+	// serialization support
+	@SuppressWarnings("unused")
+	private InvalidSessionException() {
+	}
 
 	public InvalidSessionException(String cookieId, String payloadId) {
 		super("invalid session ID in payload");
