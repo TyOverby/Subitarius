@@ -18,6 +18,9 @@ import javax.persistence.OneToMany;
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
  */
+/*
+ * TODO: needs to support archived state in addition to boolean searched state
+ */
 @Entity
 public class Tag {
 	private String name;
