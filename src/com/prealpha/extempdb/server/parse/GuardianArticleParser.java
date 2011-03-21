@@ -28,6 +28,7 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.server.util.HtmlHelper;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
 class GuardianArticleParser extends AbstractArticleParser {
@@ -67,33 +68,28 @@ class GuardianArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html)
-			throws ArticleParseException {
-		org.w3c.dom.Document doc = tidy.parseDOM(html, null);
-		doc.removeChild(doc.getDoctype());
-		Document document = builder.build(doc);
-
+	private ProtoArticle getFromHtml(InputStream html) throws ArticleParseException {
+		
+		Document document = HtmlHelper.parse(html);
 		Namespace namespace = document.getRootElement().getNamespace();
 
-		// get the title
-		Filter titleElementFilter = XmlUtils.getElementFilter("div", "id",
-				"main-article-info");
-		Element titleElement = (Element) (document
-				.getDescendants(titleElementFilter)).next();
+		// get the title		
+		String title;
+		Element titleElement = HtmlHelper.getMatches(document, "div", "id", "main-article-info").get(0);
 		Element heading = titleElement.getChild("h1", namespace);
-		String title = heading.getValue();
+		title = heading.getValue();
 
 		// get the byline, if there is one
 		// http://www.guardian.co.uk/world/feedarticle/9475892
-		String byline;
-		Filter bylineElementFilter = XmlUtils.getElementFilter("a", "class",
-				"contributor");
-		Iterator<?> bylineIterator = document
-				.getDescendants(bylineElementFilter);
-		if (bylineIterator.hasNext()) {
-			Element bylineElement = (Element) bylineIterator.next();
+		String byline;		
+		ArrayList<Element> byLineElements = HtmlHelper.getMatches(document, "a", "class", "contributor");
+		try
+		{
+			Element bylineElement = (Element) byLineElements.get(0);
 			byline = bylineElement.getValue();
-		} else {
+		} 
+		catch(Exception e) 
+		{
 			byline = null;
 		}
 
@@ -103,13 +99,11 @@ class GuardianArticleParser extends AbstractArticleParser {
 		 * element and parse out the date. For example, the parent element might
 		 * contain "The Guardian, Thursday 27 January 2011". So we split() on
 		 * the comma and take the second fragment for parsing.
-		 */
-		Filter dateElementFilter = XmlUtils.getElementFilter("li", "class",
-				"publication");
-		Element dateElement = (Element) (document
-				.getDescendants(dateElementFilter)).next();
-		String dateString = dateElement.getValue().split(",")[1].trim();
+		 */		
+		
 		Date date;
+		Element dateElement = HtmlHelper.getMatches(document, "li", "class", "publication").get(0);
+		String dateString = dateElement.getValue().split(",")[1].trim();
 		try {
 			date = DATE_FORMAT_UK.parse(dateString);
 		} catch (ParseException px1) {

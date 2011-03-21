@@ -68,6 +68,22 @@ public final class ProtoArticle {
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
+	
+	@Override
+	public String toString()
+	{
+		String toReturn = "";
+		toReturn += "Title: " + this.getTitle()+"\n";
+		toReturn += "ByLine: " + this.getByline()+"\n";
+		toReturn += "Date: " + this.getDate() + "\n";
+		toReturn += "Paragraphs:\n";
+		for(String para:this.getParagraphs())
+		{
+			toReturn += para+"\n\n";
+		}
+		
+		return toReturn;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
