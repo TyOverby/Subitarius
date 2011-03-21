@@ -159,8 +159,8 @@ class WaPostArticleParser implements ArticleParser {
 					imageRightFilter);
 			Iterator<?> imageIterator = paragraph.getDescendants(imageFilter);
 			while (imageIterator.hasNext()) {
-				Element image = (Element) imageIterator.next();
-				paragraph.removeContent(image);
+				imageIterator.next();
+				imageIterator.remove();
 			}
 
 			paragraphs.add(paragraph.getValue().trim());
