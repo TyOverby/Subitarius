@@ -8,9 +8,6 @@ package com.prealpha.extempdb.server.parse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
@@ -33,15 +29,29 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
-/*
- * TODO: some articles have "paragraphs" enclosed only by <b> tags...
- */
-class WaPostArticleParser extends AbstractArticleParser {
+class WaPostArticleParser implements ArticleParser {
+	private static enum ArticleType {
+		STORY {
+			@Override
+			Filter getBodyFilter() {
+				return XmlUtils.getElementFilter("div", "id", "article_body");
+			}
+		},
+
+		BLOG {
+			@Override
+			Filter getBodyFilter() {
+				return XmlUtils.getElementFilter("div", "id", "entrytext");
+			}
+		};
+
+		abstract Filter getBodyFilter();
+	}
+
 	/*
 	 * Package visibility for unit testing.
 	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"EEEEE, MMMMM d, yyyy");
+	static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	private final HttpClient httpClient;
 
@@ -59,25 +69,48 @@ class WaPostArticleParser extends AbstractArticleParser {
 
 	@Override
 	public String getCanonicalUrl(String url) {
-		url = super.getCanonicalUrl(url);
-
-		while (url.matches(".*_([0-9]|pf).html")) {
-			int index = url.lastIndexOf('_');
-			url = url.substring(0, index) + ".html";
+		// strip off any GET parameters before dealing with other stuff
+		if (url.contains("?")) {
+			url = url.substring(0, url.indexOf("?"));
 		}
 
-		return url;
+		if (url.matches(".*_story_\\d+.html")) {
+			// page numbers
+			int index = url.lastIndexOf("_story");
+			return url.substring(0, index) + "_story.html";
+		} else if (url.endsWith("_singlePage.html")) {
+			// single page version
+			int index = url.lastIndexOf("_singlePage");
+			return url.substring(0, index) + "_story.html";
+		} else if (url.endsWith("_print.html")) {
+			// printable version
+			int index = url.lastIndexOf("_print");
+			return url.substring(0, index) + "_story.html";
+		} else {
+			return url;
+		}
 	}
 
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
-		// we want the printable version
-		url = url.substring(0, url.length() - 5) + "_pf.html";
+		ArticleType type;
+		if (url.endsWith("_story.html")) {
+			type = ArticleType.STORY;
+
+			// we have to replace this with the single page version for fetching
+			int index = url.lastIndexOf("_story.html");
+			url = url.substring(0, index) + "_singlePage.html";
+		} else if (url.endsWith("_blog.html")) {
+			type = ArticleType.BLOG;
+		} else {
+			throw new IllegalArgumentException(
+					"unrecognized canonical URL type");
+		}
 
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
-			return getFromHtml(stream);
+			return getFromHtml(stream, type);
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
@@ -85,107 +118,54 @@ class WaPostArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html)
+	private ProtoArticle getFromHtml(InputStream html, ArticleType type)
 			throws ArticleParseException {
 		org.w3c.dom.Document doc = tidy.parseDOM(html, null);
 		doc.removeChild(doc.getDoctype());
-		handleUnescapedMeta(doc);
 		Document document = builder.build(doc);
 
-		// they sometimes have corrections at the top of their pages that
-		// aren't in the article text; we simply skip the articles for which
-		// this is the case
-		Filter correctionFilter = XmlUtils.getElementFilter("div", "class",
-				"correction");
-		Iterator<?> correctionIterator = document
-				.getDescendants(correctionFilter);
-		if (correctionIterator.hasNext()) {
-			return null;
-		}
+		Element headElement = document.getRootElement().getChild("head");
+		Map<String, String> metaMap = XmlUtils.getMetaMap(headElement);
 
-		String title;
+		String title = metaMap.get("DC.title");
+
 		String byline;
-		Date date;
-		List<String> paragraphs;
-
-		Filter headingFilter = XmlUtils.getElementFilter("font", "size", "+2");
-		Iterator<?> headingIterator = document.getDescendants(headingFilter);
-		Element heading;
-		if (headingIterator.hasNext()) {
-			heading = (Element) headingIterator.next();
-			title = handleDoubleEncoding(heading.getValue());
+		if (metaMap.containsKey("DC.creator")) {
+			byline = "By " + metaMap.get("DC.creator");
 		} else {
-			return null; // we can't do anything without a title
-		}
-
-		Element articleContainer = heading.getParentElement();
-		List<?> paragraphElements = articleContainer.getChildren("p");
-		Iterator<?> paragraphIterator = paragraphElements.iterator();
-
-		Element bylineElement = ((Element) paragraphIterator.next())
-				.getChild("font");
-		List<?> bylineContent = bylineElement.getContent();
-
-		// if there's only a single line and a <br>, there's no byline
-		if (bylineContent.size() == 2) {
 			byline = null;
-		} else {
-			Content textContent = (Content) bylineContent.get(0);
-			byline = handleDoubleEncoding(textContent.getValue());
 		}
 
-		int dateIndex = bylineContent.size() - 2;
-		String dateStr = ((Content) bylineContent.get(dateIndex)).getValue()
-				.trim();
-
+		Date date;
 		try {
-			date = DATE_FORMAT.parse(dateStr);
+			date = DATE_FORMAT.parse(metaMap.get("DC.date.issued"));
 		} catch (ParseException px) {
 			throw new ArticleParseException(px);
 		}
 
-		paragraphs = new ArrayList<String>();
-		while (paragraphIterator.hasNext()) {
-			Element paragraphElement = (Element) paragraphIterator.next();
-			String paragraph = paragraphElement.getValue().trim();
-			paragraph = handleDoubleEncoding(paragraph);
+		Filter bodyFilter = type.getBodyFilter();
+		Element articleBody = (Element) document.getDescendants(bodyFilter)
+				.next();
+		List<String> paragraphs = new ArrayList<String>();
+		for (Object obj : articleBody.getChildren("p")) {
+			Element paragraph = (Element) obj;
 
-			if (!paragraph.isEmpty()) {
-				paragraphs.add(paragraph);
+			// remove image captions
+			Filter imageLeftFilter = XmlUtils.getElementFilter("span", "class",
+					"imgleft");
+			Filter imageRightFilter = XmlUtils.getElementFilter("span",
+					"class", "imgright");
+			Filter imageFilter = XmlUtils.getOrFilter(imageLeftFilter,
+					imageRightFilter);
+			Iterator<?> imageIterator = paragraph.getDescendants(imageFilter);
+			while (imageIterator.hasNext()) {
+				Element image = (Element) imageIterator.next();
+				paragraph.removeContent(image);
 			}
+
+			paragraphs.add(paragraph.getValue().trim());
 		}
 
 		return new ProtoArticle(title, byline, date, paragraphs);
-	}
-
-	private static void handleUnescapedMeta(org.w3c.dom.Document doc) {
-		org.w3c.dom.NodeList metaList = doc.getElementsByTagName("meta");
-
-		for (int i = 0; i < metaList.getLength(); i++) {
-			org.w3c.dom.Element meta = (org.w3c.dom.Element) metaList.item(i);
-			org.w3c.dom.NamedNodeMap attributes = meta.getAttributes();
-
-			for (int j = 0; j < attributes.getLength(); j++) {
-				org.w3c.dom.Attr attr = (org.w3c.dom.Attr) attributes.item(j);
-
-				if (!attr.getName().equals("name")
-						&& !attr.getName().equals("content")
-						&& !attr.getName().equals("http-equiv")) {
-					meta.removeAttributeNode(attr);
-				}
-			}
-		}
-	}
-
-	private static String handleDoubleEncoding(String str) {
-		Charset charset = Charset.forName("UTF-8");
-		ByteBuffer bb = ByteBuffer.wrap(str.getBytes(charset));
-		CharBuffer cb = charset.decode(bb);
-		str = cb.toString();
-
-		// MySQL handling
-		str = str.replace("\u0097", "\u2014");
-
-		return str;
 	}
 }
