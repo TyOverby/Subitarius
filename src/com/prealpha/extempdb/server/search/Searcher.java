@@ -6,7 +6,9 @@
 
 package com.prealpha.extempdb.server.search;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,7 +27,7 @@ import com.prealpha.extempdb.server.http.StatusCodeException;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.wideplay.warp.persist.Transactional;
 
-public class Searcher implements Runnable {
+public class Searcher {
 	@InjectLogger
 	private Logger log;
 
@@ -43,22 +45,27 @@ public class Searcher implements Runnable {
 		this.articleProcessor = articleProcessor;
 	}
 
-	@Override
 	public void run() {
+		run(Collections.<Long> emptySet());
+	}
+
+	public void run(Set<Long> sourceIds) {
 		log.info("starting search");
 		try {
 			for (Source source : getAll(Source.class)) {
-				try {
-					for (Tag tag : getAll(Tag.class)) {
-						if (tag.isSearched()) {
-							SearchQuery query = new SearchQuery(source, tag);
-							execute(query);
+				if (sourceIds.isEmpty() || sourceIds.contains(source.getId())) {
+					try {
+						for (Tag tag : getAll(Tag.class)) {
+							if (tag.isSearched()) {
+								SearchQuery query = new SearchQuery(source, tag);
+								execute(query);
+							}
 						}
+					} catch (RuntimeException rx) {
+						log.error("unexpected exception was thrown", rx);
+					} catch (ClassNotFoundException cnfx) {
+						log.error("article parser class not found", cnfx);
 					}
-				} catch (RuntimeException rx) {
-					log.error("unexpected exception was thrown", rx);
-				} catch (ClassNotFoundException cnfx) {
-					log.error("article parser class not found", cnfx);
 				}
 			}
 			log.info("search complete");
