@@ -51,10 +51,13 @@ public class TagMappingAction {
 		this.id = id;
 	}
 
+	/*
+	 * The detail in the @JoinColumns annotation is required by the spec.
+	 */
 	@ManyToOne
 	@JoinColumns({
-			@JoinColumn(nullable = false, name = "MAPPING_TAG_NAME", referencedColumnName = "TAG_NAME"),
-			@JoinColumn(nullable = false, name = "MAPPING_ARTICLE_ID", referencedColumnName = "ARTICLE_ID") })
+			@JoinColumn(name = "mapping_tag_name", referencedColumnName = "tag_name", nullable = false),
+			@JoinColumn(name = "mapping_article_id", referencedColumnName = "article_id", nullable = false) })
 	public TagMapping getMapping() {
 		return mapping;
 	}

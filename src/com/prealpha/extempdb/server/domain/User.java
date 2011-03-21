@@ -1,6 +1,6 @@
 /*
  * User.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -10,6 +10,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/*
+ * Note that hashCode() and equals() ignore the user name's case.
+ */
 @Entity
 public class User {
 	private String name;
@@ -53,7 +56,8 @@ public class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((name == null) ? 0 : name.toUpperCase().hashCode());
 		return result;
 	}
 
@@ -73,7 +77,7 @@ public class User {
 			if (other.name != null) {
 				return false;
 			}
-		} else if (!name.equals(other.name)) {
+		} else if (!name.equalsIgnoreCase(other.name)) {
 			return false;
 		}
 		return true;

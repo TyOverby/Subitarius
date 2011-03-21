@@ -1,6 +1,6 @@
 /*
  * UserDto.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,6 +8,9 @@ package com.prealpha.extempdb.shared.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/*
+ * Note that hashCode() and equals() ignore the user name's case.
+ */
 public class UserDto implements IsSerializable {
 	private String name;
 
@@ -36,7 +39,8 @@ public class UserDto implements IsSerializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result
+				+ ((name == null) ? 0 : name.toUpperCase().hashCode());
 		return result;
 	}
 
@@ -56,7 +60,7 @@ public class UserDto implements IsSerializable {
 			if (other.name != null) {
 				return false;
 			}
-		} else if (!name.equals(other.name)) {
+		} else if (!name.equalsIgnoreCase(other.name)) {
 			return false;
 		}
 		return true;
