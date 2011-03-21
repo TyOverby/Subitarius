@@ -79,15 +79,16 @@ public class ArticleProcessor {
 		Article existing = getExistingArticle(canonicalUrl);
 
 		if (existing == null) {
-			ProtoArticle protoArticle = parser.parse(url);
+			ProtoArticle protoArticle = parser.parse(canonicalUrl);
 			if (protoArticle != null) {
 				Article article = new Article();
 				protoArticle.fill(article);
 				article.setRetrievalDate(new Date());
-				article.setUrl(url);
+				article.setUrl(canonicalUrl);
 				article.setSource(source);
 
-				log.debug("result article at URL {} parsed and persisted", url);
+				log.debug("result article at URL {} parsed and persisted",
+						canonicalUrl);
 				entityManager.persist(article);
 				entityManager.flush();
 				return article;
@@ -95,7 +96,8 @@ public class ArticleProcessor {
 				return null;
 			}
 		} else {
-			log.debug("result article at URL {} was previously parsed", url);
+			log.debug("result article at URL {} was previously parsed",
+					canonicalUrl);
 			return existing;
 		}
 	}
