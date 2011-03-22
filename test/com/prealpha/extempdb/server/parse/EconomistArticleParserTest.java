@@ -1,5 +1,5 @@
 /*
- * GuardianArticleParserTest.java
+ * EconomistArticleParserTest.java
  * Copyright (C) 2011 Meyer Kizner, Ty Overby
  * All rights reserved.
  */
@@ -36,7 +36,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
-public class TheEconomistArticleParserTest implements Module {
+public class EconomistArticleParserTest implements Module {
 	private static final String URL = "http://www.guardian.co.uk/world/2011/mar/21/french-local-elections-sarkozy-pen/print";
 
 	private static final Map<String, String> PARAMETERS = Collections
@@ -44,7 +44,7 @@ public class TheEconomistArticleParserTest implements Module {
 
 	@Inject
 	@Unit
-	private TheEconomistArticleParser articleParser;
+	private EconomistArticleParser articleParser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -102,7 +102,7 @@ public class TheEconomistArticleParserTest implements Module {
 		
 		/*
 		assertEquals("Thursday 27 January 2011",
-				TheEconomistArticleParser.DATE_FORMAT_UK.format(date));
+				EconomistArticleParser.DATE_FORMAT_UK.format(date));
 		*/
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();

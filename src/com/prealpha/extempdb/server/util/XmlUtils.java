@@ -76,7 +76,7 @@ public final class XmlUtils {
 			Element metaElement = (Element) obj;
 			String metaName = metaElement.getAttributeValue("name");
 			String metaContent = metaElement.getAttributeValue("content");
-			metaMap.put(metaName, metaContent);
+			metaMap.put(metaName, metaContent.trim()); // for line breaks
 		}
 
 		return metaMap;

@@ -1,6 +1,6 @@
 /*
  * ProtoArticle.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner, Ty Overby
  * All rights reserved.
  */
 
@@ -68,22 +68,6 @@ public final class ProtoArticle {
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
-	
-	@Override
-	public String toString()
-	{
-		String toReturn = "";
-		toReturn += "Title: " + this.getTitle()+"\n";
-		toReturn += "ByLine: " + this.getByline()+"\n";
-		toReturn += "Date: " + this.getDate() + "\n";
-		toReturn += "Paragraphs:\n";
-		for(String para:this.getParagraphs())
-		{
-			toReturn += para+"\n\n";
-		}
-		
-		return toReturn;
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -126,5 +110,19 @@ public final class ProtoArticle {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		String toReturn = "";
+		toReturn += "Title: " + getTitle() + "\n";
+		toReturn += "Byline: " + getByline() + "\n";
+		toReturn += "Date: " + getDate() + "\n";
+		toReturn += "Paragraphs:\n";
+		for (String paragraph : getParagraphs()) {
+			toReturn += paragraph + "\n\n";
+		}
+
+		return toReturn;
 	}
 }

@@ -28,7 +28,7 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.HtmlHelper;
+import com.prealpha.extempdb.server.util.HtmlUtils;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
 class GuardianArticleParser extends AbstractArticleParser {
@@ -68,28 +68,26 @@ class GuardianArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html) throws ArticleParseException {
-		
-		Document document = HtmlHelper.parse(html);
+	private ProtoArticle getFromHtml(InputStream html)
+			throws ArticleParseException {
+		Document document = HtmlUtils.parse(html);
 		Namespace namespace = document.getRootElement().getNamespace();
 
-		// get the title		
-		String title;
-		Element titleElement = HtmlHelper.getMatches(document, "div", "id", "main-article-info").get(0);
+		// get the title
+		Element titleElement = HtmlUtils.getMatches(document, "div", "id",
+				"main-article-info").get(0);
 		Element heading = titleElement.getChild("h1", namespace);
-		title = heading.getValue();
+		String title = heading.getValue();
 
 		// get the byline, if there is one
 		// http://www.guardian.co.uk/world/feedarticle/9475892
-		String byline;		
-		ArrayList<Element> byLineElements = HtmlHelper.getMatches(document, "a", "class", "contributor");
-		try
-		{
-			Element bylineElement = (Element) byLineElements.get(0);
+		List<Element> bylineElements = HtmlUtils.getMatches(document, "a",
+				"class", "contributor");
+		String byline;
+		if (bylineElements.size() > 0) {
+			Element bylineElement = (Element) bylineElements.get(0);
 			byline = bylineElement.getValue();
-		} 
-		catch(Exception e) 
-		{
+		} else {
 			byline = null;
 		}
 
@@ -99,11 +97,11 @@ class GuardianArticleParser extends AbstractArticleParser {
 		 * element and parse out the date. For example, the parent element might
 		 * contain "The Guardian, Thursday 27 January 2011". So we split() on
 		 * the comma and take the second fragment for parsing.
-		 */		
-		
-		Date date;
-		Element dateElement = HtmlHelper.getMatches(document, "li", "class", "publication").get(0);
+		 */
+		Element dateElement = HtmlUtils.getMatches(document, "li", "class",
+				"publication").get(0);
 		String dateString = dateElement.getValue().split(",")[1].trim();
+		Date date;
 		try {
 			date = DATE_FORMAT_UK.parse(dateString);
 		} catch (ParseException px1) {
