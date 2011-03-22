@@ -8,9 +8,9 @@ package com.prealpha.extempdb.server.parse;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.HttpStatus;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
@@ -29,10 +28,10 @@ import org.jdom.input.DOMBuilder;
 import org.w3c.tidy.Tidy;
 
 import com.google.common.io.ByteStreams;
+import com.google.gwt.thirdparty.guava.common.base.Charsets;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.http.StatusCodeException;
 
 class WaPostArticleParser implements ArticleParser {
 	private static enum ArticleType {
@@ -110,41 +109,41 @@ class WaPostArticleParser implements ArticleParser {
 				 * possible pages, parse them individually, and combine them
 				 * together.
 				 * 
-				 * The intermediate conversion to byte arrays is necessary to
-				 * free connections from the HttpClient for subsequent requests.
+				 * The intermediate conversion to Strings is necessary to free
+				 * connections from the HttpClient for subsequent requests.
 				 */
-				List<byte[]> streams = new ArrayList<byte[]>();
-				streams.add(ByteStreams.toByteArray(httpClient.doGet(url,
-						params)));
+				List<String> streams = new ArrayList<String>();
+				InputStream baseStream = httpClient.doGet(url, params);
+				String baseStr = new String(
+						ByteStreams.toByteArray(baseStream), Charsets.UTF_8);
+				streams.add(baseStr);
 
 				int page = 1;
 				while (true) {
-					try {
-						int index = url.length() - 5;
-						String suffix = "_" + (page++) + ".html";
-						String pageUrl = url.substring(0, index) + suffix;
+					int index = url.length() - 5;
+					String suffix = "_" + (page++) + ".html";
+					String pageUrl = url.substring(0, index) + suffix;
 
+					if (baseStr.contains(pageUrl)) { // there has to be a link
 						InputStream stream = httpClient.doGet(pageUrl, params);
-						byte[] bytes = ByteStreams.toByteArray(stream);
-						streams.add(bytes);
-					} catch (StatusCodeException scx) {
-						if (scx.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-							break; // that was the end of the article
-						} else {
-							throw scx;
-						}
+						String str = new String(
+								ByteStreams.toByteArray(stream), Charsets.UTF_8);
+						streams.add(str);
+					} else {
+						break;
 					}
 				}
 
 				List<ProtoArticle> articles = new ArrayList<ProtoArticle>();
-				for (byte[] bytes : streams) {
-					InputStream stream = new ByteArrayInputStream(bytes);
-					articles.add(getFromHtml(stream, ArticleType.STORY));
+				for (String str : streams) {
+					articles.add(getFromHtml(str, ArticleType.STORY));
 				}
 				return combine(articles);
 			} else if (url.endsWith("_blog.html")) {
 				InputStream stream = httpClient.doGet(url, params);
-				return getFromHtml(stream, ArticleType.BLOG);
+				String str = new String(ByteStreams.toByteArray(stream),
+						Charsets.UTF_8);
+				return getFromHtml(str, ArticleType.BLOG);
 			} else {
 				throw new IllegalArgumentException(
 						"unrecognized canonical URL type");
@@ -156,9 +155,9 @@ class WaPostArticleParser implements ArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html, ArticleType type)
+	private ProtoArticle getFromHtml(String html, ArticleType type)
 			throws ArticleParseException {
-		org.w3c.dom.Document doc = tidy.parseDOM(html, null);
+		org.w3c.dom.Document doc = tidy.parseDOM(new StringReader(html), null);
 		doc.removeChild(doc.getDoctype());
 		Document document = builder.build(doc);
 
