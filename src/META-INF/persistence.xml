@@ -20,6 +20,7 @@
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.connection.provider_class"
 				value="org.hibernate.connection.C3P0ConnectionProvider" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		</properties>
 	</persistence-unit>
 </persistence>

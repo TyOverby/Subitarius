@@ -26,6 +26,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
@@ -97,7 +98,7 @@ public class HttpClient {
 
 		if (statusCode != HttpStatus.SC_OK) {
 			if (outputEntity != null) {
-				outputEntity.consumeContent();
+				EntityUtils.consume(outputEntity);
 			}
 
 			throw new StatusCodeException(statusCode);

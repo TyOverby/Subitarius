@@ -8,6 +8,7 @@ package com.prealpha.extempdb.server.parse;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -27,6 +28,7 @@ import org.jdom.filter.Filter;
 import org.jdom.input.DOMBuilder;
 import org.w3c.tidy.Tidy;
 
+import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
@@ -107,9 +109,13 @@ class WaPostArticleParser implements ArticleParser {
 				 * page and printable versions of articles. So we fetch all
 				 * possible pages, parse them individually, and combine them
 				 * together.
+				 * 
+				 * The intermediate conversion to byte arrays is necessary to
+				 * free connections from the HttpClient for subsequent requests.
 				 */
-				List<InputStream> streams = new ArrayList<InputStream>();
-				streams.add(httpClient.doGet(url, params));
+				List<byte[]> streams = new ArrayList<byte[]>();
+				streams.add(ByteStreams.toByteArray(httpClient.doGet(url,
+						params)));
 
 				int page = 1;
 				while (true) {
@@ -117,21 +123,22 @@ class WaPostArticleParser implements ArticleParser {
 						int index = url.length() - 5;
 						String suffix = "_" + (page++) + ".html";
 						String pageUrl = url.substring(0, index) + suffix;
-						streams.add(httpClient.doGet(pageUrl, params));
-					} catch (IOException iox) {
-						Throwable cause = iox.getCause();
-						if (cause instanceof StatusCodeException) {
-							StatusCodeException scx = (StatusCodeException) cause;
-							if (scx.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-								break; // that was the end of the article
-							}
+
+						InputStream stream = httpClient.doGet(pageUrl, params);
+						byte[] bytes = ByteStreams.toByteArray(stream);
+						streams.add(bytes);
+					} catch (StatusCodeException scx) {
+						if (scx.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+							break; // that was the end of the article
+						} else {
+							throw scx;
 						}
-						throw iox; // some exception other than a not found
 					}
 				}
 
 				List<ProtoArticle> articles = new ArrayList<ProtoArticle>();
-				for (InputStream stream : streams) {
+				for (byte[] bytes : streams) {
+					InputStream stream = new ByteArrayInputStream(bytes);
 					articles.add(getFromHtml(stream, ArticleType.STORY));
 				}
 				return combine(articles);
@@ -182,8 +189,8 @@ class WaPostArticleParser implements ArticleParser {
 			Element paragraph = (Element) obj;
 
 			// remove image captions
-			Filter imageLeftFilter = ParseUtils.getElementFilter("span", "class",
-					"imgleft");
+			Filter imageLeftFilter = ParseUtils.getElementFilter("span",
+					"class", "imgleft");
 			Filter imageRightFilter = ParseUtils.getElementFilter("span",
 					"class", "imgright");
 			Filter imageFilter = ParseUtils.getOrFilter(imageLeftFilter,
