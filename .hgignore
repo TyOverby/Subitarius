@@ -7,4 +7,4 @@ syntax: regexp
 syntax: regexp
 ^.apt_generated$
 syntax: regexp
-^.classpath$
+^\.classpath$
