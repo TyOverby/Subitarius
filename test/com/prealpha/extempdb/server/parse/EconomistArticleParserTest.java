@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -38,14 +37,16 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
 public class EconomistArticleParserTest implements Module {
-	private static URL url;
+	private static final String URL_PRINT = "http://www.economist.com/node/18388998";
+
+	private static final String URL_BLOG = "http://www.economist.com/blogs/newsbook/2011/03/weeks_caption_competition_1";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
 
 	@Inject
 	@Unit
-	private EconomistArticleParser articleParser;
+	private EconomistArticleParser parser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -57,66 +58,93 @@ public class EconomistArticleParserTest implements Module {
 
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		articleParser.parse(null);
-	}
-
-	@Test
-	public void testParse() throws ArticleParseException, IOException,
-			RobotsExclusionException {
-		//print edition
-		url = new URL("http://www.economist.com/node/18388998/print");
-		//blogspam
-		url = new URL("http://www.economist.com/blogs/newsbook/2011/03/weeks_caption_competition_1/print");
-
-		expect(mockHttpClient.doGet(url.toString(), PARAMETERS)).andReturn(url.openStream());
-
-		doTest();
+		parser.parse(null);
 	}
 
 	@Test(expected = ArticleParseException.class)
 	public void testHttpFailure() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		expect(mockHttpClient.doGet(url.toString(), PARAMETERS)).andThrow(
-				new IOException());
-
-		doTest();
+		expect(mockHttpClient.doGet(URL_PRINT + "/print", PARAMETERS))
+				.andThrow(new IOException());
+		replay(mockHttpClient);
+		parser.parse(URL_PRINT);
 	}
 
 	@Test(expected = ArticleParseException.class)
 	public void testRobotsExclusion() throws ArticleParseException,
 			IOException, RobotsExclusionException {
-		expect(mockHttpClient.doGet(url.toString(), PARAMETERS)).andThrow(
-				new RobotsExclusionException());
-
-		doTest();
+		expect(mockHttpClient.doGet(URL_PRINT + "/print", PARAMETERS))
+				.andThrow(new RobotsExclusionException());
+		replay(mockHttpClient);
+		parser.parse(URL_PRINT);
 	}
 
-	private void doTest() throws ArticleParseException {
+	@Test
+	public void testParsePrint() throws ArticleParseException, IOException,
+			RobotsExclusionException {
+		InputStream stream = new FileInputStream(new File(
+				"./test/economist_print.html"));
+		expect(mockHttpClient.doGet(URL_PRINT + "/print", PARAMETERS))
+				.andReturn(stream);
+
 		replay(mockHttpClient);
 
-		ProtoArticle article = articleParser.parse(url.toString());
-		System.out.println(article.toString());
+		ProtoArticle article = parser.parse(URL_PRINT);
 
 		assertNotNull(article);
 
-		assertEquals("Nuclear power? No thanks (again)", article.getTitle());
+		assertEquals(
+				"Video nasty: The film business is slumping. It needs to start dealing directly with consumers",
+				article.getTitle());
 
-		assertEquals("B.U.", article.getByline());
+		assertNull(article.getByline());
 
+		// the "th" in "17th" is stripped off by the parser
 		Date date = article.getDate();
+		assertEquals("Mar 17 2011",
+				EconomistArticleParser.DATE_FORMAT.format(date));
 
-		/*
-		 * assertEquals("Thursday 27 January 2011",
-		 * EconomistArticleParser.DATE_FORMAT_UK.format(date));
-		 */
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
-		assertEquals(7, paragraphCount);
-		assertTrue(firstParagraph.startsWith("THIS post will attempt to avoid earthquake"));
-		assertTrue(lastParagraph.endsWith("it will be gas."));
-		verify(mockHttpClient);
 
+		assertEquals(7, paragraphCount);
+		assertTrue(firstParagraph.startsWith("IN “THE RING”,"));
+		assertTrue(lastParagraph.endsWith("at least, it should."));
+	}
+
+	@Test
+	public void testParseBlog() throws ArticleParseException, IOException,
+			RobotsExclusionException {
+		InputStream stream = new FileInputStream(new File(
+				"./test/economist_blog.html"));
+		expect(mockHttpClient.doGet(URL_BLOG + "/print", PARAMETERS))
+				.andReturn(stream);
+
+		replay(mockHttpClient);
+
+		ProtoArticle article = parser.parse(URL_BLOG);
+
+		assertNotNull(article);
+
+		assertEquals("Caption competition 8: This week's caption competition",
+				article.getTitle());
+
+		assertEquals("by The Economist online", article.getByline());
+
+		// the "st" in "21st" is stripped off by the parser
+		Date date = article.getDate();
+		assertEquals("Mar 21 2011",
+				EconomistArticleParser.DATE_FORMAT.format(date));
+
+		List<String> paragraphs = article.getParagraphs();
+		int paragraphCount = paragraphs.size();
+		String firstParagraph = paragraphs.get(0);
+		String lastParagraph = paragraphs.get(paragraphCount - 1);
+
+		assertEquals(2, paragraphCount);
+		assertTrue(firstParagraph.startsWith("The photograph above"));
+		assertTrue(lastParagraph.endsWith("Over to you."));
 	}
 }

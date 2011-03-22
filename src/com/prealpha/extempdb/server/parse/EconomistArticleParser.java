@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jdom.Document;
@@ -26,7 +27,6 @@ import org.jdom.Element;
 import org.jdom.filter.Filter;
 
 import com.google.inject.Inject;
-import com.google.inject.matcher.Matcher;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
@@ -34,11 +34,10 @@ class EconomistArticleParser extends AbstractArticleParser {
 	/*
 	 * Package visibility for unit testing.
 	 */
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"MMM dd yyyy");
-	
-	private boolean isPrint = true;
-	private final Pattern pattern = Pattern.compile("by (.+) \\|");
+	static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd yyyy");
+
+	private static final Pattern BYLINE_PATTERN = Pattern
+			.compile("by (.+)( \\||$)");
 
 	private final HttpClient httpClient;
 
@@ -50,15 +49,14 @@ class EconomistArticleParser extends AbstractArticleParser {
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
 		checkNotNull(url);
+
+		// we need the printable version
+		url += "/print";
+
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
-			if(url.contains("blogs"))
-			{
-				this.isPrint=false;
-			}
-			
-			return getFromHtml(stream);
+			return getFromHtml(stream, url.contains("blogs"));
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
@@ -66,73 +64,69 @@ class EconomistArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html)
+	private ProtoArticle getFromHtml(InputStream html, boolean blog)
 			throws ArticleParseException {
 		Document document = ParseUtils.parse(html);
 
 		// get the title
 		String title;
-		if(this.isPrint)
-		{
-			Element titleElement = ParseUtils.searchDescendants(document, "div", "class","headline").get(0);
-			Element subTitleElement = ParseUtils.searchDescendants(document, "h1", "class","rubric").get(0);
-			title = titleElement.getValue()+": "+subTitleElement.getValue();
+		if (blog) {
+			Element titleElement = ParseUtils.searchDescendants(document, "h1",
+					"class", "ec-blog-headline").get(0);
+			Element subTitleElement = ParseUtils.searchDescendants(document,
+					"h2", "class", "ec-blog-fly-title").get(0);
+			title = titleElement.getValue() + ": " + subTitleElement.getValue();
+		} else {
+			Element titleElement = ParseUtils.searchDescendants(document,
+					"div", "class", "headline").get(0);
+			Element subTitleElement = ParseUtils.searchDescendants(document,
+					"h1", "class", "rubric").get(0);
+			title = titleElement.getValue() + ": " + subTitleElement.getValue();
 		}
-		else
-		{
-			Element titleElement = ParseUtils.searchDescendants(document, "h1", "class","ec-blog-headline").get(0);
-			Element subTitleElement = ParseUtils.searchDescendants(document, "h2", "class","ec-blog-fly-title").get(0);
-			title = titleElement.getValue()+": "+subTitleElement.getValue();
-		}
-		
-		//get the byline
+
+		// get the byline
 		String byline = null;
-		if(!this.isPrint)
-		{
-			try
-			{
-				String blogInfo =  ParseUtils.searchDescendants(document, "p", "class","ec-blog-info").get(0).getValue();
-				java.util.regex.Matcher m = pattern.matcher(blogInfo);
-				m.find();
-				byline = m.group(1);
-			}
-			catch(Exception e)
-			{
-				//do nothing, byline is already null
+		if (blog) {
+			List<Element> blogInfo = ParseUtils.searchDescendants(document,
+					"p", "class", "ec-blog-info");
+			if (!blogInfo.isEmpty()) {
+				String blogInfoStr = blogInfo.get(0).getValue();
+				Matcher matcher = BYLINE_PATTERN.matcher(blogInfoStr);
+				if (matcher.find()) {
+					byline = matcher.group();
+				}
 			}
 		}
 
 		// get the date
-		Date date = null;
-		String dateString;
+		Date date;
 		try {
-			Element dateElement = null;
-			if(this.isPrint)
-			{
-				dateElement = ParseUtils.searchDescendants(document, "p", "class","ec-article-info").get(0);
-			}
-			else 
-			{
-				dateElement = ParseUtils.searchDescendants(document, "p", "class","ec-blog-info").get(0);
+			Element dateElement;
+			if (blog) {
+				dateElement = ParseUtils.searchDescendants(document, "p",
+						"class", "ec-blog-info").get(0);
 
+			} else {
+				dateElement = ParseUtils.searchDescendants(document, "p",
+						"class", "ec-article-info").get(0);
 			}
-			dateString = dateElement.getText().replace("th", "").replace("st", "").replace("rd", "").replace("nd", "");
-			
-			date = DATE_FORMAT.parse(dateString);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+			String dateStr = dateElement.getText().replace("th", "")
+					.replace("st", "").replace("rd", "").replace("nd", "");
+			date = DATE_FORMAT.parse(dateStr);
+		} catch (ParseException px) {
+			throw new ArticleParseException(px);
 		}
 
 		// get the body text
-		Filter bodyElementFilter = null;
-		if(this.isPrint)
-		{
-			bodyElementFilter = ParseUtils.getElementFilter("div", "class","ec-article-content clear");
-		}
-		else
-		{
-			bodyElementFilter = ParseUtils.getElementFilter("div", "class","ec-blog-body");
+		Filter bodyElementFilter;
+		if (blog) {
+			bodyElementFilter = ParseUtils.getElementFilter("div", "class",
+					"ec-blog-body");
+
+		} else {
+			bodyElementFilter = ParseUtils.getElementFilter("div", "class",
+					"ec-article-content clear");
 		}
 		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
@@ -150,6 +144,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 				}
 			}
 		}
+
 		return new ProtoArticle(title, byline, date, paragraphs);
 	}
 }
