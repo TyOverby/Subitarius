@@ -6,6 +6,8 @@
 
 package com.prealpha.extempdb.server.parse;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -18,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpStatus;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
@@ -27,6 +30,7 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.server.http.StatusCodeException;
 import com.prealpha.extempdb.server.util.XmlUtils;
 
 class WaPostArticleParser implements ArticleParser {
@@ -93,24 +97,52 @@ class WaPostArticleParser implements ArticleParser {
 
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
-		ArticleType type;
-		if (url.endsWith("_story.html")) {
-			type = ArticleType.STORY;
+		checkNotNull(url);
 
-			// we have to replace this with the single page version for fetching
-			int index = url.lastIndexOf("_story.html");
-			url = url.substring(0, index) + "_singlePage.html";
-		} else if (url.endsWith("_blog.html")) {
-			type = ArticleType.BLOG;
-		} else {
-			throw new IllegalArgumentException(
-					"unrecognized canonical URL type");
-		}
+		Map<String, String> params = Collections.emptyMap();
 
 		try {
-			Map<String, String> params = Collections.emptyMap();
-			InputStream stream = httpClient.doGet(url, params);
-			return getFromHtml(stream, type);
+			if (url.endsWith("_story.html")) {
+				/*
+				 * The Post's robots.txt file blocks us from fetching the single
+				 * page and printable versions of articles. So we fetch all
+				 * possible pages, parse them individually, and combine them
+				 * together.
+				 */
+				List<InputStream> streams = new ArrayList<InputStream>();
+				streams.add(httpClient.doGet(url, params));
+
+				int page = 1;
+				while (true) {
+					try {
+						int index = url.length() - 5;
+						String suffix = "_" + (page++) + ".html";
+						String pageUrl = url.substring(0, index) + suffix;
+						streams.add(httpClient.doGet(pageUrl, params));
+					} catch (IOException iox) {
+						Throwable cause = iox.getCause();
+						if (cause instanceof StatusCodeException) {
+							StatusCodeException scx = (StatusCodeException) cause;
+							if (scx.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
+								break; // that was the end of the article
+							}
+						}
+						throw iox; // some exception other than a not found
+					}
+				}
+
+				List<ProtoArticle> articles = new ArrayList<ProtoArticle>();
+				for (InputStream stream : streams) {
+					articles.add(getFromHtml(stream, ArticleType.STORY));
+				}
+				return combine(articles);
+			} else if (url.endsWith("_blog.html")) {
+				InputStream stream = httpClient.doGet(url, params);
+				return getFromHtml(stream, ArticleType.BLOG);
+			} else {
+				throw new IllegalArgumentException(
+						"unrecognized canonical URL type");
+			}
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
@@ -164,6 +196,24 @@ class WaPostArticleParser implements ArticleParser {
 			}
 
 			paragraphs.add(paragraph.getValue().trim());
+		}
+
+		return new ProtoArticle(title, byline, date, paragraphs);
+	}
+
+	private static ProtoArticle combine(List<ProtoArticle> articles) {
+		checkArgument(articles.size() > 0);
+
+		String title = articles.get(0).getTitle();
+		String byline = articles.get(0).getByline();
+		Date date = articles.get(0).getDate();
+		List<String> paragraphs = new ArrayList<String>();
+
+		for (ProtoArticle article : articles) {
+			checkArgument(title.equals(article.getTitle()));
+			checkArgument(byline.equals(article.getByline()));
+			checkArgument(date.equals(article.getDate()));
+			paragraphs.addAll(article.getParagraphs());
 		}
 
 		return new ProtoArticle(title, byline, date, paragraphs);

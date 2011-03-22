@@ -39,7 +39,9 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 public class WaPostArticleParserTest implements Module {
 	private static final String URL_STORY = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html";
 
-	private static final String URL_SINGLEPAGE = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_singlePage.html";
+	private static final String URL_STORY_1 = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story_1.html";
+
+	private static final String URL_STORY_2 = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story_2.html";
 
 	private static final String URL_BLOG = "http://www.washingtonpost.com/blogs/blogpost/post/house-gop-rejects-climate-change-amendment-science-not-settled/2011/03/15/ABWUYlY_blog.html";
 
@@ -72,7 +74,8 @@ public class WaPostArticleParserTest implements Module {
 		assertEquals(URL_STORY, parser.getCanonicalUrl(printableUrl));
 
 		// test single page version
-		assertEquals(URL_STORY, parser.getCanonicalUrl(URL_SINGLEPAGE));
+		String singlePageUrl = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_singlePage.html";
+		assertEquals(URL_STORY, parser.getCanonicalUrl(singlePageUrl));
 
 		// make sure that story and blog URLs are canonicalized to themselves
 		assertEquals(URL_STORY, parser.getCanonicalUrl(URL_STORY));
@@ -87,7 +90,7 @@ public class WaPostArticleParserTest implements Module {
 	@Test(expected = ArticleParseException.class)
 	public void testHttpFailure() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		expect(mockHttpClient.doGet(URL_SINGLEPAGE, PARAMETERS)).andThrow(
+		expect(mockHttpClient.doGet(URL_STORY, PARAMETERS)).andThrow(
 				new IOException());
 		replay(mockHttpClient);
 		parser.parse(URL_STORY);
@@ -96,7 +99,7 @@ public class WaPostArticleParserTest implements Module {
 	@Test(expected = ArticleParseException.class)
 	public void testRobotsExclusion() throws ArticleParseException,
 			IOException, RobotsExclusionException {
-		expect(mockHttpClient.doGet(URL_SINGLEPAGE, PARAMETERS)).andThrow(
+		expect(mockHttpClient.doGet(URL_STORY, PARAMETERS)).andThrow(
 				new RobotsExclusionException());
 		replay(mockHttpClient);
 		parser.parse(URL_STORY);
@@ -105,10 +108,14 @@ public class WaPostArticleParserTest implements Module {
 	@Test
 	public void testParseStory() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(
-				new File("./wapost_story.html"));
-		expect(mockHttpClient.doGet(URL_SINGLEPAGE, PARAMETERS)).andReturn(
-				stream);
+		InputStream stream1 = new FileInputStream(new File(
+				"./wapost_story.html"));
+		InputStream stream2 = new FileInputStream(new File(
+				"./wapost_story_1.html"));
+		expect(mockHttpClient.doGet(URL_STORY, PARAMETERS)).andReturn(stream1);
+		expect(mockHttpClient.doGet(URL_STORY_1, PARAMETERS))
+				.andReturn(stream2);
+		expect(mockHttpClient.doGet(URL_STORY_2, PARAMETERS)).andThrow(new IOException());
 
 		replay(mockHttpClient);
 
@@ -130,7 +137,7 @@ public class WaPostArticleParserTest implements Module {
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(17, paragraphCount);
+		assertEquals(18, paragraphCount);
 		assertTrue(firstParagraph.startsWith("Crises redefine a presidency"));
 		assertTrue(lastParagraph.endsWith("the World They Are Making.”"));
 	}
