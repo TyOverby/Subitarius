@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +38,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
 public class EconomistArticleParserTest implements Module {
-	private static final String URL = "http://www.guardian.co.uk/world/2011/mar/21/french-local-elections-sarkozy-pen/print";
+	private static URL url;
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
@@ -62,9 +63,12 @@ public class EconomistArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File(
-				"./test/economist_print.html"));
-		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
+		//print edition
+		url = new URL("http://www.economist.com/node/18388998/print");
+		//blogspam
+		url = new URL("http://www.economist.com/blogs/newsbook/2011/03/weeks_caption_competition_1/print");
+
+		expect(mockHttpClient.doGet(url.toString(), PARAMETERS)).andReturn(url.openStream());
 
 		doTest();
 	}
@@ -72,7 +76,7 @@ public class EconomistArticleParserTest implements Module {
 	@Test(expected = ArticleParseException.class)
 	public void testHttpFailure() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		expect(mockHttpClient.doGet(URL, PARAMETERS)).andThrow(
+		expect(mockHttpClient.doGet(url.toString(), PARAMETERS)).andThrow(
 				new IOException());
 
 		doTest();
@@ -81,7 +85,7 @@ public class EconomistArticleParserTest implements Module {
 	@Test(expected = ArticleParseException.class)
 	public void testRobotsExclusion() throws ArticleParseException,
 			IOException, RobotsExclusionException {
-		expect(mockHttpClient.doGet(URL, PARAMETERS)).andThrow(
+		expect(mockHttpClient.doGet(url.toString(), PARAMETERS)).andThrow(
 				new RobotsExclusionException());
 
 		doTest();
@@ -90,14 +94,14 @@ public class EconomistArticleParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = articleParser.parse(URL);
+		ProtoArticle article = articleParser.parse(url.toString());
 		System.out.println(article.toString());
 
 		assertNotNull(article);
 
-		assertEquals("The long, hard haul", article.getTitle());
+		assertEquals("Nuclear power? No thanks (again)", article.getTitle());
 
-		assertEquals(null, article.getByline());
+		assertEquals("B.U.", article.getByline());
 
 		Date date = article.getDate();
 
@@ -109,9 +113,9 @@ public class EconomistArticleParserTest implements Module {
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
-		assertEquals(6, paragraphCount);
-		assertTrue(firstParagraph.startsWith("Nicolas Sarkozy's ruling UMP"));
-		assertTrue(lastParagraph.endsWith("in the Arab world."));
+		assertEquals(7, paragraphCount);
+		assertTrue(firstParagraph.startsWith("THIS post will attempt to avoid earthquake"));
+		assertTrue(lastParagraph.endsWith("it will be gas."));
 		verify(mockHttpClient);
 
 	}

@@ -19,12 +19,14 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
 
 import com.google.inject.Inject;
+import com.google.inject.matcher.Matcher;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
@@ -34,6 +36,9 @@ class EconomistArticleParser extends AbstractArticleParser {
 	 */
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"MMM dd yyyy");
+	
+	private boolean isPrint = true;
+	private final Pattern pattern = Pattern.compile("by (.+) \\|");
 
 	private final HttpClient httpClient;
 
@@ -48,6 +53,11 @@ class EconomistArticleParser extends AbstractArticleParser {
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
+			if(url.contains("blogs"))
+			{
+				this.isPrint=false;
+			}
+			
 			return getFromHtml(stream);
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
@@ -62,40 +72,68 @@ class EconomistArticleParser extends AbstractArticleParser {
 
 		// get the title
 		String title;
-		Element titleElement = ParseUtils.searchDescendants(document, "div", "class",
-				"headline").get(0);
-		title = titleElement.getValue();
+		if(this.isPrint)
+		{
+			Element titleElement = ParseUtils.searchDescendants(document, "div", "class","headline").get(0);
+			Element subTitleElement = ParseUtils.searchDescendants(document, "h1", "class","rubric").get(0);
+			title = titleElement.getValue()+": "+subTitleElement.getValue();
+		}
+		else
+		{
+			Element titleElement = ParseUtils.searchDescendants(document, "h1", "class","ec-blog-headline").get(0);
+			Element subTitleElement = ParseUtils.searchDescendants(document, "h2", "class","ec-blog-fly-title").get(0);
+			title = titleElement.getValue()+": "+subTitleElement.getValue();
+		}
+		
+		//get the byline
+		String byline = null;
+		if(!this.isPrint)
+		{
+			try
+			{
+				String blogInfo =  ParseUtils.searchDescendants(document, "p", "class","ec-blog-info").get(0).getValue();
+				java.util.regex.Matcher m = pattern.matcher(blogInfo);
+				m.find();
+				byline = m.group(1);
+			}
+			catch(Exception e)
+			{
+				//do nothing, byline is already null
+			}
+		}
 
 		// get the date
 		Date date = null;
 		String dateString;
 		try {
-			Element dateElement = ParseUtils.searchDescendants(document, "p", "class",
-					"ec-article-info").get(0);
-			dateString = dateElement.getText().replace("th", "")
-					.replace("st", "").replace("rd", "").replace("nd", "");
-			try {
-				date = DATE_FORMAT.parse(dateString);
-			} catch (ParseException e) {
-				e.printStackTrace();
+			Element dateElement = null;
+			if(this.isPrint)
+			{
+				dateElement = ParseUtils.searchDescendants(document, "p", "class","ec-article-info").get(0);
 			}
+			else 
+			{
+				dateElement = ParseUtils.searchDescendants(document, "p", "class","ec-blog-info").get(0);
+
+			}
+			dateString = dateElement.getText().replace("th", "").replace("st", "").replace("rd", "").replace("nd", "");
+			
+			date = DATE_FORMAT.parse(dateString);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		// get the byline, if there is one
-		String byline = null;
-		try {
-			Element byLineElement = ParseUtils.searchDescendants(document, "a",
-					"class", "contributor").get(0);
-			byline = byLineElement.getValue();
-		} catch (Exception e) {
-			byline = null;
-		}
-
 		// get the body text
-		Filter bodyElementFilter = ParseUtils.getElementFilter("div", "class",
-				"ec-article-content clear");
+		Filter bodyElementFilter = null;
+		if(this.isPrint)
+		{
+			bodyElementFilter = ParseUtils.getElementFilter("div", "class","ec-article-content clear");
+		}
+		else
+		{
+			bodyElementFilter = ParseUtils.getElementFilter("div", "class","ec-blog-body");
+		}
 		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
 		while (i1.hasNext()) {
@@ -112,7 +150,6 @@ class EconomistArticleParser extends AbstractArticleParser {
 				}
 			}
 		}
-
 		return new ProtoArticle(title, byline, date, paragraphs);
 	}
 }
