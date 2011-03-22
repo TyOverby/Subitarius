@@ -62,7 +62,8 @@ public class NyTimesArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./nytimes.html"));
+		InputStream stream = new FileInputStream(
+				new File("./test/nytimes.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();

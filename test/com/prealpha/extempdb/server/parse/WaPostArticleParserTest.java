@@ -110,9 +110,9 @@ public class WaPostArticleParserTest implements Module {
 	public void testParseStory() throws ArticleParseException, IOException,
 			RobotsExclusionException {
 		InputStream stream1 = new FileInputStream(new File(
-				"./wapost_story.html"));
+				"./test/wapost_story.html"));
 		InputStream stream2 = new FileInputStream(new File(
-				"./wapost_story_1.html"));
+				"./test/wapost_story_1.html"));
 		expect(mockHttpClient.doGet(URL_STORY, PARAMETERS)).andReturn(stream1);
 		expect(mockHttpClient.doGet(URL_STORY_1, PARAMETERS))
 				.andReturn(stream2);
@@ -147,7 +147,8 @@ public class WaPostArticleParserTest implements Module {
 	@Test
 	public void testParseBlog() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./wapost_blog.html"));
+		InputStream stream = new FileInputStream(new File(
+				"./test/wapost_blog.html"));
 		expect(mockHttpClient.doGet(URL_BLOG, PARAMETERS)).andReturn(stream);
 
 		replay(mockHttpClient);

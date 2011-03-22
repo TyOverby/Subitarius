@@ -62,7 +62,8 @@ public class EconomistArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./economist_print.html"));
+		InputStream stream = new FileInputStream(new File(
+				"./test/economist_print.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -93,17 +94,17 @@ public class EconomistArticleParserTest implements Module {
 		System.out.println(article.toString());
 
 		assertNotNull(article);
-		
-		assertEquals("The long, hard haul",article.getTitle());
+
+		assertEquals("The long, hard haul", article.getTitle());
 
 		assertEquals(null, article.getByline());
 
 		Date date = article.getDate();
-		
+
 		/*
-		assertEquals("Thursday 27 January 2011",
-				EconomistArticleParser.DATE_FORMAT_UK.format(date));
-		*/
+		 * assertEquals("Thursday 27 January 2011",
+		 * EconomistArticleParser.DATE_FORMAT_UK.format(date));
+		 */
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
@@ -112,7 +113,6 @@ public class EconomistArticleParserTest implements Module {
 		assertTrue(firstParagraph.startsWith("Nicolas Sarkozy's ruling UMP"));
 		assertTrue(lastParagraph.endsWith("in the Arab world."));
 		verify(mockHttpClient);
-		
-		
+
 	}
 }

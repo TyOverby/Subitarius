@@ -62,7 +62,7 @@ public class CsmArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./csm.html"));
+		InputStream stream = new FileInputStream(new File("./test/csm.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();

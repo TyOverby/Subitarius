@@ -66,7 +66,7 @@ public class WsjArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./wsj.html"));
+		InputStream stream = new FileInputStream(new File("./test/wsj.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -75,8 +75,8 @@ public class WsjArticleParserTest implements Module {
 	@Test
 	public void testParseAbridged() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(
-				new File("./wsj_abridged.html"));
+		InputStream stream = new FileInputStream(new File(
+				"./test/wsj_abridged.html"));
 		expect(mockHttpClient.doGet(URL_ABRIDGED, PARAMETERS))
 				.andReturn(stream);
 
@@ -86,8 +86,8 @@ public class WsjArticleParserTest implements Module {
 	@Test
 	public void testParseNewswire() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(
-				new File("./wsj_newswire.html"));
+		InputStream stream = new FileInputStream(new File(
+				"./test/wsj_newswire.html"));
 		expect(mockHttpClient.doGet(URL_NEWSWIRE, PARAMETERS))
 				.andReturn(stream);
 

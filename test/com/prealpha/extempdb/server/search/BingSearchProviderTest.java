@@ -67,7 +67,7 @@ public class BingSearchProviderTest implements Module {
 		expect(mockTag.getName()).andReturn("network neutrality");
 		expect(mockSource.getDomainName()).andReturn("www.nytimes.com");
 
-		InputStream stream = new FileInputStream(new File("./bing.json"));
+		InputStream stream = new FileInputStream(new File("./test/bing.json"));
 		String searchUrl = eq(BingSearchProvider.BASE_URL);
 		Map<String, String> parameters = anyObject();
 		expect(mockHttpClient.doGet(searchUrl, parameters)).andReturn(stream);

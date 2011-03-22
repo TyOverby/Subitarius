@@ -62,7 +62,8 @@ public class ReutersArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./reuters.html"));
+		InputStream stream = new FileInputStream(
+				new File("./test/reuters.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();

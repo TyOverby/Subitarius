@@ -62,7 +62,8 @@ public class GuardianArticleParserTest implements Module {
 	@Test
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File("./guardian.html"));
+		InputStream stream = new FileInputStream(new File(
+				"./test/guardian.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
 
 		doTest();
@@ -101,7 +102,7 @@ public class GuardianArticleParserTest implements Module {
 		Date date = article.getDate();
 		assertEquals("Monday 21 March 2011",
 				GuardianArticleParser.DATE_FORMAT_UK.format(date));
-		
+
 		List<String> paragraphs = article.getParagraphs();
 		int paragraphCount = paragraphs.size();
 		String firstParagraph = paragraphs.get(0);
