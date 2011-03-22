@@ -27,7 +27,6 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class ReutersArticleParser extends AbstractArticleParser {
 	/*
@@ -69,12 +68,12 @@ class ReutersArticleParser extends AbstractArticleParser {
 		doc.removeChild(doc.getDoctype());
 		Document document = builder.build(doc);
 
-		Filter containerFilter = XmlUtils.getElementFilter("div", "class",
+		Filter containerFilter = ParseUtils.getElementFilter("div", "class",
 				"column2 gridPanel grid8");
 		Element container = (Element) document.getDescendants(containerFilter)
 				.next();
 
-		Filter commentFilter = XmlUtils.getElementFilter("div", "class",
+		Filter commentFilter = ParseUtils.getElementFilter("div", "class",
 				"articleComments");
 		Element commentElement = (Element) container.getDescendants(
 				commentFilter).next();
@@ -93,7 +92,7 @@ class ReutersArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getByline(Element container) {
-		Filter bylineFilter = XmlUtils.getElementFilter("p", "class", "byline");
+		Filter bylineFilter = ParseUtils.getElementFilter("p", "class", "byline");
 		Iterator<?> bylineIterator = container.getDescendants(bylineFilter);
 
 		if (bylineIterator.hasNext()) {
@@ -105,7 +104,7 @@ class ReutersArticleParser extends AbstractArticleParser {
 	}
 
 	private static Date getDate(Element container) throws ArticleParseException {
-		Filter dateFilter = XmlUtils.getElementFilter("span", "class",
+		Filter dateFilter = ParseUtils.getElementFilter("span", "class",
 				"timestamp");
 		Element dateElement = (Element) container.getDescendants(dateFilter)
 				.next();
@@ -120,7 +119,7 @@ class ReutersArticleParser extends AbstractArticleParser {
 	private static List<String> getParagraphs(Element container,
 			Element commentElement) {
 		List<String> paragraphs = new ArrayList<String>();
-		Filter paragraphFilter = XmlUtils.getElementFilter("p", null, null);
+		Filter paragraphFilter = ParseUtils.getElementFilter("p", null, null);
 		Iterator<?> i1 = container.getDescendants(paragraphFilter);
 
 		// skip through any image caption and credit paragraphs, the byline

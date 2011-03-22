@@ -31,21 +31,20 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 import com.prealpha.extempdb.server.http.StatusCodeException;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class WaPostArticleParser implements ArticleParser {
 	private static enum ArticleType {
 		STORY {
 			@Override
 			Filter getBodyFilter() {
-				return XmlUtils.getElementFilter("div", "id", "article_body");
+				return ParseUtils.getElementFilter("div", "id", "article_body");
 			}
 		},
 
 		BLOG {
 			@Override
 			Filter getBodyFilter() {
-				return XmlUtils.getElementFilter("div", "id", "entrytext");
+				return ParseUtils.getElementFilter("div", "id", "entrytext");
 			}
 		};
 
@@ -157,7 +156,7 @@ class WaPostArticleParser implements ArticleParser {
 		Document document = builder.build(doc);
 
 		Element headElement = document.getRootElement().getChild("head");
-		Map<String, String> metaMap = XmlUtils.getMetaMap(headElement);
+		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
 
 		String title = metaMap.get("DC.title");
 
@@ -183,11 +182,11 @@ class WaPostArticleParser implements ArticleParser {
 			Element paragraph = (Element) obj;
 
 			// remove image captions
-			Filter imageLeftFilter = XmlUtils.getElementFilter("span", "class",
+			Filter imageLeftFilter = ParseUtils.getElementFilter("span", "class",
 					"imgleft");
-			Filter imageRightFilter = XmlUtils.getElementFilter("span",
+			Filter imageRightFilter = ParseUtils.getElementFilter("span",
 					"class", "imgright");
-			Filter imageFilter = XmlUtils.getOrFilter(imageLeftFilter,
+			Filter imageFilter = ParseUtils.getOrFilter(imageLeftFilter,
 					imageRightFilter);
 			Iterator<?> imageIterator = paragraph.getDescendants(imageFilter);
 			while (imageIterator.hasNext()) {

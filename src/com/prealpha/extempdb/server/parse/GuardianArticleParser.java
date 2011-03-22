@@ -22,14 +22,10 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.filter.Filter;
-import org.jdom.input.DOMBuilder;
-import org.w3c.tidy.Tidy;
 
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.HtmlUtils;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class GuardianArticleParser extends AbstractArticleParser {
 	/*
@@ -43,16 +39,9 @@ class GuardianArticleParser extends AbstractArticleParser {
 
 	private final HttpClient httpClient;
 
-	private final Tidy tidy;
-
-	private final DOMBuilder builder;
-
 	@Inject
-	public GuardianArticleParser(HttpClient httpClient, Tidy tidy,
-			DOMBuilder builder) {
+	public GuardianArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.tidy = tidy;
-		this.builder = builder;
 	}
 
 	@Override
@@ -70,18 +59,18 @@ class GuardianArticleParser extends AbstractArticleParser {
 
 	private ProtoArticle getFromHtml(InputStream html)
 			throws ArticleParseException {
-		Document document = HtmlUtils.parse(html);
+		Document document = ParseUtils.parse(html);
 		Namespace namespace = document.getRootElement().getNamespace();
 
 		// get the title
-		Element titleElement = HtmlUtils.getMatches(document, "div", "id",
+		Element titleElement = ParseUtils.searchDescendants(document, "div", "id",
 				"main-article-info").get(0);
 		Element heading = titleElement.getChild("h1", namespace);
 		String title = heading.getValue();
 
 		// get the byline, if there is one
 		// http://www.guardian.co.uk/world/feedarticle/9475892
-		List<Element> bylineElements = HtmlUtils.getMatches(document, "a",
+		List<Element> bylineElements = ParseUtils.searchDescendants(document, "a",
 				"class", "contributor");
 		String byline;
 		if (bylineElements.size() > 0) {
@@ -98,7 +87,7 @@ class GuardianArticleParser extends AbstractArticleParser {
 		 * contain "The Guardian, Thursday 27 January 2011". So we split() on
 		 * the comma and take the second fragment for parsing.
 		 */
-		Element dateElement = HtmlUtils.getMatches(document, "li", "class",
+		Element dateElement = ParseUtils.searchDescendants(document, "li", "class",
 				"publication").get(0);
 		String dateString = dateElement.getValue().split(",")[1].trim();
 		Date date;
@@ -115,14 +104,15 @@ class GuardianArticleParser extends AbstractArticleParser {
 		}
 
 		// get the body text
-		Filter bodyElementFilter = XmlUtils.getElementFilter("div", "id",
+		Filter bodyElementFilter = ParseUtils.getElementFilter("div", "id",
 				"article-wrapper");
 		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
 		while (i1.hasNext()) {
 			Element bodyElement = (Element) i1.next();
 
-			Filter paragraphFilter = XmlUtils.getElementFilter("p", null, null);
+			Filter paragraphFilter = ParseUtils.getElementFilter("p", null,
+					null);
 			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
 			while (i2.hasNext()) {
 				Element paragraph = (Element) i2.next();

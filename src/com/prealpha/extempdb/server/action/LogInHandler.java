@@ -18,7 +18,6 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.User;
-import com.prealpha.extempdb.server.util.BCrypt;
 import com.prealpha.extempdb.shared.action.GetUserResult;
 import com.prealpha.extempdb.shared.action.LogIn;
 import com.prealpha.extempdb.shared.dto.UserDto;

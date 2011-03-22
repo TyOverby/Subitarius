@@ -27,7 +27,6 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class CsmArticleParser extends AbstractArticleParser {
 	/*
@@ -73,7 +72,7 @@ class CsmArticleParser extends AbstractArticleParser {
 		Document document = builder.build(doc);
 		Namespace namespace = document.getRootElement().getNamespace();
 
-		Filter containerFilter = XmlUtils.getElementFilter("div", "id",
+		Filter containerFilter = ParseUtils.getElementFilter("div", "id",
 				"mainColumn");
 		Element container = (Element) document.getDescendants(containerFilter)
 				.next();
@@ -87,10 +86,10 @@ class CsmArticleParser extends AbstractArticleParser {
 			return null;
 		}
 
-		Filter bodyFilter = XmlUtils.getElementFilter("div", "class", "sBody");
-		Filter bodyFilterCfx = XmlUtils.getElementFilter("div", "class",
+		Filter bodyFilter = ParseUtils.getElementFilter("div", "class", "sBody");
+		Filter bodyFilterCfx = ParseUtils.getElementFilter("div", "class",
 				"sBody cfx");
-		Filter articleBodyFilter = XmlUtils.getOrFilter(bodyFilter,
+		Filter articleBodyFilter = ParseUtils.getOrFilter(bodyFilter,
 				bodyFilterCfx);
 		Element articleBody = (Element) container.getDescendants(
 				articleBodyFilter).next();
@@ -104,14 +103,14 @@ class CsmArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getTitle(Element container) {
-		Filter headingFilter = XmlUtils.getElementFilter("h1", "class", "head");
+		Filter headingFilter = ParseUtils.getElementFilter("h1", "class", "head");
 		Element heading = (Element) container.getDescendants(headingFilter)
 				.next();
 		return heading.getValue();
 	}
 
 	private static String getByline(Element container) {
-		Filter bylineFilter = XmlUtils
+		Filter bylineFilter = ParseUtils
 				.getElementFilter("p", "class", "sByline");
 		Element bylineElement = (Element) container
 				.getDescendants(bylineFilter).next();
@@ -125,7 +124,7 @@ class CsmArticleParser extends AbstractArticleParser {
 	}
 
 	private static Date getDate(Element container) throws ArticleParseException {
-		Filter bylineFilter = XmlUtils
+		Filter bylineFilter = ParseUtils
 				.getElementFilter("p", "class", "sByline");
 		Element bylineElement = (Element) container
 				.getDescendants(bylineFilter).next();

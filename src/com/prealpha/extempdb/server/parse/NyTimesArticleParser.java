@@ -27,7 +27,6 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class NyTimesArticleParser extends AbstractArticleParser {
 	private static final String TYPE_KEY = "PST";
@@ -82,7 +81,7 @@ class NyTimesArticleParser extends AbstractArticleParser {
 
 		// they are evil and sometimes give us an ad page
 		// fortunately, the ads have a meta tag that gives us a URL we can use
-		Filter adMetaFilter = XmlUtils.getElementFilter("meta", "http-equiv",
+		Filter adMetaFilter = ParseUtils.getElementFilter("meta", "http-equiv",
 				"refresh");
 		Iterator<?> adMetaIterator = document.getDescendants(adMetaFilter);
 		if (adMetaIterator.hasNext()) {
@@ -93,7 +92,7 @@ class NyTimesArticleParser extends AbstractArticleParser {
 		}
 
 		Element headElement = document.getRootElement().getChild("head");
-		Map<String, String> metaMap = XmlUtils.getMetaMap(headElement);
+		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
 
 		// strangely, the Times sometimes gives us responses of all newlines
 		// Tidy parses this into an empty document with a single meta tag
@@ -119,14 +118,14 @@ class NyTimesArticleParser extends AbstractArticleParser {
 			throw new ArticleParseException(px);
 		}
 
-		Filter bodyElementFilter = XmlUtils.getElementFilter("div", "class",
+		Filter bodyElementFilter = ParseUtils.getElementFilter("div", "class",
 				"articleBody");
 		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
 		while (i1.hasNext()) {
 			Element bodyElement = (Element) i1.next();
 
-			Filter paragraphFilter = XmlUtils.getElementFilter("p", null, null);
+			Filter paragraphFilter = ParseUtils.getElementFilter("p", null, null);
 			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
 			while (i2.hasNext()) {
 				Element paragraph = (Element) i2.next();

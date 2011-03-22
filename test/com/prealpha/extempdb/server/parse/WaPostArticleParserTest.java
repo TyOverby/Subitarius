@@ -32,6 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.server.http.StatusCodeException;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
@@ -115,7 +116,8 @@ public class WaPostArticleParserTest implements Module {
 		expect(mockHttpClient.doGet(URL_STORY, PARAMETERS)).andReturn(stream1);
 		expect(mockHttpClient.doGet(URL_STORY_1, PARAMETERS))
 				.andReturn(stream2);
-		expect(mockHttpClient.doGet(URL_STORY_2, PARAMETERS)).andThrow(new IOException());
+		expect(mockHttpClient.doGet(URL_STORY_2, PARAMETERS)).andThrow(
+				new IOException(new StatusCodeException(404)));
 
 		replay(mockHttpClient);
 

@@ -12,7 +12,7 @@
 // ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 // OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-package com.prealpha.extempdb.server.util;
+package com.prealpha.extempdb.server.action;
 
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
@@ -59,7 +59,7 @@ import java.security.SecureRandom;
  * @author Damien Miller
  * @version 0.2
  */
-public final class BCrypt {
+final class BCrypt {
 	// BCrypt parameters
 	private static final int GENSALT_DEFAULT_LOG2_ROUNDS = 10;
 	private static final int BCRYPT_SALT_LEN = 16;
@@ -709,5 +709,8 @@ public final class BCrypt {
 	 */
 	public static boolean checkpw(String plaintext, String hashed) {
 		return (hashed.compareTo(hashpw(plaintext, hashed)) == 0);
+	}
+
+	private BCrypt() {
 	}
 }

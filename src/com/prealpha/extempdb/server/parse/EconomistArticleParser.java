@@ -23,14 +23,10 @@ import java.util.Map;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
-import org.jdom.input.DOMBuilder;
-import org.w3c.tidy.Tidy;
 
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.HtmlUtils;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class EconomistArticleParser extends AbstractArticleParser {
 	/*
@@ -41,16 +37,9 @@ class EconomistArticleParser extends AbstractArticleParser {
 
 	private final HttpClient httpClient;
 
-	private final Tidy tidy;
-
-	private final DOMBuilder builder;
-
 	@Inject
-	public EconomistArticleParser(HttpClient httpClient, Tidy tidy,
-			DOMBuilder builder) {
+	public EconomistArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.tidy = tidy;
-		this.builder = builder;
 	}
 
 	@Override
@@ -69,12 +58,11 @@ class EconomistArticleParser extends AbstractArticleParser {
 
 	private ProtoArticle getFromHtml(InputStream html)
 			throws ArticleParseException {
-
-		Document document = HtmlUtils.parse(html);
+		Document document = ParseUtils.parse(html);
 
 		// get the title
 		String title;
-		Element titleElement = HtmlUtils.getMatches(document, "div", "class",
+		Element titleElement = ParseUtils.searchDescendants(document, "div", "class",
 				"headline").get(0);
 		title = titleElement.getValue();
 
@@ -82,7 +70,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 		Date date = null;
 		String dateString;
 		try {
-			Element dateElement = HtmlUtils.getMatches(document, "p", "class",
+			Element dateElement = ParseUtils.searchDescendants(document, "p", "class",
 					"ec-article-info").get(0);
 			dateString = dateElement.getText().replace("th", "")
 					.replace("st", "").replace("rd", "").replace("nd", "");
@@ -98,7 +86,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 		// get the byline, if there is one
 		String byline = null;
 		try {
-			Element byLineElement = HtmlUtils.getMatches(document, "a",
+			Element byLineElement = ParseUtils.searchDescendants(document, "a",
 					"class", "contributor").get(0);
 			byline = byLineElement.getValue();
 		} catch (Exception e) {
@@ -106,14 +94,15 @@ class EconomistArticleParser extends AbstractArticleParser {
 		}
 
 		// get the body text
-		Filter bodyElementFilter = XmlUtils.getElementFilter("div", "class",
+		Filter bodyElementFilter = ParseUtils.getElementFilter("div", "class",
 				"ec-article-content clear");
 		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
 		while (i1.hasNext()) {
 			Element bodyElement = (Element) i1.next();
 
-			Filter paragraphFilter = XmlUtils.getElementFilter("p", null, null);
+			Filter paragraphFilter = ParseUtils.getElementFilter("p", null,
+					null);
 			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
 			while (i2.hasNext()) {
 				Element paragraph = (Element) i2.next();

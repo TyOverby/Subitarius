@@ -1,6 +1,6 @@
 /*
  * ParseModule.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -17,6 +17,7 @@ public class ParseModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
+		requestStaticInjection(ParseUtils.class);
 	}
 
 	@Provides

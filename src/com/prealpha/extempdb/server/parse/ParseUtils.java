@@ -1,13 +1,17 @@
 /*
- * XmlUtils.java
- * Copyright (C) 2010 Meyer Kizner
+ * ParseUtils.java
+ * Copyright (C) 2011 Meyer Kizner, Ty Overby
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.util;
+package com.prealpha.extempdb.server.parse;
 
+import java.io.InputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.transform.Result;
@@ -18,15 +22,52 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.Namespace;
+import org.jdom.Parent;
+import org.jdom.Text;
 import org.jdom.filter.Filter;
+import org.jdom.input.DOMBuilder;
 import org.jdom.output.XMLOutputter;
 import org.w3c.dom.Node;
+import org.w3c.tidy.Tidy;
 
-import com.prealpha.extempdb.server.parse.ArticleParseException;
+import com.google.common.collect.Iterators;
+import com.google.inject.Inject;
 
-public final class XmlUtils {
+final class ParseUtils {
+	@Inject
+	private static Tidy tidy;
+
+	@Inject
+	private static DOMBuilder builder;
+
+	@Inject
+	private static XMLOutputter xmlOutputter;
+
+	public static Document parse(InputStream stream) {
+		org.w3c.dom.Document dom = tidy.parseDOM(stream, null);
+		dom.removeChild(dom.getDoctype());
+		Document document = builder.build(dom);
+		return document;
+	}
+
+	public static List<Element> searchDescendants(Parent content,
+			String elementName) {
+		return searchDescendants(content, elementName, null, null);
+	}
+
+	public static List<Element> searchDescendants(Parent content,
+			String elementName, String attribute, String attributeValue) {
+		Filter filter = ParseUtils.getElementFilter(elementName, attribute,
+				attributeValue);
+		@SuppressWarnings("unchecked")
+		Iterator<Element> iterator = content.getDescendants(filter);
+		List<Element> elements = new ArrayList<Element>();
+		Iterators.addAll(elements, iterator);
+		return elements;
+	}
+
 	public static Filter getElementFilter(final String elementName,
 			final String attribute, final String attributeValue) {
 		return new Filter() {
@@ -66,20 +107,32 @@ public final class XmlUtils {
 	public static Map<String, String> getMetaMap(Element headElement)
 			throws ArticleParseException {
 		Map<String, String> metaMap = new HashMap<String, String>();
-		Namespace namespace = headElement.getNamespace();
 
-		for (Object obj : headElement.getChildren("meta", namespace)) {
-			if (!(obj instanceof Element)) {
-				continue;
-			}
-
-			Element metaElement = (Element) obj;
+		for (Element metaElement : searchDescendants(headElement, "meta")) {
 			String metaName = metaElement.getAttributeValue("name");
 			String metaContent = metaElement.getAttributeValue("content");
 			metaMap.put(metaName, metaContent.trim()); // for line breaks
 		}
 
 		return metaMap;
+	}
+
+	public static List<String> getFullText(Parent content) {
+		List<String> fullText = new ArrayList<String>();
+
+		for (Object obj : content.getContent()) {
+			if (obj instanceof Parent) {
+				fullText.addAll(getFullText(content));
+			} else if (obj instanceof Text) {
+				String text = (((Text) obj).getValue()).trim();
+
+				if (!text.isEmpty() && !(text == null)) {
+					fullText.add(text);
+				}
+			}
+		}
+
+		return fullText;
 	}
 
 	public static String xmlToString(Node node) {
@@ -98,9 +151,9 @@ public final class XmlUtils {
 	}
 
 	public static String xmlToString(Element element) {
-		return new XMLOutputter().outputString(element);
+		return xmlOutputter.outputString(element);
 	}
 
-	private XmlUtils() {
+	private ParseUtils() {
 	}
 }

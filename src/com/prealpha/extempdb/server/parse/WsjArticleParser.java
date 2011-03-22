@@ -28,7 +28,6 @@ import org.w3c.tidy.Tidy;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.util.XmlUtils;
 
 class WsjArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
@@ -81,7 +80,7 @@ class WsjArticleParser extends AbstractArticleParser {
 		Namespace namespace = document.getRootElement().getNamespace();
 		Element headElement = document.getRootElement().getChild("head",
 				namespace);
-		Map<String, String> metaMap = XmlUtils.getMetaMap(headElement);
+		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
 
 		String miscMarker = metaMap.get("displayname");
 		if (miscMarker.equals("Letters")) {
@@ -112,11 +111,11 @@ class WsjArticleParser extends AbstractArticleParser {
 			articleType = ArticleType.COMPLETE;
 		}
 
-		Filter newswireFilter = XmlUtils.getElementFilter("div", "class",
+		Filter newswireFilter = ParseUtils.getElementFilter("div", "class",
 				"articleHeadlineBox headlineType-newswire");
-		Filter bylineIconFilter = XmlUtils.getElementFilter("div", "class",
+		Filter bylineIconFilter = ParseUtils.getElementFilter("div", "class",
 				"articleHeadlineBox headlineType-bylineIcon");
-		Filter headlineBoxFilter = XmlUtils.getOrFilter(newswireFilter,
+		Filter headlineBoxFilter = ParseUtils.getOrFilter(newswireFilter,
 				bylineIconFilter);
 		Element headlineBox = (Element) document.getDescendants(
 				headlineBoxFilter).next();
@@ -136,7 +135,7 @@ class WsjArticleParser extends AbstractArticleParser {
 			throw new IllegalStateException();
 		}
 
-		Filter articleBodyFilter = XmlUtils.getElementFilter("div", "class",
+		Filter articleBodyFilter = ParseUtils.getElementFilter("div", "class",
 				articleBodyClass);
 		Element articleBody = (Element) document.getDescendants(
 				articleBodyFilter).next();
@@ -155,7 +154,7 @@ class WsjArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getByline(Element articleBody, ArticleType articleType) {
-		Filter bylineFilter = XmlUtils
+		Filter bylineFilter = ParseUtils
 				.getElementFilter("h3", "class", "byline");
 		Iterator<?> bylineIterator = articleBody.getDescendants(bylineFilter);
 
@@ -173,11 +172,11 @@ class WsjArticleParser extends AbstractArticleParser {
 
 	private static Date getDate(Element headlineBox)
 			throws ArticleParseException {
-		Filter dateStampFilter = XmlUtils.getElementFilter("li", "class",
+		Filter dateStampFilter = ParseUtils.getElementFilter("li", "class",
 				"dateStamp");
-		Filter dateStampFirstFilter = XmlUtils.getElementFilter("li", "class",
+		Filter dateStampFirstFilter = ParseUtils.getElementFilter("li", "class",
 				"dateStamp first");
-		Filter dateElementFilter = XmlUtils.getOrFilter(dateStampFilter,
+		Filter dateElementFilter = ParseUtils.getOrFilter(dateStampFilter,
 				dateStampFirstFilter);
 		Element dateElement = (Element) headlineBox.getDescendants(
 				dateElementFilter).next();
