@@ -121,8 +121,8 @@ class WaPostArticleParser implements ArticleParser {
 				Document document = ParseUtils.parse(stream);
 				return getFromHtml(document, ArticleType.BLOG);
 			} else {
-				throw new IllegalArgumentException(
-						"unrecognized canonical URL type");
+				// we don't know how to deal with this
+				return null;
 			}
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
