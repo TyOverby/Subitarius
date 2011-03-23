@@ -22,6 +22,10 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.filter.Filter;
 import org.jdom.input.DOMBuilder;
+import org.w3c.dom.Attr;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.tidy.Tidy;
 
 import com.google.inject.Inject;
@@ -65,9 +69,13 @@ class CsmArticleParser extends AbstractArticleParser {
 		org.w3c.dom.Document doc = tidy.parseDOM(html, null);
 		doc.removeChild(doc.getDoctype());
 
-		// some images have an attribute that messes up JDOM
-		// TODO: is there a more efficient way to do this?
-		removeAllImages(doc);
+		/*
+		 * All CSM pages have element attributes with colons in their names. In
+		 * the XML specification, colons are defined for use with namespaces
+		 * only, and thus these attribute names are invalid. JDOM will reject
+		 * the document if these attributes are not removed.
+		 */
+		removeInvalidNodes(doc);
 
 		Document document = builder.build(doc);
 		Namespace namespace = document.getRootElement().getNamespace();
@@ -86,7 +94,8 @@ class CsmArticleParser extends AbstractArticleParser {
 			return null;
 		}
 
-		Filter bodyFilter = ParseUtils.getElementFilter("div", "class", "sBody");
+		Filter bodyFilter = ParseUtils
+				.getElementFilter("div", "class", "sBody");
 		Filter bodyFilterCfx = ParseUtils.getElementFilter("div", "class",
 				"sBody cfx");
 		Filter articleBodyFilter = ParseUtils.getOrFilter(bodyFilter,
@@ -103,15 +112,16 @@ class CsmArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getTitle(Element container) {
-		Filter headingFilter = ParseUtils.getElementFilter("h1", "class", "head");
+		Filter headingFilter = ParseUtils.getElementFilter("h1", "class",
+				"head");
 		Element heading = (Element) container.getDescendants(headingFilter)
 				.next();
 		return heading.getValue();
 	}
 
 	private static String getByline(Element container) {
-		Filter bylineFilter = ParseUtils
-				.getElementFilter("p", "class", "sByline");
+		Filter bylineFilter = ParseUtils.getElementFilter("p", "class",
+				"sByline");
 		Element bylineElement = (Element) container
 				.getDescendants(bylineFilter).next();
 		String byline = bylineElement.getValue().split("/")[0];
@@ -124,8 +134,8 @@ class CsmArticleParser extends AbstractArticleParser {
 	}
 
 	private static Date getDate(Element container) throws ArticleParseException {
-		Filter bylineFilter = ParseUtils
-				.getElementFilter("p", "class", "sByline");
+		Filter bylineFilter = ParseUtils.getElementFilter("p", "class",
+				"sByline");
 		Element bylineElement = (Element) container
 				.getDescendants(bylineFilter).next();
 		String[] bylineParts = bylineElement.getValue().split("/");
@@ -157,16 +167,25 @@ class CsmArticleParser extends AbstractArticleParser {
 		return paragraphs;
 	}
 
-	private static void removeAllImages(org.w3c.dom.Node node) {
-		org.w3c.dom.NodeList children = node.getChildNodes();
-
+	private static void removeInvalidNodes(Node node) {
+		NodeList children = node.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
-			org.w3c.dom.Node child = children.item(i);
-
-			if (child.getLocalName().equals("img")) {
+			Node child = children.item(i);
+			if (child.getLocalName().contains(":")) {
 				node.removeChild(child);
-			} else if (child.hasChildNodes()) {
-				removeAllImages(child);
+			} else {
+				removeInvalidNodes(child);
+			}
+		}
+
+		if (node instanceof org.w3c.dom.Element) {
+			NamedNodeMap attributes = node.getAttributes();
+			for (int i = 0; i < attributes.getLength(); i++) {
+				Node attribute = attributes.item(i);
+				if (attribute.getLocalName().contains(":")) {
+					((org.w3c.dom.Element) node)
+							.removeAttributeNode((Attr) attribute);
+				}
 			}
 		}
 	}

@@ -37,7 +37,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
 public class CsmArticleParserTest implements Module {
-	private static final String URL = "http://www.csmonitor.com/USA/Election-2010/Vox-News/2010/0907/Restoring-Truthiness-Could-spoof-of-Glenn-Beck-rally-happen";
+	private static final String URL = "http://www.csmonitor.com/USA/Military/2011/0322/How-an-MV-22-Osprey-rescued-a-downed-US-pilot-in-Libya";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
@@ -94,13 +94,13 @@ public class CsmArticleParserTest implements Module {
 		assertNotNull(article);
 
 		assertEquals(
-				"'Restoring Truthiness': Could spoof of Glenn Beck rally happen?",
+				"How an MV-22 Osprey rescued a downed US pilot in Libya",
 				article.getTitle());
 
-		assertEquals("By Gloria Goodale", article.getByline());
+		assertEquals("By Anna Mulrine", article.getByline());
 
 		Date date = article.getDate();
-		assertEquals("September 7, 2010",
+		assertEquals("March 22, 2011",
 				CsmArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
@@ -108,9 +108,9 @@ public class CsmArticleParserTest implements Module {
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(11, paragraphCount);
-		assertTrue(firstParagraph.startsWith("Can the Internet"));
-		assertTrue(lastParagraph.endsWith("a real politician.”"));
+		assertEquals(18, paragraphCount);
+		assertTrue(firstParagraph.startsWith("It took 90 minutes"));
+		assertTrue(lastParagraph.endsWith("18 to 24 months."));
 
 		verify(mockHttpClient);
 	}
