@@ -10,7 +10,6 @@ import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,11 +23,7 @@ import java.util.Map;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.filter.Filter;
-import org.jdom.input.DOMBuilder;
-import org.w3c.tidy.Tidy;
 
-import com.google.common.io.ByteStreams;
-import com.google.gwt.thirdparty.guava.common.base.Charsets;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
@@ -59,16 +54,9 @@ class WaPostArticleParser implements ArticleParser {
 
 	private final HttpClient httpClient;
 
-	private final Tidy tidy;
-
-	private final DOMBuilder builder;
-
 	@Inject
-	public WaPostArticleParser(HttpClient httpClient, Tidy tidy,
-			DOMBuilder builder) {
+	public WaPostArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.tidy = tidy;
-		this.builder = builder;
 	}
 
 	@Override
@@ -108,42 +96,30 @@ class WaPostArticleParser implements ArticleParser {
 				 * page and printable versions of articles. So we fetch all
 				 * possible pages, parse them individually, and combine them
 				 * together.
-				 * 
-				 * The intermediate conversion to Strings is necessary to free
-				 * connections from the HttpClient for subsequent requests.
 				 */
-				List<String> streams = new ArrayList<String>();
-				InputStream baseStream = httpClient.doGet(url, params);
-				String baseStr = new String(
-						ByteStreams.toByteArray(baseStream), Charsets.UTF_8);
-				streams.add(baseStr);
+				List<Document> documents = new ArrayList<Document>();
+				Document document;
+				int page = 0;
+				do {
+					InputStream stream = httpClient.doGet(url, params);
+					document = ParseUtils.parse(stream);
+					documents.add(document);
 
-				int page = 1;
-				while (true) {
 					int index = url.length() - 5;
-					String suffix = "_" + (page++) + ".html";
-					String pageUrl = url.substring(0, index) + suffix;
-
-					if (baseStr.contains(pageUrl)) { // there has to be a link
-						InputStream stream = httpClient.doGet(pageUrl, params);
-						String str = new String(
-								ByteStreams.toByteArray(stream), Charsets.UTF_8);
-						streams.add(str);
-					} else {
-						break;
-					}
-				}
+					String suffix = "_" + (++page) + ".html";
+					url = url.substring(0, index) + suffix;
+				} while (!ParseUtils.searchDescendants(document, "a", "class",
+						"next-page").isEmpty());
 
 				List<ProtoArticle> articles = new ArrayList<ProtoArticle>();
-				for (String str : streams) {
-					articles.add(getFromHtml(str, ArticleType.STORY));
+				for (Document doc : documents) {
+					articles.add(getFromHtml(doc, ArticleType.STORY));
 				}
 				return combine(articles);
 			} else if (url.endsWith("_blog.html")) {
 				InputStream stream = httpClient.doGet(url, params);
-				String str = new String(ByteStreams.toByteArray(stream),
-						Charsets.UTF_8);
-				return getFromHtml(str, ArticleType.BLOG);
+				Document document = ParseUtils.parse(stream);
+				return getFromHtml(document, ArticleType.BLOG);
 			} else {
 				throw new IllegalArgumentException(
 						"unrecognized canonical URL type");
@@ -155,12 +131,8 @@ class WaPostArticleParser implements ArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(String html, ArticleType type)
+	private ProtoArticle getFromHtml(Document document, ArticleType type)
 			throws ArticleParseException {
-		org.w3c.dom.Document doc = tidy.parseDOM(new StringReader(html), null);
-		doc.removeChild(doc.getDoctype());
-		Document document = builder.build(doc);
-
 		Element headElement = document.getRootElement().getChild("head");
 		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
 

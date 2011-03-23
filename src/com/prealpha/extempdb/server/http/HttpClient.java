@@ -1,6 +1,6 @@
 /*
  * HttpClient.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -27,9 +27,11 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
 
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
+import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.http.robots.RobotsTxt;
 
 /*
@@ -37,6 +39,9 @@ import com.prealpha.extempdb.server.http.robots.RobotsTxt;
  */
 public class HttpClient {
 	private static final String USER_AGENT = "ExtempDB";
+
+	@InjectLogger
+	private Logger log;
 
 	private final org.apache.http.client.HttpClient httpClient;
 
@@ -89,12 +94,15 @@ public class HttpClient {
 
 		RobotsTxt robotsTxt = robotsExclusion.get(authority);
 		if (robotsTxt != null && !robotsTxt.apply(request)) {
+			log.debug("rejected request for URI {} due to robots.txt", uri);
 			throw new RobotsExclusionException(uri.toString(), robotsTxt);
 		}
 
 		HttpResponse response = httpClient.execute(request);
 		HttpEntity outputEntity = response.getEntity();
 		int statusCode = response.getStatusLine().getStatusCode();
+
+		log.debug("URI {} returned HTTP status code {}", uri, statusCode);
 
 		if (statusCode != HttpStatus.SC_OK) {
 			if (outputEntity != null) {
