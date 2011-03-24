@@ -112,6 +112,8 @@ public class EconomistArticleParserTest implements Module {
 		assertEquals(7, paragraphCount);
 		assertTrue(firstParagraph.startsWith("IN “THE RING”,"));
 		assertTrue(lastParagraph.endsWith("at least, it should."));
+		
+		verify(mockHttpClient);
 	}
 
 	@Test
@@ -146,5 +148,7 @@ public class EconomistArticleParserTest implements Module {
 		assertEquals(2, paragraphCount);
 		assertTrue(firstParagraph.startsWith("The photograph above"));
 		assertTrue(lastParagraph.endsWith("Over to you."));
+		
+		verify(mockHttpClient);
 	}
 }

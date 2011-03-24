@@ -6,6 +6,8 @@
 
 package com.prealpha.extempdb.server.parse;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -52,11 +54,37 @@ class CsmArticleParser extends AbstractArticleParser {
 	}
 
 	@Override
+	public String getCanonicalUrl(String url) {
+		url = super.getCanonicalUrl(url);
+		if (url.matches(".*/(page)/\\d+")) {
+			int index = url.lastIndexOf("/(page)");
+			return url.substring(0, index);
+		} else {
+			return url;
+		}
+	}
+
+	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
+		checkNotNull(url);
+
+		Map<String, String> params = Collections.emptyMap();
+
 		try {
-			Map<String, String> params = Collections.emptyMap();
-			InputStream stream = httpClient.doGet(url, params);
-			return getFromHtml(stream);
+			List<Document> documents = new ArrayList<Document>();
+			Document document;
+			int page = 1;
+			String pageUrl = url;
+			do {
+				InputStream stream = httpClient.doGet(pageUrl, params);
+				document = parseDocument(stream);
+				documents.add(document);
+
+				pageUrl = url + "/(page)/" + (++page);
+			} while (!ParseUtils.searchDescendants(document, "a", "id",
+					"next-button").isEmpty());
+
+			return getFromDocuments(documents);
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
@@ -64,9 +92,8 @@ class CsmArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html)
-			throws ArticleParseException {
-		org.w3c.dom.Document doc = tidy.parseDOM(html, null);
+	private Document parseDocument(InputStream stream) {
+		org.w3c.dom.Document doc = tidy.parseDOM(stream, null);
 		doc.removeChild(doc.getDoctype());
 
 		/*
@@ -77,13 +104,18 @@ class CsmArticleParser extends AbstractArticleParser {
 		 */
 		removeInvalidNodes(doc);
 
-		Document document = builder.build(doc);
-		Namespace namespace = document.getRootElement().getNamespace();
+		return builder.build(doc);
+	}
 
-		Filter containerFilter = ParseUtils.getElementFilter("div", "id",
-				"mainColumn");
-		Element container = (Element) document.getDescendants(containerFilter)
-				.next();
+	private ProtoArticle getFromDocuments(List<Document> documents)
+			throws ArticleParseException {
+		checkArgument(!documents.isEmpty());
+		Namespace namespace = documents.get(0).getRootElement().getNamespace();
+
+		// we need to get a number of attributes from the first page
+
+		Element container = ParseUtils.searchDescendants(documents.get(0),
+				"div", "id", "mainColumn").get(0);
 
 		Element listCheck = container.getChild("div", namespace);
 		String listCheckAttr = listCheck.getAttributeValue("class");
@@ -94,19 +126,23 @@ class CsmArticleParser extends AbstractArticleParser {
 			return null;
 		}
 
-		Filter bodyFilter = ParseUtils
-				.getElementFilter("div", "class", "sBody");
-		Filter bodyFilterCfx = ParseUtils.getElementFilter("div", "class",
-				"sBody cfx");
-		Filter articleBodyFilter = ParseUtils.getOrFilter(bodyFilter,
-				bodyFilterCfx);
-		Element articleBody = (Element) container.getDescendants(
-				articleBodyFilter).next();
-
 		String title = getTitle(container);
 		String byline = getByline(container);
 		Date date = getDate(container);
-		List<String> paragraphs = getParagraphs(articleBody, namespace);
+		List<String> paragraphs = new ArrayList<String>();
+
+		for (Document document : documents) {
+			Filter bodyFilter = ParseUtils.getElementFilter("div", "class",
+					"sBody");
+			Filter bodyFilterCfx = ParseUtils.getElementFilter("div", "class",
+					"sBody cfx");
+			Filter articleBodyFilter = ParseUtils.getOrFilter(bodyFilter,
+					bodyFilterCfx);
+			Element articleBody = (Element) document.getDescendants(
+					articleBodyFilter).next();
+
+			paragraphs.addAll(getParagraphs(articleBody, namespace));
+		}
 
 		return new ProtoArticle(title, byline, date, paragraphs);
 	}

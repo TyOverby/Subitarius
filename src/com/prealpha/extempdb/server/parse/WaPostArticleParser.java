@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class WaPostArticleParser implements ArticleParser {
+class WaPostArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
 		STORY {
 			@Override
@@ -61,10 +61,7 @@ class WaPostArticleParser implements ArticleParser {
 
 	@Override
 	public String getCanonicalUrl(String url) {
-		// strip off any GET parameters before dealing with other stuff
-		if (url.contains("?")) {
-			url = url.substring(0, url.indexOf("?"));
-		}
+		url = super.getCanonicalUrl(url);
 
 		if (url.matches(".*_story_\\d+.html")) {
 			// page numbers

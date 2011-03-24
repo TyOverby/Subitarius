@@ -29,6 +29,11 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 class ReutersArticleParser extends AbstractArticleParser {
+	/**
+	 * The canonical URL for a slideshow feature.
+	 */
+	private static final String SLIDESHOW_URL = "http://www.reuters.com/article/slideshow";
+
 	/*
 	 * Package visibility for unit testing.
 	 */
@@ -51,6 +56,12 @@ class ReutersArticleParser extends AbstractArticleParser {
 
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
+		if (url.equals(SLIDESHOW_URL)) {
+			// slideshow, we can't parse this
+			// http://www.reuters.com/article/slideshow?articleId=USTRE72L4QV20110322&slide=1
+			return null;
+		}
+
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
@@ -92,7 +103,8 @@ class ReutersArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getByline(Element container) {
-		Filter bylineFilter = ParseUtils.getElementFilter("p", "class", "byline");
+		Filter bylineFilter = ParseUtils.getElementFilter("p", "class",
+				"byline");
 		Iterator<?> bylineIterator = container.getDescendants(bylineFilter);
 
 		if (bylineIterator.hasNext()) {

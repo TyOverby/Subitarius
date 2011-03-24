@@ -32,7 +32,6 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
-import com.prealpha.extempdb.server.http.StatusCodeException;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
@@ -41,8 +40,6 @@ public class WaPostArticleParserTest implements Module {
 	private static final String URL_STORY = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html";
 
 	private static final String URL_STORY_1 = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story_1.html";
-
-	private static final String URL_STORY_2 = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story_2.html";
 
 	private static final String URL_BLOG = "http://www.washingtonpost.com/blogs/blogpost/post/house-gop-rejects-climate-change-amendment-science-not-settled/2011/03/15/ABWUYlY_blog.html";
 
@@ -116,8 +113,6 @@ public class WaPostArticleParserTest implements Module {
 		expect(mockHttpClient.doGet(URL_STORY, PARAMETERS)).andReturn(stream1);
 		expect(mockHttpClient.doGet(URL_STORY_1, PARAMETERS))
 				.andReturn(stream2);
-		expect(mockHttpClient.doGet(URL_STORY_2, PARAMETERS)).andThrow(
-				new IOException(new StatusCodeException(404)));
 
 		replay(mockHttpClient);
 
@@ -142,6 +137,8 @@ public class WaPostArticleParserTest implements Module {
 		assertEquals(18, paragraphCount);
 		assertTrue(firstParagraph.startsWith("Crises redefine a presidency"));
 		assertTrue(lastParagraph.endsWith("the World They Are Making.”"));
+
+		verify(mockHttpClient);
 	}
 
 	@Test
@@ -174,5 +171,7 @@ public class WaPostArticleParserTest implements Module {
 		assertEquals(7, paragraphCount);
 		assertTrue(firstParagraph.startsWith("GOP members of the"));
 		assertTrue(lastParagraph.endsWith("decide for yourself ."));
+
+		verify(mockHttpClient);
 	}
 }

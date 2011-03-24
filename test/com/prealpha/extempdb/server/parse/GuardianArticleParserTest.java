@@ -110,6 +110,7 @@ public class GuardianArticleParserTest implements Module {
 		assertEquals(6, paragraphCount);
 		assertTrue(firstParagraph.startsWith("Nicolas Sarkozy's ruling UMP"));
 		assertTrue(lastParagraph.endsWith("in the Arab world."));
+		
 		verify(mockHttpClient);
 	}
 }

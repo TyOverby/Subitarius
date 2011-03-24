@@ -37,7 +37,9 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 @Container(Container.Option.GUICE)
 @MockFramework(MockFramework.Option.EASYMOCK)
 public class CsmArticleParserTest implements Module {
-	private static final String URL = "http://www.csmonitor.com/USA/Military/2011/0322/How-an-MV-22-Osprey-rescued-a-downed-US-pilot-in-Libya";
+	private static final String URL = "http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task";
+
+	private static final String URL_2 = "http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task/(page)/2";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
@@ -63,7 +65,9 @@ public class CsmArticleParserTest implements Module {
 	public void testParse() throws ArticleParseException, IOException,
 			RobotsExclusionException {
 		InputStream stream = new FileInputStream(new File("./test/csm.html"));
+		InputStream stream2 = new FileInputStream(new File("./test/csm_2.html"));
 		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
+		expect(mockHttpClient.doGet(URL_2, PARAMETERS)).andReturn(stream2);
 
 		doTest();
 	}
@@ -93,14 +97,13 @@ public class CsmArticleParserTest implements Module {
 
 		assertNotNull(article);
 
-		assertEquals(
-				"How an MV-22 Osprey rescued a downed US pilot in Libya",
+		assertEquals("Haiti elects new president for Herculean task",
 				article.getTitle());
 
-		assertEquals("By Anna Mulrine", article.getByline());
+		assertEquals("By Isabeau Doucet and Ezra Fieser", article.getByline());
 
 		Date date = article.getDate();
-		assertEquals("March 22, 2011",
+		assertEquals("March 21, 2011",
 				CsmArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
@@ -108,9 +111,9 @@ public class CsmArticleParserTest implements Module {
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(18, paragraphCount);
-		assertTrue(firstParagraph.startsWith("It took 90 minutes"));
-		assertTrue(lastParagraph.endsWith("18 to 24 months."));
+		assertEquals(21, paragraphCount);
+		assertTrue(firstParagraph.startsWith("Polling stations opened"));
+		assertTrue(lastParagraph.endsWith("will be significant.”"));
 
 		verify(mockHttpClient);
 	}
