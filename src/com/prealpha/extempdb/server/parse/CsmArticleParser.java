@@ -56,7 +56,7 @@ class CsmArticleParser extends AbstractArticleParser {
 	@Override
 	public String getCanonicalUrl(String url) {
 		url = super.getCanonicalUrl(url);
-		if (url.matches(".*/(page)/\\d+")) {
+		if (url.matches(".*/\\(page\\)/\\d+")) {
 			int index = url.lastIndexOf("/(page)");
 			return url.substring(0, index);
 		} else {

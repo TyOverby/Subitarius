@@ -46,7 +46,7 @@ public class CsmArticleParserTest implements Module {
 
 	@Inject
 	@Unit
-	private CsmArticleParser articleParser;
+	private CsmArticleParser parser;
 
 	@Mock
 	private HttpClient mockHttpClient;
@@ -56,9 +56,14 @@ public class CsmArticleParserTest implements Module {
 		binder.install(new ParseModule());
 	}
 
+	@Test
+	public void testGetCanonicalUrl() {
+		assertEquals(URL, parser.getCanonicalUrl(URL_2));
+	}
+
 	@Test(expected = NullPointerException.class)
 	public void testNull() throws ArticleParseException {
-		articleParser.parse(null);
+		parser.parse(null);
 	}
 
 	@Test
@@ -93,7 +98,7 @@ public class CsmArticleParserTest implements Module {
 	private void doTest() throws ArticleParseException {
 		replay(mockHttpClient);
 
-		ProtoArticle article = articleParser.parse(URL);
+		ProtoArticle article = parser.parse(URL);
 
 		assertNotNull(article);
 
