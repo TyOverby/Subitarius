@@ -37,7 +37,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 	static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd yyyy");
 
 	private static final Pattern BYLINE_PATTERN = Pattern
-			.compile("by (.+)( \\||$)");
+			.compile("(by (.+?))( \\||$)");
 
 	private final HttpClient httpClient;
 
@@ -73,9 +73,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 		if (blog) {
 			Element titleElement = ParseUtils.searchDescendants(document, "h1",
 					"class", "ec-blog-headline").get(0);
-			Element subTitleElement = ParseUtils.searchDescendants(document,
-					"h2", "class", "ec-blog-fly-title").get(0);
-			title = titleElement.getValue() + ": " + subTitleElement.getValue();
+			title = titleElement.getValue();
 		} else {
 			Element titleElement = ParseUtils.searchDescendants(document,
 					"div", "class", "headline").get(0);
@@ -93,7 +91,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 				String blogInfoStr = blogInfo.get(0).getValue();
 				Matcher matcher = BYLINE_PATTERN.matcher(blogInfoStr);
 				if (matcher.find()) {
-					byline = matcher.group();
+					byline = matcher.group(1);
 				}
 			}
 		}

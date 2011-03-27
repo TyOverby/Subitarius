@@ -39,7 +39,7 @@ import com.prealpha.extempdb.server.http.RobotsExclusionException;
 public class EconomistArticleParserTest implements Module {
 	private static final String URL_PRINT = "http://www.economist.com/node/18388998";
 
-	private static final String URL_BLOG = "http://www.economist.com/blogs/newsbook/2011/03/weeks_caption_competition_1";
+	private static final String URL_BLOG = "http://www.economist.com/blogs/baobab/2011/03/drug-smuggling";
 
 	private static final Map<String, String> PARAMETERS = Collections
 			.emptyMap();
@@ -112,7 +112,7 @@ public class EconomistArticleParserTest implements Module {
 		assertEquals(7, paragraphCount);
 		assertTrue(firstParagraph.startsWith("IN “THE RING”,"));
 		assertTrue(lastParagraph.endsWith("at least, it should."));
-		
+
 		verify(mockHttpClient);
 	}
 
@@ -130,14 +130,13 @@ public class EconomistArticleParserTest implements Module {
 
 		assertNotNull(article);
 
-		assertEquals("Caption competition 8: This week's caption competition",
-				article.getTitle());
+		assertEquals("The classic car-boot story", article.getTitle());
 
-		assertEquals("by The Economist online", article.getByline());
+		assertEquals("by J.L.", article.getByline());
 
-		// the "st" in "21st" is stripped off by the parser
+		// the "nd" in "22nd" is stripped off by the parser
 		Date date = article.getDate();
-		assertEquals("Mar 21 2011",
+		assertEquals("Mar 22 2011",
 				EconomistArticleParser.DATE_FORMAT.format(date));
 
 		List<String> paragraphs = article.getParagraphs();
@@ -145,10 +144,10 @@ public class EconomistArticleParserTest implements Module {
 		String firstParagraph = paragraphs.get(0);
 		String lastParagraph = paragraphs.get(paragraphCount - 1);
 
-		assertEquals(2, paragraphCount);
-		assertTrue(firstParagraph.startsWith("The photograph above"));
-		assertTrue(lastParagraph.endsWith("Over to you."));
-		
+		assertEquals(4, paragraphCount);
+		assertTrue(firstParagraph.startsWith("THERE are plenty of"));
+		assertTrue(lastParagraph.endsWith("Nairobi and Arusha airports."));
+
 		verify(mockHttpClient);
 	}
 }
