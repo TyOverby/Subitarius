@@ -72,11 +72,15 @@ public class Source {
 
 	@Transient
 	public ArticleParser getParser(Injector injector)
-			throws ClassNotFoundException {
+			throws ParserNotFoundException {
 		if (parser == null) {
 			String parserClassName = getParserClass();
-			Class<?> parserClass = Class.forName(parserClassName);
-			parser = (ArticleParser) injector.getInstance(parserClass);
+			try {
+				Class<?> parserClass = Class.forName(parserClassName);
+				parser = (ArticleParser) injector.getInstance(parserClass);
+			} catch (ClassNotFoundException cnfx) {
+				throw new ParserNotFoundException(getDomainName(), cnfx);
+			}
 		}
 		return parser;
 	}

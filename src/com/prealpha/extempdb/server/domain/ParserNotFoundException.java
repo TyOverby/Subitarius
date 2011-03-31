@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.server.domain;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -12,9 +12,11 @@ public class ParserNotFoundException extends Exception {
 	private final String domainName;
 
 	public ParserNotFoundException(String domainName) {
-		super("parser not found for domain name: " + domainName);
-		initCause(null);
+		this(domainName, null);
+	}
 
+	public ParserNotFoundException(String domainName, Throwable cause) {
+		super("parser not found for domain name: " + domainName, cause);
 		checkNotNull(domainName);
 		checkArgument(!domainName.isEmpty());
 		this.domainName = domainName;

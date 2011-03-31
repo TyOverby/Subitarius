@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
+import com.prealpha.extempdb.server.domain.ParserNotFoundException;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
@@ -63,8 +64,8 @@ public class Searcher {
 						}
 					} catch (RuntimeException rx) {
 						log.error("unexpected exception was thrown", rx);
-					} catch (ClassNotFoundException cnfx) {
-						log.error("article parser class not found", cnfx);
+					} catch (ParserNotFoundException pnfx) {
+						log.error("article parser class not found", pnfx);
 					}
 				}
 			}
@@ -76,7 +77,7 @@ public class Searcher {
 
 	@Transactional
 	void execute(SearchQuery query) throws SearchUnavailableException,
-			ClassNotFoundException {
+			ParserNotFoundException {
 		int resultCount = 0;
 		List<String> urls = searchProvider.search(query, 1);
 

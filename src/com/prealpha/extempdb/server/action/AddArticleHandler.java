@@ -18,10 +18,10 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
+import com.prealpha.extempdb.server.domain.ParserNotFoundException;
 import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.prealpha.extempdb.server.search.ArticleProcessor;
-import com.prealpha.extempdb.server.search.ParserNotFoundException;
 import com.prealpha.extempdb.shared.action.AddArticle;
 import com.prealpha.extempdb.shared.action.AddArticleResult;
 import com.prealpha.extempdb.shared.action.AddArticleResult.Type;
@@ -57,17 +57,21 @@ class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 		try {
 			Article article = articleProcessor.process(url);
 			if (article == null) {
+				log.info("article parser rejected page at URL {}", url);
 				return new AddArticleResult(Type.NO_ARTICLE);
 			} else {
+				log.info("user {} successfully requested parsing for URL {}",
+						user.getName(), article.getUrl());
 				return new AddArticleResult(Type.SUCCESS, article.getId());
 			}
 		} catch (ArticleParseException apx) {
+			log.warn("article parse failed for URL {}", url);
 			return new AddArticleResult(Type.PARSE_FAILED);
-		} catch (ClassNotFoundException cnfx) {
-			return new AddArticleResult(Type.NO_PARSER);
 		} catch (ParserNotFoundException pnfx) {
+			log.info("no parser found for URL {}", url);
 			return new AddArticleResult(Type.NO_PARSER);
 		} catch (URISyntaxException usx) {
+			log.info("URL was invalid: {}", url);
 			return new AddArticleResult(Type.INVALID_URL);
 		}
 	}

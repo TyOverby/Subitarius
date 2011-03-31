@@ -25,6 +25,7 @@ import com.google.inject.Injector;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Article_;
+import com.prealpha.extempdb.server.domain.ParserNotFoundException;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Source_;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
@@ -48,7 +49,7 @@ public class ArticleProcessor {
 
 	@Transactional
 	public Article process(String url) throws ArticleParseException,
-			ClassNotFoundException, ParserNotFoundException, URISyntaxException {
+			ParserNotFoundException, URISyntaxException {
 		checkNotNull(url);
 		URI uri = new URI(url);
 		String domainName = uri.getHost();
@@ -70,7 +71,7 @@ public class ArticleProcessor {
 
 	@Transactional
 	public Article process(String url, Source source)
-			throws ArticleParseException, ClassNotFoundException {
+			throws ArticleParseException, ParserNotFoundException {
 		checkNotNull(url);
 		checkNotNull(source);
 
