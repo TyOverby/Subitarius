@@ -7,17 +7,16 @@
 package com.prealpha.extempdb.client.taginput;
 
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.Presenter;
 
-/*
- * TODO: relies on Widgets directly, so would require GwtTestCase to test
- */
 public class LoadingStatusPresenter implements Presenter<LoadingStatus> {
 	public static interface Display extends IsWidget {
-		Image getImage();
+		void setImageResource(ImageResource resource);
+		
+		HasText getAltText();
 	}
 
 	private final Display display;
@@ -38,8 +37,7 @@ public class LoadingStatusPresenter implements Presenter<LoadingStatus> {
 			loadingStatus = LoadingStatus.NONE;
 		}
 
-		ImageResource resource = loadingStatus.getIcon();
-		display.getImage().setResource(resource);
-		display.getImage().setTitle(loadingStatus.getAltText());
+		display.setImageResource(loadingStatus.getIcon());
+		display.getAltText().setText(loadingStatus.getAltText());
 	}
 }
