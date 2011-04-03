@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Article_;
@@ -31,7 +32,6 @@ import com.prealpha.extempdb.server.domain.Source_;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.prealpha.extempdb.server.parse.ArticleParser;
 import com.prealpha.extempdb.server.parse.ProtoArticle;
-import com.wideplay.warp.persist.Transactional;
 
 public class ArticleProcessor {
 	@InjectLogger

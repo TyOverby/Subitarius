@@ -19,37 +19,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 import com.prealpha.extempdb.server.search.Searcher;
-import com.wideplay.warp.persist.WorkManager;
 
 final class SearcherServlet extends HttpServlet {
-	private final WorkManager workManager;
+	private final UnitOfWork unitOfWork;
 
 	private final Provider<Searcher> searcherProvider;
 
 	@Inject
-	public SearcherServlet(WorkManager workManager,
+	public SearcherServlet(UnitOfWork unitOfWork,
 			Provider<Searcher> searcherProvider) {
-		this.workManager = workManager;
+		this.unitOfWork = unitOfWork;
 		this.searcherProvider = searcherProvider;
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
-		// parse the requested sources
-		String rawSources = req.getParameter("sources");
-		Set<Integer> sources;
-		if (rawSources == null) {
-			sources = Collections.<Integer> emptySet();
-		} else {
-			sources = new HashSet<Integer>();
-			String[] tokens = rawSources.split(",");
-			for (String token : tokens) {
-				sources.add(Integer.parseInt(token));
-			}
-		}
-
 		InetAddress localAddress = InetAddress.getByName(req.getLocalAddr());
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
 
@@ -59,12 +46,12 @@ final class SearcherServlet extends HttpServlet {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					workManager.beginWork();
+					unitOfWork.begin();
 					try {
 						Searcher searcher = searcherProvider.get();
 						searcher.run(sourceIds);
 					} finally {
-						workManager.endWork();
+						unitOfWork.end();
 					}
 				}
 			}, "Searcher").start();

@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -25,7 +26,6 @@ import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.wideplay.warp.persist.Transactional;
 
 class GetMappingsByArticleHandler implements
 		ActionHandler<GetMappingsByArticle, GetMappingsResult> {

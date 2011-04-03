@@ -16,6 +16,7 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -25,7 +26,6 @@ import com.prealpha.extempdb.server.domain.Tag_;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
-import com.wideplay.warp.persist.Transactional;
 
 class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 	@InjectLogger

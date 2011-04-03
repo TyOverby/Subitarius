@@ -25,7 +25,6 @@ import com.prealpha.extempdb.server.search.ArticleProcessor;
 import com.prealpha.extempdb.shared.action.AddArticle;
 import com.prealpha.extempdb.shared.action.AddArticleResult;
 import com.prealpha.extempdb.shared.action.AddArticleResult.Type;
-import com.wideplay.warp.persist.Transactional;
 
 class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	@InjectLogger
@@ -42,7 +41,6 @@ class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 		this.articleProcessor = articleProcessor;
 	}
 
-	@Transactional
 	@Override
 	public AddArticleResult execute(AddArticle action, Dispatcher dispatcher)
 			throws ActionException {

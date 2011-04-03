@@ -20,6 +20,7 @@ import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -28,7 +29,6 @@ import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.Tag_;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
-import com.wideplay.warp.persist.Transactional;
 
 class GetTagSuggestionsHandler implements
 		ActionHandler<GetTagSuggestions, GetTagSuggestionsResult> {

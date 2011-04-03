@@ -12,6 +12,7 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -20,7 +21,6 @@ import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetArticleResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.wideplay.warp.persist.Transactional;
 
 class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
 	@InjectLogger
