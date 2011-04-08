@@ -8,16 +8,12 @@ package com.prealpha.extempdb.client.taginput;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
@@ -39,8 +35,6 @@ public class TagInputPresenter implements Presenter<TagDto>,
 	private final DispatcherAsync dispatcher;
 
 	private final HandlerManager handlerManager;
-
-	private List<AsyncCallback<? super TagDto>> callbacks;
 
 	private TagDto tag;
 
@@ -65,7 +59,7 @@ public class TagInputPresenter implements Presenter<TagDto>,
 		checkState(loadingStatus.isLoaded());
 		return tag;
 	}
-	
+
 	public String getTagName() {
 		checkState(loadingStatus.isLoaded());
 		return display.getValue();
@@ -100,19 +94,8 @@ public class TagInputPresenter implements Presenter<TagDto>,
 	}
 
 	private void setLoadingStatus(LoadingStatus loadingStatus) {
-		LoadingStatus oldStatus = this.loadingStatus;
 		this.loadingStatus = loadingStatus;
 		display.getStatusPresenter().bind(loadingStatus);
-
-		if ((oldStatus == null || oldStatus.isLoaded())
-				&& !loadingStatus.isLoaded()) {
-			callbacks = new ArrayList<AsyncCallback<? super TagDto>>();
-		} else if (!oldStatus.isLoaded() && loadingStatus.isLoaded()) {
-			for (AsyncCallback<? super TagDto> callback : callbacks) {
-				callback.onSuccess(tag);
-			}
-			callbacks = null;
-		}
 
 		/*
 		 * No check for equality prior to firing. This ensures that an event
