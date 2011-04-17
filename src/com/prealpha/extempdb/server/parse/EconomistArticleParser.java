@@ -30,11 +30,9 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class EconomistArticleParser extends AbstractArticleParser {
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd yyyy");
+final class EconomistArticleParser extends AbstractArticleParser {
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"MMM dd yyyy");
 
 	private static final Pattern BYLINE_PATTERN = Pattern
 			.compile("(by (.+?))( \\||$)");
@@ -136,7 +134,7 @@ class EconomistArticleParser extends AbstractArticleParser {
 			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
 			while (i2.hasNext()) {
 				Element paragraph = (Element) i2.next();
-				String text = paragraph.getTextTrim();
+				String text = paragraph.getValue();
 				if (!text.isEmpty()) {
 					paragraphs.add(text);
 				}

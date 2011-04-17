@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.LinkedHashMap">
+		<void method="put">
+			<string>http://www.guardian.co.uk/world/2011/mar/21/french-local-elections-sarkozy-pen</string>
+			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+				<string>French local elections leave Sarkozy party in disarray</string>
+				<string>Angelique Chrisafis</string>
+				<object class="java.util.Date">
+					<long>1300665600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Nicolas Sarkozy's ruling UMP party is in disarray after the extreme-right Front National (FN) made historic gains in the first round of local elections in France.</string>
+					</void>
+					<void method="add">
+						<string>The FN capitalised on the surge in popularity for its new leader, Marine Le Pen, by taking 15% of the vote. The party, which until now had no local councillors, will see around 400 candidates go through to the second-round vote on 27 March. More than 30 FN candidates topped the poll in areas including parts of Nice, Marseille and the Cote d'Azur. Many will face a runoff against Socialist party figures, leaving the right-wing UMP stumped as to whom to tell its support-base to vote for. In the past, the right and left have grouped together in an unofficial republican alliance to block the far right.</string>
+					</void>
+					<void method="add">
+						<string>But the official party line, led by the UMP leader, Jean-Francois Copé, is not to direct its supporters how to vote. Copé said the party refused any alliance with the FN, but it could not recommend a "republican front" because that meant voting for the Socialist party.</string>
+					</void>
+					<void method="add">
+						<string>Critics said the UMP was vacillating, not wanting to offend the far-right electorate, which it would like to win over in the 2012 presidential elections. But some ministers broke ranks. Valérie Pécresse, the higher education minister, said she would rather vote for the left in the case of a runoff against the FN.</string>
+					</void>
+					<void method="add">
+						<string>The first-round election result was seen as a warning to Sarkozy, who recently recorded his lowest ever approval ratings, of 29%. Around 2,000 local councillor seats are up for grabs. With abstention at more than 55% in the first round, on 20 March, the Socialist party won 26% of the vote and the UMP 19% – a bruising in the last electoral test before Sarkozy's battle for presidential re-election.</string>
+					</void>
+					<void method="add">
+						<string>In a long interview with the Guardian, Le Pen said there was discontent and "a desire for revolution in France" similar to the revolts in the Arab world.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="put">
+			<string>http://www.guardian.co.uk/world/feedarticle/9485574</string>
+			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+				<string>Canada PM urges US to approve oil pipeline</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1296864000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>MATTHEW DALY</string>
+					</void>
+					<void method="add">
+						<string>Associated Press= WASHINGTON (AP) — Canadian Prime Minister Stephen Harper urged U.S. officials on Friday to approve a proposed oil pipeline from Canada to the U.S. Gulf of Mexico Coast, calling his country a "secure, stable and friendly" neighbor that poses no threat to U.S. security.</string>
+					</void>
+					<void method="add">
+						<string>By contrast, many other countries that supply oil are not stable, secure or friendly to U.S. interests, Harper said at a White House news conference after a meeting with President Barack Obama.</string>
+					</void>
+					<void method="add">
+						<string>Pipeline supporters have singled out countries such as Venezuela, Nigeria, Saudi Arabia and Iran as places where the United States faces security threats or instability. Canada's environment minister has used the term "ethical oil" to describe his country's crude supplies, saying Canada respects human rights, workers' rights and environmental responsibility.</string>
+					</void>
+					<void method="add">
+						<string>"The choice that the United States faces in all of these matters is whether to increase its capacity to accept such energy from the most secure, most stable and friendliest location it can possibly get that energy, which is Canada, or from other places that are not as secure, stable or friendly to the interests and values of the United States," Harper said.</string>
+					</void>
+					<void method="add">
+						<string>Obama, standing next to Harper at a news conference, did not talk about the pipeline issue.</string>
+					</void>
+					<void method="add">
+						<string>State Department spokesman P.J. Crowley said U.S. officials agree with Harper that "seeking energy from stable trading partners is definitely in our national interest." The pipeline project remains under review, Crowley said.</string>
+					</void>
+					<void method="add">
+						<string>A Canadian company is pushing to build a 1,900-mile pipeline (3,060-kilometer) pipeline that would carry crude oil extracted from tar sands in Alberta, Canada, to refineries in Texas. The pipeline would double the capacity of an existing pipeline from Canada, producing more than 500,000 barrels a day of crude oil derived from formations of sand, clay and water in western Canada.</string>
+					</void>
+					<void method="add">
+						<string>The $7 billion Keystone XL pipeline could reduce substantially U.S. dependency on oil from the Middle East and other regions, according to a report commissioned by the Obama administration. The study suggests that the pipeline, coupled with a reduction in overall U.S. oil demand, "could essentially eliminate Middle East crude imports longer term."</string>
+					</void>
+					<void method="add">
+						<string>The report was completed in December but made public this week in advance of Obama's meeting with Harper.</string>
+					</void>
+					<void method="add">
+						<string>"This study supports what we have been saying for some time: that Keystone XL will improve U.S. energy security and reduce dependence on foreign oil from the Middle East and Venezuela," said Russ Girling, CEO of Calgary-based TransCanada, the project's developer. "Keystone XL will also create 20,000 high-paying jobs for American families and inject $20 billion into the U.S. economy."</string>
+					</void>
+					<void method="add">
+						<string>An environmental group that opposes the pipeline said Harper failed to acknowledge that tar sands oil is highly polluting.</string>
+					</void>
+					<void method="add">
+						<string>"There are cleaner, safer ways to meet U.S. energy needs than to import this dirty oil from Canada via a dangerous pipeline through America's heartland," said Alex Moore of the environmental group Friends of the Earth.</string>
+					</void>
+					<void method="add">
+						<string>Moore said he was glad that Obama did not express support for the pipeline, adding that if Obama is serious about making America a leader in clean energy, "he has no choice but to stop this project."</string>
+					</void>
+					<void method="add">
+						<string>Environmental groups call the pipeline an ecological disaster waiting to happen and say the so-called tar sands produce "dirty" oil that requires huge amounts of energy to extract.</string>
+					</void>
+					<void method="add">
+						<string>A coalition of 86 groups sent a letter Friday urging Obama to reject the pipeline and "stop giving a free pass to oil companies to increase profits at the expense of Americans." Activists also gathered across from the White House on Friday to protest the project.</string>
+					</void>
+					<void method="add">
+						<string>The American Petroleum Institute, meanwhile, sent a letter urging Obama to approve the project.</string>
+					</void>
+					<void method="add">
+						<string>Secretary of State Hillary Rodham Clinton must grant a permit allowing the pipeline to cross the U.S-Canadian border before TransCanada can proceed. Clinton said in October she was "inclined" to approve the project but has since backed off those remarks.</string>
+					</void>
+					<void method="add">
+						<string>Lawmakers from both parties have written to the State Department for and against the pipeline, which would travel through Montana, South Dakota, Nebraska, Kansas and Oklahoma before reaching Texas. Some of the strongest opposition is in Nebraska, where the state's two U.S. senators have raised sharp questions. The pipeline would travel over parts of the massive Ogallala aquifer, which supplies drinking water to about 2 million people in Nebraska and seven other states and supports irrigation.</string>
+					</void>
+					<void method="add">
+						<string>The aquifer serves five of the states where traversed by the pipeline route: South Dakota, Nebraska, Kansas, Oklahoma and Texas. Wyoming, Colorado and New Mexico also tap into the underground water supply</string>
+					</void>
+					<void method="add">
+						<string>---</string>
+					</void>
+					<void method="add">
+						<string>Associated Press writer Bradley Klapper contributed to this story.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+	</object>
+</java>

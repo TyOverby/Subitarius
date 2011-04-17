@@ -34,11 +34,9 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class CsmArticleParser extends AbstractArticleParser {
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMMMM d, yyyy");
+final class CsmArticleParser extends AbstractArticleParser {
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"MMMMM d, yyyy");
 
 	private final HttpClient httpClient;
 
@@ -121,8 +119,6 @@ class CsmArticleParser extends AbstractArticleParser {
 		String listCheckAttr = listCheck.getAttributeValue("class");
 		if (listCheckAttr != null && listCheckAttr.equals("list-article-full")) {
 			// we hit a "list article", which isn't really parseable
-			// http://www.csmonitor.com/USA/Election-2010/2010/1102/Top-10-mistakes-of-Election-2010/Alan-Grayson-s-Taliban-Dan-ad
-			// http://www.csmonitor.com/World/Asia-South-Central/2010/1117/Five-reasons-the-US-went-after-merchant-of-death-Viktor-Bout
 			return null;
 		}
 

@@ -6,111 +6,34 @@
 
 package com.prealpha.extempdb.server.parse;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import atunit.AtUnit;
 import atunit.Container;
-import atunit.Mock;
-import atunit.MockFramework;
 import atunit.Unit;
 
-import com.google.inject.Binder;
 import com.google.inject.Inject;
-import com.google.inject.Module;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 @RunWith(AtUnit.class)
 @Container(Container.Option.GUICE)
-@MockFramework(MockFramework.Option.EASYMOCK)
-public class GuardianArticleParserTest implements Module {
-	private static final String URL = "http://www.guardian.co.uk/world/2011/mar/21/french-local-elections-sarkozy-pen";
-
-	private static final Map<String, String> PARAMETERS = Collections
-			.emptyMap();
-
+public class GuardianArticleParserTest extends ArticleParserTestBase {
 	@Inject
 	@Unit
-	private GuardianArticleParser articleParser;
-
-	@Mock
-	private HttpClient mockHttpClient;
+	private GuardianArticleParser parser;
 
 	@Override
-	public void configure(Binder binder) {
-		binder.install(new ParseModule());
-	}
-
-	@Test(expected = NullPointerException.class)
-	public void testNull() throws ArticleParseException {
-		articleParser.parse(null);
+	protected ArticleParser getParser() {
+		return parser;
 	}
 
 	@Test
-	public void testParse() throws ArticleParseException, IOException,
-			RobotsExclusionException {
-		InputStream stream = new FileInputStream(new File(
-				"./test/guardian.html"));
-		expect(mockHttpClient.doGet(URL, PARAMETERS)).andReturn(stream);
-
-		doTest();
+	public void testParse() throws ArticleParseException {
+		testVector(0);
 	}
 
-	@Test(expected = ArticleParseException.class)
-	public void testHttpFailure() throws ArticleParseException, IOException,
-			RobotsExclusionException {
-		expect(mockHttpClient.doGet(URL, PARAMETERS)).andThrow(
-				new IOException());
-
-		doTest();
-	}
-
-	@Test(expected = ArticleParseException.class)
-	public void testRobotsExclusion() throws ArticleParseException,
-			IOException, RobotsExclusionException {
-		expect(mockHttpClient.doGet(URL, PARAMETERS)).andThrow(
-				new RobotsExclusionException());
-
-		doTest();
-	}
-
-	private void doTest() throws ArticleParseException {
-		replay(mockHttpClient);
-
-		ProtoArticle article = articleParser.parse(URL);
-
-		assertNotNull(article);
-
-		assertEquals("French local elections leave Sarkozy party in disarray",
-				article.getTitle());
-
-		assertEquals("Angelique Chrisafis", article.getByline());
-
-		Date date = article.getDate();
-		assertEquals("Monday 21 March 2011",
-				GuardianArticleParser.DATE_FORMAT_UK.format(date));
-
-		List<String> paragraphs = article.getParagraphs();
-		int paragraphCount = paragraphs.size();
-		String firstParagraph = paragraphs.get(0);
-		String lastParagraph = paragraphs.get(paragraphCount - 1);
-		assertEquals(6, paragraphCount);
-		assertTrue(firstParagraph.startsWith("Nicolas Sarkozy's ruling UMP"));
-		assertTrue(lastParagraph.endsWith("in the Arab world."));
-		
-		verify(mockHttpClient);
+	@Test
+	public void testParseFeed() throws ArticleParseException {
+		testVector(1);
 	}
 }

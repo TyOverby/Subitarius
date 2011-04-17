@@ -28,17 +28,14 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class ReutersArticleParser extends AbstractArticleParser {
+final class ReutersArticleParser extends AbstractArticleParser {
 	/**
 	 * The canonical URL for a slideshow feature.
 	 */
 	private static final String SLIDESHOW_URL = "http://www.reuters.com/article/slideshow";
 
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"EEE MMM d, yyyy hh:mmaa zzz");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"EEE MMM d, yyyy");
 
 	private final HttpClient httpClient;
 
@@ -58,7 +55,6 @@ class ReutersArticleParser extends AbstractArticleParser {
 	public ProtoArticle parse(String url) throws ArticleParseException {
 		if (url.equals(SLIDESHOW_URL)) {
 			// slideshow, we can't parse this
-			// http://www.reuters.com/article/slideshow?articleId=USTRE72L4QV20110322&slide=1
 			return null;
 		}
 
@@ -98,7 +94,7 @@ class ReutersArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getTitle(Element container) {
-		Element heading = container.getChild("h1");
+		Element heading = container.getChild("h1", container.getNamespace());
 		return heading.getValue();
 	}
 

@@ -27,11 +27,8 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class GuardianArticleParser extends AbstractArticleParser {
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT_UK = new SimpleDateFormat(
+final class GuardianArticleParser extends AbstractArticleParser {
+	private static final DateFormat DATE_FORMAT_UK = new SimpleDateFormat(
 			"EEEEE d MMMMM yyyy");
 
 	private static final DateFormat DATE_FORMAT_US = new SimpleDateFormat(
@@ -63,15 +60,14 @@ class GuardianArticleParser extends AbstractArticleParser {
 		Namespace namespace = document.getRootElement().getNamespace();
 
 		// get the title
-		Element titleElement = ParseUtils.searchDescendants(document, "div", "id",
-				"main-article-info").get(0);
+		Element titleElement = ParseUtils.searchDescendants(document, "div",
+				"id", "main-article-info").get(0);
 		Element heading = titleElement.getChild("h1", namespace);
 		String title = heading.getValue();
 
 		// get the byline, if there is one
-		// http://www.guardian.co.uk/world/feedarticle/9475892
-		List<Element> bylineElements = ParseUtils.searchDescendants(document, "a",
-				"class", "contributor");
+		List<Element> bylineElements = ParseUtils.searchDescendants(document,
+				"a", "class", "contributor");
 		String byline;
 		if (bylineElements.size() > 0) {
 			Element bylineElement = (Element) bylineElements.get(0);
@@ -87,15 +83,14 @@ class GuardianArticleParser extends AbstractArticleParser {
 		 * contain "The Guardian, Thursday 27 January 2011". So we split() on
 		 * the comma and take the second fragment for parsing.
 		 */
-		Element dateElement = ParseUtils.searchDescendants(document, "li", "class",
-				"publication").get(0);
+		Element dateElement = ParseUtils.searchDescendants(document, "li",
+				"class", "publication").get(0);
 		String dateString = dateElement.getValue().split(",")[1].trim();
 		Date date;
 		try {
 			date = DATE_FORMAT_UK.parse(dateString);
 		} catch (ParseException px1) {
-			// US style dates are sometimes also used
-			// http://www.guardian.co.uk/world/feedarticle/9485574
+			// US style dates are used for AP feed articles
 			try {
 				date = DATE_FORMAT_US.parse(dateString);
 			} catch (ParseException px2) {

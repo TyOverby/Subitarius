@@ -25,19 +25,33 @@ import org.jdom.filter.Filter;
 import org.jdom.input.DOMBuilder;
 import org.w3c.tidy.Tidy;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class WsjArticleParser extends AbstractArticleParser {
+final class WsjArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
-		COMPLETE, ABRIDGED, NEWSWIRE;
+		COMPLETE("articlePage"), ABRIDGED("article story");
+
+		private final String articleBodyClass;
+
+		private ArticleType(String articleBodyClass) {
+			this.articleBodyClass = articleBodyClass;
+		}
+
+		public String getArticleBodyClass() {
+			return articleBodyClass;
+		}
 	}
 
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMMMM d, yyyy");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"MMMMM d, yyyy");
+
+	private static final String URL_REGEX = "http://online\\.wsj\\.com/article/SB[0-9]{41}\\.html";
+
+	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
+			"Letters", "Journal Concierge");
 
 	private final HttpClient httpClient;
 
@@ -54,6 +68,11 @@ class WsjArticleParser extends AbstractArticleParser {
 
 	@Override
 	public ProtoArticle parse(String url) throws ArticleParseException {
+		if (!url.matches(URL_REGEX)) {
+			// articles that don't match tend to disappear
+			return null;
+		}
+
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
@@ -82,31 +101,13 @@ class WsjArticleParser extends AbstractArticleParser {
 				namespace);
 		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
 
-		String miscMarker = metaMap.get("displayname");
-		if (miscMarker.equals("Letters")) {
-			// letters to the editor
-			// http://online.wsj.com/article/SB10001424052748703848204575608741347636192.html
-			return null;
-		} else if (miscMarker.equals("PR Wire")) {
-			// I think this must be News Corp. self-advertising
-			// http://online.wsj.com/article/PR-CO-20101117-906923.html
-			return null;
-		} else if (miscMarker.equals("Journal Concierge")) {
-			// "travel guide"
-			// http://online.wsj.com/article/SB10001424052702304915104575572663472793840.html
-			return null;
-		} else if (miscMarker.equals("Spanish")) {
-			// self-describing...
-			// http://online.wsj.com/article/SB128934068314955423.html
+		String pageType = metaMap.get("displayname");
+		if (UNPARSEABLE_TYPES.contains(pageType)) {
 			return null;
 		}
 
 		if (metaMap.containsKey("GOOGLEBOT")) {
-			if (metaMap.containsKey("description")) {
-				articleType = ArticleType.ABRIDGED;
-			} else {
-				articleType = ArticleType.NEWSWIRE;
-			}
+			articleType = ArticleType.ABRIDGED;
 		} else {
 			articleType = ArticleType.COMPLETE;
 		}
@@ -120,23 +121,8 @@ class WsjArticleParser extends AbstractArticleParser {
 		Element headlineBox = (Element) document.getDescendants(
 				headlineBoxFilter).next();
 
-		String articleBodyClass;
-		switch (articleType) {
-		case COMPLETE:
-			articleBodyClass = "articlePage";
-			break;
-
-		case ABRIDGED:
-		case NEWSWIRE:
-			articleBodyClass = "article story";
-			break;
-
-		default:
-			throw new IllegalStateException();
-		}
-
 		Filter articleBodyFilter = ParseUtils.getElementFilter("div", "class",
-				articleBodyClass);
+				articleType.getArticleBodyClass());
 		Element articleBody = (Element) document.getDescendants(
 				articleBodyFilter).next();
 
@@ -154,8 +140,8 @@ class WsjArticleParser extends AbstractArticleParser {
 	}
 
 	private static String getByline(Element articleBody, ArticleType articleType) {
-		Filter bylineFilter = ParseUtils
-				.getElementFilter("h3", "class", "byline");
+		Filter bylineFilter = ParseUtils.getElementFilter("h3", "class",
+				"byline");
 		Iterator<?> bylineIterator = articleBody.getDescendants(bylineFilter);
 
 		if (!bylineIterator.hasNext()) {
@@ -174,8 +160,8 @@ class WsjArticleParser extends AbstractArticleParser {
 			throws ArticleParseException {
 		Filter dateStampFilter = ParseUtils.getElementFilter("li", "class",
 				"dateStamp");
-		Filter dateStampFirstFilter = ParseUtils.getElementFilter("li", "class",
-				"dateStamp first");
+		Filter dateStampFirstFilter = ParseUtils.getElementFilter("li",
+				"class", "dateStamp first");
 		Filter dateElementFilter = ParseUtils.getOrFilter(dateStampFilter,
 				dateStampFirstFilter);
 		Element dateElement = (Element) headlineBox.getDescendants(

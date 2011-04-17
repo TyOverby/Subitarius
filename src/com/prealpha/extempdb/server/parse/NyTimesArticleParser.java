@@ -24,26 +24,17 @@ import org.jdom.filter.Filter;
 import org.jdom.input.DOMBuilder;
 import org.w3c.tidy.Tidy;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class NyTimesArticleParser extends AbstractArticleParser {
-	private static final String TYPE_KEY = "PST";
+final class NyTimesArticleParser extends AbstractArticleParser {
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"yyyyMMdd");
 
-	private static final String[] UNPARSEABLE_TYPES = { "Interactive",
-			"blog post", "Subject", "Gift Guide", "Login" };
-
-	private static final String TITLE_KEY = "hdl_p";
-
-	private static final String BYLINE_KEY = "byl";
-
-	private static final String DATE_KEY = "pdate";
-
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
+			"Interactive", "blog post", "Subject", "Gift Guide", "Login");
 
 	private final HttpClient httpClient;
 
@@ -101,19 +92,17 @@ class NyTimesArticleParser extends AbstractArticleParser {
 			return null;
 		}
 
-		String typeCheck = metaMap.get(TYPE_KEY);
-		for (String type : UNPARSEABLE_TYPES) {
-			if (type.equals(typeCheck)) {
-				return null;
-			}
+		String pageType = metaMap.get("PST");
+		if (UNPARSEABLE_TYPES.contains(pageType)) {
+			return null;
 		}
 
-		String title = metaMap.get(TITLE_KEY);
-		String byline = metaMap.get(BYLINE_KEY);
+		String title = metaMap.get("hdl_p");
+		String byline = metaMap.get("byl");
 		Date date;
 
 		try {
-			date = DATE_FORMAT.parse(metaMap.get(DATE_KEY));
+			date = DATE_FORMAT.parse(metaMap.get("pdate"));
 		} catch (ParseException px) {
 			throw new ArticleParseException(px);
 		}
@@ -125,7 +114,8 @@ class NyTimesArticleParser extends AbstractArticleParser {
 		while (i1.hasNext()) {
 			Element bodyElement = (Element) i1.next();
 
-			Filter paragraphFilter = ParseUtils.getElementFilter("p", null, null);
+			Filter paragraphFilter = ParseUtils.getElementFilter("p", null,
+					null);
 			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
 			while (i2.hasNext()) {
 				Element paragraph = (Element) i2.next();

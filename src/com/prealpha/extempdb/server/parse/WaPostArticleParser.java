@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-class WaPostArticleParser extends AbstractArticleParser {
+final class WaPostArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
 		STORY {
 			@Override
@@ -47,10 +47,8 @@ class WaPostArticleParser extends AbstractArticleParser {
 		abstract Filter getBodyFilter();
 	}
 
-	/*
-	 * Package visibility for unit testing.
-	 */
-	static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd");
 
 	private final HttpClient httpClient;
 
