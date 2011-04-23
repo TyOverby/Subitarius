@@ -46,8 +46,8 @@
 		<pathelement location="${workspace}/gwt-dispatch.jar" />
 
 		<!-- Guava -->
-		<pathelement location="${workspace}/guava-r08/guava-r08.jar" />
-		<pathelement location="${workspace}/guava-r08/guava-r08-gwt.jar" />
+		<pathelement location="${workspace}/guava-r09/guava-r09.jar" />
+		<pathelement location="${workspace}/guava-r09/guava-r09-gwt.jar" />
 		<pathelement location="${workspace}/jsr-305/ri/build/jsr305-gwt.jar" />
 	</path>
 
