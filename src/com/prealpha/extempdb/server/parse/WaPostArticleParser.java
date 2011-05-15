@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.Namespace;
 import org.jdom.filter.Filter;
 
 import com.google.inject.Inject;
@@ -33,7 +34,8 @@ final class WaPostArticleParser extends AbstractArticleParser {
 		STORY {
 			@Override
 			Filter getBodyFilter() {
-				return ParseUtils.getElementFilter("div", "id", "article_body");
+				return ParseUtils.getElementFilter("div", "class",
+						"article_body");
 			}
 		},
 
@@ -100,7 +102,13 @@ final class WaPostArticleParser extends AbstractArticleParser {
 					document = ParseUtils.parse(stream);
 					documents.add(document);
 
-					int index = url.length() - 5;
+					int index;
+					if (page > 0) {
+						index = url.indexOf("_" + page + ".html");
+					} else {
+						index = url.indexOf(".html");
+					}
+
 					String suffix = "_" + (++page) + ".html";
 					url = url.substring(0, index) + suffix;
 				} while (!ParseUtils.searchDescendants(document, "a", "class",
@@ -128,7 +136,9 @@ final class WaPostArticleParser extends AbstractArticleParser {
 
 	private ProtoArticle getFromHtml(Document document, ArticleType type)
 			throws ArticleParseException {
-		Element headElement = document.getRootElement().getChild("head");
+		Namespace namespace = document.getRootElement().getNamespace();
+		Element headElement = document.getRootElement().getChild("head",
+				namespace);
 		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
 
 		String title = metaMap.get("DC.title");
@@ -148,26 +158,29 @@ final class WaPostArticleParser extends AbstractArticleParser {
 		}
 
 		Filter bodyFilter = type.getBodyFilter();
-		Element articleBody = (Element) document.getDescendants(bodyFilter)
-				.next();
+		Iterator<?> i1 = document.getDescendants(bodyFilter);
 		List<String> paragraphs = new ArrayList<String>();
-		for (Object obj : articleBody.getChildren("p")) {
-			Element paragraph = (Element) obj;
+		while (i1.hasNext()) {
+			Element articleBody = (Element) i1.next();
+			for (Object obj : articleBody.getChildren("p", namespace)) {
+				Element paragraph = (Element) obj;
 
-			// remove image captions
-			Filter imageLeftFilter = ParseUtils.getElementFilter("span",
-					"class", "imgleft");
-			Filter imageRightFilter = ParseUtils.getElementFilter("span",
-					"class", "imgright");
-			Filter imageFilter = ParseUtils.getOrFilter(imageLeftFilter,
-					imageRightFilter);
-			Iterator<?> imageIterator = paragraph.getDescendants(imageFilter);
-			while (imageIterator.hasNext()) {
-				imageIterator.next();
-				imageIterator.remove();
+				// remove image captions
+				Filter imageLeftFilter = ParseUtils.getElementFilter("span",
+						"class", "imgleft");
+				Filter imageRightFilter = ParseUtils.getElementFilter("span",
+						"class", "imgright");
+				Filter imageFilter = ParseUtils.getOrFilter(imageLeftFilter,
+						imageRightFilter);
+				Iterator<?> imageIterator = paragraph
+						.getDescendants(imageFilter);
+				while (imageIterator.hasNext()) {
+					imageIterator.next();
+					imageIterator.remove();
+				}
+
+				paragraphs.add(paragraph.getValue().trim());
 			}
-
-			paragraphs.add(paragraph.getValue().trim());
 		}
 
 		return new ProtoArticle(title, byline, date, paragraphs);
