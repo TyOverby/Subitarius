@@ -97,7 +97,7 @@ final class NyTimesArticleParser extends AbstractArticleParser {
 			return null;
 		}
 
-		String title = metaMap.get("hdl_p");
+		String title = metaMap.get("hdl");
 		String byline = metaMap.get("byl");
 		Date date;
 
