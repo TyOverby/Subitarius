@@ -75,9 +75,18 @@ final class EconomistArticleParser extends AbstractArticleParser {
 		} else {
 			Element titleElement = ParseUtils.searchDescendants(document,
 					"div", "class", "headline").get(0);
-			Element subTitleElement = ParseUtils.searchDescendants(document,
-					"h1", "class", "rubric").get(0);
-			title = titleElement.getValue() + ": " + subTitleElement.getValue();
+			List<Element> subTitles = ParseUtils.searchDescendants(document,
+					"h1", "class", "rubric");
+
+			// handle articles with and without subtitles
+			if (!subTitles.isEmpty()) {
+				Element subTitleElement = ParseUtils.searchDescendants(
+						document, "h1", "class", "rubric").get(0);
+				title = titleElement.getValue() + ": "
+						+ subTitleElement.getValue();
+			} else {
+				title = titleElement.getValue();
+			}
 		}
 
 		// get the byline
