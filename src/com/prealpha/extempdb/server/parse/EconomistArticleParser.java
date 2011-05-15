@@ -80,8 +80,7 @@ final class EconomistArticleParser extends AbstractArticleParser {
 
 			// handle articles with and without subtitles
 			if (!subTitles.isEmpty()) {
-				Element subTitleElement = ParseUtils.searchDescendants(
-						document, "h1", "class", "rubric").get(0);
+				Element subTitleElement = subTitles.get(0);
 				title = titleElement.getValue() + ": "
 						+ subTitleElement.getValue();
 			} else {
