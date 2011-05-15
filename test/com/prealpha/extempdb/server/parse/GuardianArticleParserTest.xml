@@ -109,5 +109,9 @@
 				</object>
 			</object>
 		</void>
+		<void method="put">
+			<string>http://www.guardian.co.uk/media/mediamonkeyblog/2011/may/06/bbc-4-the-night-shift</string>
+			<null/>
+		</void>
 	</object>
 </java>

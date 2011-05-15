@@ -14,14 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.jdom.filter.Filter;
 
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
@@ -58,6 +56,14 @@ final class GuardianArticleParser extends AbstractArticleParser {
 			throws ArticleParseException {
 		Document document = ParseUtils.parse(html);
 		Namespace namespace = document.getRootElement().getNamespace();
+
+		// if we have a blog post, find out and return null now
+		Element bodyElement = ParseUtils.searchDescendants(document, "body")
+				.get(0);
+		String classAttr = bodyElement.getAttributeValue("class");
+		if (classAttr.contains("blog-post")) {
+			return null;
+		}
 
 		// get the title
 		Element titleElement = ParseUtils.searchDescendants(document, "div",
@@ -99,23 +105,15 @@ final class GuardianArticleParser extends AbstractArticleParser {
 		}
 
 		// get the body text
-		Filter bodyElementFilter = ParseUtils.getElementFilter("div", "id",
-				"article-wrapper");
-		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
-		while (i1.hasNext()) {
-			Element bodyElement = (Element) i1.next();
-
-			Filter paragraphFilter = ParseUtils.getElementFilter("p", null,
-					null);
-			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
-			while (i2.hasNext()) {
-				Element paragraph = (Element) i2.next();
-				String text = paragraph.getValue().trim();
-
-				if (!text.isEmpty()) {
-					paragraphs.add(text);
-				}
+		Element articleWrapper = ParseUtils.searchDescendants(document, "div",
+				"id", "article-wrapper").get(0);
+		List<Element> paragraphElements = ParseUtils.searchDescendants(
+				articleWrapper, "p");
+		for (Element paragraph : paragraphElements) {
+			String text = paragraph.getValue().trim();
+			if (!text.isEmpty()) {
+				paragraphs.add(text);
 			}
 		}
 

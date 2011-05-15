@@ -36,4 +36,9 @@ public class GuardianArticleParserTest extends ArticleParserTestBase {
 	public void testParseFeed() throws ArticleParseException {
 		testVector(1);
 	}
+
+	@Test
+	public void testParseBlog() throws ArticleParseException {
+		testVector(2);
+	}
 }
