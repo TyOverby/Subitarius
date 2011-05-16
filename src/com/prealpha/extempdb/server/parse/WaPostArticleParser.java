@@ -196,7 +196,11 @@ final class WaPostArticleParser extends AbstractArticleParser {
 
 		for (ProtoArticle article : articles) {
 			checkArgument(title.equals(article.getTitle()));
-			checkArgument(byline.equals(article.getByline()));
+			if (byline == null) {
+				checkArgument(article.getByline() == null);
+			} else {
+				checkArgument(byline.equals(article.getByline()));
+			}
 			checkArgument(date.equals(article.getDate()));
 			paragraphs.addAll(article.getParagraphs());
 		}
