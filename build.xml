@@ -32,6 +32,8 @@
 		<!-- GWT -->
 		<pathelement location="${gwt.home}/gwt-user.jar" />
 		<pathelement location="${gwt.home}/gwt-dev.jar" />
+		<pathelement location="${gwt.home}/validation-api-1.0.0.GA-sources.jar" />
+		<pathelement location="${gwt.home}/validation-api-1.0.0.GA.jar" />
 
 		<!-- GIN -->
 		<pathelement location="${workspace}/gin-1.5/out/dist/gin-1.5.jar" />
