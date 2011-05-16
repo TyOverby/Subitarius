@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -24,7 +23,6 @@ import java.util.regex.Pattern;
 
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.filter.Filter;
 
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
@@ -54,7 +52,7 @@ final class EconomistArticleParser extends AbstractArticleParser {
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
-			return getFromHtml(stream, url.contains("blogs"));
+			return getFromHtml(stream);
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
@@ -62,9 +60,13 @@ final class EconomistArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(InputStream html, boolean blog)
+	private ProtoArticle getFromHtml(InputStream html)
 			throws ArticleParseException {
 		Document document = ParseUtils.parse(html);
+		Element bodyElement = ParseUtils.searchDescendants(document, "body")
+				.get(0);
+		String bodyClass = bodyElement.getAttributeValue("class");
+		boolean blog = bodyClass.contains("blog");
 
 		// get the title
 		String title;
@@ -123,25 +125,19 @@ final class EconomistArticleParser extends AbstractArticleParser {
 		}
 
 		// get the body text
-		Filter bodyElementFilter;
-		if (blog) {
-			bodyElementFilter = ParseUtils.getElementFilter("div", "class",
-					"ec-blog-body");
-
-		} else {
-			bodyElementFilter = ParseUtils.getElementFilter("div", "class",
-					"ec-article-content clear");
-		}
-		Iterator<?> i1 = document.getDescendants(bodyElementFilter);
 		List<String> paragraphs = new ArrayList<String>();
-		while (i1.hasNext()) {
-			Element bodyElement = (Element) i1.next();
-
-			Filter paragraphFilter = ParseUtils.getElementFilter("p", null,
-					null);
-			Iterator<?> i2 = bodyElement.getDescendants(paragraphFilter);
-			while (i2.hasNext()) {
-				Element paragraph = (Element) i2.next();
+		List<Element> contentElements;
+		if (blog) {
+			contentElements = ParseUtils.searchDescendants(document, "div",
+					"class", "ec-blog-body");
+		} else {
+			contentElements = ParseUtils.searchDescendants(document, "div",
+					"class", "ec-article-content clear");
+		}
+		for (Element contentElement : contentElements) {
+			List<Element> paragraphElements = ParseUtils.searchDescendants(
+					contentElement, "p");
+			for (Element paragraph : paragraphElements) {
 				String text = paragraph.getValue();
 				if (!text.isEmpty()) {
 					paragraphs.add(text);
