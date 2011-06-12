@@ -12,7 +12,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Dozer 5.3.1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EasyMock 3.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GIN 1.5"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Gson 1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Gson 1.7.1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/guava-r09"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Guice 3.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Guice 3.0 Persist"/>
