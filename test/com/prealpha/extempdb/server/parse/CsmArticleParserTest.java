@@ -42,14 +42,19 @@ public class CsmArticleParserTest extends ArticleParserTestBase {
 	public void testParse() throws ArticleParseException {
 		testVector(0);
 	}
-
+	
 	@Test
-	public void testParseList() throws ArticleParseException {
+	public void testParse2() throws ArticleParseException {
 		testVector(1);
 	}
 
 	@Test
-	public void testParseListItem() throws ArticleParseException {
+	public void testParseList() throws ArticleParseException {
 		testVector(2);
+	}
+
+	@Test
+	public void testParseListItem() throws ArticleParseException {
+		testVector(3);
 	}
 }

@@ -55,9 +55,16 @@ public class HttpClient {
 
 	public InputStream doGet(String url, Map<String, String> parameters)
 			throws IOException, RobotsExclusionException {
-		List<NameValuePair> params = getNameValuePairs(parameters);
-		String encodedParams = URLEncodedUtils.format(params, "UTF-8");
-		HttpGet get = new HttpGet(url + '?' + encodedParams);
+		// Washington Post gives us 400 if we request robots.txt with the ?
+		String uri;
+		if (!parameters.isEmpty()) {
+			List<NameValuePair> params = getNameValuePairs(parameters);
+			String encodedParams = URLEncodedUtils.format(params, "UTF-8");
+			uri = url + '?' + encodedParams;
+		} else {
+			uri = url;
+		}
+		HttpGet get = new HttpGet(uri);
 		return execute(get);
 	}
 
