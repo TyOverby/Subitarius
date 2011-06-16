@@ -129,5 +129,9 @@
 			<string>http://www.csmonitor.com/USA/Elections/2010/1102/Top-10-mistakes-of-Election-2010/Alan-Grayson-s-Taliban-Dan-ad</string>
 			<null/>
 		</void>
+		<void method="put">
+			<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
+			<null/>
+		</void>
 	</object>
 </java>

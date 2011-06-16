@@ -76,9 +76,12 @@ final class CsmArticleParser extends AbstractArticleParser {
 			do {
 				InputStream stream = httpClient.doGet(pageUrl, params);
 				document = parseDocument(stream);
-				documents.add(document);
-
-				pageUrl = url + "/(page)/" + (++page);
+				if (isParseable(document)) {
+					documents.add(document);
+					pageUrl = url + "/(page)/" + (++page);
+				} else {
+					return null;
+				}
 			} while (!ParseUtils.searchDescendants(document, "a", "id",
 					"next-button").isEmpty());
 
@@ -105,6 +108,25 @@ final class CsmArticleParser extends AbstractArticleParser {
 		return builder.build(doc);
 	}
 
+	private static boolean isParseable(Document document) {
+		// check for lists and quizzes
+		Namespace namespace = document.getRootElement().getNamespace();
+		Element container = ParseUtils.searchDescendants(document, "div", "id",
+				"mainColumn").get(0);
+		Element check = container.getChild("div", namespace);
+		String checkAttr = check.getAttributeValue("class");
+		if (checkAttr != null) {
+			if (checkAttr.equals("list-article-full")) {
+				// this is a list
+				return false;
+			} else if (checkAttr.equals("ui-quiz")) {
+				// this is a quiz
+				return false;
+			}
+		}
+		return true;
+	}
+
 	private ProtoArticle getFromDocuments(List<Document> documents)
 			throws ArticleParseException {
 		checkArgument(!documents.isEmpty());
@@ -114,13 +136,6 @@ final class CsmArticleParser extends AbstractArticleParser {
 
 		Element container = ParseUtils.searchDescendants(documents.get(0),
 				"div", "id", "mainColumn").get(0);
-
-		Element listCheck = container.getChild("div", namespace);
-		String listCheckAttr = listCheck.getAttributeValue("class");
-		if (listCheckAttr != null && listCheckAttr.equals("list-article-full")) {
-			// we hit a "list article", which isn't really parseable
-			return null;
-		}
 
 		String title = getTitle(container);
 		String byline = getByline(container);
