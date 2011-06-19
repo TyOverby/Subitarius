@@ -111,5 +111,9 @@
 			<string>http://online.wsj.com/article/SB10001424052702304915104575572663472793840.html</string>
 			<null/>
 		</void>
+		<void method="put">
+			<string>http://online.wsj.com/article/SB10001424052702303823104576392120484473038.html</string>
+			<null/>
+		</void>
 	</object>
 </java>

@@ -51,7 +51,7 @@ final class WsjArticleParser extends AbstractArticleParser {
 	private static final String URL_REGEX = "http://online\\.wsj\\.com/article/SB[0-9]{41}\\.html";
 
 	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
-			"Letters", "Journal Concierge");
+			"Letters", "Journal Concierge", "Spanish");
 
 	private final HttpClient httpClient;
 

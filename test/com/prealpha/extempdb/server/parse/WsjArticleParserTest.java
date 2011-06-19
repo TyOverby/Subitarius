@@ -50,6 +50,11 @@ public class WsjArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
+	public void testParseSpanish() throws ArticleParseException {
+		testVector(4);
+	}
+
+	@Test
 	public void testParseTemporary() throws ArticleParseException {
 		assertNull(parser
 				.parse("http://online.wsj.com/article/BT-CO-20110309-703720.html"));
