@@ -33,12 +33,17 @@ public class GuardianArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParseFeed() throws ArticleParseException {
+	public void testParseAp() throws ArticleParseException {
 		testVector(1);
+	}
+	
+	@Test
+	public void testParseReuters() throws ArticleParseException {
+		testVector(2);
 	}
 
 	@Test
 	public void testParseBlog() throws ArticleParseException {
-		testVector(2);
+		testVector(3);
 	}
 }

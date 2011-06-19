@@ -26,6 +26,38 @@ import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 final class GuardianArticleParser extends AbstractArticleParser {
+	private static enum Feed {
+		NONE(null, DATE_FORMAT_UK, "p") {
+		},
+
+		AP("AP foreign", DATE_FORMAT_US, "p") {
+		},
+
+		REUTERS("Reuters", DATE_FORMAT_US, "div") {
+		};
+
+		private final String name;
+
+		private final DateFormat dateFormat;
+
+		private final String textElement;
+
+		private Feed(String name, DateFormat dateFormat, String textElement) {
+			this.name = name;
+			this.dateFormat = dateFormat;
+			this.textElement = textElement;
+		}
+
+		private static Feed fromName(String name) {
+			for (Feed feed : values()) {
+				if (name.equals(feed.name)) {
+					return feed;
+				}
+			}
+			return NONE;
+		}
+	}
+
 	private static final DateFormat DATE_FORMAT_UK = new SimpleDateFormat(
 			"EEEEE d MMMMM yyyy");
 
@@ -91,17 +123,14 @@ final class GuardianArticleParser extends AbstractArticleParser {
 		 */
 		Element dateElement = ParseUtils.searchDescendants(document, "li",
 				"class", "publication").get(0);
-		String dateString = dateElement.getValue().split(",")[1].trim();
+		String[] dateSplit = dateElement.getValue().split(",");
+		Feed feed = Feed.fromName(dateSplit[0].trim());
+		String dateString = dateSplit[1].trim();
 		Date date;
 		try {
-			date = DATE_FORMAT_UK.parse(dateString);
-		} catch (ParseException px1) {
-			// US style dates are used for AP feed articles
-			try {
-				date = DATE_FORMAT_US.parse(dateString);
-			} catch (ParseException px2) {
-				throw new ArticleParseException(px2);
-			}
+			date = feed.dateFormat.parse(dateString);
+		} catch (ParseException px) {
+			throw new ArticleParseException(px);
 		}
 
 		// get the body text
@@ -109,11 +138,14 @@ final class GuardianArticleParser extends AbstractArticleParser {
 		Element articleWrapper = ParseUtils.searchDescendants(document, "div",
 				"id", "article-wrapper").get(0);
 		List<Element> paragraphElements = ParseUtils.searchDescendants(
-				articleWrapper, "p");
+				articleWrapper, feed.textElement);
 		for (Element paragraph : paragraphElements) {
-			String text = paragraph.getValue().trim();
-			if (!text.isEmpty()) {
-				paragraphs.add(text);
+			// Reuters has an additional wrapper div that we have to skip
+			if (paragraph.getChildren(feed.textElement, namespace).isEmpty()) {
+				String text = paragraph.getValue().trim();
+				if (!text.isEmpty()) {
+					paragraphs.add(text);
+				}
 			}
 		}
 
