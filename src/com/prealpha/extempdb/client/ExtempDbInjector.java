@@ -26,18 +26,18 @@ import com.prealpha.extempdb.client.settings.SettingsPresenter;
 import com.prealpha.extempdb.client.taginput.TagInputModule;
 
 @GinModules({ ClientModule.class, CoreModule.class, TagInputModule.class,
-		ArticleModule.class, JumpModule.class, ErrorModule.class,
-		HierarchyModule.class, MainModule.class, SettingsModule.class })
+		ArticleModule.class, ErrorModule.class, HierarchyModule.class,
+		JumpModule.class, MainModule.class, SettingsModule.class })
 interface ExtempDbInjector extends Ginjector {
 	CoreManager getCoreManager();
 
 	AsyncProvider<ArticlePresenter> getArticlePresenter();
 
-	AsyncProvider<JumpPresenter> getJumpPresenter();
-
 	AsyncProvider<ErrorPresenter> getErrorPresenter();
 
 	AsyncProvider<HierarchyPresenter> getHierarchyPresenter();
+
+	AsyncProvider<JumpPresenter> getJumpPresenter();
 
 	AsyncProvider<MainPresenter> getMainPresenter();
 

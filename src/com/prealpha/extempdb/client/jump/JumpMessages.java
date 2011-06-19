@@ -1,6 +1,6 @@
 /*
  * JumpMessages.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 

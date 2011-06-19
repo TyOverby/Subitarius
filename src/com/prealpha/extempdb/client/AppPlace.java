@@ -1,6 +1,6 @@
 /*
  * AppPlace.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -18,13 +18,6 @@ public enum AppPlace {
 		}
 	},
 
-	JUMP {
-		@Override
-		public AsyncProvider<? extends PlacePresenter> getPresenter() {
-			return INJECTOR.getJumpPresenter();
-		}
-	},
-
 	ERROR {
 		@Override
 		public AsyncProvider<? extends PlacePresenter> getPresenter() {
@@ -36,6 +29,13 @@ public enum AppPlace {
 		@Override
 		public AsyncProvider<? extends PlacePresenter> getPresenter() {
 			return INJECTOR.getHierarchyPresenter();
+		}
+	},
+
+	JUMP {
+		@Override
+		public AsyncProvider<? extends PlacePresenter> getPresenter() {
+			return INJECTOR.getJumpPresenter();
 		}
 	},
 

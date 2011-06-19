@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
 	<ui:style>
-		.jumpr {
+		.browser {
 			height: 400px;
 			margin-top: 5px;
 			width: 955px;
@@ -21,7 +21,7 @@
 
 	<g:VerticalPanel addStyleNames="{res.style.contentSection}">
 		<g:Label addStyleNames="{res.style.heading}" text="{msg.heading}" />
-		<c:CellBrowser addStyleNames="{style.jumpr}" ui:field="cellBrowser" />
+		<c:CellBrowser addStyleNames="{style.browser}" ui:field="cellBrowser" />
 	</g:VerticalPanel>
 
 </ui:UiBinder>
