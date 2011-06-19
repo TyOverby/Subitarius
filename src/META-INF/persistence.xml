@@ -11,7 +11,7 @@
 		<class>com.prealpha.extempdb.server.domain.TagMapping</class>
 		<class>com.prealpha.extempdb.server.domain.TagMappingAction</class>
 		<class>com.prealpha.extempdb.server.domain.User</class>
-		<validation-mode>AUTO</validation-mode>
+		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url"
