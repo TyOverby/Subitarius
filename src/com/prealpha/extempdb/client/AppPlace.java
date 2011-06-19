@@ -18,10 +18,10 @@ public enum AppPlace {
 		}
 	},
 
-	BROWSE {
+	JUMP {
 		@Override
 		public AsyncProvider<? extends PlacePresenter> getPresenter() {
-			return INJECTOR.getBrowsePresenter();
+			return INJECTOR.getJumpPresenter();
 		}
 	},
 

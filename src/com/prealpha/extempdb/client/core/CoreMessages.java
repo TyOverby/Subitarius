@@ -11,7 +11,7 @@ import com.google.gwt.i18n.client.Messages;
 public interface CoreMessages extends Messages {
 	String title();
 
-	String browse();
+	String jump();
 
 	String hierarchy();
 

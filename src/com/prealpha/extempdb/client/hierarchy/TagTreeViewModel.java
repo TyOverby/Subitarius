@@ -47,7 +47,7 @@ public class TagTreeViewModel implements TreeViewModel {
 
 			if (value.isSearched()) {
 				List<String> parameters = Collections.singletonList(name);
-				AppState appState = new AppState(AppPlace.BROWSE, parameters);
+				AppState appState = new AppState(AppPlace.JUMP, parameters);
 				Hyperlink hyperlink = new Hyperlink(name, appState.toString());
 				sb.appendHtmlConstant(hyperlink.toString());
 			} else {

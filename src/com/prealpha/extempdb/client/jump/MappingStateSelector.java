@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.browse;
+package com.prealpha.extempdb.client.jump;
 
 import java.util.HashSet;
 import java.util.Set;

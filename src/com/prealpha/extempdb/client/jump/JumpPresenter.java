@@ -1,10 +1,10 @@
 /*
- * BrowsePresenter.java
+ * JumpPresenter.java
  * Copyright (C) 2010 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.browse;
+package com.prealpha.extempdb.client.jump;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ import com.prealpha.extempdb.client.AppState;
 import com.prealpha.extempdb.client.HistoryManager;
 import com.prealpha.extempdb.client.PlacePresenter;
 
-public class BrowsePresenter implements PlacePresenter {
-	public static interface Display extends IsWidget, HasValue<BrowseState> {
+public class JumpPresenter implements PlacePresenter {
+	public static interface Display extends IsWidget, HasValue<JumpState> {
 	}
 
 	private final Display display;
@@ -30,7 +30,7 @@ public class BrowsePresenter implements PlacePresenter {
 	private HandlerRegistration handler;
 
 	@Inject
-	public BrowsePresenter(Display display, HistoryManager historyManager) {
+	public JumpPresenter(Display display, HistoryManager historyManager) {
 		this.display = display;
 		this.historyManager = historyManager;
 	}
@@ -38,12 +38,12 @@ public class BrowsePresenter implements PlacePresenter {
 	@Override
 	public void init() {
 		handler = display
-				.addValueChangeHandler(new ValueChangeHandler<BrowseState>() {
+				.addValueChangeHandler(new ValueChangeHandler<JumpState>() {
 					@Override
 					public void onValueChange(
-							ValueChangeEvent<BrowseState> event) {
+							ValueChangeEvent<JumpState> event) {
 						List<String> parameters = event.getValue().serialize();
-						AppState appState = new AppState(AppPlace.BROWSE,
+						AppState appState = new AppState(AppPlace.JUMP,
 								parameters);
 						historyManager.setAppState(appState);
 					}
@@ -58,8 +58,8 @@ public class BrowsePresenter implements PlacePresenter {
 	@Override
 	public void bind(List<String> parameters) {
 		try {
-			BrowseState browseState = BrowseState.deserialize(parameters);
-			display.setValue(browseState);
+			JumpState jumpState = JumpState.deserialize(parameters);
+			display.setValue(jumpState);
 		} catch (NullPointerException npx) {
 			throw new IllegalArgumentException(npx);
 		}

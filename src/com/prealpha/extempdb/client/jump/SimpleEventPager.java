@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.browse;
+package com.prealpha.extempdb.client.jump;
 
 import com.google.gwt.event.logical.shared.HasShowRangeHandlers;
 import com.google.gwt.event.logical.shared.ShowRangeEvent;

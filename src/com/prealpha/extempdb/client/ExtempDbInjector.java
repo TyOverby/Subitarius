@@ -11,8 +11,8 @@ import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.prealpha.extempdb.client.article.ArticleModule;
 import com.prealpha.extempdb.client.article.ArticlePresenter;
-import com.prealpha.extempdb.client.browse.BrowseModule;
-import com.prealpha.extempdb.client.browse.BrowsePresenter;
+import com.prealpha.extempdb.client.jump.JumpModule;
+import com.prealpha.extempdb.client.jump.JumpPresenter;
 import com.prealpha.extempdb.client.core.CoreManager;
 import com.prealpha.extempdb.client.core.CoreModule;
 import com.prealpha.extempdb.client.error.ErrorModule;
@@ -26,14 +26,14 @@ import com.prealpha.extempdb.client.settings.SettingsPresenter;
 import com.prealpha.extempdb.client.taginput.TagInputModule;
 
 @GinModules({ ClientModule.class, CoreModule.class, TagInputModule.class,
-		ArticleModule.class, BrowseModule.class, ErrorModule.class,
+		ArticleModule.class, JumpModule.class, ErrorModule.class,
 		HierarchyModule.class, MainModule.class, SettingsModule.class })
 interface ExtempDbInjector extends Ginjector {
 	CoreManager getCoreManager();
 
 	AsyncProvider<ArticlePresenter> getArticlePresenter();
 
-	AsyncProvider<BrowsePresenter> getBrowsePresenter();
+	AsyncProvider<JumpPresenter> getJumpPresenter();
 
 	AsyncProvider<ErrorPresenter> getErrorPresenter();
 

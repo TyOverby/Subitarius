@@ -1,10 +1,10 @@
 /*
- * BrowseState.java
+ * JumpState.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.browse;
+package com.prealpha.extempdb.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -20,23 +20,23 @@ import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
  */
-final class BrowseState {
-	public static BrowseState getInstance(String tagName, Set<State> states,
+final class JumpState {
+	public static JumpState getInstance(String tagName, Set<State> states,
 			ArticleSort sort, int pageStart) {
 		states = new HashSet<State>(states);
-		return new BrowseState(tagName, states, sort, pageStart);
+		return new JumpState(tagName, states, sort, pageStart);
 	}
 
 	/**
-	 * Deserializes and returns a {@code BrowseState} from a list of
+	 * Deserializes and returns a {@code JumpState} from a list of
 	 * {@code String} parameters. The parameters must be in the format returned
 	 * by {@link #serialize()}. While the implementation may attempt to recover
 	 * from some invalid inputs, clients should not rely on this behavior.
 	 * 
 	 * @param parameters
-	 *            the serialized form of a {@code BrowseState}, as returned by
+	 *            the serialized form of a {@code JumpState}, as returned by
 	 *            {@link #serialize()}
-	 * @return a {@code BrowseState} equal to the instance previously serialized
+	 * @return a {@code JumpState} equal to the instance previously serialized
 	 * @throws IllegalArgumentException
 	 *             if the parameters are not in the format returned by
 	 *             {@link #serialize()}
@@ -46,7 +46,7 @@ final class BrowseState {
 	 *             empty string (which represents a {@code null}
 	 *             {@code ArticleSort})
 	 */
-	public static BrowseState deserialize(List<String> parameters) {
+	public static JumpState deserialize(List<String> parameters) {
 		checkArgument(parameters.size() <= 4);
 
 		// initialize all values to defaults
@@ -71,7 +71,7 @@ final class BrowseState {
 			tagName = parameters.get(0);
 		}
 
-		return new BrowseState(tagName, states, sort, pageStart);
+		return new JumpState(tagName, states, sort, pageStart);
 	}
 
 	private final String tagName;
@@ -82,7 +82,7 @@ final class BrowseState {
 
 	private final int pageStart;
 
-	private BrowseState(String tagName, Set<State> states, ArticleSort sort,
+	private JumpState(String tagName, Set<State> states, ArticleSort sort,
 			int pageStart) {
 		checkNotNull(states);
 		checkNotNull(sort);
@@ -140,10 +140,10 @@ final class BrowseState {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof BrowseState)) {
+		if (!(obj instanceof JumpState)) {
 			return false;
 		}
-		BrowseState other = (BrowseState) obj;
+		JumpState other = (JumpState) obj;
 		if (pageStart != other.pageStart) {
 			return false;
 		}
@@ -173,7 +173,7 @@ final class BrowseState {
 
 	@Override
 	public String toString() {
-		return "BrowseState [tagName=" + tagName + ", states=" + states
+		return "JumpState [tagName=" + tagName + ", states=" + states
 				+ ", sort=" + sort + ", pageStart=" + pageStart + "]";
 	}
 

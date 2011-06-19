@@ -62,7 +62,7 @@ public class TagMappingWidget extends Composite implements
 			@Override
 			public void setText(String text) {
 				List<String> parameters = Collections.singletonList(text);
-				AppState appState = new AppState(AppPlace.BROWSE, parameters);
+				AppState appState = new AppState(AppPlace.JUMP, parameters);
 				mappingLink.setTargetHistoryToken(appState.toString());
 				mappingLink.setText(text);
 			}

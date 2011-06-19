@@ -15,7 +15,7 @@
 
 			<span class="{res.style.buttonContainer}">
 				<span class="{res.style.navButton}">
-					<g:Hyperlink targetHistoryToken="BROWSE" text="{msg.browse}" />
+					<g:Hyperlink targetHistoryToken="JUMP" text="{msg.jump}" />
 				</span>
 				<span class="{res.style.navButton}">
 					<g:Hyperlink targetHistoryToken="HIERARCHY" text="{msg.hierarchy}" />

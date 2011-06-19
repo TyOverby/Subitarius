@@ -4,7 +4,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
 	<ui:with field="msg"
-		type="com.prealpha.extempdb.client.browse.BrowseMessages" />
+		type="com.prealpha.extempdb.client.jump.JumpMessages" />
 
 	<ui:style>
 		.stateSelector td {
