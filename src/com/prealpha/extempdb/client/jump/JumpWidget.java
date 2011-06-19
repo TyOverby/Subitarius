@@ -35,8 +35,7 @@ import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
 public class JumpWidget extends Composite implements JumpPresenter.Display {
-	public static interface JumpUiBinder extends
-			UiBinder<Widget, JumpWidget> {
+	public static interface JumpUiBinder extends UiBinder<Widget, JumpWidget> {
 	}
 
 	@UiField(provided = true)
@@ -57,7 +56,7 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 
 	private final DispatcherAsync dispatcher;
 
-	private JumpState JumpState;
+	private JumpState jumpState;
 
 	@Inject
 	public JumpWidget(JumpUiBinder uiBinder,
@@ -84,14 +83,13 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 						 * Don't use inputPresenter.getTagName(), because that
 						 * returns a non-null value if the tag doesn't exist.
 						 */
-						String oldTagName = JumpState.getTagName();
+						String oldTagName = jumpState.getTagName();
 						TagDto tag = (event.getValue().isLoaded() ? inputPresenter
 								.getTag() : null);
 						String tagName = (tag == null ? null : tag.getName());
 
 						JumpState newState = JumpState.getInstance(tagName,
-								JumpState.getStates(), JumpState.getSort(),
-								0);
+								jumpState.getStates(), jumpState.getSort(), 0);
 
 						/*
 						 * setValue() calls inputPresenter.bind(), so we have to
@@ -112,8 +110,8 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 					@Override
 					public void onValueChange(ValueChangeEvent<Set<State>> event) {
 						JumpState newState = JumpState.getInstance(
-								JumpState.getTagName(), event.getValue(),
-								JumpState.getSort(), 0);
+								jumpState.getTagName(), event.getValue(),
+								jumpState.getSort(), 0);
 						setValue(newState, true);
 					}
 				});
@@ -124,8 +122,8 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 					public void onValueChange(
 							ValueChangeEvent<ArticleSort> event) {
 						JumpState newState = JumpState.getInstance(
-								JumpState.getTagName(),
-								JumpState.getStates(), event.getValue(), 0);
+								jumpState.getTagName(), jumpState.getStates(),
+								event.getValue(), 0);
 						setValue(newState, true);
 					}
 				});
@@ -134,8 +132,8 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 			@Override
 			public void onShowRange(ShowRangeEvent<Integer> event) {
 				JumpState newState = JumpState.getInstance(
-						JumpState.getTagName(), JumpState.getStates(),
-						JumpState.getSort(), event.getStart());
+						jumpState.getTagName(), jumpState.getStates(),
+						jumpState.getSort(), event.getStart());
 				setValue(newState, true);
 			}
 		});
@@ -143,7 +141,7 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 
 	@Override
 	public JumpState getValue() {
-		return JumpState;
+		return jumpState;
 	}
 
 	@Override
@@ -153,8 +151,8 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 
 	@Override
 	public void setValue(final JumpState JumpState, boolean fireEvents) {
-		JumpState oldJumpState = this.JumpState;
-		this.JumpState = JumpState;
+		JumpState oldJumpState = this.jumpState;
+		this.jumpState = JumpState;
 
 		String tagName = JumpState.getTagName();
 		if (tagName == null) {
