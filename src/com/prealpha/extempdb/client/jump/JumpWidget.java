@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.browse;
+package com.prealpha.extempdb.client.jump;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,9 +34,9 @@ import com.prealpha.extempdb.shared.dto.TagDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
 
-public class BrowseWidget extends Composite implements BrowsePresenter.Display {
-	public static interface BrowseUiBinder extends
-			UiBinder<Widget, BrowseWidget> {
+public class JumpWidget extends Composite implements JumpPresenter.Display {
+	public static interface JumpUiBinder extends
+			UiBinder<Widget, JumpWidget> {
 	}
 
 	@UiField(provided = true)
@@ -57,10 +57,10 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 
 	private final DispatcherAsync dispatcher;
 
-	private BrowseState browseState;
+	private JumpState JumpState;
 
 	@Inject
-	public BrowseWidget(BrowseUiBinder uiBinder,
+	public JumpWidget(JumpUiBinder uiBinder,
 			final TagInputPresenter inputPresenter,
 			MappingStateSelector stateSelector,
 			ArticleTablePresenter tablePresenter, SimpleEventPager pager,
@@ -84,13 +84,13 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 						 * Don't use inputPresenter.getTagName(), because that
 						 * returns a non-null value if the tag doesn't exist.
 						 */
-						String oldTagName = browseState.getTagName();
+						String oldTagName = JumpState.getTagName();
 						TagDto tag = (event.getValue().isLoaded() ? inputPresenter
 								.getTag() : null);
 						String tagName = (tag == null ? null : tag.getName());
 
-						BrowseState newState = BrowseState.getInstance(tagName,
-								browseState.getStates(), browseState.getSort(),
+						JumpState newState = JumpState.getInstance(tagName,
+								JumpState.getStates(), JumpState.getSort(),
 								0);
 
 						/*
@@ -111,9 +111,9 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 				.addValueChangeHandler(new ValueChangeHandler<Set<State>>() {
 					@Override
 					public void onValueChange(ValueChangeEvent<Set<State>> event) {
-						BrowseState newState = BrowseState.getInstance(
-								browseState.getTagName(), event.getValue(),
-								browseState.getSort(), 0);
+						JumpState newState = JumpState.getInstance(
+								JumpState.getTagName(), event.getValue(),
+								JumpState.getSort(), 0);
 						setValue(newState, true);
 					}
 				});
@@ -123,9 +123,9 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 					@Override
 					public void onValueChange(
 							ValueChangeEvent<ArticleSort> event) {
-						BrowseState newState = BrowseState.getInstance(
-								browseState.getTagName(),
-								browseState.getStates(), event.getValue(), 0);
+						JumpState newState = JumpState.getInstance(
+								JumpState.getTagName(),
+								JumpState.getStates(), event.getValue(), 0);
 						setValue(newState, true);
 					}
 				});
@@ -133,30 +133,30 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 		pager.addShowRangeHandler(new ShowRangeHandler<Integer>() {
 			@Override
 			public void onShowRange(ShowRangeEvent<Integer> event) {
-				BrowseState newState = BrowseState.getInstance(
-						browseState.getTagName(), browseState.getStates(),
-						browseState.getSort(), event.getStart());
+				JumpState newState = JumpState.getInstance(
+						JumpState.getTagName(), JumpState.getStates(),
+						JumpState.getSort(), event.getStart());
 				setValue(newState, true);
 			}
 		});
 	}
 
 	@Override
-	public BrowseState getValue() {
-		return browseState;
+	public JumpState getValue() {
+		return JumpState;
 	}
 
 	@Override
-	public void setValue(BrowseState browseState) {
-		setValue(browseState, false);
+	public void setValue(JumpState JumpState) {
+		setValue(JumpState, false);
 	}
 
 	@Override
-	public void setValue(final BrowseState browseState, boolean fireEvents) {
-		BrowseState oldBrowseState = this.browseState;
-		this.browseState = browseState;
+	public void setValue(final JumpState JumpState, boolean fireEvents) {
+		JumpState oldJumpState = this.JumpState;
+		this.JumpState = JumpState;
 
-		String tagName = browseState.getTagName();
+		String tagName = JumpState.getTagName();
 		if (tagName == null) {
 			inputPresenter.bind(null);
 			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
@@ -170,9 +170,9 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 					inputPresenter.bind(tag);
 
 					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
-							browseState.getSort());
+							JumpState.getSort());
 					GetMappingsByTag mappingsAction = new GetMappingsByTag(tag
-							.getName(), browseState.getStates(), comparator);
+							.getName(), JumpState.getStates(), comparator);
 					dispatcher.execute(mappingsAction,
 							new ManagedCallback<GetMappingsResult>() {
 								@Override
@@ -184,18 +184,18 @@ public class BrowseWidget extends Composite implements BrowsePresenter.Display {
 			});
 		}
 
-		stateSelector.setValue(browseState.getStates());
-		tablePresenter.getDisplay().setValue(browseState.getSort());
-		pager.setPageStart(browseState.getPageStart());
+		stateSelector.setValue(JumpState.getStates());
+		tablePresenter.getDisplay().setValue(JumpState.getSort());
+		pager.setPageStart(JumpState.getPageStart());
 
 		if (fireEvents) {
-			ValueChangeEvent.fireIfNotEqual(this, oldBrowseState, browseState);
+			ValueChangeEvent.fireIfNotEqual(this, oldJumpState, JumpState);
 		}
 	}
 
 	@Override
 	public HandlerRegistration addValueChangeHandler(
-			ValueChangeHandler<BrowseState> handler) {
+			ValueChangeHandler<JumpState> handler) {
 		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
