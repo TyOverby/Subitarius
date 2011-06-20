@@ -145,16 +145,16 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 	}
 
 	@Override
-	public void setValue(JumpState JumpState) {
-		setValue(JumpState, false);
+	public void setValue(JumpState jumpState) {
+		setValue(jumpState, false);
 	}
 
 	@Override
-	public void setValue(final JumpState JumpState, boolean fireEvents) {
+	public void setValue(final JumpState jumpState, boolean fireEvents) {
 		JumpState oldJumpState = this.jumpState;
-		this.jumpState = JumpState;
+		this.jumpState = jumpState;
 
-		String tagName = JumpState.getTagName();
+		String tagName = jumpState.getTagName();
 		if (tagName == null) {
 			inputPresenter.bind(null);
 			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
@@ -168,9 +168,9 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 					inputPresenter.bind(tag);
 
 					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
-							JumpState.getSort());
+							jumpState.getSort());
 					GetMappingsByTag mappingsAction = new GetMappingsByTag(tag
-							.getName(), JumpState.getStates(), comparator);
+							.getName(), jumpState.getStates(), comparator);
 					dispatcher.execute(mappingsAction,
 							new ManagedCallback<GetMappingsResult>() {
 								@Override
@@ -182,12 +182,12 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 			});
 		}
 
-		stateSelector.setValue(JumpState.getStates());
-		tablePresenter.getDisplay().setValue(JumpState.getSort());
-		pager.setPageStart(JumpState.getPageStart());
+		stateSelector.setValue(jumpState.getStates());
+		tablePresenter.getDisplay().setValue(jumpState.getSort());
+		pager.setPageStart(jumpState.getPageStart());
 
 		if (fireEvents) {
-			ValueChangeEvent.fireIfNotEqual(this, oldJumpState, JumpState);
+			ValueChangeEvent.fireIfNotEqual(this, oldJumpState, jumpState);
 		}
 	}
 
