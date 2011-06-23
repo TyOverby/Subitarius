@@ -34,6 +34,9 @@ final class GuardianArticleParser extends AbstractArticleParser {
 		},
 
 		REUTERS("Reuters", DATE_FORMAT_US, "div") {
+		},
+
+		PRESS_ASSOCIATION("Press Association", DATE_FORMAT_US, "p") {
 		};
 
 		private final String name;

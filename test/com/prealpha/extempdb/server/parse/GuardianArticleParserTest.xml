@@ -209,6 +209,51 @@
 			</object>
 		</void>
 		<void method="put">
+			<string>http://www.guardian.co.uk/uk/feedarticle/9681597</string>
+			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+				<string>Government ousted in Portugal poll</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1307318400000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Portugal's Social Democrats have unseated the Socialist government in an emphatic election victory, giving the centre-right party a strong mandate to enact a grinding austerity programme demanded in return for a 78 billion euro (£69.4 billion) international bail-out.</string>
+					</void>
+					<void method="add">
+						<string>Though the severe debt-reduction measures are expected to pitch the country into deep recession and bring sharply lower living standards in what already is one of western Europe's poorest countries, parties that support the effort to restore fiscal health collected around 80% of the vote.</string>
+					</void>
+					<void method="add">
+						<string>That outcome is reassuring for European leaders keen to draw a line under the continent's debt crisis which they have battled to vanquish for more than a year, especially as Greece's financial woes continue to worry investors.</string>
+					</void>
+					<void method="add">
+						<string>The Social Democratic Party had 105 politicians in the 230-seat Parliament compared with 73 for the second-placed Socialists. The Social Democrat share represented about 39% of the vote. The centre-left Socialists' share was 28%.</string>
+					</void>
+					<void method="add">
+						<string>Social Democrat leader Pedro Passos Coelho, who will likely become prime minister, said his government "will do everything in its power to overcome the great difficulties we face and also provide assurances that (Portugal) won't be a financial burden" on Europe.</string>
+					</void>
+					<void method="add">
+						<string>As Social Democrat supporters waving the party's white-and-orange flags poured into Lisbon's main street, the Avenida da Liberdade, to celebrate their triumph, Mr Passos Coelho said he aimed to restore market confidence in the country and provide "a window of hope" for the Portuguese.</string>
+					</void>
+					<void method="add">
+						<string>Portugal is one of the 17 countries that use the shared euro currency. Its economy accounts for less than 2% of the bloc's gross domestic product, but its fiscal troubles have aggravated investor fears about the soundness of the eurozone in general.</string>
+					</void>
+					<void method="add">
+						<string>Though the Social Democrats fell short of an absolute majority in Parliament, where they will need approval for their policies, they could turn for support to the smaller, conservative Popular Party, which snared 24 seats.</string>
+					</void>
+					<void method="add">
+						<string>Together, the traditional allies have more than half the places in the new Parliament, allowing them a majority that provides a free run to introduce the laws and measures they want, though some measures may require constitutional changes that would take an extended period to adopt.</string>
+					</void>
+					<void method="add">
+						<string>Mr Passos Coelho, whose party begins a four-year term in government, said he intended to consult other parties about possible power-sharing to ensure a solid government, though he declined to offer details of his plans.</string>
+					</void>
+					<void method="add">
+						<string>Copyright (c) Press Association Ltd. 2011, All Rights Reserved.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="put">
 			<string>http://www.guardian.co.uk/media/mediamonkeyblog/2011/may/06/bbc-4-the-night-shift</string>
 			<null/>
 		</void>
