@@ -133,6 +133,7 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 
 		String tagName = jumpState.getTagName();
 		if (tagName == null) {
+			// TODO: maybe just use the old value?
 			tagInput.setValue(null);
 			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
 		} else {
