@@ -9,25 +9,24 @@ package com.prealpha.extempdb.client.taginput;
 import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.google.web.bindery.event.shared.Event;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.taginput.event.TagLoadedEvent;
-import com.prealpha.extempdb.client.taginput.event.TagUnselectedEvent;
 import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
-public final class TagInputWidget extends Composite {
+public final class TagInputWidget extends Composite implements HasValue<TagDto> {
 	static interface TagInputUiBinder extends UiBinder<Widget, TagInputWidget> {
 	}
 
@@ -39,35 +38,42 @@ public final class TagInputWidget extends Composite {
 
 	private final DispatcherAsync dispatcher;
 
-	private final EventBus eventBus;
-
 	private TagDto tag;
 
 	@Inject
 	private TagInputWidget(TagInputUiBinder uiBinder,
-			DispatcherAsync dispatcher, EventBus eventBus, SuggestBox nameBox,
+			DispatcherAsync dispatcher, SuggestBox nameBox,
 			LoadingStatusWidget statusWidget) {
 		this.dispatcher = dispatcher;
-		this.eventBus = eventBus;
 		this.nameBox = nameBox;
 		this.statusWidget = statusWidget;
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-	@UiHandler("statusWidget")
-	void onValueChange(ValueChangeEvent<LoadingStatus> event) {
-		Event<?> toFire;
-		switch (event.getValue()) {
-		case LOADED:
-			toFire = new TagLoadedEvent(tag);
-			break;
-		case PENDING:
-			toFire = new TagUnselectedEvent();
-			break;
-		default:
-			return;
+	@Override
+	public TagDto getValue() {
+		return tag;
+	}
+
+	@Override
+	public void setValue(TagDto value) {
+		setValue(value, false);
+	}
+
+	@Override
+	public void setValue(TagDto value, boolean fireEvents) {
+		TagDto oldValue = tag;
+		tag = value;
+		nameBox.setText((tag == null) ? null : tag.getName());
+		if (fireEvents) {
+			ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
 		}
-		eventBus.fireEventFromSource(toFire, this);
+	}
+
+	@Override
+	public HandlerRegistration addValueChangeHandler(
+			ValueChangeHandler<TagDto> handler) {
+		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
 	@UiHandler("nameBox")
@@ -84,6 +90,7 @@ public final class TagInputWidget extends Composite {
 		GetTag action = new GetTag(tagName);
 		dispatcher.execute(action, new TagCallback(tagName));
 		statusWidget.setValue(LoadingStatus.PENDING);
+		setValue(null);
 	}
 
 	private final class TagCallback extends ManagedCallback<GetTagResult> {
@@ -118,7 +125,7 @@ public final class TagInputWidget extends Composite {
 			} else {
 				statusWidget.setValue(LoadingStatus.LOADED, true);
 			}
-			TagInputWidget.this.tag = tag;
+			setValue(tag);
 		}
 	}
 }
