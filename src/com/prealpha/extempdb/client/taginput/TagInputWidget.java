@@ -6,109 +6,119 @@
 
 package com.prealpha.extempdb.client.taginput;
 
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.Presenter;
+import com.google.web.bindery.event.shared.Event;
+import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.extempdb.client.error.ManagedCallback;
+import com.prealpha.extempdb.client.taginput.event.TagLoadedEvent;
+import com.prealpha.extempdb.client.taginput.event.TagUnselectedEvent;
+import com.prealpha.extempdb.shared.action.GetTag;
+import com.prealpha.extempdb.shared.action.GetTagResult;
+import com.prealpha.extempdb.shared.dto.TagDto;
 
-public class TagInputWidget extends Composite implements
-		TagInputPresenter.Display {
-	public static interface TagInputUiBinder extends
-			UiBinder<Widget, TagInputWidget> {
+public final class TagInputWidget extends Composite {
+	static interface TagInputUiBinder extends UiBinder<Widget, TagInputWidget> {
 	}
 
 	@UiField(provided = true)
 	final SuggestBox nameBox;
 
 	@UiField(provided = true)
-	final Widget statusWidget;
+	final LoadingStatusWidget statusWidget;
 
-	private final LoadingStatusPresenter statusPresenter;
+	private final DispatcherAsync dispatcher;
 
-	private final Scheduler scheduler;
+	private final EventBus eventBus;
+
+	private TagDto tag;
 
 	@Inject
-	public TagInputWidget(TagInputUiBinder uiBinder, SuggestOracle oracle,
-			LoadingStatusPresenter statusPresenter, Scheduler scheduler) {
-		this.statusPresenter = statusPresenter;
-		this.scheduler = scheduler;
-
-		nameBox = new SuggestBox(oracle);
-		statusWidget = statusPresenter.getDisplay().asWidget();
-
+	private TagInputWidget(TagInputUiBinder uiBinder,
+			DispatcherAsync dispatcher, EventBus eventBus, SuggestBox nameBox,
+			LoadingStatusWidget statusWidget) {
+		this.dispatcher = dispatcher;
+		this.eventBus = eventBus;
+		this.nameBox = nameBox;
+		this.statusWidget = statusWidget;
 		initWidget(uiBinder.createAndBindUi(this));
-
-		nameBox.addKeyPressHandler(new NameHandler());
-		nameBox.addSelectionHandler(new NameHandler());
 	}
 
-	@Override
-	public String getValue() {
-		return nameBox.getValue();
-	}
-
-	@Override
-	public void setValue(String value) {
-		setValue(value, false);
-	}
-
-	@Override
-	public void setValue(String value, boolean fireEvents) {
-		String oldValue = getValue();
-		nameBox.setValue(value);
-
-		if (fireEvents) {
-			ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
+	@UiHandler("statusWidget")
+	void onValueChange(ValueChangeEvent<LoadingStatus> event) {
+		Event<?> toFire;
+		switch (event.getValue()) {
+		case LOADED:
+			toFire = new TagLoadedEvent(tag);
+			break;
+		case PENDING:
+			toFire = new TagUnselectedEvent();
+			break;
+		default:
+			return;
 		}
+		eventBus.fireEventFromSource(toFire, this);
 	}
 
-	@Override
-	public HandlerRegistration addValueChangeHandler(
-			ValueChangeHandler<String> handler) {
-		return addHandler(handler, ValueChangeEvent.getType());
+	@UiHandler("nameBox")
+	void onKeyPress(KeyPressEvent event) {
+		requestTag(nameBox.getValue());
 	}
 
-	@Override
-	public Presenter<LoadingStatus> getStatusPresenter() {
-		return statusPresenter;
+	@UiHandler("nameBox")
+	void onSelection(SelectionEvent<Suggestion> event) {
+		requestTag(event.getSelectedItem().getReplacementString());
 	}
 
-	private void fireValueChange() {
-		ValueChangeEvent.fire(this, nameBox.getText());
+	private void requestTag(String tagName) {
+		GetTag action = new GetTag(tagName);
+		dispatcher.execute(action, new TagCallback(tagName));
+		statusWidget.setValue(LoadingStatus.PENDING);
 	}
 
-	private final class NameHandler implements KeyPressHandler,
-			SelectionHandler<SuggestOracle.Suggestion> {
+	private final class TagCallback extends ManagedCallback<GetTagResult> {
+		private final String expectedName;
+
+		private TagCallback(String expectedName) {
+			if (expectedName == null || expectedName.isEmpty()) {
+				this.expectedName = null;
+			} else {
+				this.expectedName = expectedName;
+			}
+		}
+
 		@Override
-		public void onKeyPress(KeyPressEvent event) {
-			/*
-			 * This one has to be deferred, because the text box's value may not
-			 * be updated to reflect the key press when this event fires.
-			 */
-			scheduler.scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					fireValueChange();
+		public void onSuccess(GetTagResult result) {
+			// this result may be obsolete already
+			if (nameBox.getValue() == null) {
+				if (expectedName != null) {
+					return;
 				}
-			});
-		}
+			} else if (!nameBox.getValue().equals(expectedName)) {
+				return;
+			}
 
-		@Override
-		public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
-			fireValueChange();
+			TagDto tag = result.getTag();
+			if (tag == null) {
+				if (expectedName == null) {
+					statusWidget.setValue(LoadingStatus.NONE);
+				} else {
+					statusWidget.setValue(LoadingStatus.NOT_FOUND);
+				}
+			} else {
+				statusWidget.setValue(LoadingStatus.LOADED, true);
+			}
+			TagInputWidget.this.tag = tag;
 		}
 	}
 }

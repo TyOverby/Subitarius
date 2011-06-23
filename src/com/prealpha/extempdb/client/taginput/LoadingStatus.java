@@ -10,7 +10,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.CommonResources;
 
-public enum LoadingStatus {
+enum LoadingStatus {
 	NONE(false) {
 		@Override
 		ImageResource getIcon() {

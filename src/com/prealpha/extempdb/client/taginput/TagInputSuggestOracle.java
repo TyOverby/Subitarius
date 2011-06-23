@@ -18,7 +18,7 @@ import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
 
-public class TagInputSuggestOracle extends SuggestOracle {
+class TagInputSuggestOracle extends SuggestOracle {
 	private final DispatcherAsync dispatcher;
 
 	private String lastPrefix;
