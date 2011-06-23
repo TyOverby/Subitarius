@@ -23,8 +23,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.taginput.LoadingStatus;
-import com.prealpha.extempdb.client.taginput.TagInputPresenter;
+import com.prealpha.extempdb.client.taginput.TagInputWidget;
 import com.prealpha.extempdb.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.action.GetTag;
@@ -39,7 +38,7 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 	}
 
 	@UiField(provided = true)
-	final Widget inputWidget;
+	final TagInputWidget tagInput;
 
 	@UiField(provided = true)
 	final MappingStateSelector stateSelector;
@@ -50,8 +49,6 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 	@UiField(provided = true)
 	final SimpleEventPager pager;
 
-	private final TagInputPresenter inputPresenter;
-
 	private final ArticleTablePresenter tablePresenter;
 
 	private final DispatcherAsync dispatcher;
@@ -59,51 +56,31 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 	private JumpState jumpState;
 
 	@Inject
-	public JumpWidget(JumpUiBinder uiBinder,
-			final TagInputPresenter inputPresenter,
+	public JumpWidget(JumpUiBinder uiBinder, TagInputWidget tagInput,
 			MappingStateSelector stateSelector,
 			ArticleTablePresenter tablePresenter, SimpleEventPager pager,
 			DispatcherAsync dispatcher) {
-		this.inputPresenter = inputPresenter;
+		this.tagInput = tagInput;
 		this.stateSelector = stateSelector;
 		this.tablePresenter = tablePresenter;
 		this.pager = pager;
 		this.dispatcher = dispatcher;
-		inputWidget = inputPresenter.getDisplay().asWidget();
 		articleTable = tablePresenter.getDisplay().asWidget();
 		pager.setDisplay(tablePresenter.getDisplay().getDataDisplay());
 		initWidget(uiBinder.createAndBindUi(this));
 
-		inputPresenter
-				.addValueChangeHandler(new ValueChangeHandler<LoadingStatus>() {
-					@Override
-					public void onValueChange(
-							ValueChangeEvent<LoadingStatus> event) {
-						/*
-						 * Don't use inputPresenter.getTagName(), because that
-						 * returns a non-null value if the tag doesn't exist.
-						 */
-						String oldTagName = jumpState.getTagName();
-						TagDto tag = (event.getValue().isLoaded() ? inputPresenter
-								.getTag() : null);
-						String tagName = (tag == null ? null : tag.getName());
-
-						JumpState newState = JumpState.getInstance(tagName,
-								jumpState.getStates(), jumpState.getSort(), 0);
-
-						/*
-						 * setValue() calls inputPresenter.bind(), so we have to
-						 * check for equality here to prevent an infinite loop.
-						 */
-						if (oldTagName == null) {
-							if (tagName != null) {
-								setValue(newState, true);
-							}
-						} else if (!oldTagName.equals(tagName)) {
-							setValue(newState, true);
-						}
-					}
-				});
+		/*
+		 * TODO: in the old code, there's an equality check; is it needed?
+		 */
+		tagInput.addValueChangeHandler(new ValueChangeHandler<TagDto>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<TagDto> event) {
+				TagDto tag = event.getValue();
+				JumpState newState = JumpState.getInstance(tag.getName(),
+						jumpState.getStates(), jumpState.getSort(), 0);
+				setValue(newState, true);
+			}
+		});
 
 		stateSelector
 				.addValueChangeHandler(new ValueChangeHandler<Set<State>>() {
@@ -156,7 +133,7 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 
 		String tagName = jumpState.getTagName();
 		if (tagName == null) {
-			inputPresenter.bind(null);
+			tagInput.setValue(null);
 			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
 		} else {
 			GetTag tagAction = new GetTag(tagName);
@@ -164,8 +141,7 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 				@Override
 				public void onSuccess(GetTagResult result) {
 					TagDto tag = result.getTag();
-
-					inputPresenter.bind(tag);
+					tagInput.setValue(tag);
 
 					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
 							jumpState.getSort());

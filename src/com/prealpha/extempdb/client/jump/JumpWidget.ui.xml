@@ -2,11 +2,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:jump="urn:import:com.prealpha.extempdb.client.jump">
+	xmlns:jump="urn:import:com.prealpha.extempdb.client.jump"
+	xmlns:taginput="urn:import:com.prealpha.extempdb.client.taginput">
 
 	<ui:with field="res" type="com.prealpha.extempdb.client.CommonResources" />
-	<ui:with field="msg"
-		type="com.prealpha.extempdb.client.jump.JumpMessages" />
+	<ui:with field="msg" type="com.prealpha.extempdb.client.jump.JumpMessages" />
 
 	<ui:style>
 		@external .gwt-SuggestBox;
@@ -43,7 +43,8 @@
 					</td>
 
 					<td>
-						<g:Widget addStyleNames="{style.tagInputBox}" ui:field="inputWidget" />
+						<taginput:TagInputWidget addStyleNames="{style.tagInputBox}"
+							ui:field="tagInput" />
 					</td>
 				</tr>
 			</table>
