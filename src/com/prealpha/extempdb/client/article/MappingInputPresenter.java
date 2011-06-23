@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
@@ -21,19 +22,18 @@ import com.prealpha.extempdb.client.SessionManager;
 import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.client.event.ActiveUserEvent;
 import com.prealpha.extempdb.client.event.ActiveUserHandler;
-import com.prealpha.extempdb.client.taginput.TagInputPresenter;
 import com.prealpha.extempdb.shared.action.AddMapping;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
-public class MappingInputPresenter implements Presenter<ArticleDto> {
+public final class MappingInputPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
 		DisplayState getDisplayState();
 
 		void setDisplayState(DisplayState displayState);
 
-		TagInputPresenter getMappingInput();
+		HasValue<TagDto> getTagInput();
 
 		HasClickHandlers getAddButton();
 
@@ -53,7 +53,7 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 	private ArticleDto article;
 
 	@Inject
-	public MappingInputPresenter(final Display display,
+	private MappingInputPresenter(final Display display,
 			DispatcherAsync dispatcher, SessionManager sessionManager,
 			EventBus eventBus) {
 		this.display = display;
@@ -104,14 +104,8 @@ public class MappingInputPresenter implements Presenter<ArticleDto> {
 	}
 
 	private void submit() {
-		TagInputPresenter mappingInput = display.getMappingInput();
-		if (!mappingInput.getLoadingStatus().isLoaded()) {
-			// no tag is loaded, so no action
-			return;
-		}
-
-		TagDto tag = mappingInput.getTag();
-
+		HasValue<TagDto> tagInput = display.getTagInput();
+		TagDto tag = tagInput.getValue();
 		if (tag != null) {
 			String sessionId = sessionManager.getSessionId();
 			String tagName = tag.getName();

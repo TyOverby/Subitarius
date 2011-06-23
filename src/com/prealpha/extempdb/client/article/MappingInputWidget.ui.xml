@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:taginput="urn:import:com.prealpha.extempdb.client.taginput">
 
 	<ui:with field="msg"
 		type="com.prealpha.extempdb.client.article.ArticleMessages" />
 
 	<g:VerticalPanel visible="false">
-		<g:Widget ui:field="mappingInputWidget" />
+		<taginput:TagInputWidget ui:field="tagInput" />
 		<g:HorizontalPanel>
 			<g:Button text="{msg.addMappingButton}" enabled="false"
 				ui:field="addButton" />
