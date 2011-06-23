@@ -36,7 +36,7 @@ public class GuardianArticleParserTest extends ArticleParserTestBase {
 	public void testParseAp() throws ArticleParseException {
 		testVector(1);
 	}
-	
+
 	@Test
 	public void testParseReuters() throws ArticleParseException {
 		testVector(2);
@@ -45,5 +45,10 @@ public class GuardianArticleParserTest extends ArticleParserTestBase {
 	@Test
 	public void testParseBlog() throws ArticleParseException {
 		testVector(3);
+	}
+
+	@Test
+	public void testParseContest() throws ArticleParseException {
+		testVector(4);
 	}
 }

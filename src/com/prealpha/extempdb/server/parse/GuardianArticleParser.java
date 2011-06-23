@@ -93,7 +93,8 @@ final class GuardianArticleParser extends AbstractArticleParser {
 		Element bodyElement = ParseUtils.searchDescendants(document, "body")
 				.get(0);
 		String classAttr = bodyElement.getAttributeValue("class");
-		if (classAttr.contains("blog-post")) {
+		if (classAttr.contains("has-badge")) {
+			// seems to be a marker for blog posts, contests, etc.
 			return null;
 		}
 

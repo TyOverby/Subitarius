@@ -212,5 +212,9 @@
 			<string>http://www.guardian.co.uk/media/mediamonkeyblog/2011/may/06/bbc-4-the-night-shift</string>
 			<null/>
 		</void>
+		<void method="put">
+			<string>http://www.guardian.co.uk/music/competition/2011/jun/22/larmer-tree</string>
+			<null/>
+		</void>
 	</object>
 </java>
