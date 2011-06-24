@@ -1,16 +1,14 @@
-Extemp DB
-=========
+ExtempDB
+========
 
-TODO
-----
-1. Fill out todo list
-2. ???
-3. PROFIT
+TODO (features)
+---------------
+* More sources (see below)
+* Full text search
 
-Sources
--------
+### Sources
 
-###Tier 1
+#### Tier 1
 1. New York Times
 2. Washington Post
 3. Christian Science Monitor
@@ -19,17 +17,23 @@ Sources
 6. BBC 
 7. The Guardian
 8. The Economist
-9. Aljazeera
+9. Al Jazeera
 10. LA Times
 11. Boston Globe
 12. Seattle Times
 
-###Tier 2
+#### Tier 2
 1. American Foreign Press
 2. NPR
 3. Jerusalem Post
 4. Globe and Mail
 
-###Skip
+#### Skip
 1. Associated Press
 2. International Herald Tribune
+
+TODO (dev)
+----------
+* Possibly find fixes for taginput problems
+* Use JSoup instead of JTidy
+* Migrate to Maven?
