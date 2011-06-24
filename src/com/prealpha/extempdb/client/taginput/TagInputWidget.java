@@ -90,7 +90,7 @@ public final class TagInputWidget extends Composite implements HasValue<TagDto> 
 		GetTag action = new GetTag(tagName);
 		dispatcher.execute(action, new TagCallback(tagName));
 		statusWidget.setValue(LoadingStatus.PENDING);
-		setValue(null);
+		setValue(null, true);
 	}
 
 	private final class TagCallback extends ManagedCallback<GetTagResult> {
@@ -125,7 +125,7 @@ public final class TagInputWidget extends Composite implements HasValue<TagDto> 
 			} else {
 				statusWidget.setValue(LoadingStatus.LOADED, true);
 			}
-			setValue(tag);
+			setValue(tag, true);
 		}
 	}
 }
