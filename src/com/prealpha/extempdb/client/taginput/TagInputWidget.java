@@ -15,7 +15,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,7 +25,7 @@ import com.prealpha.extempdb.shared.action.GetTag;
 import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
-public final class TagInputWidget extends Composite implements HasValue<TagDto> {
+public final class TagInputWidget extends Composite implements TagSelector {
 	static interface TagInputUiBinder extends UiBinder<Widget, TagInputWidget> {
 	}
 
@@ -74,6 +73,11 @@ public final class TagInputWidget extends Composite implements HasValue<TagDto> 
 	public HandlerRegistration addValueChangeHandler(
 			ValueChangeHandler<TagDto> handler) {
 		return addHandler(handler, ValueChangeEvent.getType());
+	}
+
+	@Override
+	public String getSelectedName() {
+		return nameBox.getValue();
 	}
 
 	@UiHandler("nameBox")
