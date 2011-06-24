@@ -48,6 +48,8 @@ public final class LoadingStatusWidget extends Composite implements
 	public void setValue(LoadingStatus value, boolean fireEvents) {
 		LoadingStatus oldValue = loadingStatus;
 		loadingStatus = value;
+		image = new Image(loadingStatus.getIcon());
+		image.setAltText(loadingStatus.getAltText());
 		if (fireEvents) {
 			ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
 		}
