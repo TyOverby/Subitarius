@@ -26,7 +26,8 @@ import com.prealpha.extempdb.shared.action.GetTagResult;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
 public final class TagInputWidget extends Composite implements TagSelector {
-	static interface TagInputUiBinder extends UiBinder<Widget, TagInputWidget> {
+	public static interface TagInputUiBinder extends
+			UiBinder<Widget, TagInputWidget> {
 	}
 
 	@UiField(provided = true)

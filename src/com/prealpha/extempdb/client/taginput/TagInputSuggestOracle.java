@@ -18,13 +18,13 @@ import com.prealpha.extempdb.client.error.ManagedCallback;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
 
-class TagInputSuggestOracle extends SuggestOracle {
+public final class TagInputSuggestOracle extends SuggestOracle {
 	private final DispatcherAsync dispatcher;
 
 	private String lastPrefix;
 
 	@Inject
-	public TagInputSuggestOracle(DispatcherAsync dispatcher) {
+	private TagInputSuggestOracle(DispatcherAsync dispatcher) {
 		this.dispatcher = dispatcher;
 	}
 

@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
-final class LoadingStatusWidget extends Composite implements
+public final class LoadingStatusWidget extends Composite implements
 		HasValue<LoadingStatus> {
 	public static interface LoadingStatusUiBinder extends
 			UiBinder<Widget, LoadingStatusWidget> {
@@ -29,7 +29,7 @@ final class LoadingStatusWidget extends Composite implements
 	private LoadingStatus loadingStatus;
 
 	@Inject
-	public LoadingStatusWidget(LoadingStatusUiBinder uiBinder) {
+	private LoadingStatusWidget(LoadingStatusUiBinder uiBinder) {
 		setValue(LoadingStatus.NONE);
 		initWidget(uiBinder.createAndBindUi(this));
 	}
