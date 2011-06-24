@@ -11,19 +11,16 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.filter.Filter;
-import org.jdom.input.DOMBuilder;
-import org.w3c.tidy.Tidy;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
@@ -39,16 +36,9 @@ final class ReutersArticleParser extends AbstractArticleParser {
 
 	private final HttpClient httpClient;
 
-	private final Tidy tidy;
-
-	private final DOMBuilder builder;
-
 	@Inject
-	public ReutersArticleParser(HttpClient httpClient, Tidy tidy,
-			DOMBuilder builder) {
+	private ReutersArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.tidy = tidy;
-		this.builder = builder;
 	}
 
 	@Override
@@ -61,94 +51,42 @@ final class ReutersArticleParser extends AbstractArticleParser {
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
-			return getFromHtml(stream);
+			Document document = Jsoup.parse(stream, null, url);
+			Element container = document.select("div.column2").first();
+			// remove user comments
+			container.select("div.articleComments").remove();
+
+			String title = container.select("h1").first().text();
+			
+			Element bylineElem = container.select("p.byline").first();
+			String byline = ((bylineElem == null) ? null : bylineElem.text());
+			
+			String dateStr = container.select("span.timestamp").first().text();
+			Date date;
+			try {
+				date = DATE_FORMAT.parse(dateStr);
+			} catch (ParseException px) {
+				throw new ArticleParseException(px);
+			}
+			
+			List<String> paragraphs = Lists.newArrayList();
+			List<Element> elements = container.select("span#articleText p");
+			for (Element elem : elements) {
+				// don't put the timestamp in the body
+				if (elem.parent().attr("id").equals("articleInfo")) {
+					continue;
+				}
+				String text = elem.text().trim();
+				if (!text.isEmpty()) {
+					paragraphs.add(text);
+				}
+			}
+
+			return new ProtoArticle(title, byline, date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
 			throw new ArticleParseException(rex);
 		}
-	}
-
-	private ProtoArticle getFromHtml(InputStream html)
-			throws ArticleParseException {
-		org.w3c.dom.Document doc = tidy.parseDOM(html, null);
-		doc.removeChild(doc.getDoctype());
-		Document document = builder.build(doc);
-
-		Filter containerFilter = ParseUtils.getElementFilter("div", "class",
-				"column2 gridPanel grid8");
-		Element container = (Element) document.getDescendants(containerFilter)
-				.next();
-
-		Filter commentFilter = ParseUtils.getElementFilter("div", "class",
-				"articleComments");
-		Element commentElement = (Element) container.getDescendants(
-				commentFilter).next();
-
-		String title = getTitle(container);
-		String byline = getByline(container);
-		Date date = getDate(container);
-		List<String> paragraphs = getParagraphs(container, commentElement);
-
-		return new ProtoArticle(title, byline, date, paragraphs);
-	}
-
-	private static String getTitle(Element container) {
-		Element heading = container.getChild("h1", container.getNamespace());
-		return heading.getValue();
-	}
-
-	private static String getByline(Element container) {
-		Filter bylineFilter = ParseUtils.getElementFilter("p", "class",
-				"byline");
-		Iterator<?> bylineIterator = container.getDescendants(bylineFilter);
-
-		if (bylineIterator.hasNext()) {
-			Element bylineElement = (Element) bylineIterator.next();
-			return bylineElement.getValue();
-		} else {
-			return null;
-		}
-	}
-
-	private static Date getDate(Element container) throws ArticleParseException {
-		Filter dateFilter = ParseUtils.getElementFilter("span", "class",
-				"timestamp");
-		Element dateElement = (Element) container.getDescendants(dateFilter)
-				.next();
-
-		try {
-			return DATE_FORMAT.parse(dateElement.getValue());
-		} catch (ParseException px) {
-			throw new ArticleParseException(px);
-		}
-	}
-
-	private static List<String> getParagraphs(Element container,
-			Element commentElement) {
-		List<String> paragraphs = new ArrayList<String>();
-		Filter paragraphFilter = ParseUtils.getElementFilter("p", null, null);
-		Iterator<?> i1 = container.getDescendants(paragraphFilter);
-
-		// skip through any image caption and credit paragraphs, the byline
-		// paragraph, and the date and location paragraph
-		boolean parsing = false;
-		while (i1.hasNext()) {
-			Element paragraph = (Element) i1.next();
-			String parentId = paragraph.getParentElement().getAttributeValue(
-					"id");
-
-			if ("articleInfo".equals(parentId)) {
-				parsing = true;
-				continue;
-			} else if (parsing && !commentElement.isAncestor(paragraph)) {
-				String text = paragraph.getValue().trim();
-				if (!text.isEmpty()) {
-					paragraphs.add(text);
-				}
-			}
-		}
-
-		return paragraphs;
 	}
 }
