@@ -8,24 +8,26 @@ package com.prealpha.extempdb.client.taginput;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.Presenter;
+import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.extempdb.client.error.ManagedCallback;
+import com.prealpha.extempdb.shared.action.GetTag;
+import com.prealpha.extempdb.shared.action.GetTagResult;
+import com.prealpha.extempdb.shared.dto.TagDto;
 
-public class TagInputWidget extends Composite implements
-		TagInputPresenter.Display {
+public final class TagInputWidget extends Composite implements TagSelector {
 	public static interface TagInputUiBinder extends
 			UiBinder<Widget, TagInputWidget> {
 	}
@@ -34,42 +36,49 @@ public class TagInputWidget extends Composite implements
 	final SuggestBox nameBox;
 
 	@UiField(provided = true)
-	final Widget statusWidget;
+	final LoadingStatusWidget statusWidget;
 
-	private final LoadingStatusPresenter statusPresenter;
+	private final DispatcherAsync dispatcher;
 
 	private final Scheduler scheduler;
 
+	private TagDto tag;
+
 	@Inject
-	public TagInputWidget(TagInputUiBinder uiBinder, SuggestOracle oracle,
-			LoadingStatusPresenter statusPresenter, Scheduler scheduler) {
-		this.statusPresenter = statusPresenter;
+	private TagInputWidget(TagInputUiBinder uiBinder,
+			DispatcherAsync dispatcher, Scheduler scheduler,
+			SuggestBox nameBox, LoadingStatusWidget statusWidget) {
+		this.dispatcher = dispatcher;
 		this.scheduler = scheduler;
-
-		nameBox = new SuggestBox(oracle);
-		statusWidget = statusPresenter.getDisplay().asWidget();
-
+		this.nameBox = nameBox;
+		this.statusWidget = statusWidget;
 		initWidget(uiBinder.createAndBindUi(this));
-
-		nameBox.addKeyPressHandler(new NameHandler());
-		nameBox.addSelectionHandler(new NameHandler());
 	}
 
 	@Override
-	public String getValue() {
-		return nameBox.getValue();
+	public TagDto getValue() {
+		return tag;
 	}
 
 	@Override
-	public void setValue(String value) {
+	public void setValue(TagDto value) {
 		setValue(value, false);
 	}
 
 	@Override
-	public void setValue(String value, boolean fireEvents) {
-		String oldValue = getValue();
-		nameBox.setValue(value);
+	public void setValue(TagDto value, boolean fireEvents) {
+		if (value == null) {
+			statusWidget.setValue(LoadingStatus.NONE, true);
+		} else {
+			statusWidget.setValue(LoadingStatus.LOADED, true);
+		}
+		nameBox.setText((value == null) ? null : value.getName());
+		setValueImpl(value, fireEvents);
+	}
 
+	private void setValueImpl(TagDto value, boolean fireEvents) {
+		TagDto oldValue = tag;
+		tag = value;
 		if (fireEvents) {
 			ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
 		}
@@ -77,38 +86,75 @@ public class TagInputWidget extends Composite implements
 
 	@Override
 	public HandlerRegistration addValueChangeHandler(
-			ValueChangeHandler<String> handler) {
+			ValueChangeHandler<TagDto> handler) {
 		return addHandler(handler, ValueChangeEvent.getType());
 	}
 
 	@Override
-	public Presenter<LoadingStatus> getStatusPresenter() {
-		return statusPresenter;
+	public String getSelectedName() {
+		return nameBox.getValue();
 	}
 
-	private void fireValueChange() {
-		ValueChangeEvent.fire(this, nameBox.getText());
+	@UiHandler("nameBox")
+	void onKeyDown(KeyDownEvent event) {
+		// nameBox's value isn't updated when this event fires
+		scheduler.scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				requestTag(nameBox.getValue());
+			}
+		});
 	}
 
-	private final class NameHandler implements KeyPressHandler,
-			SelectionHandler<SuggestOracle.Suggestion> {
-		@Override
-		public void onKeyPress(KeyPressEvent event) {
-			/*
-			 * This one has to be deferred, because the text box's value may not
-			 * be updated to reflect the key press when this event fires.
-			 */
-			scheduler.scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					fireValueChange();
-				}
-			});
+	@UiHandler("nameBox")
+	void onSelection(SelectionEvent<Suggestion> event) {
+		requestTag(event.getSelectedItem().getReplacementString());
+	}
+
+	private void requestTag(String tagName) {
+		if (tagName != null && !tagName.isEmpty()) {
+			GetTag action = new GetTag(tagName);
+			dispatcher.execute(action, new TagCallback(tagName));
+			statusWidget.setValue(LoadingStatus.PENDING);
+			setValueImpl(null, true);
+		} else {
+			setValue(null, true);
+		}
+	}
+
+	private final class TagCallback extends ManagedCallback<GetTagResult> {
+		private final String expectedName;
+
+		private TagCallback(String expectedName) {
+			if (expectedName == null || expectedName.isEmpty()) {
+				this.expectedName = null;
+			} else {
+				this.expectedName = expectedName;
+			}
 		}
 
 		@Override
-		public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
-			fireValueChange();
+		public void onSuccess(GetTagResult result) {
+			// this result may be obsolete already
+			if (nameBox.getValue() == null) {
+				if (expectedName != null) {
+					return;
+				}
+			} else if (!nameBox.getValue().equals(expectedName)) {
+				return;
+			}
+
+			TagDto tag = result.getTag();
+			if (tag == null) {
+				if (expectedName == null) {
+					statusWidget.setValue(LoadingStatus.NONE);
+				} else {
+					statusWidget.setValue(LoadingStatus.NOT_FOUND);
+				}
+			} else {
+				statusWidget.setValue(LoadingStatus.LOADED, true);
+			}
+			setValueImpl(tag, true);
 		}
 	}
 }

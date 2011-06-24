@@ -21,24 +21,23 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.extempdb.client.taginput.LoadingStatus;
-import com.prealpha.extempdb.client.taginput.TagInputPresenter;
+import com.prealpha.extempdb.client.taginput.TagInputWidget;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
-public class MultiTagInputBox extends Composite implements
+public final class MultiTagInputBox extends Composite implements
 		HasValue<Set<TagDto>> {
-	private final Provider<TagInputPresenter> inputPresenterProvider;
+	private final Provider<TagInputWidget> tagInputProvider;
 
-	private final List<TagInputPresenter> inputPresenters;
+	private final List<TagInputWidget> tagInputs;
 
 	private final Panel panel;
 
 	private Set<TagDto> tags;
 
 	@Inject
-	public MultiTagInputBox(Provider<TagInputPresenter> inputPresenterProvider) {
-		this.inputPresenterProvider = inputPresenterProvider;
-		inputPresenters = new ArrayList<TagInputPresenter>();
+	private MultiTagInputBox(Provider<TagInputWidget> tagInputProvider) {
+		this.tagInputProvider = tagInputProvider;
+		tagInputs = new ArrayList<TagInputWidget>();
 		panel = new VerticalPanel();
 		setValue(null);
 
@@ -81,40 +80,37 @@ public class MultiTagInputBox extends Composite implements
 	}
 
 	private void updateInputBoxes() {
-		inputPresenters.clear();
+		tagInputs.clear();
 
 		for (TagDto tag : tags) {
-			TagInputPresenter inputPresenter = inputPresenterProvider.get();
-			inputPresenter.bind(tag);
-			inputPresenter.addValueChangeHandler(new TagInputHandler());
-			inputPresenters.add(inputPresenter);
+			TagInputWidget tagInput = tagInputProvider.get();
+			tagInput.setValue(tag);
+			tagInput.addValueChangeHandler(new TagInputHandler());
+			tagInputs.add(tagInput);
 		}
 
-		TagInputPresenter emptyInputPresenter = inputPresenterProvider.get();
-		emptyInputPresenter.addValueChangeHandler(new TagInputHandler());
-		inputPresenters.add(emptyInputPresenter);
+		TagInputWidget emptyTagInput = tagInputProvider.get();
+		emptyTagInput.addValueChangeHandler(new TagInputHandler());
+		tagInputs.add(emptyTagInput);
 	}
 
 	private void updatePanel() {
 		panel.clear();
-
-		for (TagInputPresenter inputPresenter : inputPresenters) {
-			panel.add(inputPresenter.getDisplay().asWidget());
+		for (TagInputWidget tagInput : tagInputs) {
+			panel.add(tagInput);
 		}
 	}
 
-	private class TagInputHandler implements ValueChangeHandler<LoadingStatus> {
+	private class TagInputHandler implements ValueChangeHandler<TagDto> {
 		@Override
-		public void onValueChange(ValueChangeEvent<LoadingStatus> event) {
+		public void onValueChange(ValueChangeEvent<TagDto> event) {
 			Set<TagDto> updatedSet = new HashSet<TagDto>();
-
-			for (TagInputPresenter inputPresenter : inputPresenters) {
-				if (inputPresenter.getLoadingStatus().equals(
-						LoadingStatus.LOADED)) {
-					updatedSet.add(inputPresenter.getTag());
+			for (TagInputWidget tagInput : tagInputs) {
+				TagDto tag = tagInput.getValue();
+				if (tag != null) {
+					updatedSet.add(tag);
 				}
 			}
-
 			setValue(updatedSet, true);
 		}
 	}

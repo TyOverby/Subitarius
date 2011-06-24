@@ -17,17 +17,18 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.taginput.TagInputPresenter;
+import com.prealpha.extempdb.client.taginput.TagInputWidget;
+import com.prealpha.extempdb.client.taginput.TagSelector;
 import com.prealpha.extempdb.shared.dto.TagDto;
 
-public class TagManagerWidget extends Composite implements
+public final class TagManagerWidget extends Composite implements
 		TagManagerPresenter.Display {
 	public static interface TagManagerUiBinder extends
 			UiBinder<Widget, TagManagerWidget> {
 	}
 
 	@UiField(provided = true)
-	final Widget tagInputWidget;
+	final TagInputWidget tagInput;
 
 	@UiField
 	HasValue<Boolean> searchedBox;
@@ -47,20 +48,16 @@ public class TagManagerWidget extends Composite implements
 	@UiField
 	HasText errorLabel;
 
-	private final TagInputPresenter tagInput;
-
 	@Inject
-	public TagManagerWidget(TagManagerUiBinder uiBinder,
-			TagInputPresenter tagInput, MultiTagInputBox parentInput) {
+	private TagManagerWidget(TagManagerUiBinder uiBinder,
+			TagInputWidget tagInput, MultiTagInputBox parentInput) {
 		this.tagInput = tagInput;
 		this.parentInput = parentInput;
-
-		tagInputWidget = tagInput.getDisplay().asWidget();
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 	@Override
-	public TagInputPresenter getTagInput() {
+	public TagSelector getTagInput() {
 		return tagInput;
 	}
 

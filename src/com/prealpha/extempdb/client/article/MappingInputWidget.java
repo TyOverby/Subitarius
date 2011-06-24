@@ -13,19 +13,21 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FocusWidget;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.client.article.MappingInputPresenter.DisplayState;
-import com.prealpha.extempdb.client.taginput.TagInputPresenter;
+import com.prealpha.extempdb.client.taginput.TagInputWidget;
+import com.prealpha.extempdb.shared.dto.TagDto;
 
-public class MappingInputWidget extends Composite implements
+public final class MappingInputWidget extends Composite implements
 		MappingInputPresenter.Display {
 	public static interface MappingInputUiBinder extends
 			UiBinder<Widget, MappingInputWidget> {
 	}
 
 	@UiField(provided = true)
-	final Widget mappingInputWidget;
+	final TagInputWidget tagInput;
 
 	@UiField
 	FocusWidget addButton;
@@ -33,17 +35,14 @@ public class MappingInputWidget extends Composite implements
 	@UiField
 	FocusWidget submitButton;
 
-	private final TagInputPresenter mappingInput;
-
 	private DisplayState displayState;
 
 	@Inject
-	public MappingInputWidget(MappingInputUiBinder uiBinder,
-			TagInputPresenter mappingInput) {
-		this.mappingInput = mappingInput;
+	private MappingInputWidget(MappingInputUiBinder uiBinder,
+			TagInputWidget tagInput) {
+		this.tagInput = tagInput;
 		displayState = DisplayState.NO_PERMISSION;
 
-		mappingInputWidget = mappingInput.getDisplay().asWidget();
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
@@ -60,19 +59,19 @@ public class MappingInputWidget extends Composite implements
 		switch (displayState) {
 		case READY:
 			setVisible(true);
-			mappingInputWidget.setVisible(false);
+			tagInput.setVisible(false);
 			addButton.setEnabled(true);
 			submitButton.setEnabled(false);
 			break;
 		case PENDING:
 			setVisible(true);
-			mappingInputWidget.setVisible(true);
+			tagInput.setVisible(true);
 			addButton.setEnabled(false);
 			submitButton.setEnabled(true);
 			break;
 		case NO_PERMISSION:
 			setVisible(false);
-			mappingInputWidget.setVisible(false);
+			tagInput.setVisible(false);
 			addButton.setEnabled(false);
 			submitButton.setEnabled(false);
 			break;
@@ -82,8 +81,8 @@ public class MappingInputWidget extends Composite implements
 	}
 
 	@Override
-	public TagInputPresenter getMappingInput() {
-		return mappingInput;
+	public HasValue<TagDto> getTagInput() {
+		return tagInput;
 	}
 
 	@Override
