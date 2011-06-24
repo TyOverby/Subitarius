@@ -68,34 +68,25 @@
 			</object>
 		</void>
 		<void method="put">
-			<string>http://www.washingtonpost.com/blogs/blogpost/post/house-gop-rejects-climate-change-amendment-science-not-settled/2011/03/15/ABWUYlY_blog.html</string>
+			<string>http://www.washingtonpost.com/blogs/blogpost/post/vancouver-kissing-couple-knocked-down-by-riot-police-new-video-shows-watch/2011/06/23/AGXSg1hH_blog.html</string>
 			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
-				<string>House GOP rejects climate change amendment: Science ‘not settled’</string>
-				<string>By Katie Rogers</string>
+				<string>Vancouver kissing couple knocked down by riot police, new video shows (Watch)</string>
+				<string>By Melissa Bell</string>
 				<object class="java.util.Date">
-					<long>1300147200000</long>
+					<long>1308787200000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
-						<string>GOP members of the Energy and Commerce Committee rejected three amendments today that would have required Congress to accept that climate change is real, created by humans and hazardous to human health.</string>
+						<string>A new video surfaced on YouTube today that appears to show the back story of the infamous kissing couple of the Vancouver Riots 2011. In line with the story Scott Jones and Alexandra Thomas told to media outlets early this week, riot police ran into the couple as they attempted to escape the crowds after the Canada lost to Boston in a hockey game and violence exploded in Vancouver.</string>
 					</void>
 					<void method="add">
-						<string>The Hill reports that the amendments, proposed by Democrats during a markup of legislation to block Environmental Protection Agency climate change rules, each failed in party-line votes.</string>
+						<string>In the video, after Thomas falls, it appears that the police hit the couple with shields and Jones quickly covers his girlfriend to protect her. A few seconds later, the couple is left alone on the street and Thomas is seen trying to comfort his sobbing girlfriend.</string>
 					</void>
 					<void method="add">
-						<string>Committee ranking Democrat Henry Waxman (D-Calif.) offered up the amendment that would require congressional acceptance that climate change exists. Republicans nixed the idea, citing the possibility of shaky science.</string>
+						<string>This pretty much lays to rest any lingering doubt I had that the photograph was staged. Also, all of my feminine genes are screaming out “Adorableness!” for Thomas reacting so quickly to protect his lady.</string>
 					</void>
 					<void method="add">
-						<string>"My good friend from California tries to make it clear that the science is settled,” Rep. Joe Barton (R-Tex.) said in response. “I would say it’s not settled.”</string>
-					</void>
-					<void method="add">
-						<string>Democrats are not happy, alleging the GOP is rejecting scientific consensus.</string>
-					</void>
-					<void method="add">
-						<string>“You can disagree with how EPA acts, but you shouldn’t argue therefore that we shouldn’t even consider the science," Waxman countered. "This is science denial. It’s not worthy of this committee.”</string>
-					</void>
-					<void method="add">
-						<string>What does this mean for the rest of us? For starters, it looks like someone’s going to have to find a way to explain vast sheets of melting ice in Greenland and a faster-than-expected rise in sea level. Is climate change actually happening? Which side of the aisle is on the right side of science? Read the Post’s roundup of related coverage and decide for yourself .</string>
+						<string>The cute couple is now looking to capi­tal­ize on their instant fame, recently hiring a high-powered publicist. It’s also rather amazing how well-documented our lives are now. This is the third time this couple’s moment was caught on camera, all by strangers. The eyes are everywhere.</string>
 					</void>
 				</object>
 			</object>

@@ -95,11 +95,16 @@ final class ParseUtils {
 		};
 	}
 
-	public static Filter getOrFilter(final Filter f1, final Filter f2) {
+	public static Filter getOrFilter(final Filter... filters) {
 		return new Filter() {
 			@Override
 			public boolean matches(Object obj) {
-				return (f1.matches(obj) || f2.matches(obj));
+				for (Filter filter : filters) {
+					if (filter.matches(obj)) {
+						return true;
+					}
+				}
+				return false;
 			}
 		};
 	}

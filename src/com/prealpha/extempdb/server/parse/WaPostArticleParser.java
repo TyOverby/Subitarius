@@ -170,8 +170,10 @@ final class WaPostArticleParser extends AbstractArticleParser {
 						"class", "imgleft");
 				Filter imageRightFilter = ParseUtils.getElementFilter("span",
 						"class", "imgright");
+				Filter blogCaptionFilter = ParseUtils.getElementFilter("span",
+						"class", "blog_caption");
 				Filter imageFilter = ParseUtils.getOrFilter(imageLeftFilter,
-						imageRightFilter);
+						imageRightFilter, blogCaptionFilter);
 				Iterator<?> imageIterator = paragraph
 						.getDescendants(imageFilter);
 				while (imageIterator.hasNext()) {
