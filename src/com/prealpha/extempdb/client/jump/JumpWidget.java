@@ -6,7 +6,6 @@
 
 package com.prealpha.extempdb.client.jump;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 
@@ -76,7 +75,8 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 			@Override
 			public void onValueChange(ValueChangeEvent<TagDto> event) {
 				TagDto tag = event.getValue();
-				JumpState newState = JumpState.getInstance(tag.getName(),
+				String tagName = ((tag == null) ? null : tag.getName());
+				JumpState newState = JumpState.getInstance(tagName,
 						jumpState.getStates(), jumpState.getSort(), 0);
 				setValue(newState, true);
 			}
@@ -132,11 +132,8 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 		this.jumpState = jumpState;
 
 		String tagName = jumpState.getTagName();
-		if (tagName == null) {
-			// TODO: maybe just use the old value?
-			tagInput.setValue(null);
-			tablePresenter.bind(Collections.<TagMappingDto.Key> emptyList());
-		} else {
+		// if there's no real tag, keep the old results until one is fetched
+		if (tagName != null) {
 			GetTag tagAction = new GetTag(tagName);
 			dispatcher.execute(tagAction, new ManagedCallback<GetTagResult>() {
 				@Override
