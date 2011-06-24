@@ -98,9 +98,9 @@ final class CsmArticleParser extends AbstractArticleParser {
 			byline = byline.substring(0, byline.indexOf(','));
 		}
 
-		String dateStr = metaStr[metaStr.length - 1].trim();
 		Date date;
 		try {
+			String dateStr = metaStr[metaStr.length - 1].trim();
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(px);

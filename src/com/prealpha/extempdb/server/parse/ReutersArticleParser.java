@@ -57,18 +57,19 @@ final class ReutersArticleParser extends AbstractArticleParser {
 			container.select("div.articleComments").remove();
 
 			String title = container.select("h1").first().text();
-			
+
 			Element bylineElem = container.select("p.byline").first();
 			String byline = ((bylineElem == null) ? null : bylineElem.text());
-			
-			String dateStr = container.select("span.timestamp").first().text();
+
 			Date date;
 			try {
+				String dateStr = container.select("span.timestamp").first()
+						.text();
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
 				throw new ArticleParseException(px);
 			}
-			
+
 			List<String> paragraphs = Lists.newArrayList();
 			List<Element> elements = container.select("span#articleText p");
 			for (Element elem : elements) {
