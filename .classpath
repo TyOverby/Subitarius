@@ -19,10 +19,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Guice 3.0 Servlet"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/gwt-dispatch"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HttpClient 4.1.1"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDOM 1.1.1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JPA 2.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jsoup-1.6.0"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JTidy r1127"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SLF4J API 1.6.1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SLF4J JUL bridge 1.6.1"/>

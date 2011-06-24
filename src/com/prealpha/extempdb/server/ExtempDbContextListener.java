@@ -14,7 +14,6 @@ import com.prealpha.dispatch.server.DispatchServerModule;
 import com.prealpha.dispatch.server.filter.BatchActionModule;
 import com.prealpha.extempdb.server.action.ActionModule;
 import com.prealpha.extempdb.server.http.HttpModule;
-import com.prealpha.extempdb.server.parse.ParseModule;
 import com.prealpha.extempdb.server.search.SearchModule;
 
 public class ExtempDbContextListener extends GuiceServletContextListener {
@@ -26,6 +25,6 @@ public class ExtempDbContextListener extends GuiceServletContextListener {
 		return Guice.createInjector(new JpaPersistModule("extempdb"),
 				new DispatchServerModule(), new BatchActionModule(),
 				new ActionModule(), new ExtempDbServerModule(),
-				new SearchModule(), new ParseModule(), new HttpModule());
+				new SearchModule(), new HttpModule());
 	}
 }
