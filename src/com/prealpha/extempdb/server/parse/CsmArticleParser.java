@@ -72,10 +72,12 @@ final class CsmArticleParser extends AbstractArticleParser {
 			} while (!document.select("a#next-button").isEmpty());
 
 			return getFromDocuments(documents);
+		} catch (ParseException px) {
+			throw new ArticleParseException(url, px);
 		} catch (IOException iox) {
-			throw new ArticleParseException(iox);
+			throw new ArticleParseException(url, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(rex);
+			throw new ArticleParseException(url, rex);
 		}
 	}
 
@@ -87,7 +89,7 @@ final class CsmArticleParser extends AbstractArticleParser {
 	}
 
 	private static ProtoArticle getFromDocuments(List<Document> documents)
-			throws ArticleParseException {
+			throws ParseException {
 		checkArgument(!documents.isEmpty());
 		String title = documents.get(0).select("h1.head").first().text();
 		String[] metaStr = documents.get(0).select("p.sByline").first().text()
@@ -98,13 +100,8 @@ final class CsmArticleParser extends AbstractArticleParser {
 			byline = byline.substring(0, byline.indexOf(','));
 		}
 
-		Date date;
-		try {
-			String dateStr = metaStr[metaStr.length - 1].trim();
-			date = DATE_FORMAT.parse(dateStr);
-		} catch (ParseException px) {
-			throw new ArticleParseException(px);
-		}
+		String dateStr = metaStr[metaStr.length - 1].trim();
+		Date date = DATE_FORMAT.parse(dateStr);
 
 		List<String> paragraphs = Lists.newArrayList();
 		for (Document document : documents) {

@@ -123,15 +123,17 @@ final class WaPostArticleParser extends AbstractArticleParser {
 				// we don't know how to deal with this
 				return null;
 			}
+		} catch (ParseException px) {
+			throw new ArticleParseException(url, px);
 		} catch (IOException iox) {
-			throw new ArticleParseException(iox);
+			throw new ArticleParseException(url, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(rex);
+			throw new ArticleParseException(url, rex);
 		}
 	}
 
 	private static ProtoArticle getFromHtml(Document document, ArticleType type)
-			throws ArticleParseException {
+			throws ParseException {
 		String title = document.select("meta[name=DC.title]").attr("content")
 				.trim();
 		String creator = document.select("meta[name=DC.creator]").attr(
@@ -143,14 +145,9 @@ final class WaPostArticleParser extends AbstractArticleParser {
 			byline = "By " + creator;
 		}
 
-		Date date;
-		try {
-			String dateStr = document.select("meta[name=DC.date.issued]").attr(
-					"content");
-			date = DATE_FORMAT.parse(dateStr);
-		} catch (ParseException px) {
-			throw new ArticleParseException(px);
-		}
+		String dateStr = document.select("meta[name=DC.date.issued]").attr(
+				"content");
+		Date date = DATE_FORMAT.parse(dateStr);
 
 		List<String> paragraphs = Lists.newArrayList();
 		String bodySelector = type.getBodySelector();

@@ -71,7 +71,7 @@ final class NyTimesArticleParser extends AbstractArticleParser {
 						"content");
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
-				throw new ArticleParseException(px);
+				throw new ArticleParseException(url, px);
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
@@ -87,9 +87,9 @@ final class NyTimesArticleParser extends AbstractArticleParser {
 
 			return new ProtoArticle(title, byline, date, paragraphs);
 		} catch (IOException iox) {
-			throw new ArticleParseException(iox);
+			throw new ArticleParseException(url, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(rex);
+			throw new ArticleParseException(url, rex);
 		}
 	}
 }

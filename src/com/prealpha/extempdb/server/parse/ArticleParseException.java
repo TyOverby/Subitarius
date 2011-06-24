@@ -1,25 +1,27 @@
 /*
  * ArticleParseException.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
 package com.prealpha.extempdb.server.parse;
 
+import static com.google.common.base.Preconditions.*;
+
 public class ArticleParseException extends Exception {
-	public ArticleParseException() {
-		super();
+	private final String url;
+
+	public ArticleParseException(String url) {
+		this(url, null);
 	}
 
-	public ArticleParseException(String message) {
-		super(message);
+	public ArticleParseException(String url, Throwable cause) {
+		super("raised an exception while parsing article, URL " + url, cause);
+		checkNotNull(url);
+		this.url = url;
 	}
 
-	public ArticleParseException(Throwable cause) {
-		super(cause);
-	}
-
-	public ArticleParseException(String message, Throwable cause) {
-		super(message, cause);
+	public String getUrl() {
+		return url;
 	}
 }
