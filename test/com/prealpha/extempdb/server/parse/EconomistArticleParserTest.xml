@@ -61,5 +61,53 @@
 				</object>
 			</object>
 		</void>
+		<void method="put">
+			<string>http://www.economist.com/blogs/bagehot/2011/06/david-cameron</string>
+			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+				<string>David Cameron says U-turns are a sign of strength: nobody sniggers</string>
+				<string>by Bagehot</string>
+				<object class="java.util.Date">
+					<long>1308614400000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>DAVID CAMERON summoned the press to Downing Street today to hear the latest in a series of policy about-turns, this time the abandonment of a plan to offer criminals a 50% tariff reduction on their sentences in exchange for a swift guilty plea. On paper, it was something of a humiliation for the prime minister, marking the latest in a lengthening string of U-turns and the latest to appear driven, at least in part, by ferocious lobbying by the tabloid press.</string>
+					</void>
+					<void method="add">
+						<string>Within the Westminster village, there is convincing talk of weakness, and a prime minister who was too hands-off for too long, allowing ministers to dream up policies that fell apart under public scrutiny. Alternatively, within the same Westminster village, there is convincing talk of a prime minister who is worryingly quick to hang his own ministers out to dry when it suits—after all, it is noted, Mr Cameron had given the sentencing policy plan his approval (not least because it promised hefty savings on the prison budget at a time of tough spending cuts).</string>
+					</void>
+					<void method="add">
+						<string>Away from the muttering and grumbling, in the full glare of the cameras, a strikingly confident Mr Cameron told the press that he was proud to lead a listening government, and that U-turns were in fact a sign of strength. Nobody sniggered.</string>
+					</void>
+					<void method="add">
+						<string>Tonight, Bagehot popped into the summer drinks party of Policy Exchange, a centre-right think tank. Mr Cameron was the guest of honour, and gave a short, polite speech about the great influence that Policy Exchange has on his government. Nobody sniggered there, either.</string>
+					</void>
+					<void method="add">
+						<string>Now, away from the speech, and as the Pimms and little sausages on sticks circulated, there was talk of U-turns and whether they matter. But at a much simpler level, I was struck by the fact that Mr Cameron was not a figure of fun, nor did he seem diminished in the eyes of the watching MPs, policy types and reporters. True, a Policy Exchange party is a pretty friendly event for Mr Cameron: the think tank is the main ideas factory of the modernising wing of the Tory party that he has made his own, and Mr Cameron was close to the think tank from the start.</string>
+					</void>
+					<void method="add">
+						<string>But there is an indefinable quality that some senior politicians have that is separate from ideology, and instead has more to do with their ability to inspire deference and even fear in the political and media machine around them.</string>
+					</void>
+					<void method="add">
+						<string>It is not quite respect. I was a reporter for a British daily paper in Washington DC during the presidency of George W Bush, as the invasion of Iraq unfolded and the war on terror raged. I was only an outside observer, but a good proportion of the White House press corps, it was pretty clear, instinctively disliked the president and distrusted his motives and methods. But he was still a frankly intimidating figure to them. The press corps covering Nicolas Sarkozy is full of people who loathe the president of France: but they are also somehow scared of him.</string>
+					</void>
+					<void method="add">
+						<string>Nor do I mean power, in the sense of the power of a prime minister or president who is likely to be in office for some years yet. John Major was prime minister for more than six years, but he was treated with more or less open derision by the press and much of his party for much of that time.</string>
+					</void>
+					<void method="add">
+						<string>Yet fear does not capture it, either. Gordon Brown was an intimidating figure before and during his time as prime minister, a brooding man surrounded by vengeful and aggressive allies. Yet he had only been in Number 10 a short time when he began his journey from "Stalin to Mr Bean", in the celebrated phrase of Vince Cable, a Liberal Democrat MP, and his public image was suddenly all about indecision and eccentricity.</string>
+					</void>
+					<void method="add">
+						<string>Walking back to the office across St James's Park I pondered the word I was after. David Cameron is a highly professional politician who is still exceedingly easy in his skin, who wears high office with ease and confidence. For all his remarkable and much remarked-on good manners, he conveys just a hint of bullying menace about him, too.</string>
+					</void>
+					<void method="add">
+						<string>He is in his pomp, I decided.</string>
+					</void>
+					<void method="add">
+						<string>It cannot last forever, and doubtless in a few years the press will have sensed blood and will be tearing Mr Cameron to shreds like his predecessors. But for now, though Westminster's head says Mr Cameron has had a wobbly few weeks and days, I think its heart is still a bit impressed by this prime minister.</string>
+					</void>
+				</object>
+			</object>
+		</void>
 	</object>
 </java>

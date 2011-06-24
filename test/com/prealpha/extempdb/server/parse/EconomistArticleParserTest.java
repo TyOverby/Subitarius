@@ -36,4 +36,9 @@ public class EconomistArticleParserTest extends ArticleParserTestBase {
 	public void testParseBlog() throws ArticleParseException {
 		testVector(1);
 	}
+
+	@Test
+	public void testParseBlog2() throws ArticleParseException {
+		testVector(2);
+	}
 }

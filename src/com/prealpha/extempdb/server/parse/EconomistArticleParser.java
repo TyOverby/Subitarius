@@ -46,9 +46,6 @@ final class EconomistArticleParser extends AbstractArticleParser {
 	public ProtoArticle parse(String url) throws ArticleParseException {
 		checkNotNull(url);
 
-		// we need the printable version
-		url += "/print";
-
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
