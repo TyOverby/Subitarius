@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -21,14 +20,67 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 final class EconomistArticleParser extends AbstractArticleParser {
+	private static enum ArticleType {
+		BLOG("p.ec-blog-info", "div.ec-blog-body p") {
+			@Override
+			String getTitle(Document document) {
+				return document.select("h1.ec-blog-headline").first().text();
+			}
+
+			@Override
+			String getByline(Document document) {
+				String blogInfo = document.select("p.ec-blog-info").first()
+						.text();
+				Matcher matcher = BYLINE_PATTERN.matcher(blogInfo);
+				if (matcher.find()) {
+					return matcher.group(1);
+				} else {
+					return null;
+				}
+			}
+		},
+
+		PRINT("p.ec-article-info", "div.ec-article-content p") {
+			@Override
+			String getTitle(Document document) {
+				String title = document.select("div.headline").first().text();
+				Element subtitle = document.select("h1.rubric").first();
+				if (subtitle != null) {
+					title += ": " + subtitle.text();
+				}
+				return title;
+			}
+
+			@Override
+			String getByline(Document document) {
+				return null;
+			}
+		};
+
+		private final String dateSelector;
+
+		private final String bodySelector;
+
+		private ArticleType(String dateSelector, String bodySelector) {
+			this.dateSelector = dateSelector;
+			this.bodySelector = bodySelector;
+		}
+
+		abstract String getTitle(Document document);
+
+		abstract String getByline(Document document);
+	}
+
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"MMM dd yyyy");
 
@@ -38,7 +90,7 @@ final class EconomistArticleParser extends AbstractArticleParser {
 	private final HttpClient httpClient;
 
 	@Inject
-	public EconomistArticleParser(HttpClient httpClient) {
+	private EconomistArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 
@@ -49,99 +101,41 @@ final class EconomistArticleParser extends AbstractArticleParser {
 		try {
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
-			return getFromHtml(stream);
+			Document document = Jsoup.parse(stream, null, url);
+
+			ArticleType type;
+			if (document.body().className().contains("blog")) {
+				type = ArticleType.BLOG;
+			} else {
+				type = ArticleType.PRINT;
+			}
+
+			String title = type.getTitle(document);
+			String byline = type.getByline(document);
+			Date date;
+			try {
+				Element dateElem = document.select(type.dateSelector).first();
+				String dateStr = dateElem.text().replace("th", "")
+						.replace("st", "").replace("rd", "").replace("nd", "");
+				date = DATE_FORMAT.parse(dateStr);
+			} catch (ParseException px) {
+				throw new ArticleParseException(px);
+			}
+
+			List<String> paragraphs = Lists.newArrayList();
+			List<Element> elements = document.select(type.bodySelector);
+			for (Element elem : elements) {
+				String text = elem.text().trim();
+				if (!text.isEmpty()) {
+					paragraphs.add(text);
+				}
+			}
+
+			return new ProtoArticle(title, byline, date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(iox);
 		} catch (RobotsExclusionException rex) {
 			throw new ArticleParseException(rex);
 		}
-	}
-
-	private ProtoArticle getFromHtml(InputStream html)
-			throws ArticleParseException {
-		Document document = ParseUtils.parse(html);
-		Element bodyElement = ParseUtils.searchDescendants(document, "body")
-				.get(0);
-		String bodyClass = bodyElement.getAttributeValue("class");
-		boolean blog = bodyClass.contains("blog");
-
-		// get the title
-		String title;
-		if (blog) {
-			Element titleElement = ParseUtils.searchDescendants(document, "h1",
-					"class", "ec-blog-headline").get(0);
-			title = titleElement.getValue();
-		} else {
-			Element titleElement = ParseUtils.searchDescendants(document,
-					"div", "class", "headline").get(0);
-			List<Element> subTitles = ParseUtils.searchDescendants(document,
-					"h1", "class", "rubric");
-
-			// handle articles with and without subtitles
-			if (!subTitles.isEmpty()) {
-				Element subTitleElement = subTitles.get(0);
-				title = titleElement.getValue() + ": "
-						+ subTitleElement.getValue();
-			} else {
-				title = titleElement.getValue();
-			}
-		}
-
-		// get the byline
-		String byline = null;
-		if (blog) {
-			List<Element> blogInfo = ParseUtils.searchDescendants(document,
-					"p", "class", "ec-blog-info");
-			if (!blogInfo.isEmpty()) {
-				String blogInfoStr = blogInfo.get(0).getValue();
-				Matcher matcher = BYLINE_PATTERN.matcher(blogInfoStr);
-				if (matcher.find()) {
-					byline = matcher.group(1);
-				}
-			}
-		}
-
-		// get the date
-		Date date;
-		try {
-			Element dateElement;
-			if (blog) {
-				dateElement = ParseUtils.searchDescendants(document, "p",
-						"class", "ec-blog-info").get(0);
-
-			} else {
-				dateElement = ParseUtils.searchDescendants(document, "p",
-						"class", "ec-article-info").get(0);
-			}
-
-			String dateStr = dateElement.getText().replace("th", "")
-					.replace("st", "").replace("rd", "").replace("nd", "");
-			date = DATE_FORMAT.parse(dateStr);
-		} catch (ParseException px) {
-			throw new ArticleParseException(px);
-		}
-
-		// get the body text
-		List<String> paragraphs = new ArrayList<String>();
-		List<Element> contentElements;
-		if (blog) {
-			contentElements = ParseUtils.searchDescendants(document, "div",
-					"class", "ec-blog-body");
-		} else {
-			contentElements = ParseUtils.searchDescendants(document, "div",
-					"class", "ec-article-content clear");
-		}
-		for (Element contentElement : contentElements) {
-			List<Element> paragraphElements = ParseUtils.searchDescendants(
-					contentElement, "p");
-			for (Element paragraph : paragraphElements) {
-				String text = paragraph.getValue();
-				if (!text.isEmpty()) {
-					paragraphs.add(text);
-				}
-			}
-		}
-
-		return new ProtoArticle(title, byline, date, paragraphs);
 	}
 }
