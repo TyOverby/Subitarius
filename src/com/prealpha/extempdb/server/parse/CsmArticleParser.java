@@ -13,23 +13,16 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.filter.Filter;
-import org.jdom.input.DOMBuilder;
-import org.w3c.dom.Attr;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.tidy.Tidy;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
@@ -40,15 +33,9 @@ final class CsmArticleParser extends AbstractArticleParser {
 
 	private final HttpClient httpClient;
 
-	private final Tidy tidy;
-
-	private final DOMBuilder builder;
-
 	@Inject
-	public CsmArticleParser(HttpClient httpClient, Tidy tidy, DOMBuilder builder) {
+	private CsmArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
-		this.tidy = tidy;
-		this.builder = builder;
 	}
 
 	@Override
@@ -69,21 +56,20 @@ final class CsmArticleParser extends AbstractArticleParser {
 		Map<String, String> params = Collections.emptyMap();
 
 		try {
-			List<Document> documents = new ArrayList<Document>();
+			List<Document> documents = Lists.newArrayList();
 			Document document;
 			int page = 1;
 			String pageUrl = url;
 			do {
 				InputStream stream = httpClient.doGet(pageUrl, params);
-				document = parseDocument(stream);
+				document = Jsoup.parse(stream, null, pageUrl);
 				if (isParseable(document)) {
 					documents.add(document);
 					pageUrl = url + "/(page)/" + (++page);
 				} else {
 					return null;
 				}
-			} while (!ParseUtils.searchDescendants(document, "a", "id",
-					"next-button").isEmpty());
+			} while (!document.select("a#next-button").isEmpty());
 
 			return getFromDocuments(documents);
 		} catch (IOException iox) {
@@ -93,147 +79,44 @@ final class CsmArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private Document parseDocument(InputStream stream) {
-		org.w3c.dom.Document doc = tidy.parseDOM(stream, null);
-		doc.removeChild(doc.getDoctype());
-
-		/*
-		 * All CSM pages have element attributes with colons in their names. In
-		 * the XML specification, colons are defined for use with namespaces
-		 * only, and thus these attribute names are invalid. JDOM will reject
-		 * the document if these attributes are not removed.
-		 */
-		removeInvalidNodes(doc);
-
-		return builder.build(doc);
-	}
-
 	private static boolean isParseable(Document document) {
 		// check for lists and quizzes
-		Namespace namespace = document.getRootElement().getNamespace();
-		Element container = ParseUtils.searchDescendants(document, "div", "id",
-				"mainColumn").get(0);
-		Element check = container.getChild("div", namespace);
-		String checkAttr = check.getAttributeValue("class");
-		if (checkAttr != null) {
-			if (checkAttr.equals("list-article-full")) {
-				// this is a list
-				return false;
-			} else if (checkAttr.equals("ui-quiz")) {
-				// this is a quiz
-				return false;
-			}
-		}
-		return true;
+		Element content = document.select("div.list-article-full, div.ui-quiz")
+				.first();
+		return (content == null);
 	}
 
-	private ProtoArticle getFromDocuments(List<Document> documents)
+	private static ProtoArticle getFromDocuments(List<Document> documents)
 			throws ArticleParseException {
 		checkArgument(!documents.isEmpty());
-		Namespace namespace = documents.get(0).getRootElement().getNamespace();
+		String title = documents.get(0).select("h1.head").first().text();
+		String[] metaStr = documents.get(0).select("p.sByline").first().text()
+				.split("/");
 
-		// we need to get a number of attributes from the first page
-
-		Element container = ParseUtils.searchDescendants(documents.get(0),
-				"div", "id", "mainColumn").get(0);
-
-		String title = getTitle(container);
-		String byline = getByline(container);
-		Date date = getDate(container);
-		List<String> paragraphs = new ArrayList<String>();
-
-		for (Document document : documents) {
-			Filter bodyFilter = ParseUtils.getElementFilter("div", "class",
-					"sBody");
-			Filter bodyFilterCfx = ParseUtils.getElementFilter("div", "class",
-					"sBody cfx");
-			Filter articleBodyFilter = ParseUtils.getOrFilter(bodyFilter,
-					bodyFilterCfx);
-			Element articleBody = (Element) document.getDescendants(
-					articleBodyFilter).next();
-
-			paragraphs.addAll(getParagraphs(articleBody, namespace));
-		}
-
-		return new ProtoArticle(title, byline, date, paragraphs);
-	}
-
-	private static String getTitle(Element container) {
-		Filter headingFilter = ParseUtils.getElementFilter("h1", "class",
-				"head");
-		Element heading = (Element) container.getDescendants(headingFilter)
-				.next();
-		return heading.getValue();
-	}
-
-	private static String getByline(Element container) {
-		Filter bylineFilter = ParseUtils.getElementFilter("p", "class",
-				"sByline");
-		Element bylineElement = (Element) container
-				.getDescendants(bylineFilter).next();
-		String byline = bylineElement.getValue().split("/")[0];
-
+		String byline = metaStr[0];
 		if (byline.contains(",")) {
 			byline = byline.substring(0, byline.indexOf(','));
 		}
 
-		return byline;
-	}
-
-	private static Date getDate(Element container) throws ArticleParseException {
-		Filter bylineFilter = ParseUtils.getElementFilter("p", "class",
-				"sByline");
-		Element bylineElement = (Element) container
-				.getDescendants(bylineFilter).next();
-		String[] bylineParts = bylineElement.getValue().split("/");
-		int index = bylineParts.length - 1;
-		String dateStr = bylineParts[index].trim();
-
+		String dateStr = metaStr[metaStr.length - 1].trim();
+		Date date;
 		try {
-			return DATE_FORMAT.parse(dateStr);
+			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(px);
 		}
-	}
 
-	private static List<String> getParagraphs(Element articleBody,
-			Namespace namespace) {
-		// we only want direct children of the article body
-		List<String> paragraphs = new ArrayList<String>();
-		List<?> paragraphElements = articleBody.getChildren("p", namespace);
-
-		for (Object obj : paragraphElements) {
-			Element paragraphElement = (Element) obj;
-			String paragraph = paragraphElement.getValue().trim();
-
-			if (!paragraph.isEmpty()) {
-				paragraphs.add(paragraph);
-			}
-		}
-
-		return paragraphs;
-	}
-
-	private static void removeInvalidNodes(Node node) {
-		NodeList children = node.getChildNodes();
-		for (int i = 0; i < children.getLength(); i++) {
-			Node child = children.item(i);
-			if (child.getLocalName().contains(":")) {
-				node.removeChild(child);
-			} else {
-				removeInvalidNodes(child);
-			}
-		}
-
-		if (node instanceof org.w3c.dom.Element) {
-			NamedNodeMap attributes = node.getAttributes();
-			for (int i = 0; i < attributes.getLength(); i++) {
-				Node attribute = attributes.item(i);
-				if (attribute.getLocalName().contains(":")) {
-					((org.w3c.dom.Element) node)
-							.removeAttributeNode((Attr) attribute);
+		List<String> paragraphs = Lists.newArrayList();
+		for (Document document : documents) {
+			List<Element> elements = document.select("div.sBody > p");
+			for (Element elem : elements) {
+				String text = elem.text().trim();
+				if (!text.isEmpty()) {
+					paragraphs.add(text);
 				}
 			}
 		}
+
+		return new ProtoArticle(title, byline, date, paragraphs);
 	}
 }
