@@ -30,8 +30,8 @@ public final class LoadingStatusWidget extends Composite implements
 
 	@Inject
 	private LoadingStatusWidget(LoadingStatusUiBinder uiBinder) {
-		setValue(LoadingStatus.NONE);
 		initWidget(uiBinder.createAndBindUi(this));
+		setValue(LoadingStatus.NONE);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public final class LoadingStatusWidget extends Composite implements
 	public void setValue(LoadingStatus value, boolean fireEvents) {
 		LoadingStatus oldValue = loadingStatus;
 		loadingStatus = value;
-		image = new Image(loadingStatus.getIcon());
+		image.setResource(loadingStatus.getIcon());
 		image.setAltText(loadingStatus.getAltText());
 		if (fireEvents) {
 			ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
