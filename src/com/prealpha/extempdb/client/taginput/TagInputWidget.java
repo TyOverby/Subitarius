@@ -6,7 +6,9 @@
 
 package com.prealpha.extempdb.client.taginput;
 
-import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -38,13 +40,16 @@ public final class TagInputWidget extends Composite implements TagSelector {
 
 	private final DispatcherAsync dispatcher;
 
+	private final Scheduler scheduler;
+
 	private TagDto tag;
 
 	@Inject
 	private TagInputWidget(TagInputUiBinder uiBinder,
-			DispatcherAsync dispatcher, SuggestBox nameBox,
-			LoadingStatusWidget statusWidget) {
+			DispatcherAsync dispatcher, Scheduler scheduler,
+			SuggestBox nameBox, LoadingStatusWidget statusWidget) {
 		this.dispatcher = dispatcher;
+		this.scheduler = scheduler;
 		this.nameBox = nameBox;
 		this.statusWidget = statusWidget;
 		initWidget(uiBinder.createAndBindUi(this));
@@ -62,9 +67,18 @@ public final class TagInputWidget extends Composite implements TagSelector {
 
 	@Override
 	public void setValue(TagDto value, boolean fireEvents) {
+		if (value == null) {
+			statusWidget.setValue(LoadingStatus.NONE, true);
+		} else {
+			statusWidget.setValue(LoadingStatus.LOADED, true);
+		}
+		nameBox.setText((value == null) ? null : value.getName());
+		setValueImpl(value, fireEvents);
+	}
+
+	private void setValueImpl(TagDto value, boolean fireEvents) {
 		TagDto oldValue = tag;
 		tag = value;
-		nameBox.setText((tag == null) ? null : tag.getName());
 		if (fireEvents) {
 			ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
 		}
@@ -82,8 +96,14 @@ public final class TagInputWidget extends Composite implements TagSelector {
 	}
 
 	@UiHandler("nameBox")
-	void onKeyPress(KeyPressEvent event) {
-		requestTag(nameBox.getValue());
+	void onKeyDown(KeyDownEvent event) {
+		// nameBox's value isn't updated when this event fires
+		scheduler.scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				requestTag(nameBox.getValue());
+			}
+		});
 	}
 
 	@UiHandler("nameBox")
@@ -92,10 +112,14 @@ public final class TagInputWidget extends Composite implements TagSelector {
 	}
 
 	private void requestTag(String tagName) {
-		GetTag action = new GetTag(tagName);
-		dispatcher.execute(action, new TagCallback(tagName));
-		statusWidget.setValue(LoadingStatus.PENDING);
-		setValue(null, true);
+		if (tagName != null && !tagName.isEmpty()) {
+			GetTag action = new GetTag(tagName);
+			dispatcher.execute(action, new TagCallback(tagName));
+			statusWidget.setValue(LoadingStatus.PENDING);
+			setValueImpl(null, true);
+		} else {
+			setValue(null, true);
+		}
 	}
 
 	private final class TagCallback extends ManagedCallback<GetTagResult> {
@@ -130,7 +154,7 @@ public final class TagInputWidget extends Composite implements TagSelector {
 			} else {
 				statusWidget.setValue(LoadingStatus.LOADED, true);
 			}
-			setValue(tag, true);
+			setValueImpl(tag, true);
 		}
 	}
 }
