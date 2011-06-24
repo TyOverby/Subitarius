@@ -130,7 +130,7 @@ final class WaPostArticleParser extends AbstractArticleParser {
 		}
 	}
 
-	private ProtoArticle getFromHtml(Document document, ArticleType type)
+	private static ProtoArticle getFromHtml(Document document, ArticleType type)
 			throws ArticleParseException {
 		String title = document.select("meta[name=DC.title]").attr("content")
 				.trim();
