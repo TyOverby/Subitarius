@@ -13,18 +13,16 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.filter.Filter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
@@ -33,20 +31,19 @@ final class WaPostArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
 		STORY {
 			@Override
-			Filter getBodyFilter() {
-				return ParseUtils.getElementFilter("div", "class",
-						"article_body");
+			String getBodySelector() {
+				return "div.article_body p";
 			}
 		},
 
 		BLOG {
 			@Override
-			Filter getBodyFilter() {
-				return ParseUtils.getElementFilter("div", "id", "entrytext");
+			String getBodySelector() {
+				return "div#entrytext p";
 			}
 		};
 
-		abstract Filter getBodyFilter();
+		abstract String getBodySelector();
 	}
 
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
@@ -55,7 +52,7 @@ final class WaPostArticleParser extends AbstractArticleParser {
 	private final HttpClient httpClient;
 
 	@Inject
-	public WaPostArticleParser(HttpClient httpClient) {
+	private WaPostArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 
@@ -94,12 +91,12 @@ final class WaPostArticleParser extends AbstractArticleParser {
 				 * possible pages, parse them individually, and combine them
 				 * together.
 				 */
-				List<Document> documents = new ArrayList<Document>();
+				List<Document> documents = Lists.newArrayList();
 				Document document;
 				int page = 0;
 				do {
 					InputStream stream = httpClient.doGet(url, params);
-					document = ParseUtils.parse(stream);
+					document = Jsoup.parse(stream, null, url);
 					documents.add(document);
 
 					int index;
@@ -111,17 +108,16 @@ final class WaPostArticleParser extends AbstractArticleParser {
 
 					String suffix = "_" + (++page) + ".html";
 					url = url.substring(0, index) + suffix;
-				} while (!ParseUtils.searchDescendants(document, "a", "class",
-						"next-page").isEmpty());
+				} while (!document.select("a.next-page").isEmpty());
 
-				List<ProtoArticle> articles = new ArrayList<ProtoArticle>();
+				List<ProtoArticle> articles = Lists.newArrayList();
 				for (Document doc : documents) {
 					articles.add(getFromHtml(doc, ArticleType.STORY));
 				}
 				return combine(articles);
 			} else if (url.endsWith("_blog.html")) {
 				InputStream stream = httpClient.doGet(url, params);
-				Document document = ParseUtils.parse(stream);
+				Document document = Jsoup.parse(stream, null, url);
 				return getFromHtml(document, ArticleType.BLOG);
 			} else {
 				// we don't know how to deal with this
@@ -136,52 +132,36 @@ final class WaPostArticleParser extends AbstractArticleParser {
 
 	private ProtoArticle getFromHtml(Document document, ArticleType type)
 			throws ArticleParseException {
-		Namespace namespace = document.getRootElement().getNamespace();
-		Element headElement = document.getRootElement().getChild("head",
-				namespace);
-		Map<String, String> metaMap = ParseUtils.getMetaMap(headElement);
-
-		String title = metaMap.get("DC.title");
-
+		String title = document.select("meta[name=DC.title]").attr("content")
+				.trim();
+		String creator = document.select("meta[name=DC.creator]").attr(
+				"content");
 		String byline;
-		if (metaMap.containsKey("DC.creator")) {
-			byline = "By " + metaMap.get("DC.creator");
-		} else {
+		if (creator.isEmpty()) {
 			byline = null;
+		} else {
+			byline = "By " + creator;
 		}
 
 		Date date;
 		try {
-			date = DATE_FORMAT.parse(metaMap.get("DC.date.issued"));
+			String dateStr = document.select("meta[name=DC.date.issued]").attr(
+					"content");
+			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(px);
 		}
 
-		Filter bodyFilter = type.getBodyFilter();
-		Iterator<?> i1 = document.getDescendants(bodyFilter);
-		List<String> paragraphs = new ArrayList<String>();
-		while (i1.hasNext()) {
-			Element articleBody = (Element) i1.next();
-			for (Object obj : articleBody.getChildren("p", namespace)) {
-				Element paragraph = (Element) obj;
-
-				// remove image captions
-				Filter imageLeftFilter = ParseUtils.getElementFilter("span",
-						"class", "imgleft");
-				Filter imageRightFilter = ParseUtils.getElementFilter("span",
-						"class", "imgright");
-				Filter blogCaptionFilter = ParseUtils.getElementFilter("span",
-						"class", "blog_caption");
-				Filter imageFilter = ParseUtils.getOrFilter(imageLeftFilter,
-						imageRightFilter, blogCaptionFilter);
-				Iterator<?> imageIterator = paragraph
-						.getDescendants(imageFilter);
-				while (imageIterator.hasNext()) {
-					imageIterator.next();
-					imageIterator.remove();
-				}
-
-				paragraphs.add(paragraph.getValue().trim());
+		List<String> paragraphs = Lists.newArrayList();
+		String bodySelector = type.getBodySelector();
+		List<Element> elements = document.select(bodySelector);
+		for (Element elem : elements) {
+			// remove image captions
+			document.select("span.imgleft, span.imgright, span.blog_caption")
+					.remove();
+			String text = elem.text().trim();
+			if (!text.isEmpty()) {
+				paragraphs.add(text);
 			}
 		}
 
@@ -194,7 +174,7 @@ final class WaPostArticleParser extends AbstractArticleParser {
 		String title = articles.get(0).getTitle();
 		String byline = articles.get(0).getByline();
 		Date date = articles.get(0).getDate();
-		List<String> paragraphs = new ArrayList<String>();
+		List<String> paragraphs = Lists.newArrayList();
 
 		for (ProtoArticle article : articles) {
 			checkArgument(title.equals(article.getTitle()));
