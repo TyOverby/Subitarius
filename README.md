@@ -5,6 +5,7 @@ TODO (features)
 ---------------
 * More sources (see below)
 * Full text search
+* Work on patrol/delete, maybe adding an archive option
 
 ### Sources
 
@@ -35,5 +36,4 @@ TODO (features)
 TODO (dev)
 ----------
 * Possibly find fixes for taginput problems
-* Use JSoup instead of JTidy
 * Migrate to Maven?
