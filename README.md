@@ -1,15 +1,13 @@
-ExtempDB
-========
-
 TODO (features)
----------------
+===============
 * More sources (see below)
 * Full text search
 * Work on patrol/delete, maybe adding an archive option
 
-### Sources
+Sources
+-------
 
-#### Tier 1
+### Tier 1
 1. New York Times
 2. Washington Post
 3. Christian Science Monitor
@@ -23,17 +21,17 @@ TODO (features)
 11. Boston Globe
 12. Seattle Times
 
-#### Tier 2
+### Tier 2
 1. American Foreign Press
 2. NPR
 3. Jerusalem Post
 4. Globe and Mail
 
-#### Skip
+### Skip
 1. Associated Press
 2. International Herald Tribune
 
 TODO (dev)
-----------
+==========
 * Possibly find fixes for taginput problems
-* Migrate to Maven?
+* Fix our dependency on atunit (Ant project)
