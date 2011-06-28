@@ -9,23 +9,15 @@ package com.prealpha.extempdb.server.parse;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import atunit.AtUnit;
-import atunit.Container;
-import atunit.Unit;
 
 import com.google.inject.Inject;
 
-@RunWith(AtUnit.class)
-@Container(Container.Option.GUICE)
-public class CsmArticleParserTest extends ArticleParserTestBase {
+public final class CsmArticleParserTest extends ArticleParserTestBase {
 	private static final String BASE_URL = "http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task";
 
 	private static final String PAGE_URL = "http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task/(page)/2";
 
 	@Inject
-	@Unit
 	private CsmArticleParser parser;
 
 	@Override

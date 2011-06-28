@@ -17,42 +17,33 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import atunit.AtUnit;
-import atunit.Container;
-import atunit.Mock;
-import atunit.MockFramework;
-import atunit.Stub;
-import atunit.Unit;
-
-import com.google.inject.Binder;
 import com.google.inject.Inject;
-import com.google.inject.Module;
+import com.mycila.testing.junit.MycilaJunitRunner;
+import com.mycila.testing.plugin.easymock.Mock;
+import com.mycila.testing.plugin.guice.Bind;
+import com.mycila.testing.plugin.guice.GuiceContext;
+import com.prealpha.extempdb.server.LoggingModule;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.http.HttpClient;
+import com.prealpha.extempdb.server.http.HttpModule;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
-@RunWith(AtUnit.class)
-@Container(Container.Option.GUICE)
-@MockFramework(MockFramework.Option.EASYMOCK)
-public class BingSearchProviderTest implements Module {
+@RunWith(MycilaJunitRunner.class)
+@GuiceContext({ HttpModule.class, LoggingModule.class, SearchModule.class })
+public final class BingSearchProviderTest {
 	@Inject
-	@Unit
 	private BingSearchProvider searchProvider;
 
-	@Mock
+	@Mock(Mock.Type.STRICT)
+	@Bind
 	private HttpClient mockHttpClient;
 
-	@Stub
+	@Mock(Mock.Type.STRICT)
 	private Tag mockTag;
 
-	@Stub
+	@Mock(Mock.Type.STRICT)
 	private Source mockSource;
-
-	@Override
-	public void configure(Binder binder) {
-		binder.install(new SearchModule());
-	}
 
 	@Test(expected = NullPointerException.class)
 	public void testNullQuery() throws SearchUnavailableException {

@@ -7,19 +7,11 @@
 package com.prealpha.extempdb.server.parse;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import atunit.AtUnit;
-import atunit.Container;
-import atunit.Unit;
 
 import com.google.inject.Inject;
 
-@RunWith(AtUnit.class)
-@Container(Container.Option.GUICE)
-public class EconomistArticleParserTest extends ArticleParserTestBase {
+public final class EconomistArticleParserTest extends ArticleParserTestBase {
 	@Inject
-	@Unit
 	private EconomistArticleParser parser;
 
 	@Override

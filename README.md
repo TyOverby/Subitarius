@@ -34,4 +34,3 @@ Sources
 TODO (dev)
 ==========
 * Possibly find fixes for taginput problems
-* Fix our dependency on atunit (Ant project)

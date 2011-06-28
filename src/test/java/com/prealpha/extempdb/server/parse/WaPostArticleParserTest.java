@@ -9,23 +9,15 @@ package com.prealpha.extempdb.server.parse;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import atunit.AtUnit;
-import atunit.Container;
-import atunit.Unit;
 
 import com.google.inject.Inject;
 
-@RunWith(AtUnit.class)
-@Container(Container.Option.GUICE)
-public class WaPostArticleParserTest extends ArticleParserTestBase {
+public final class WaPostArticleParserTest extends ArticleParserTestBase {
 	private static final String URL_STORY = "http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html";
 
 	private static final String URL_BLOG = "http://www.washingtonpost.com/blogs/blogpost/post/house-gop-rejects-climate-change-amendment-science-not-settled/2011/03/15/ABWUYlY_blog.html";
 
 	@Inject
-	@Unit
 	private WaPostArticleParser parser;
 
 	@Override

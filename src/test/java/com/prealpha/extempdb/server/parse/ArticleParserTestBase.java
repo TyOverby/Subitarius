@@ -15,13 +15,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
+import com.mycila.testing.junit.MycilaJunitRunner;
+import com.mycila.testing.plugin.guice.GuiceContext;
 import com.prealpha.extempdb.server.LoggingModule;
 import com.prealpha.extempdb.server.http.HttpModule;
 
-public abstract class ArticleParserTestBase implements Module {
+@RunWith(MycilaJunitRunner.class)
+@GuiceContext({ HttpModule.class, LoggingModule.class })
+public abstract class ArticleParserTestBase {
 	private static final String URL = "http://www.nytimes.com/interactive/2010/11/13/weekinreview/deficits-graphic.html";
 
 	private final List<Map.Entry<String, ProtoArticle>> testVectors;
@@ -68,12 +71,6 @@ public abstract class ArticleParserTestBase implements Module {
 
 		// just in case
 		assertEquals("all", expected, actual);
-	}
-
-	@Override
-	public void configure(Binder binder) {
-		binder.install(new HttpModule());
-		binder.install(new LoggingModule());
 	}
 
 	@Test

@@ -9,19 +9,11 @@ package com.prealpha.extempdb.server.parse;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import atunit.AtUnit;
-import atunit.Container;
-import atunit.Unit;
 
 import com.google.inject.Inject;
 
-@RunWith(AtUnit.class)
-@Container(Container.Option.GUICE)
-public class WsjArticleParserTest extends ArticleParserTestBase {
+public final class WsjArticleParserTest extends ArticleParserTestBase {
 	@Inject
-	@Unit
 	private WsjArticleParser parser;
 
 	@Override
