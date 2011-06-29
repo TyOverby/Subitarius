@@ -4,6 +4,36 @@ TODO (features)
 * Full text search
 * Work on patrol/delete, maybe adding an archive option
 * Central server separate from client, for release
+* Custom articles
+    * Have an entire tag dedicated to them in addition to being found in the related tags
+    * Written by us
+        * Also allow others to write their own.
+    * HTML
+    * Stickied-Will be at the top of every tag list
+    * Has the ability to link to other articles
+* Wikipedia articles
+    * At least one page/tag.
+    * HTML
+        * No Images
+    * Similarly to custom articles, it will be stickied at the top of the tag page.
+* User levels
+    * Basic User
+        * Search
+        * Browse
+    * Moderator extends BasicUser
+        * Patrol
+        * Can create basic users
+        * Search can use SQL queries
+            * Uses a sql user that only has SELECT
+    * Admin extends Moderator
+        * Modifies user priveleges
+        * Modify home page text
+
+TODO (dev)
+==========
+* Possibly find fixes for taginput problems
+* Figure out what the proper way is to divide Guice modules
+* More unit tests... there is practically no coverage
 
 Sources
 -------
@@ -32,8 +62,3 @@ Sources
 1. Associated Press
 2. International Herald Tribune
 
-TODO (dev)
-==========
-* Possibly find fixes for taginput problems
-* Figure out what the proper way is to divide Guice modules
-* More unit tests... there is practically no coverage
