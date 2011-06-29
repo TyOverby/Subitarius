@@ -22,8 +22,8 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.simplehttp.SimpleHttpClient;
+import com.prealpha.simplehttp.SimpleHttpException;
 
 final class ReutersArticleParser extends AbstractArticleParser {
 	/**
@@ -34,10 +34,10 @@ final class ReutersArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"EEE MMM d, yyyy");
 
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private ReutersArticleParser(HttpClient httpClient) {
+	private ReutersArticleParser(SimpleHttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 
@@ -86,8 +86,8 @@ final class ReutersArticleParser extends AbstractArticleParser {
 			return new ProtoArticle(title, byline, date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(url, iox);
-		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+		} catch (SimpleHttpException shx) {
+			throw new ArticleParseException(url, shx);
 		}
 	}
 }

@@ -3,6 +3,7 @@ TODO (features)
 * More sources (see below)
 * Full text search
 * Work on patrol/delete, maybe adding an archive option
+* Central server separate from client, for release
 
 Sources
 -------
@@ -34,3 +35,5 @@ Sources
 TODO (dev)
 ==========
 * Possibly find fixes for taginput problems
+* Figure out what the proper way is to divide Guice modules
+* More unit tests... there is practically no coverage

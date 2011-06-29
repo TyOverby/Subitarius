@@ -23,8 +23,8 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.simplehttp.SimpleHttpClient;
+import com.prealpha.simplehttp.SimpleHttpException;
 
 final class BingSearchProvider implements SearchProvider {
 	/*
@@ -36,12 +36,12 @@ final class BingSearchProvider implements SearchProvider {
 
 	private static final int RESULT_COUNT = 15;
 
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 
 	private final Gson gson;
 
 	@Inject
-	public BingSearchProvider(HttpClient httpClient, Gson gson) {
+	public BingSearchProvider(SimpleHttpClient httpClient, Gson gson) {
 		this.httpClient = httpClient;
 		this.gson = gson;
 	}
@@ -88,8 +88,8 @@ final class BingSearchProvider implements SearchProvider {
 				offset += RESULT_COUNT;
 			} catch (IOException iox) {
 				throw new SearchUnavailableException(iox);
-			} catch (RobotsExclusionException rex) {
-				throw new SearchUnavailableException(rex);
+			} catch (SimpleHttpException shx) {
+				throw new SearchUnavailableException(shx);
 			}
 		} while (!isComplete(search) && (limit < 0 || urls.size() < limit));
 
@@ -97,7 +97,7 @@ final class BingSearchProvider implements SearchProvider {
 	}
 
 	private BingSearch doRequest(Source source, Tag tag, int offset)
-			throws IOException, RobotsExclusionException {
+			throws IOException, SimpleHttpException {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("AppId", APP_ID);
 		params.put("Query", getQuery(source, tag));
