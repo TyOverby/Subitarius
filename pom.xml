@@ -7,7 +7,7 @@
 
 	<groupId>com.prealpha</groupId>
 	<artifactId>extempdb</artifactId>
-	<version>v2011062710</version>
+	<version>v2011062900</version>
 	<packaging>war</packaging>
 
 	<properties>
@@ -85,13 +85,13 @@
 		<dependency>
 			<groupId>com.prealpha</groupId>
 			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011062702</version>
+			<version>v2011062900</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.prealpha</groupId>
 			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011062702</version>
+			<version>v2011062900</version>
 			<classifier>sources</classifier>
 			<scope>compile</scope>
 		</dependency>
