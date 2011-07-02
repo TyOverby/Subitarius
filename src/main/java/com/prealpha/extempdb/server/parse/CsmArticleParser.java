@@ -24,17 +24,17 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.simplehttp.SimpleHttpClient;
-import com.prealpha.simplehttp.SimpleHttpException;
+import com.prealpha.extempdb.server.http.HttpClient;
+import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 final class CsmArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"MMMMM d, yyyy");
 
-	private final SimpleHttpClient httpClient;
+	private final HttpClient httpClient;
 
 	@Inject
-	private CsmArticleParser(SimpleHttpClient httpClient) {
+	private CsmArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 
@@ -76,8 +76,8 @@ final class CsmArticleParser extends AbstractArticleParser {
 			throw new ArticleParseException(url, px);
 		} catch (IOException iox) {
 			throw new ArticleParseException(url, iox);
-		} catch (SimpleHttpException shx) {
-			throw new ArticleParseException(url, shx);
+		} catch (RobotsExclusionException rex) {
+			throw new ArticleParseException(url, rex);
 		}
 	}
 

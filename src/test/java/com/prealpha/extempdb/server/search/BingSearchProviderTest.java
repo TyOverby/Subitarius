@@ -11,8 +11,6 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,18 +25,19 @@ import com.mycila.testing.plugin.guice.GuiceContext;
 import com.prealpha.extempdb.server.LoggingModule;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.simplehttp.SimpleHttpClient;
-import com.prealpha.simplehttp.SimpleHttpException;
+import com.prealpha.extempdb.server.http.HttpClient;
+import com.prealpha.extempdb.server.http.HttpModule;
+import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 @RunWith(MycilaJunitRunner.class)
-@GuiceContext({ LoggingModule.class, SearchModule.class })
+@GuiceContext({ HttpModule.class, LoggingModule.class, SearchModule.class })
 public final class BingSearchProviderTest {
 	@Inject
 	private BingSearchProvider searchProvider;
 
 	@Mock(Mock.Type.STRICT)
 	@Bind
-	private SimpleHttpClient mockHttpClient;
+	private HttpClient mockHttpClient;
 
 	@Mock(Mock.Type.STRICT)
 	private Tag mockTag;
@@ -53,7 +52,7 @@ public final class BingSearchProviderTest {
 
 	@Test
 	public void testSearch() throws SearchUnavailableException, IOException,
-			SimpleHttpException {
+			RobotsExclusionException {
 		expect(mockTag.getName()).andReturn("network neutrality");
 		expect(mockSource.getDomainName()).andReturn("www.nytimes.com");
 
@@ -79,7 +78,7 @@ public final class BingSearchProviderTest {
 
 	@Test(expected = SearchUnavailableException.class)
 	public void testHttpFailure() throws SearchUnavailableException,
-			IOException, SimpleHttpException {
+			IOException, RobotsExclusionException {
 		String searchUrl = eq(BingSearchProvider.BASE_URL);
 		Map<String, String> parameters = anyObject();
 		expect(mockHttpClient.doGet(searchUrl, parameters)).andThrow(
@@ -95,11 +94,11 @@ public final class BingSearchProviderTest {
 
 	@Test(expected = SearchUnavailableException.class)
 	public void testRobotsExclusion() throws SearchUnavailableException,
-			IOException, SimpleHttpException, URISyntaxException {
+			IOException, RobotsExclusionException {
 		String searchUrl = eq(BingSearchProvider.BASE_URL);
 		Map<String, String> parameters = anyObject();
 		expect(mockHttpClient.doGet(searchUrl, parameters)).andThrow(
-				new SimpleHttpException(new URI(BingSearchProvider.BASE_URL)));
+				new RobotsExclusionException());
 
 		replay(mockHttpClient);
 

@@ -25,8 +25,8 @@ import com.prealpha.extempdb.server.domain.ParserNotFoundException;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
+import com.prealpha.extempdb.server.http.StatusCodeException;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
-import com.prealpha.simplehttp.StatusCodeException;
 
 public class Searcher {
 	@InjectLogger

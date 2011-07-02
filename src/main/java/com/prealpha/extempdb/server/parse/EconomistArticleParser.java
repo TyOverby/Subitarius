@@ -26,8 +26,8 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.simplehttp.SimpleHttpClient;
-import com.prealpha.simplehttp.SimpleHttpException;
+import com.prealpha.extempdb.server.http.HttpClient;
+import com.prealpha.extempdb.server.http.RobotsExclusionException;
 
 final class EconomistArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
@@ -87,10 +87,10 @@ final class EconomistArticleParser extends AbstractArticleParser {
 	private static final Pattern BYLINE_PATTERN = Pattern
 			.compile("(by (.+?))( \\||$)");
 
-	private final SimpleHttpClient httpClient;
+	private final HttpClient httpClient;
 
 	@Inject
-	private EconomistArticleParser(SimpleHttpClient httpClient) {
+	private EconomistArticleParser(HttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 
@@ -134,8 +134,8 @@ final class EconomistArticleParser extends AbstractArticleParser {
 			return new ProtoArticle(title, byline, date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(url, iox);
-		} catch (SimpleHttpException shx) {
-			throw new ArticleParseException(url, shx);
+		} catch (RobotsExclusionException rex) {
+			throw new ArticleParseException(url, rex);
 		}
 	}
 }
