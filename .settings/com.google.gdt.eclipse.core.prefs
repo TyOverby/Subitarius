@@ -1,5 +1,5 @@
-#Sun Jun 26 22:02:19 EDT 2011
+#Mon Jul 04 19:35:34 EDT 2011
 eclipse.preferences.version=1
 jarsExcludedFromWebInfLib=
-warSrcDir=src/main/webapp
-warSrcDirIsOutput=false
+warSrcDir=
+warSrcDirIsOutput=true
