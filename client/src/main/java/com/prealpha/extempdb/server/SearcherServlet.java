@@ -41,7 +41,7 @@ final class SearcherServlet extends HttpServlet {
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
 
 		if (localAddress.equals(remoteAddress)) {
-			final Set<Long> sourceIds = parseSourceIds(req);
+			final Set<Long> sourceOrdinals = parseSourceOrdinals(req);
 
 			new Thread(new Runnable() {
 				@Override
@@ -49,7 +49,7 @@ final class SearcherServlet extends HttpServlet {
 					unitOfWork.begin();
 					try {
 						Searcher searcher = searcherProvider.get();
-						searcher.run(sourceIds);
+						searcher.run(sourceOrdinals);
 					} finally {
 						unitOfWork.end();
 					}
@@ -62,8 +62,8 @@ final class SearcherServlet extends HttpServlet {
 		}
 	}
 
-	private Set<Long> parseSourceIds(HttpServletRequest req) {
-		String rawSourceIds = req.getParameter("sourceIds");
+	private Set<Long> parseSourceOrdinals(HttpServletRequest req) {
+		String rawSourceIds = req.getParameter("sourceOrdinals");
 		if (rawSourceIds == null) {
 			return Collections.<Long> emptySet();
 		} else {

@@ -6,113 +6,48 @@
 
 package com.prealpha.extempdb.server.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import static com.google.common.base.Preconditions.*;
 
-import com.google.inject.Injector;
-import com.prealpha.extempdb.server.parse.ArticleParser;
-
-@Entity
-public class Source {
-	private Long id;
-
-	private String domainName;
-
-	private String displayName;
-
-	private String parserClass;
-
-	private ArticleParser parser;
-
-	public Source() {
+public enum Source {
+	NY_TIMES("www.nytimes.com", "New York Times"),
+	
+	WASHINGTON_POST("www.washingtonpost.com", "Washington Post"),
+	
+	CS_MONITOR("www.csmonitor.com", "Christian Science Monitor"),
+	
+	WS_JOURNAL("online.wsj.com", "Wall Street Journal"),
+	
+	REUTERS("www.reuters.com", "Reuters"),
+	
+	GUARDIAN("www.guardian.co.uk", "The Guardian"),
+	
+	ECONOMIST("www.economist.com", "The Economist");
+	
+	public static Source fromDomainName(String domainName) {
+		checkNotNull(domainName);
+		for (Source source : values()) {
+			if (source.getDomainName().equals(domainName)) {
+				return source;
+			}
+		}
+		return null;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
-	public Long getId() {
-		return id;
+	
+	private final String domainName;
+	
+	private final String displayName;
+	
+	private Source(String domainName, String displayName) {
+		this.domainName = domainName;
+		this.displayName = displayName;
 	}
-
-	@SuppressWarnings("unused")
-	private void setId(Long id) {
-		this.id = id;
-	}
-
-	@Column(unique = true, nullable = false)
+	
 	public String getDomainName() {
 		return domainName;
 	}
-
-	public void setDomainName(String domainName) {
-		this.domainName = domainName;
-	}
-
-	@Column(nullable = false)
-	public String getDisplayName() {
+	
+	@Override
+	public String toString() {
 		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
-	@Column(unique = true, nullable = false)
-	public String getParserClass() {
-		return parserClass;
-	}
-
-	public void setParserClass(String parserClass) {
-		this.parserClass = parserClass;
-	}
-
-	@Transient
-	public ArticleParser getParser(Injector injector)
-			throws ParserNotFoundException {
-		if (parser == null) {
-			String parserClassName = getParserClass();
-			try {
-				Class<?> parserClass = Class.forName(parserClassName);
-				parser = (ArticleParser) injector.getInstance(parserClass);
-			} catch (ClassNotFoundException cnfx) {
-				throw new ParserNotFoundException(getDomainName(), cnfx);
-			}
-		}
-		return parser;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((domainName == null) ? 0 : domainName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Source)) {
-			return false;
-		}
-		Source other = (Source) obj;
-		if (domainName == null) {
-			if (other.domainName != null) {
-				return false;
-			}
-		} else if (!domainName.equals(other.domainName)) {
-			return false;
-		}
-		return true;
 	}
 }

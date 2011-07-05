@@ -21,16 +21,14 @@ import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
 import com.prealpha.extempdb.server.domain.Article_;
-import com.prealpha.extempdb.server.domain.ParserNotFoundException;
 import com.prealpha.extempdb.server.domain.Source;
-import com.prealpha.extempdb.server.domain.Source_;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.prealpha.extempdb.server.parse.ArticleParser;
+import com.prealpha.extempdb.server.parse.ArticleParserFactory;
 import com.prealpha.extempdb.server.parse.ProtoArticle;
 
 public class ArticleProcessor {
@@ -39,43 +37,36 @@ public class ArticleProcessor {
 
 	private final EntityManager entityManager;
 
-	private final Injector injector;
+	private final ArticleParserFactory parserFactory;
 
 	@Inject
-	public ArticleProcessor(EntityManager entityManager, Injector injector) {
+	public ArticleProcessor(EntityManager entityManager,
+			ArticleParserFactory parserFactory) {
 		this.entityManager = entityManager;
-		this.injector = injector;
+		this.parserFactory = parserFactory;
 	}
 
 	@Transactional
 	public Article process(String url) throws ArticleParseException,
-			ParserNotFoundException, URISyntaxException {
+			UnsupportedSiteException, URISyntaxException {
 		checkNotNull(url);
 		URI uri = new URI(url);
 		String domainName = uri.getHost();
-
-		try {
-			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-			CriteriaQuery<Source> criteria = builder.createQuery(Source.class);
-			Root<Source> sourceRoot = criteria.from(Source.class);
-			criteria.where(builder.equal(sourceRoot.get(Source_.domainName),
-					domainName));
-			Source source = entityManager.createQuery(criteria)
-					.getSingleResult();
-
+		Source source = Source.fromDomainName(domainName);
+		if (source != null) {
 			return process(url, source);
-		} catch (NoResultException nrx) {
-			throw new ParserNotFoundException(domainName);
+		} else {
+			throw new UnsupportedSiteException(domainName);
 		}
 	}
 
 	@Transactional
 	public Article process(String url, Source source)
-			throws ArticleParseException, ParserNotFoundException {
+			throws ArticleParseException {
 		checkNotNull(url);
 		checkNotNull(source);
 
-		ArticleParser parser = source.getParser(injector);
+		ArticleParser parser = parserFactory.getParser(source);
 		String canonicalUrl = parser.getCanonicalUrl(url);
 		Article existing = getExistingArticle(canonicalUrl);
 

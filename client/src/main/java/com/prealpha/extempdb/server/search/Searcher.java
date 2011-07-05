@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.domain.ParserNotFoundException;
 import com.prealpha.extempdb.server.domain.Source;
 import com.prealpha.extempdb.server.domain.Tag;
 import com.prealpha.extempdb.server.domain.TagMapping;
@@ -50,11 +49,12 @@ public class Searcher {
 		run(Collections.<Long> emptySet());
 	}
 
-	public void run(Set<Long> sourceIds) {
+	public void run(Set<Long> sourceOrdinals) {
 		log.info("starting search");
 		try {
-			for (Source source : getAll(Source.class)) {
-				if (sourceIds.isEmpty() || sourceIds.contains(source.getId())) {
+			for (Source source : Source.values()) {
+				if (sourceOrdinals.isEmpty()
+						|| sourceOrdinals.contains(source.ordinal())) {
 					try {
 						for (Tag tag : getAll(Tag.class)) {
 							if (tag.isSearched()) {
@@ -64,8 +64,6 @@ public class Searcher {
 						}
 					} catch (RuntimeException rx) {
 						log.error("unexpected exception was thrown", rx);
-					} catch (ParserNotFoundException pnfx) {
-						log.error("article parser class not found", pnfx);
 					}
 				}
 			}
@@ -76,8 +74,7 @@ public class Searcher {
 	}
 
 	@Transactional
-	void execute(SearchQuery query) throws SearchUnavailableException,
-			ParserNotFoundException {
+	void execute(SearchQuery query) throws SearchUnavailableException {
 		int resultCount = 0;
 		List<String> urls = searchProvider.search(query, 1);
 

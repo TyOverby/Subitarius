@@ -90,7 +90,7 @@ final class SearchQuery {
 
 	@Override
 	public String toString() {
-		return String.format("SearchQuery[source=\"%s\", tag=\"%s\"]",
-				source.getDisplayName(), tag.getName());
+		return String.format("SearchQuery[source=\"%s\", tag=\"%s\"]", source,
+				tag.getName());
 	}
 }
