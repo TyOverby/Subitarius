@@ -25,8 +25,6 @@ public class ExtempDbServerModule extends ServletModule {
 		bind(SearcherServlet.class).in(Singleton.class);
 		serve("/searcher").with(SearcherServlet.class);
 
-		bind(Slf4jBridgeFilter.class).in(Singleton.class);
-		filter("/*").through(Slf4jBridgeFilter.class);
 		bindListener(Matchers.any(), new Slf4jTypeListener());
 	}
 }
