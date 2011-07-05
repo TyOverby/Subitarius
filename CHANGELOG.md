@@ -1,3 +1,7 @@
+0.2-alpha
+=========
+* Added domain module
+
 0.1-alpha
 =========
 * First numbered version

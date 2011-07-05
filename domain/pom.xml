@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.prealpha.extempdb</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.1-alpha</version>
+		<version>0.2-alpha</version>
 	</parent>
 	<artifactId>domain</artifactId>
 	<packaging>jar</packaging>
