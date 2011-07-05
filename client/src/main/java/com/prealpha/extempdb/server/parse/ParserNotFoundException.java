@@ -8,7 +8,7 @@ package com.prealpha.extempdb.server.parse;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.extempdb.server.domain.Source;
+import com.prealpha.extempdb.domain.Source;
 
 public class ParserNotFoundException extends RuntimeException {
 	private final Source source;

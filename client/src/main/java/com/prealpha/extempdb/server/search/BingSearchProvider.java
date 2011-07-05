@@ -21,8 +21,8 @@ import java.util.Map;
 import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.server.domain.Source;
-import com.prealpha.extempdb.server.domain.Tag;
+import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.server.http.HttpClient;
 import com.prealpha.extempdb.server.http.RobotsExclusionException;
 

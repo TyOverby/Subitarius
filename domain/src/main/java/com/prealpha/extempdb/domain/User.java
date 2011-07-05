@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.domain;
+package com.prealpha.extempdb.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

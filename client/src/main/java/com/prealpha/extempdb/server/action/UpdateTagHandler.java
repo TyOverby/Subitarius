@@ -19,9 +19,9 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.extempdb.domain.Tag;
+import com.prealpha.extempdb.domain.User;
 import com.prealpha.extempdb.server.InjectLogger;
-import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.extempdb.server.domain.User;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.action.UpdateTag;
 

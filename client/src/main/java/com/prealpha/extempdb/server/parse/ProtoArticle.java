@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.*;
 import java.util.Date;
 import java.util.List;
 
-import com.prealpha.extempdb.server.domain.Article;
+import com.prealpha.extempdb.domain.Article;
 
 public final class ProtoArticle {
 	private final String title;

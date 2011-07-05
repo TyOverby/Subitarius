@@ -19,11 +19,11 @@ import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.domain.Tag;
+import com.prealpha.extempdb.domain.TagMapping;
 import com.prealpha.extempdb.server.InjectLogger;
-import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.domain.Source;
-import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.extempdb.server.domain.TagMapping;
 import com.prealpha.extempdb.server.http.StatusCodeException;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 

@@ -11,11 +11,11 @@ import static com.google.common.base.Preconditions.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.prealpha.extempdb.server.domain.Article;
-import com.prealpha.extempdb.server.domain.Source;
-import com.prealpha.extempdb.server.domain.Tag;
-import com.prealpha.extempdb.server.domain.TagMapping;
-import com.prealpha.extempdb.server.domain.TagMappingAction;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.domain.Tag;
+import com.prealpha.extempdb.domain.TagMapping;
+import com.prealpha.extempdb.domain.TagMappingAction;
 
 final class SearchQuery {
 	private final Source source;
