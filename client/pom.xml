@@ -145,6 +145,18 @@
 			<version>1.6.0</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.6.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.6.1</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
