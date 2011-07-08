@@ -5,12 +5,12 @@
 	version="2.0">
 	<persistence-unit name="extempdb" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>com.prealpha.extempdb.server.domain.Article</class>
-		<class>com.prealpha.extempdb.server.domain.Source</class>
-		<class>com.prealpha.extempdb.server.domain.Tag</class>
-		<class>com.prealpha.extempdb.server.domain.TagMapping</class>
-		<class>com.prealpha.extempdb.server.domain.TagMappingAction</class>
-		<class>com.prealpha.extempdb.server.domain.User</class>
+		<class>com.prealpha.extempdb.domain.Article</class>
+		<class>com.prealpha.extempdb.domain.Source</class>
+		<class>com.prealpha.extempdb.domain.Tag</class>
+		<class>com.prealpha.extempdb.domain.TagMapping</class>
+		<class>com.prealpha.extempdb.domain.TagMappingAction</class>
+		<class>com.prealpha.extempdb.domain.User</class>
 		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
