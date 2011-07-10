@@ -13,9 +13,9 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,16 +28,19 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.bouncycastle.crypto.Digest;
+import org.bouncycastle.crypto.digests.SHA256Digest;
+
 import com.google.common.base.Charsets;
-import com.google.inject.Inject;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 abstract class PersistentEntity implements Serializable {
+	private static final Digest DIGEST = new SHA256Digest();
+
 	private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
-	@Inject
-	private static MessageDigest digest;
+	private static final Pattern HEX_REGEX = Pattern.compile("[0-9a-f]*");
 
 	private Date createDate;
 
@@ -70,7 +73,10 @@ abstract class PersistentEntity implements Serializable {
 			data[i + prefixBytes.length] = payload[i];
 		}
 
-		byte[] digestBytes = digest.digest(data);
+		byte[] digestBytes = new byte[DIGEST.getDigestSize()];
+		DIGEST.update(data, 0, data.length);
+		DIGEST.doFinal(digestBytes, 0);
+
 		char[] chars = new char[2 * digestBytes.length];
 		for (int i = 0; i < digestBytes.length; i++) {
 			chars[2 * i] = HEX_CHARS[(digestBytes[i] & 0xF0) >>> 4];
@@ -80,6 +86,8 @@ abstract class PersistentEntity implements Serializable {
 	}
 
 	protected void setHash(String hash) {
+		checkArgument(hash.length() == 2 * DIGEST.getDigestSize());
+		checkArgument(HEX_REGEX.matcher(hash).matches());
 		storedHash = hash;
 	}
 
@@ -93,6 +101,7 @@ abstract class PersistentEntity implements Serializable {
 
 	protected void setCreateDate(Date createDate) {
 		checkNotNull(createDate);
+		checkArgument(createDate.compareTo(new Date()) <= 0);
 		this.createDate = createDate;
 	}
 
@@ -122,10 +131,13 @@ abstract class PersistentEntity implements Serializable {
 		this.parent = parent;
 	}
 
+	/*
+	 * This can't be done in the setter methods, because JPA doesn't guarantee
+	 * the order of setter invocation.
+	 */
 	@PostLoad
 	@SuppressWarnings("unused")
 	private void validate() {
-		checkState(createDate.compareTo(new Date()) <= 0);
 		if (persistDate != null) {
 			checkState(createDate.compareTo(persistDate) <= 0);
 		}
