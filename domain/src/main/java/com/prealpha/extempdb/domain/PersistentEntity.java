@@ -11,10 +11,12 @@ import static com.google.common.base.Preconditions.*;
 import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
@@ -23,6 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
@@ -32,6 +35,7 @@ import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Sets;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -46,16 +50,30 @@ abstract class PersistentEntity implements Serializable {
 
 	private transient Date persistDate;
 
+	private User creator;
+
 	private PersistentEntity parent;
+
+	private transient Set<PersistentEntity> children;
 
 	private transient String storedHash;
 
+	/**
+	 * For use by JPA provider only. Subclasses should not invoke this
+	 * constructor.
+	 */
 	protected PersistentEntity() {
 		createDate = new Date();
 	}
 
-	protected PersistentEntity(PersistentEntity parent) {
+	protected PersistentEntity(User creator) {
 		this();
+		checkNotNull(creator);
+		this.creator = creator;
+	}
+
+	protected PersistentEntity(User creator, PersistentEntity parent) {
+		this(creator);
 		checkNotNull(parent);
 		this.parent = parent;
 	}
@@ -71,7 +89,7 @@ abstract class PersistentEntity implements Serializable {
 		}
 		return new String(chars);
 	}
-	
+
 	protected final byte[] getHashBytes() {
 		String prefix = getClass().getCanonicalName() + '\u0000';
 		byte[] prefixBytes = prefix.getBytes(Charsets.UTF_8);
@@ -82,7 +100,7 @@ abstract class PersistentEntity implements Serializable {
 		for (int i = 0; i < payload.length; i++) {
 			data[i + prefixBytes.length] = payload[i];
 		}
-		
+
 		byte[] hashBytes = new byte[DIGEST.getDigestSize()];
 		DIGEST.update(data, 0, data.length);
 		DIGEST.doFinal(hashBytes, 0);
@@ -126,6 +144,17 @@ abstract class PersistentEntity implements Serializable {
 	}
 
 	@ManyToOne
+	@Column(nullable = false)
+	public User getCreator() {
+		return creator;
+	}
+
+	protected void setCreator(User creator) {
+		checkNotNull(creator);
+		this.creator = creator;
+	}
+
+	@ManyToOne
 	@Column(nullable = true)
 	public PersistentEntity getParent() {
 		return parent;
@@ -133,6 +162,16 @@ abstract class PersistentEntity implements Serializable {
 
 	protected void setParent(PersistentEntity parent) {
 		this.parent = parent;
+	}
+
+	@OneToMany(mappedBy = "parent")
+	public Set<PersistentEntity> getChildren() {
+		return children;
+	}
+
+	protected void setChildren(Set<PersistentEntity> children) {
+		checkNotNull(children);
+		this.children = children;
 	}
 
 	/*
@@ -151,11 +190,27 @@ abstract class PersistentEntity implements Serializable {
 		}
 	}
 
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		oos.defaultWriteObject();
+		oos.writeInt(children.size());
+		for (PersistentEntity child : children) {
+			oos.writeObject(child);
+		}
+	}
+
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();
+		int childCount = ois.readInt();
+		children = Sets.newHashSetWithExpectedSize(childCount);
+		for (int i = 0; i < childCount; i++) {
+			children.add((PersistentEntity) ois.readObject());
+		}
+
 		if (createDate == null) {
 			throw new InvalidObjectException("null create date");
+		} else if (creator == null) {
+			throw new InvalidObjectException("null creator");
 		}
 	}
 
