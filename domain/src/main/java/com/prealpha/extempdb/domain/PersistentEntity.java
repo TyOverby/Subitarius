@@ -63,6 +63,16 @@ abstract class PersistentEntity implements Serializable {
 	@Id
 	@Column(unique = true, nullable = false)
 	public String getHash() {
+		byte[] hashBytes = getHashBytes();
+		char[] chars = new char[2 * hashBytes.length];
+		for (int i = 0; i < hashBytes.length; i++) {
+			chars[2 * i] = HEX_CHARS[(hashBytes[i] & 0xF0) >>> 4];
+			chars[2 * i + 1] = HEX_CHARS[hashBytes[i] & 0x0F];
+		}
+		return new String(chars);
+	}
+	
+	protected final byte[] getHashBytes() {
 		String prefix = getClass().getCanonicalName() + '\u0000';
 		byte[] prefixBytes = prefix.getBytes(Charsets.UTF_8);
 		byte[] payload = toBytes();
@@ -72,17 +82,11 @@ abstract class PersistentEntity implements Serializable {
 		for (int i = 0; i < payload.length; i++) {
 			data[i + prefixBytes.length] = payload[i];
 		}
-
-		byte[] digestBytes = new byte[DIGEST.getDigestSize()];
+		
+		byte[] hashBytes = new byte[DIGEST.getDigestSize()];
 		DIGEST.update(data, 0, data.length);
-		DIGEST.doFinal(digestBytes, 0);
-
-		char[] chars = new char[2 * digestBytes.length];
-		for (int i = 0; i < digestBytes.length; i++) {
-			chars[2 * i] = HEX_CHARS[(digestBytes[i] & 0xF0) >>> 4];
-			chars[2 * i + 1] = HEX_CHARS[digestBytes[i] & 0x0F];
-		}
-		return new String(chars);
+		DIGEST.doFinal(hashBytes, 0);
+		return hashBytes;
 	}
 
 	protected void setHash(String hash) {
