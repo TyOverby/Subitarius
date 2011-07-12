@@ -34,7 +34,7 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
 import com.google.common.base.Charsets;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 abstract class PersistentEntity implements Serializable {
 	private static final Digest DIGEST = new SHA256Digest();
 
