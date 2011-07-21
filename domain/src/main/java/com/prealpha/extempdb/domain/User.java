@@ -6,50 +6,146 @@
 
 package com.prealpha.extempdb.domain;
 
+import static com.google.common.base.Preconditions.*;
+
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.security.InvalidKeyException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+
+import com.google.common.base.Charsets;
+import com.google.common.primitives.Longs;
+import com.google.inject.Inject;
 
 /*
  * Note that hashCode() and equals() ignore the user name's case.
  */
 @Entity
-public class User {
+public class User extends Hashable implements Serializable {
+	private static final int BCRYPT_ROUNDS = 12;
+
+	private static final Pattern BCRYPT_REGEX = Pattern.compile("\\$2a\\$"
+			+ BCRYPT_ROUNDS + "\\$[./A-Za-z0-9]{53}");
+
+	@Inject
+	private static Signature algorithm;
+
 	private String name;
 
 	private String hash;
 
-	private boolean admin;
+	private Team team;
 
-	public User() {
+	private byte[] signature;
+
+	/**
+	 * This constructor should only be invoked by the JPA provider.
+	 */
+	protected User() {
+	}
+
+	public User(String name, String password, Team team, PrivateKey privateKey)
+			throws InvalidKeyException, SignatureException {
+		checkNotNull(name);
+		checkNotNull(password);
+		checkNotNull(team);
+		checkNotNull(privateKey);
+		checkArgument(!name.isEmpty());
+		this.name = name;
+		this.team = team;
+		setPassword(password, privateKey);
 	}
 
 	@Id
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
+		checkNotNull(name);
 		this.name = name;
 	}
 
 	@Column(nullable = false)
-	public String getHash() {
+	protected String getHash() {
 		return hash;
 	}
 
-	public void setHash(String hash) {
+	protected void setHash(String hash) {
+		checkNotNull(hash);
+		checkArgument(BCRYPT_REGEX.matcher(hash).matches());
 		this.hash = hash;
 	}
 
-	@Column(nullable = false)
-	public boolean isAdmin() {
-		return admin;
+	public boolean authenticate(String password) {
+		return BCrypt.checkpw(password, hash);
 	}
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setPassword(String password, PrivateKey privateKey)
+			throws InvalidKeyException, SignatureException {
+		String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
+		hash = BCrypt.hashpw(password, salt);
+
+		algorithm.initSign(privateKey);
+		algorithm.update(getHashBytes());
+		signature = algorithm.sign();
+	}
+
+	@ManyToOne
+	@Column(nullable = false, updatable = false)
+	public Team getTeam() {
+		return team;
+	}
+
+	protected void setTeam(Team team) {
+		checkNotNull(team);
+		this.team = team;
+	}
+
+	@Lob
+	@Column(nullable = false)
+	protected byte[] getSignature() {
+		return signature;
+	}
+
+	protected void setSignature(byte[] signature) {
+		checkNotNull(signature);
+		this.signature = signature;
+	}
+
+	public boolean verify(PublicKey publicKey) throws InvalidKeyException,
+			SignatureException {
+		algorithm.initVerify(publicKey);
+		algorithm.update(getHashBytes());
+		return algorithm.verify(signature);
+	}
+
+	@Override
+	protected byte[] toBytes() {
+		byte[] nameBytes = name.getBytes(Charsets.UTF_8);
+		byte[] hashBytes = hash.getBytes();
+		byte[] teamBytes = Longs.toByteArray(team.getId());
+		assert (hashBytes.length == 60) : hashBytes.length;
+		assert (teamBytes.length == 8) : teamBytes.length;
+		
+		byte[] data = Arrays.copyOf(nameBytes, nameBytes.length + 68);
+		System.arraycopy(hashBytes, 0, data, nameBytes.length, 60);
+		System.arraycopy(teamBytes, 0, data, nameBytes.length + 60, 8);
+		return data;
 	}
 
 	@Override
@@ -81,5 +177,15 @@ public class User {
 			return false;
 		}
 		return true;
+	}
+
+	private void readObject(ObjectInputStream ois) throws IOException,
+			ClassNotFoundException {
+		ois.defaultReadObject();
+		if (name == null || hash == null || team == null || signature == null) {
+			throw new InvalidObjectException("null instance field");
+		} else if (!BCRYPT_REGEX.matcher(hash).matches()) {
+			throw new InvalidObjectException("invalid BCrypt hash");
+		}
 	}
 }
