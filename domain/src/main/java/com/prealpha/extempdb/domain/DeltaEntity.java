@@ -12,40 +12,49 @@ import java.io.IOException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-import com.google.common.collect.ImmutableSet;
-
+/**
+ * Abstract base class for entities which participate in object deltas. Because
+ * they are immutable, changes cannot be made to these entities directly.
+ * Instead, a child entity which overrides the parent should be created. When
+ * merging an object delta into the local revision, situations may arise where
+ * two entities have the same parent; in this case, the user will be prompted to
+ * resolve the conflict.
+ * 
+ * @author Meyer Kizner
+ * 
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DeltaEntity extends ImmutableEntity {
 	private User creator;
 
-	private ImmutableEntity parent;
+	private DeltaEntity parent;
 
-	private ImmutableSet<ImmutableEntity> children;
+	private DeltaEntity child;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
 	 */
 	protected DeltaEntity() {
 	}
-	
+
 	protected DeltaEntity(User creator) {
 		checkNotNull(creator);
 		this.creator = creator;
 	}
-	
-	protected DeltaEntity(User creator, ImmutableEntity parent) {
+
+	protected DeltaEntity(User creator, DeltaEntity parent) {
 		this(creator);
 		checkNotNull(parent);
+		checkArgument(parent.getChild() == null);
 		this.parent = parent;
 	}
 
@@ -60,30 +69,29 @@ public abstract class DeltaEntity extends ImmutableEntity {
 		this.creator = creator;
 	}
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(updatable = false)
-	public ImmutableEntity getParent() {
+	public DeltaEntity getParent() {
 		return parent;
 	}
 
-	protected void setParent(ImmutableEntity parent) {
+	protected void setParent(DeltaEntity parent) {
 		this.parent = parent;
 	}
 
-	@OneToMany(mappedBy = "parent")
-	public Set<ImmutableEntity> getChildren() {
-		return children;
+	@OneToOne(mappedBy = "parent")
+	public DeltaEntity getChild() {
+		return child;
 	}
 
-	protected void setChildren(Set<ImmutableEntity> children) {
-		checkNotNull(children);
-		this.children = ImmutableSet.copyOf(children);
+	protected void setChild(DeltaEntity child) {
+		this.child = child;
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
-		if (creator == null || children == null) {
-			throw new InvalidObjectException("null instance field");
+		if (creator == null) {
+			throw new InvalidObjectException("null creator");
 		}
 	}
 

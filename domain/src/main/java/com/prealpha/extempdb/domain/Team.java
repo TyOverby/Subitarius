@@ -8,6 +8,10 @@ package com.prealpha.extempdb.domain;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -30,25 +34,33 @@ public class Team implements Serializable {
 
 	private ImmutableSet<License> licenses;
 
+	private transient boolean initialized;
+
 	/**
 	 * This constructor should only be invoked by the JPA provider.
 	 */
 	protected Team() {
+		initialized = false;
 	}
 
 	public Team(String name) {
+		initialized = false;
 		setName(name);
+		users = ImmutableSet.of();
+		licenses = ImmutableSet.of();
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false, updatable = false)
 	public Long getId() {
+		checkState(initialized);
 		return id;
 	}
 
 	protected void setId(long id) {
 		this.id = id;
+		initialized = true;
 	}
 
 	@Column(unique = true, nullable = false, updatable = false)
@@ -110,5 +122,21 @@ public class Team implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	private void writeObject(ObjectOutputStream oos) throws IOException {
+		checkState(initialized);
+		oos.defaultWriteObject();
+	}
+
+	private void readObject(ObjectInputStream oos) throws IOException,
+			ClassNotFoundException {
+		oos.defaultReadObject();
+		if (id == null || name == null || users == null || licenses == null) {
+			throw new InvalidObjectException("null instance field");
+		} else if (name.isEmpty()) {
+			throw new InvalidObjectException("empty name");
+		}
+		initialized = true;
 	}
 }
