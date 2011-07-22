@@ -73,23 +73,23 @@ abstract class ImmutableEntity extends Hashable implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, updatable = false)
 	public Date getCreateDate() {
-		return createDate;
+		return new Date(createDate.getTime());
 	}
 
 	protected void setCreateDate(Date createDate) {
 		checkNotNull(createDate);
 		checkArgument(createDate.compareTo(new Date()) <= 0);
-		this.createDate = createDate;
+		this.createDate = new Date(createDate.getTime());
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, updatable = false)
 	public Date getPersistDate() {
-		return persistDate;
+		return new Date(persistDate.getTime());
 	}
 
 	protected void setPersistDate(Date persistDate) {
-		this.persistDate = persistDate;
+		this.persistDate = new Date(persistDate.getTime());
 	}
 
 	@PrePersist
