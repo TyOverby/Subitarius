@@ -2,7 +2,9 @@ TODO (features)
 ===============
 * More sources (see below)
 * Full text search
-* Work on patrol/delete, maybe adding an archive option
+* Work on patrol/delete
+* Archive articles after some amount of time
+* License revocation and/or expiry
 * Central server separate from client, for release
 * Custom articles
     * Have an entire tag dedicated to them in addition to being found in the related tags
