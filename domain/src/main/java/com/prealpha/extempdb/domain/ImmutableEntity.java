@@ -89,7 +89,12 @@ abstract class ImmutableEntity extends Hashable implements Serializable {
 	}
 
 	protected void setPersistDate(Date persistDate) {
-		this.persistDate = new Date(persistDate.getTime());
+		if (persistDate != null) {
+			checkArgument(persistDate.compareTo(new Date()) <= 0);
+			this.persistDate = new Date(persistDate.getTime());
+		} else {
+			this.persistDate = null;
+		}
 	}
 
 	@PrePersist
