@@ -8,11 +8,6 @@ package com.prealpha.extempdb.domain;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.ObjectStreamException;
-
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -40,32 +35,33 @@ public abstract class DeltaEntity extends ImmutableEntity {
 
 	private DeltaEntity child;
 
-	/**
-	 * This constructor should only be invoked by the JPA provider.
-	 */
 	protected DeltaEntity() {
+		this(null, null);
 	}
 
 	protected DeltaEntity(User creator) {
-		checkNotNull(creator);
-		this.creator = creator;
+		this(creator, null);
+	}
+	
+	protected DeltaEntity(DeltaEntity parent) {
+		this(null, parent);
 	}
 
 	protected DeltaEntity(User creator, DeltaEntity parent) {
-		this(creator);
-		checkNotNull(parent);
-		checkArgument(parent.getChild() == null);
+		if (parent != null) {
+			checkArgument(parent.getChild() == null);
+		}
+		this.creator = creator;
 		this.parent = parent;
 	}
 
 	@ManyToOne
-	@JoinColumn(nullable = false, updatable = false)
+	@JoinColumn(updatable = false)
 	public User getCreator() {
 		return creator;
 	}
 
 	protected void setCreator(User creator) {
-		checkNotNull(creator);
 		this.creator = creator;
 	}
 
@@ -86,20 +82,5 @@ public abstract class DeltaEntity extends ImmutableEntity {
 
 	protected void setChild(DeltaEntity child) {
 		this.child = child;
-	}
-
-	private void readObject(ObjectInputStream ois) throws IOException,
-			ClassNotFoundException {
-		if (creator == null) {
-			throw new InvalidObjectException("null creator");
-		}
-	}
-
-	/*
-	 * See Effective Java, second edition, item 74.
-	 */
-	@SuppressWarnings("unused")
-	private void readObjectNoData() throws ObjectStreamException {
-		throw new InvalidObjectException("stream data required");
 	}
 }

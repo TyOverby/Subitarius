@@ -6,141 +6,152 @@
 
 package com.prealpha.extempdb.domain;
 
+import static com.google.common.base.Preconditions.*;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableList;
+import com.google.common.primitives.Longs;
+
 @Entity
-public class Article {
-	private Long id;
+public class Article extends DeltaEntity {
+	private ArticleUrl url;
 
 	private String title;
 
 	private String byline;
 
-	private Date date;
+	private Date articleDate;
 
-	private Date retrievalDate;
+	private Date parseDate;
 
-	private String url;
+	private ImmutableList<String> paragraphs;
 
-	private Source source;
-
-	private Set<TagMapping> mappings;
-
-	private List<String> paragraphs;
-
-	public Article() {
+	/**
+	 * This constructor should only be invoked by the JPA provider.
+	 */
+	protected Article() {
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
-	public Long getId() {
-		return id;
+	public Article(User creator, DeltaEntity parent, ArticleUrl url,
+			String title, String byline, Date articleDate,
+			List<String> paragraphs) {
+		super(creator, parent);
+		setUrl(url);
+		setTitle(title);
+		setByline(byline);
+		setArticleDate(articleDate);
+		setParseDate(new Date());
+		setParagraphs(paragraphs);
 	}
 
-	@SuppressWarnings("unused")
-	private void setId(Long id) {
-		this.id = id;
+	@ManyToOne
+	@JoinColumn(nullable = false, updatable = false)
+	public ArticleUrl getUrl() {
+		return url;
 	}
 
-	@Column(nullable = false)
+	protected void setUrl(ArticleUrl url) {
+		checkNotNull(url);
+		this.url = url;
+	}
+
+	@Column(nullable = false, updatable = false)
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	protected void setTitle(String title) {
+		checkNotNull(title);
 		this.title = title;
 	}
 
+	@Column(updatable = false)
 	public String getByline() {
+		if (byline != null) {
+			checkArgument(!byline.isEmpty());
+		}
 		return byline;
 	}
 
-	public void setByline(String byline) {
+	protected void setByline(String byline) {
 		this.byline = byline;
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(nullable = false)
-	public Date getDate() {
-		return date;
+	@Column(nullable = false, updatable = false)
+	public Date getArticleDate() {
+		return new Date(articleDate.getTime());
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	protected void setArticleDate(Date articleDate) {
+		checkNotNull(articleDate);
+		checkArgument(articleDate.compareTo(new Date()) <= 0);
+		checkArgument(articleDate.compareTo(url.getSearchDate()) <= 0);
+		this.articleDate = new Date(articleDate.getTime());
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
-	public Date getRetrievalDate() {
-		return retrievalDate;
+	@Column(nullable = false, updatable = false)
+	public Date getParseDate() {
+		return new Date(parseDate.getTime());
 	}
 
-	public void setRetrievalDate(Date retrievalDate) {
-		this.retrievalDate = retrievalDate;
-	}
-
-	@Column(unique = true, nullable = false)
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	public Source getSource() {
-		return source;
-	}
-
-	public void setSource(Source source) {
-		this.source = source;
-	}
-
-	@OneToMany(mappedBy = "article")
-	public Set<TagMapping> getMappings() {
-		return mappings;
-	}
-
-	public void setMappings(Set<TagMapping> mappings) {
-		this.mappings = mappings;
+	protected void setParseDate(Date parseDate) {
+		checkNotNull(parseDate);
+		checkArgument(parseDate.compareTo(new Date()) <= 0);
+		checkArgument(parseDate.compareTo(url.getSearchDate()) >= 0);
+		this.parseDate = new Date(parseDate.getTime());
 	}
 
 	@ElementCollection
 	@Lob
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	public List<String> getParagraphs() {
 		return paragraphs;
 	}
 
-	public void setParagraphs(List<String> paragraphs) {
-		this.paragraphs = paragraphs;
+	protected void setParagraphs(List<String> paragraphs) {
+		checkNotNull(paragraphs);
+		checkArgument(!paragraphs.isEmpty());
+		this.paragraphs = ImmutableList.copyOf(paragraphs);
+	}
+
+	@Override
+	protected byte[] toBytes() {
+		byte[] urlBytes = url.toBytes();
+		byte[] titleBytes = title.getBytes(Charsets.UTF_8);
+		byte[] bylineBytes = (byline == null ? new byte[0] : byline
+				.getBytes(Charsets.UTF_8));
+		byte[] articleDateBytes = Longs.toByteArray(articleDate.getTime());
+		byte[] parseDateBytes = Longs.toByteArray(parseDate.getTime());
+		return Hashable.merge(urlBytes, titleBytes, bylineBytes,
+				articleDateBytes, parseDateBytes);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result
+				+ ((articleDate == null) ? 0 : articleDate.hashCode());
+		result = prime * result + ((byline == null) ? 0 : byline.hashCode());
+		result = prime * result
+				+ ((paragraphs == null) ? 0 : paragraphs.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
@@ -157,6 +168,34 @@ public class Article {
 			return false;
 		}
 		Article other = (Article) obj;
+		if (articleDate == null) {
+			if (other.articleDate != null) {
+				return false;
+			}
+		} else if (!articleDate.equals(other.articleDate)) {
+			return false;
+		}
+		if (byline == null) {
+			if (other.byline != null) {
+				return false;
+			}
+		} else if (!byline.equals(other.byline)) {
+			return false;
+		}
+		if (paragraphs == null) {
+			if (other.paragraphs != null) {
+				return false;
+			}
+		} else if (!paragraphs.equals(other.paragraphs)) {
+			return false;
+		}
+		if (title == null) {
+			if (other.title != null) {
+				return false;
+			}
+		} else if (!title.equals(other.title)) {
+			return false;
+		}
 		if (url == null) {
 			if (other.url != null) {
 				return false;
@@ -165,5 +204,16 @@ public class Article {
 			return false;
 		}
 		return true;
+	}
+
+	private void readObject(ObjectInputStream ois) throws IOException,
+			ClassNotFoundException {
+		ois.defaultReadObject();
+		setUrl(url);
+		setTitle(title);
+		setByline(byline);
+		setArticleDate(articleDate);
+		setParseDate(parseDate);
+		setParagraphs(paragraphs);
 	}
 }
