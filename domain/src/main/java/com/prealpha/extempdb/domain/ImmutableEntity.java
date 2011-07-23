@@ -30,7 +30,7 @@ import javax.persistence.TemporalType;
  * {@code protected} mutators for persistent properties are required by the JPA
  * spec. Concrete subclasses should provide one or more {@code public}
  * constructors which fully initialize the entity's state, particularly any
- * state which determines the result of {@link #toBytes()}. A no-argument
+ * state which determines the result of {@link #getBytes()}. A no-argument
  * constructor must also be provided to comply with the JPA spec; however, it
  * may be marked {@code protected} to prevent client use.
  * 

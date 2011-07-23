@@ -121,12 +121,9 @@ public class License extends ImmutableEntity {
 	}
 
 	@Override
-	protected byte[] toBytes() {
+	protected byte[] getBytes() {
 		byte[] teamBytes = Longs.toByteArray(team.getId());
-		byte[] data = new byte[macAddresses.length + 8];
-		System.arraycopy(teamBytes, 0, data, 0, 8);
-		System.arraycopy(macAddresses, 0, data, 8, macAddresses.length);
-		return data;
+		return Hashable.merge(teamBytes, macAddresses);
 	}
 
 	@Override

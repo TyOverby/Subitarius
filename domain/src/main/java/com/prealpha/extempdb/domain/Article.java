@@ -23,7 +23,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 
 @Entity
@@ -131,15 +133,45 @@ public class Article extends DeltaEntity {
 	}
 
 	@Override
-	protected byte[] toBytes() {
-		byte[] urlBytes = url.toBytes();
+	protected byte[] getBytes() {
+		byte[] urlBytes = url.getBytes();
 		byte[] titleBytes = title.getBytes(Charsets.UTF_8);
 		byte[] bylineBytes = (byline == null ? new byte[0] : byline
 				.getBytes(Charsets.UTF_8));
 		byte[] articleDateBytes = Longs.toByteArray(articleDate.getTime());
-		byte[] parseDateBytes = Longs.toByteArray(parseDate.getTime());
+		List<byte[]> paragraphBytes = Lists.transform(paragraphs,
+				new Function<String, byte[]>() {
+					@Override
+					public byte[] apply(String input) {
+						return input.getBytes(Charsets.UTF_8);
+					}
+				});
 		return Hashable.merge(urlBytes, titleBytes, bylineBytes,
-				articleDateBytes, parseDateBytes);
+				articleDateBytes, merge(paragraphBytes));
+	}
+
+	/**
+	 * Implements {@link Hashable#merge(byte[]...)} for a list of byte arrays,
+	 * for use in converting {@link #paragraphs} to a single byte array.
+	 * 
+	 * @param byteList
+	 *            a list of byte arrays
+	 * @return a single byte array representing the entire list concatenated
+	 *         together, with null bytes between each entry in the list
+	 */
+	private static byte[] merge(List<byte[]> byteList) {
+		int totalLength = 0;
+		for (byte[] array : byteList) {
+			totalLength += array.length;
+		}
+		byte[] merged = new byte[totalLength + byteList.size()];
+		int pos = 0;
+		for (byte[] array : byteList) {
+			System.arraycopy(array, 0, merged, pos, array.length);
+			merged[pos + array.length] = 0x00;
+			pos += array.length + 1;
+		}
+		return merged;
 	}
 
 	@Override

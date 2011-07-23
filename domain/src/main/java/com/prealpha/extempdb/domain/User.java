@@ -134,17 +134,11 @@ public class User extends Hashable implements Serializable {
 	}
 
 	@Override
-	protected byte[] toBytes() {
+	protected byte[] getBytes() {
 		byte[] nameBytes = name.getBytes(Charsets.UTF_8);
 		byte[] hashBytes = hash.getBytes();
 		byte[] teamBytes = Longs.toByteArray(team.getId());
-		assert (hashBytes.length == 60) : hashBytes.length;
-		assert (teamBytes.length == 8) : teamBytes.length;
-		
-		byte[] data = Arrays.copyOf(nameBytes, nameBytes.length + 68);
-		System.arraycopy(hashBytes, 0, data, nameBytes.length, 60);
-		System.arraycopy(teamBytes, 0, data, nameBytes.length + 60, 8);
-		return data;
+		return Hashable.merge(nameBytes, hashBytes, teamBytes);
 	}
 
 	@Override

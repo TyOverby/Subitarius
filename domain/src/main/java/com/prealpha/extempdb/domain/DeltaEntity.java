@@ -40,7 +40,7 @@ public abstract class DeltaEntity extends ImmutableEntity {
 	protected DeltaEntity(User creator) {
 		this(creator, null);
 	}
-	
+
 	protected DeltaEntity(DeltaEntity parent) {
 		this(null, parent);
 	}
@@ -78,4 +78,18 @@ public abstract class DeltaEntity extends ImmutableEntity {
 	protected void setChild(DeltaEntity child) {
 		this.child = child;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * 
+	 * {@code DeltaEntity} adds the additional requirement that the result of
+	 * this method must be consistent with {@link Object#equals(Object) equals}.
+	 * For a particular class, equal objects must generate equal byte
+	 * representations, and unequal objects must generate unequal byte
+	 * representations. (This is stronger than the requirement for
+	 * {@link Object#hashCode() hashCode}.)
+	 */
+	@Override
+	protected abstract byte[] getBytes();
 }

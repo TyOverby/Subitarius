@@ -94,7 +94,7 @@ public class ArticleUrl extends DeltaEntity {
 	}
 
 	@Override
-	protected byte[] toBytes() {
+	protected byte[] getBytes() {
 		byte[] urlData = url.getBytes(Charsets.UTF_8);
 		byte[] sourceData = source.name().getBytes(Charsets.UTF_8);
 		return Hashable.merge(urlData, sourceData);
