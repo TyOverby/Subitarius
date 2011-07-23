@@ -6,8 +6,6 @@
 
 package com.prealpha.extempdb.domain;
 
-import static com.google.common.base.Preconditions.*;
-
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -48,9 +46,6 @@ public abstract class DeltaEntity extends ImmutableEntity {
 	}
 
 	protected DeltaEntity(User creator, DeltaEntity parent) {
-		if (parent != null) {
-			checkArgument(parent.getChild() == null);
-		}
 		this.creator = creator;
 		this.parent = parent;
 	}

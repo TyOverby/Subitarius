@@ -9,7 +9,6 @@ package com.prealpha.extempdb.domain;
 import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.net.NetworkInterface;
 import java.security.InvalidKeyException;
@@ -167,12 +166,8 @@ public class License extends ImmutableEntity {
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();
-		if (team == null || macAddresses == null || signature == null) {
-			throw new InvalidObjectException("null instance field");
-		} else if (macAddresses.length == 0) {
-			throw new InvalidObjectException("no MAC addresses");
-		} else if (macAddresses.length % 6 != 0) {
-			throw new InvalidObjectException("invalid MAC addresses");
-		}
+		setTeam(team);
+		setMacAddresses(macAddresses);
+		setSignature(signature);
 	}
 }

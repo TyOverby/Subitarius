@@ -9,7 +9,6 @@ package com.prealpha.extempdb.domain;
 import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -59,6 +58,7 @@ public class Team implements Serializable {
 	}
 
 	protected void setId(long id) {
+		checkState(!initialized);
 		this.id = id;
 		initialized = true;
 	}
@@ -129,14 +129,12 @@ public class Team implements Serializable {
 		oos.defaultWriteObject();
 	}
 
-	private void readObject(ObjectInputStream oos) throws IOException,
+	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
-		oos.defaultReadObject();
-		if (id == null || name == null || users == null || licenses == null) {
-			throw new InvalidObjectException("null instance field");
-		} else if (name.isEmpty()) {
-			throw new InvalidObjectException("empty name");
-		}
-		initialized = true;
+		ois.defaultReadObject();
+		setId(id);
+		setName(name);
+		setUsers(users);
+		setLicenses(licenses);
 	}
 }

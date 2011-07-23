@@ -9,7 +9,6 @@ package com.prealpha.extempdb.domain;
 import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.util.Date;
 import java.util.Set;
@@ -138,12 +137,9 @@ public class ArticleUrl extends DeltaEntity {
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();
-		searchDate = new Date(searchDate.getTime());
-		if (url == null || source == null || searchDate == null
-				|| mappings == null) {
-			throw new InvalidObjectException("null instance field");
-		} else if (searchDate.compareTo(new Date()) > 0) {
-			throw new InvalidObjectException("search date is after present");
-		}
+		setUrl(url);
+		setSource(source);
+		setSearchDate(searchDate);
+		setMappings(mappings);
 	}
 }

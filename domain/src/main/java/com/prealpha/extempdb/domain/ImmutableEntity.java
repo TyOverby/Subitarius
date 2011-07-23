@@ -122,12 +122,7 @@ abstract class ImmutableEntity extends Hashable implements Serializable {
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();
-		if (createDate == null) {
-			throw new InvalidObjectException("null create date");
-		} else if (createDate.compareTo(new Date()) > 0) {
-			throw new InvalidObjectException("create date is after present");
-		}
-		createDate = new Date(createDate.getTime());
+		setCreateDate(createDate);
 	}
 
 	/*
