@@ -29,9 +29,9 @@ import javax.persistence.OneToOne;
 public abstract class DistributedEntity extends ImmutableEntity {
 	private User creator;
 
-	private DistributedEntity parent;
+	private transient DistributedEntity parent;
 
-	private transient DistributedEntity child;
+	private DistributedEntity child;
 
 	protected DistributedEntity() {
 		this(null, null);
@@ -60,8 +60,7 @@ public abstract class DistributedEntity extends ImmutableEntity {
 		this.creator = creator;
 	}
 
-	@OneToOne
-	@JoinColumn(updatable = false)
+	@OneToOne(mappedBy = "child")
 	public DistributedEntity getParent() {
 		return parent;
 	}
@@ -70,7 +69,8 @@ public abstract class DistributedEntity extends ImmutableEntity {
 		this.parent = parent;
 	}
 
-	@OneToOne(mappedBy = "parent")
+	@OneToOne
+	@JoinColumn(updatable = false)
 	public DistributedEntity getChild() {
 		return child;
 	}
