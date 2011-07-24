@@ -36,9 +36,7 @@ public class Article extends DistributedEntity {
 
 	private String byline;
 
-	private Date articleDate;
-
-	private Date parseDate;
+	private Date date;
 
 	private ImmutableList<String> paragraphs;
 
@@ -55,8 +53,7 @@ public class Article extends DistributedEntity {
 		setUrl(url);
 		setTitle(title);
 		setByline(byline);
-		setArticleDate(articleDate);
-		setParseDate(new Date());
+		setDate(articleDate);
 		setParagraphs(paragraphs);
 	}
 
@@ -95,28 +92,14 @@ public class Article extends DistributedEntity {
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false, updatable = false)
-	public Date getArticleDate() {
-		return new Date(articleDate.getTime());
+	public Date getDate() {
+		return new Date(date.getTime());
 	}
 
-	protected void setArticleDate(Date articleDate) {
-		checkNotNull(articleDate);
-		checkArgument(articleDate.compareTo(new Date()) <= 0);
-		checkArgument(articleDate.compareTo(url.getSearchDate()) <= 0);
-		this.articleDate = new Date(articleDate.getTime());
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, updatable = false)
-	public Date getParseDate() {
-		return new Date(parseDate.getTime());
-	}
-
-	protected void setParseDate(Date parseDate) {
-		checkNotNull(parseDate);
-		checkArgument(parseDate.compareTo(new Date()) <= 0);
-		checkArgument(parseDate.compareTo(url.getSearchDate()) >= 0);
-		this.parseDate = new Date(parseDate.getTime());
+	protected void setDate(Date date) {
+		checkNotNull(date);
+		checkArgument(date.compareTo(new Date()) <= 0);
+		this.date = new Date(date.getTime());
 	}
 
 	@ElementCollection
@@ -138,7 +121,7 @@ public class Article extends DistributedEntity {
 		byte[] titleBytes = title.getBytes(Charsets.UTF_8);
 		byte[] bylineBytes = (byline == null ? new byte[0] : byline
 				.getBytes(Charsets.UTF_8));
-		byte[] articleDateBytes = Longs.toByteArray(articleDate.getTime());
+		byte[] dateBytes = Longs.toByteArray(date.getTime());
 		List<byte[]> paragraphBytes = Lists.transform(paragraphs,
 				new Function<String, byte[]>() {
 					@Override
@@ -146,8 +129,8 @@ public class Article extends DistributedEntity {
 						return input.getBytes(Charsets.UTF_8);
 					}
 				});
-		return Hashable.merge(urlBytes, titleBytes, bylineBytes,
-				articleDateBytes, merge(paragraphBytes));
+		return Hashable.merge(urlBytes, titleBytes, bylineBytes, dateBytes,
+				merge(paragraphBytes));
 	}
 
 	/**
@@ -178,9 +161,8 @@ public class Article extends DistributedEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((articleDate == null) ? 0 : articleDate.hashCode());
 		result = prime * result + ((byline == null) ? 0 : byline.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result
 				+ ((paragraphs == null) ? 0 : paragraphs.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
@@ -200,18 +182,18 @@ public class Article extends DistributedEntity {
 			return false;
 		}
 		Article other = (Article) obj;
-		if (articleDate == null) {
-			if (other.articleDate != null) {
-				return false;
-			}
-		} else if (!articleDate.equals(other.articleDate)) {
-			return false;
-		}
 		if (byline == null) {
 			if (other.byline != null) {
 				return false;
 			}
 		} else if (!byline.equals(other.byline)) {
+			return false;
+		}
+		if (date == null) {
+			if (other.date != null) {
+				return false;
+			}
+		} else if (!date.equals(other.date)) {
 			return false;
 		}
 		if (paragraphs == null) {
@@ -244,8 +226,7 @@ public class Article extends DistributedEntity {
 		setUrl(url);
 		setTitle(title);
 		setByline(byline);
-		setArticleDate(articleDate);
-		setParseDate(parseDate);
+		setDate(date);
 		setParagraphs(paragraphs);
 	}
 }

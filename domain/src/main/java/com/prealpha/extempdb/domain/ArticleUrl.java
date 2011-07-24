@@ -10,7 +10,6 @@ import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -18,8 +17,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
@@ -29,8 +26,6 @@ public class ArticleUrl extends DistributedEntity {
 	private String url;
 
 	private Source source;
-
-	private Date searchDate;
 
 	private ImmutableSet<TagMapping> mappings;
 
@@ -46,7 +41,6 @@ public class ArticleUrl extends DistributedEntity {
 		checkNotNull(source);
 		this.url = url;
 		this.source = source;
-		searchDate = new Date();
 		mappings = ImmutableSet.of();
 	}
 
@@ -69,18 +63,6 @@ public class ArticleUrl extends DistributedEntity {
 	protected void setSource(Source source) {
 		checkNotNull(source);
 		this.source = source;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, updatable = false)
-	public Date getSearchDate() {
-		return new Date(searchDate.getTime());
-	}
-
-	protected void setSearchDate(Date searchDate) {
-		checkNotNull(searchDate);
-		checkArgument(searchDate.compareTo(new Date()) <= 0);
-		this.searchDate = new Date(searchDate.getTime());
 	}
 
 	@OneToMany(mappedBy = "article")
@@ -139,7 +121,6 @@ public class ArticleUrl extends DistributedEntity {
 		ois.defaultReadObject();
 		setUrl(url);
 		setSource(source);
-		setSearchDate(searchDate);
 		setMappings(mappings);
 	}
 }
