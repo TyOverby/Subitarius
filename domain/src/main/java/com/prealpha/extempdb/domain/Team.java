@@ -29,9 +29,9 @@ public class Team implements Serializable {
 
 	private String name;
 
-	private ImmutableSet<User> users;
+	private transient ImmutableSet<User> users;
 
-	private ImmutableSet<License> licenses;
+	private transient ImmutableSet<License> licenses;
 
 	private transient boolean initialized;
 
@@ -134,7 +134,5 @@ public class Team implements Serializable {
 		ois.defaultReadObject();
 		setId(id);
 		setName(name);
-		setUsers(users);
-		setLicenses(licenses);
 	}
 }

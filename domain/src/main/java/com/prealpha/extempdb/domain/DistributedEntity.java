@@ -31,7 +31,7 @@ public abstract class DistributedEntity extends ImmutableEntity {
 
 	private DistributedEntity parent;
 
-	private DistributedEntity child;
+	private transient DistributedEntity child;
 
 	protected DistributedEntity() {
 		this(null, null);

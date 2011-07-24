@@ -27,7 +27,7 @@ public class ArticleUrl extends DistributedEntity {
 
 	private Source source;
 
-	private ImmutableSet<TagMapping> mappings;
+	private transient ImmutableSet<TagMapping> mappings;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -121,6 +121,5 @@ public class ArticleUrl extends DistributedEntity {
 		ois.defaultReadObject();
 		setUrl(url);
 		setSource(source);
-		setMappings(mappings);
 	}
 }
