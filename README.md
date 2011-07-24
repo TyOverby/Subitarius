@@ -34,6 +34,7 @@ TODO (dev)
 * Possibly find fixes for taginput problems
 * Figure out what the proper way is to divide Guice modules
 * More unit tests... there is practically no coverage
+* Reuters articles posted at the Guardian seem to expire
 
 Sources
 -------

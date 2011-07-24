@@ -110,100 +110,40 @@
 			</object>
 		</void>
 		<void method="put">
-			<string>http://www.guardian.co.uk/business/feedarticle/9686975</string>
+			<string>http://www.guardian.co.uk/business/feedarticle/9750890</string>
 			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
-				<string>China's Taomee sees "control" gaps as US IPO prices</string>
+				<string>Bank of Korea confident U.S. will avoid debt catastrophe</string>
 				<null/>
 				<object class="java.util.Date">
-					<long>1307577600000</long>
+					<long>1311033600000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
-						<string>* IPO prices at $9, bottom of expected range-underwriter</string>
+						<string>By Yoo Choonsik</string>
 					</void>
 					<void method="add">
-						<string>* Sells all 7.2 mln shares planned, raises $64.7 mln</string>
+						<string>SEOUL, July 19 (Reuters) - South Korea's central bank is not at the stage of talking about contingency planning over stalled U.S. debt ceiling increase negotiations, the Bank of Korea's top foreign reserves management official told Reuters on Tuesday.</string>
 					</void>
 					<void method="add">
-						<string>* Company says auditors found internal control gaps</string>
+						<string>"We are not at that stage at present," Hong Taeg-ki, who is in charge of managing the world's seventh-largest foreign reserves, said in his office when asked if the Bank of Korea was discussing contingency plans.</string>
 					</void>
 					<void method="add">
-						<string>* Says investors would find it tough to sue officers</string>
+						<string>"We are optimistic the U.S. will avoid facing a catastrophic situation."</string>
 					</void>
 					<void method="add">
-						<string>* To trade on NYSE under symbol "TAOM"</string>
+						<string>The country's finance minister, Bahk Jae-wan, also said in an interview with Reuters last Friday his ministry was not drafting contingency plans regarding the U.S. debt crisis.</string>
 					</void>
 					<void method="add">
-						<string>(Adds Taomee declining to comment, in paragraph 14)</string>
+						<string>Hong also said the market's consensus was that President Barack Obama had tools to avert a default even if the U.S. Congress and Administration fail to strike a deal by the Aug. 2 deadline.</string>
 					</void>
 					<void method="add">
-						<string>By David Gaffen and Clare Baldwin</string>
+						<string>He declined to elaborate on what the tools might be.</string>
 					</void>
 					<void method="add">
-						<string>NEW YORK, June 8 (Reuters) - A Chinese company operating a website for children, which disclosed major gaps in its internal controls, priced shares in its initial public offering at the bottom of an expected range on Wednesday.</string>
+						<string>He said all of South Korea's more than $300 billion in foreign reserves was not required to be invested in AAA-rated assets, although he declined to provide the minimum credit rating for the management of foreign reserves.</string>
 					</void>
 					<void method="add">
-						<string>Taomee Holdings Ltd sold 7.2 million American Depositary Shares for $9 each, raising $64.7 million, an underwriter told Reuters. It had planned to sell shares for $9 to $11 each.</string>
-					</void>
-					<void method="add">
-						<string>The company is coming to market just as U.S.-listed Chinese companies and the reliability of their accounts are coming under more scrutiny following a series of accounting scandals.</string>
-					</void>
-					<void method="add">
-						<string>A number of Chinese stocks took a beating in trading on Wednesday after Interactive Brokers Group Inc said earlier this week it would prohibit clients from borrowing money to take leveraged positions on 160 Chinese securities, and discount brokerage TD Ameritrade said it is closely monitoring Chinese stocks in the United States. For details, see [ID:nN07182221]</string>
-					</void>
-					<void method="add">
-						<string>Taomee, which operates a social networking and entertainment site for children that features virtual worlds including one with cuddly moles, said in the risk factors section of its IPO prospectus that its auditors found major gaps in its internal controls.</string>
-					</void>
-					<void method="add">
-						<string>In the prospectus, the company said that the company and its auditors found "significant deficiencies in our internal control over financial reporting" and that it lacked enough expertise to comply with U.S. accounting rules.</string>
-					</void>
-					<void method="add">
-						<string>"The material weakness observed was our lack of sufficient accounting resources and expertise necessary to comply with U.S. GAAP (Generally Accepted Accounting Principles) and to prepare and review financial statements and related financial disclosures under U.S. GAAP for SEC reporting and compliance purposes," Taomee said.</string>
-					</void>
-					<void method="add">
-						<string>That is not unusual for a Chinese company but could still raise fears among investors who have been shunning an increasing number of Chinese companies listed on the New York Stock Exchange and Nasdaq markets due to growing worry about accounting scandals.</string>
-					</void>
-					<void method="add">
-						<string>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</string>
-					</void>
-					<void method="add">
-						<string>TD Ameritrade monitoring Chinese stocks [ID:nN08264922]</string>
-					</void>
-					<void method="add">
-						<string>Brokerage bans borrowing for China stocks [ID:nN07182221]</string>
-					</void>
-					<void method="add">
-						<string>Analysis-China auditors burned by scandals [ID:nN3181942]</string>
-					</void>
-					<void method="add">
-						<string>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</string>
-					</void>
-					<void method="add">
-						<string>Renren , another Chinese social networking company that went public in the United States in May, announced that its audit committee chairman quit just before the IPO was priced. That company also found a "material weakness" and a "significant deficiency" in its internal financial controls.</string>
-					</void>
-					<void method="add">
-						<string>Audit committee chairman Derek Palaschuk said at the time he was quitting to protect Renren. He was also the chief financial officer of Longtop Financial , a company that was the target of a handful of critical reports by short sellers and is now being probed by U.S. regulators, and from which he has resigned. [ID:nL3E7GN1X1]</string>
-					</void>
-					<void method="add">
-						<string>SOFTWARE ALGORITHM ERRORS</string>
-					</void>
-					<void method="add">
-						<string>Among the problems Taomee found in a review of its internal financial controls were errors in the "algorithm of the software program we used to compile operating data." One of the steps the company took to remedy the problems was hiring a chief financial officer, which it did just three months ago.</string>
-					</void>
-					<void method="add">
-						<string>Taomee, which is organized in the Cayman Islands and conducts the majority of its business in China, also said in its prospectus that the majority of its officers and directors reside outside the United States and have their assets outside of the United States, and it may be difficult to sue them.</string>
-					</void>
-					<void method="add">
-						<string>"The laws of the Cayman Islands and of China may render you unable to enforce a judgment against our assets or the assets of our directors and officers," the company wrote, also in the risk factors section.</string>
-					</void>
-					<void method="add">
-						<string>Taomee declined to comment, citing a U.S. Securities and Exchange Commission quiet period.</string>
-					</void>
-					<void method="add">
-						<string>Renren, sometimes called the Facebook of China, went public in early May. Its shares gained 29 percent on their debut day, but have since fallen, closing at $10.51, or 25 percent below their IPO price, on Wednesday.</string>
-					</void>
-					<void method="add">
-						<string>Underwriters on the Taomee IPO were led by Credit Suisse and Deutsche Bank Securities. The shares are expected to begin trading on the New York Stock Exchange on Thursday under the symbol "TAOM". (Additional reporting by Melanie Lee in Shanghai, editing by Martin Howell and Muralikumar Anantharaman)</string>
+						<string>Hong declined to comment when asked if the Bank of Korea was refraining from buying U.S. Treasury debt securities since the U.S. debt ceiling problem arose. (Editing by Jacqueline Wong)</string>
 					</void>
 				</object>
 			</object>
