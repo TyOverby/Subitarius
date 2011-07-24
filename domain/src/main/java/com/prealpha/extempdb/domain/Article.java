@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 
 @Entity
-public class Article extends DeltaEntity {
+public class Article extends DistributedEntity {
 	private ArticleUrl url;
 
 	private String title;
@@ -48,7 +48,7 @@ public class Article extends DeltaEntity {
 	protected Article() {
 	}
 
-	public Article(User creator, DeltaEntity parent, ArticleUrl url,
+	public Article(User creator, DistributedEntity parent, ArticleUrl url,
 			String title, String byline, Date articleDate,
 			List<String> paragraphs) {
 		super(creator, parent);

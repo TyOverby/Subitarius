@@ -25,7 +25,7 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 
 @Entity
-public class ArticleUrl extends DeltaEntity {
+public class ArticleUrl extends DistributedEntity {
 	private String url;
 
 	private Source source;
