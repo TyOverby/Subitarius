@@ -39,6 +39,31 @@ abstract class Hashable {
 		return merged;
 	}
 
+	/**
+	 * Merges an {@link Iterable} of byte arrays into a single array. This
+	 * utility method is helpful in implementing {@link #getBytes()} in
+	 * subclasses.
+	 * 
+	 * @param arrays
+	 *            an {@code Iterable} of byte arrays
+	 * @return a single byte array representing the entire input concatenated
+	 *         together, with null bytes between each entry in the input
+	 */
+	static byte[] merge(Iterable<byte[]> arrays) {
+		int totalLength = 0;
+		for (byte[] array : arrays) {
+			totalLength += array.length + 1;
+		}
+		byte[] merged = new byte[totalLength];
+		int pos = 0;
+		for (byte[] array : arrays) {
+			System.arraycopy(array, 0, merged, pos, array.length);
+			merged[pos + array.length] = 0x00;
+			pos += array.length + 1;
+		}
+		return merged;
+	}
+
 	protected Hashable() {
 	}
 

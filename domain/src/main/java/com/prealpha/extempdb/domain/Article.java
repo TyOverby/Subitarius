@@ -130,31 +130,7 @@ public class Article extends DistributedEntity {
 					}
 				});
 		return Hashable.merge(urlBytes, titleBytes, bylineBytes, dateBytes,
-				merge(paragraphBytes));
-	}
-
-	/**
-	 * Implements {@link Hashable#merge(byte[]...)} for a list of byte arrays,
-	 * for use in converting {@link #paragraphs} to a single byte array.
-	 * 
-	 * @param byteList
-	 *            a list of byte arrays
-	 * @return a single byte array representing the entire list concatenated
-	 *         together, with null bytes between each entry in the list
-	 */
-	private static byte[] merge(List<byte[]> byteList) {
-		int totalLength = 0;
-		for (byte[] array : byteList) {
-			totalLength += array.length;
-		}
-		byte[] merged = new byte[totalLength + byteList.size()];
-		int pos = 0;
-		for (byte[] array : byteList) {
-			System.arraycopy(array, 0, merged, pos, array.length);
-			merged[pos + array.length] = 0x00;
-			pos += array.length + 1;
-		}
-		return merged;
+				Hashable.merge(paragraphBytes));
 	}
 
 	@Override
