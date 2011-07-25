@@ -65,9 +65,9 @@ public abstract class DistributedEntity extends Hashable implements
 
 	private User creator;
 
-	private transient DistributedEntity parent;
+	private DistributedEntity parent;
 
-	private DistributedEntity child;
+	private transient DistributedEntity child;
 
 	private transient String storedHash;
 
@@ -143,7 +143,8 @@ public abstract class DistributedEntity extends Hashable implements
 		this.creator = creator;
 	}
 
-	@OneToOne(mappedBy = "child")
+	@OneToOne
+	@JoinColumn(updatable = false)
 	public DistributedEntity getParent() {
 		return parent;
 	}
@@ -152,8 +153,7 @@ public abstract class DistributedEntity extends Hashable implements
 		this.parent = parent;
 	}
 
-	@OneToOne
-	@JoinColumn(updatable = false)
+	@OneToOne(mappedBy = "child")
 	public DistributedEntity getChild() {
 		return child;
 	}
