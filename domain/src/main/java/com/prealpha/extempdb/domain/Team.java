@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -20,6 +21,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -28,6 +31,8 @@ public class Team implements Serializable {
 	private Long id;
 
 	private String name;
+
+	private Date expiry;
 
 	private transient ImmutableSet<User> users;
 
@@ -42,9 +47,10 @@ public class Team implements Serializable {
 		initialized = false;
 	}
 
-	public Team(String name) {
+	public Team(String name, Date expiry) {
 		initialized = false;
 		setName(name);
+		setExpiry(expiry);
 		users = ImmutableSet.of();
 		licenses = ImmutableSet.of();
 	}
@@ -72,6 +78,17 @@ public class Team implements Serializable {
 		checkNotNull(name);
 		checkArgument(!name.isEmpty());
 		this.name = name;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false, updatable = false)
+	public Date getExpiry() {
+		return new Date(expiry.getTime());
+	}
+
+	protected void setExpiry(Date expiry) {
+		checkNotNull(expiry);
+		this.expiry = new Date(expiry.getTime());
 	}
 
 	@OneToMany(mappedBy = "team")
