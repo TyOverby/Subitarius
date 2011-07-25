@@ -10,63 +10,49 @@ import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.security.InvalidKeyException;
+import java.security.PrivateKey;
+import java.security.SignatureException;
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.primitives.Ints;
+import com.google.common.primitives.Longs;
 
 @Entity
-public class Team implements Serializable {
-	private Long id;
-
+public class Team extends SignedEntity {
 	private String name;
 
 	private Date expiry;
+
+	private int licenseCap;
 
 	private transient ImmutableSet<User> users;
 
 	private transient ImmutableSet<License> licenses;
 
-	private transient boolean initialized;
-
 	/**
 	 * This constructor should only be invoked by the JPA provider.
 	 */
 	protected Team() {
-		initialized = false;
 	}
 
-	public Team(String name, Date expiry) {
-		initialized = false;
+	public Team(String name, Date expiry, int licenseCap, PrivateKey privateKey)
+			throws InvalidKeyException, SignatureException {
 		setName(name);
 		setExpiry(expiry);
+		setLicenseCap(licenseCap);
+		sign(privateKey);
 		users = ImmutableSet.of();
 		licenses = ImmutableSet.of();
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false, updatable = false)
-	public Long getId() {
-		checkState(initialized);
-		return id;
-	}
-
-	protected void setId(long id) {
-		checkState(!initialized);
-		this.id = id;
-		initialized = true;
 	}
 
 	@Column(unique = true, nullable = false, updatable = false)
@@ -81,7 +67,7 @@ public class Team implements Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false, updatable = false)
+	@Column(nullable = false)
 	public Date getExpiry() {
 		return new Date(expiry.getTime());
 	}
@@ -89,6 +75,24 @@ public class Team implements Serializable {
 	protected void setExpiry(Date expiry) {
 		checkNotNull(expiry);
 		this.expiry = new Date(expiry.getTime());
+	}
+
+	public void updateExpiry(Date newExpiry, PrivateKey privateKey)
+			throws InvalidKeyException, SignatureException {
+		checkNotNull(newExpiry);
+		checkArgument(newExpiry.compareTo(expiry) > 0);
+		setExpiry(newExpiry);
+		sign(privateKey);
+	}
+
+	@Column(nullable = false)
+	public int getLicenseCap() {
+		return licenseCap;
+	}
+
+	protected void setLicenseCap(int licenseCap) {
+		checkArgument(licenseCap > 0);
+		this.licenseCap = licenseCap;
 	}
 
 	@OneToMany(mappedBy = "team")
@@ -109,6 +113,15 @@ public class Team implements Serializable {
 	protected void setLicenses(Set<License> licenses) {
 		checkNotNull(licenses);
 		this.licenses = ImmutableSet.copyOf(licenses);
+	}
+
+	@Override
+	protected byte[] getBytes() {
+		byte[] idBytes = getIdBytes();
+		byte[] nameBytes = name.getBytes(Charsets.UTF_8);
+		byte[] expiryBytes = Longs.toByteArray(expiry.getTime());
+		byte[] licenseCapBytes = Ints.toByteArray(licenseCap);
+		return Hashable.merge(idBytes, nameBytes, expiryBytes, licenseCapBytes);
 	}
 
 	@Override
@@ -141,15 +154,11 @@ public class Team implements Serializable {
 		return true;
 	}
 
-	private void writeObject(ObjectOutputStream oos) throws IOException {
-		checkState(initialized);
-		oos.defaultWriteObject();
-	}
-
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();
-		setId(id);
 		setName(name);
+		setExpiry(expiry);
+		setLicenseCap(licenseCap);
 	}
 }

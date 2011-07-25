@@ -10,44 +10,32 @@ import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.Signature;
 import java.security.SignatureException;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import com.google.common.base.Charsets;
-import com.google.common.primitives.Longs;
-import com.google.inject.Inject;
 
 /*
  * Note that hashCode() and equals() ignore the user name's case.
  */
 @Entity
-public class User extends Hashable implements Serializable {
+public class User extends SignedEntity {
 	private static final int BCRYPT_ROUNDS = 12;
 
 	private static final Pattern BCRYPT_REGEX = Pattern.compile("\\$2a\\$"
 			+ BCRYPT_ROUNDS + "\\$[./A-Za-z0-9]{53}");
-
-	@Inject
-	private static Signature algorithm;
 
 	private String name;
 
 	private String hash;
 
 	private Team team;
-
-	private byte[] signature;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -67,8 +55,7 @@ public class User extends Hashable implements Serializable {
 		setPassword(password, privateKey);
 	}
 
-	@Id
-	@Column(nullable = false, updatable = false)
+	@Column(unique = true, nullable = false, updatable = false)
 	public String getName() {
 		return name;
 	}
@@ -97,10 +84,7 @@ public class User extends Hashable implements Serializable {
 			throws InvalidKeyException, SignatureException {
 		String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
 		hash = BCrypt.hashpw(password, salt);
-
-		algorithm.initSign(privateKey);
-		algorithm.update(getHashBytes());
-		signature = algorithm.sign();
+		sign(privateKey);
 	}
 
 	@ManyToOne
@@ -114,30 +98,13 @@ public class User extends Hashable implements Serializable {
 		this.team = team;
 	}
 
-	@Lob
-	@Column(nullable = false)
-	protected byte[] getSignature() {
-		return signature;
-	}
-
-	protected void setSignature(byte[] signature) {
-		checkNotNull(signature);
-		this.signature = signature;
-	}
-
-	public boolean verify(PublicKey publicKey) throws InvalidKeyException,
-			SignatureException {
-		algorithm.initVerify(publicKey);
-		algorithm.update(getHashBytes());
-		return algorithm.verify(signature);
-	}
-
 	@Override
 	protected byte[] getBytes() {
+		byte[] idBytes = getIdBytes();
 		byte[] nameBytes = name.getBytes(Charsets.UTF_8);
 		byte[] hashBytes = hash.getBytes();
-		byte[] teamBytes = Longs.toByteArray(team.getId());
-		return Hashable.merge(nameBytes, hashBytes, teamBytes);
+		byte[] teamBytes = team.getIdBytes();
+		return Hashable.merge(idBytes, nameBytes, hashBytes, teamBytes);
 	}
 
 	@Override
@@ -177,6 +144,5 @@ public class User extends Hashable implements Serializable {
 		setName(name);
 		setHash(hash);
 		setTeam(team);
-		setSignature(signature);
 	}
 }
