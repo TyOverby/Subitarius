@@ -162,7 +162,7 @@ public abstract class DistributedEntity extends Hashable implements
 	protected void setChild(DistributedEntity child) {
 		this.child = child;
 	}
-	
+
 	@Transient
 	public DistributedEntity getCurrent() {
 		DistributedEntity parent = this;
@@ -182,8 +182,8 @@ public abstract class DistributedEntity extends Hashable implements
 	 * of this method must be consistent with {@link Object#equals(Object)
 	 * equals}. For a particular class, equal objects must generate equal byte
 	 * representations, and unequal objects must generate unequal byte
-	 * representations. (This is stronger than the requirement for
-	 * {@link Object#hashCode() hashCode}.)
+	 * representations, to a reasonable extent. (This is stronger than the
+	 * requirement for {@link Object#hashCode() hashCode}.)
 	 * <p>
 	 * 
 	 * In general, subclass implementations should include only the state of

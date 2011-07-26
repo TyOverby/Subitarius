@@ -16,6 +16,14 @@ abstract class Hashable {
 	private static MessageDigest digest;
 
 	/**
+	 * @return the length, in bytes, of hashes produced by
+	 *         {@link #getHashBytes()}
+	 */
+	static int getHashLength() {
+		return digest.getDigestLength();
+	}
+
+	/**
 	 * Merges a number of byte arrays into a single array. This utility method
 	 * is helpful in implementing {@link #getBytes()} in subclasses.
 	 * 
