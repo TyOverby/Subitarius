@@ -14,21 +14,23 @@ import java.net.NetworkInterface;
 import java.security.InvalidKeyException;
 import java.security.PrivateKey;
 import java.security.SignatureException;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterators;
+import com.google.common.primitives.Longs;
 
 @Entity
 public class License extends SignedEntity {
 	private Team team;
 
-	private byte[] macAddresses;
+	private ImmutableSet<Long> macAddresses;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -36,15 +38,11 @@ public class License extends SignedEntity {
 	protected License() {
 	}
 
-	public License(Team team, byte[] macAddresses, PrivateKey privateKey)
+	public License(Team team, Set<Long> macAddresses, PrivateKey privateKey)
 			throws InvalidKeyException, SignatureException {
-		checkNotNull(team);
-		checkNotNull(macAddresses);
 		checkNotNull(privateKey);
-		checkArgument(macAddresses.length > 0);
-		checkArgument(macAddresses.length % 6 == 0);
-		this.team = team;
-		this.macAddresses = macAddresses;
+		setTeam(team);
+		setMacAddresses(macAddresses);
 		sign(privateKey);
 	}
 
@@ -59,17 +57,20 @@ public class License extends SignedEntity {
 		this.team = team;
 	}
 
-	@Lob
+	@ElementCollection
 	@Column(nullable = false, updatable = false)
-	protected byte[] getMacAddresses() {
+	protected Set<Long> getMacAddresses() {
 		return macAddresses;
 	}
 
-	protected void setMacAddresses(byte[] macAddresses) {
+	protected void setMacAddresses(Set<Long> macAddresses) {
 		checkNotNull(macAddresses);
-		checkArgument(macAddresses.length > 0);
-		checkArgument(macAddresses.length % 6 == 0);
-		this.macAddresses = macAddresses;
+		for (long mac : macAddresses) {
+			// valid range of six-byte MAC address
+			checkArgument(mac >= 0);
+			checkArgument(mac < 0x0001000000000000L);
+		}
+		this.macAddresses = ImmutableSet.copyOf(macAddresses);
 	}
 
 	public boolean validate() throws IOException {
@@ -77,15 +78,11 @@ public class License extends SignedEntity {
 				.forEnumeration(NetworkInterface.getNetworkInterfaces());
 		while (i1.hasNext()) {
 			NetworkInterface iface = i1.next();
-			byte[] mac = iface.getHardwareAddress();
-
-			int macCount = macAddresses.length / 6;
-			for (int i = 0; i < macCount; i++) {
-				byte[] authorizedMac = Arrays.copyOfRange(macAddresses, 6 * i,
-						6 * i + 6);
-				if (Arrays.equals(mac, authorizedMac)) {
-					return true;
-				}
+			byte[] macBytes = new byte[8];
+			System.arraycopy(iface.getHardwareAddress(), 0, macBytes, 2, 6);
+			long mac = Longs.fromByteArray(macBytes);
+			if (macAddresses.contains(mac)) {
+				return true;
 			}
 		}
 		return false;
@@ -95,14 +92,20 @@ public class License extends SignedEntity {
 	protected byte[] getBytes() {
 		byte[] idBytes = getIdBytes();
 		byte[] teamBytes = team.getIdBytes();
-		return Hashable.merge(idBytes, teamBytes, macAddresses);
+		// XOR all MACs together to prevent the order from affecting the hash
+		long macBytes = 0;
+		for (long mac : macAddresses) {
+			macBytes ^= mac;
+		}
+		return Hashable.merge(idBytes, teamBytes, Longs.toByteArray(macBytes));
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(macAddresses);
+		result = prime * result
+				+ ((macAddresses == null) ? 0 : macAddresses.hashCode());
 		result = prime * result + ((team == null) ? 0 : team.hashCode());
 		return result;
 	}
@@ -119,7 +122,11 @@ public class License extends SignedEntity {
 			return false;
 		}
 		License other = (License) obj;
-		if (!Arrays.equals(macAddresses, other.macAddresses)) {
+		if (macAddresses == null) {
+			if (other.macAddresses != null) {
+				return false;
+			}
+		} else if (!macAddresses.equals(other.macAddresses)) {
 			return false;
 		}
 		if (team == null) {
