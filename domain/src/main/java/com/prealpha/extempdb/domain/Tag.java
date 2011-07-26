@@ -16,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -83,7 +84,7 @@ public class Tag extends DistributedEntity {
 	}
 
 	@ManyToMany
-	@JoinTable
+	@JoinTable(joinColumns = { @JoinColumn(nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(nullable = false, updatable = false) })
 	public Set<Tag> getParents() {
 		return parents;
 	}
