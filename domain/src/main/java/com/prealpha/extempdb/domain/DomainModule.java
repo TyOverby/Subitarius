@@ -8,7 +8,10 @@ package com.prealpha.extempdb.domain;
 
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
+import java.security.Security;
 import java.security.Signature;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -16,6 +19,7 @@ import com.google.inject.Provides;
 public final class DomainModule extends AbstractModule {
 	@Override
 	protected void configure() {
+		Security.addProvider(new BouncyCastleProvider());
 		requestStaticInjection(DistributedEntity.class);
 		requestStaticInjection(SignedEntity.class);
 	}
