@@ -29,7 +29,7 @@ import com.google.common.primitives.Longs;
 import com.google.inject.Inject;
 
 @MappedSuperclass
-abstract class SignedEntity extends Hashable implements Serializable {
+abstract class SignedEntity implements HasBytes, Serializable {
 	private static final Pattern UUID_REGEX = Pattern
 			.compile("[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}");
 
@@ -86,7 +86,7 @@ abstract class SignedEntity extends Hashable implements Serializable {
 	protected void sign(PrivateKey privateKey) throws InvalidKeyException,
 			SignatureException {
 		algorithm.initSign(privateKey);
-		algorithm.update(getHashBytes());
+		algorithm.update(getBytes());
 		signature = algorithm.sign();
 	}
 
@@ -94,7 +94,7 @@ abstract class SignedEntity extends Hashable implements Serializable {
 			SignatureException {
 		checkState(signature != null);
 		algorithm.initVerify(publicKey);
-		algorithm.update(getHashBytes());
+		algorithm.update(getBytes());
 		return algorithm.verify(signature);
 	}
 

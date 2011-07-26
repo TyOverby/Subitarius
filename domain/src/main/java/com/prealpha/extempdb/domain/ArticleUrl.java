@@ -78,10 +78,10 @@ public class ArticleUrl extends DistributedEntity {
 
 	@Transient
 	@Override
-	protected byte[] getBytes() {
+	public byte[] getBytes() {
 		byte[] urlData = url.getBytes(Charsets.UTF_8);
 		byte[] sourceData = source.name().getBytes(Charsets.UTF_8);
-		return Hashable.merge(urlData, sourceData);
+		return DistributedEntity.merge(urlData, sourceData);
 	}
 
 	@Override

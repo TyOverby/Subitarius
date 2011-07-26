@@ -13,6 +13,7 @@ import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+import java.security.MessageDigest;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -30,6 +31,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.google.common.base.Charsets;
+import com.google.inject.Inject;
+
 /**
  * Abstract base class for entities which are "distributed" across multiple
  * client instances. All such entities are immutable and cannot be changed
@@ -46,7 +50,7 @@ import javax.persistence.Transient;
  * {@link #getHashBytes()} as the identifier for entities inheriting from this
  * class. As a result, all concrete subclasses must implement
  * {@link #getBytes()}, which has a stronger contract in this class than is
- * inherited from {@link Hashable}. See that method for details.
+ * inherited from {@link HasBytes}. See that method for details.
  * 
  * @author Meyer Kizner
  * @see #getBytes()
@@ -54,11 +58,70 @@ import javax.persistence.Transient;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DistributedEntity extends Hashable implements
-		Serializable {
+public abstract class DistributedEntity implements HasBytes, Serializable {
 	private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
 	private static final Pattern HEX_REGEX = Pattern.compile("[0-9a-f]*");
+
+	@Inject
+	private static MessageDigest digest;
+
+	/**
+	 * @return the length, in bytes, of hashes produced by
+	 *         {@link #getHashBytes()}
+	 */
+	static int getHashLength() {
+		return digest.getDigestLength();
+	}
+
+	/**
+	 * Merges a number of byte arrays into a single array. This utility method
+	 * is helpful in implementing {@link #getBytes()} in subclasses.
+	 * 
+	 * @param arrays
+	 *            an array of byte arrays
+	 * @return a single byte array representing the entire input concatenated
+	 *         together, with null bytes between each entry in the input
+	 */
+	static byte[] merge(byte[]... arrays) {
+		int totalLength = 0;
+		for (byte[] array : arrays) {
+			totalLength += array.length;
+		}
+		byte[] merged = new byte[totalLength + arrays.length];
+		int pos = 0;
+		for (byte[] array : arrays) {
+			System.arraycopy(array, 0, merged, pos, array.length);
+			merged[pos + array.length] = 0x00;
+			pos += array.length + 1;
+		}
+		return merged;
+	}
+
+	/**
+	 * Merges an {@link Iterable} of byte arrays into a single array. This
+	 * utility method is helpful in implementing {@link #getBytes()} in
+	 * subclasses.
+	 * 
+	 * @param arrays
+	 *            an {@code Iterable} of byte arrays
+	 * @return a single byte array representing the entire input concatenated
+	 *         together, with null bytes between each entry in the input
+	 */
+	static byte[] merge(Iterable<byte[]> arrays) {
+		int totalLength = 0;
+		for (byte[] array : arrays) {
+			totalLength += array.length + 1;
+		}
+		byte[] merged = new byte[totalLength];
+		int pos = 0;
+		for (byte[] array : arrays) {
+			System.arraycopy(array, 0, merged, pos, array.length);
+			merged[pos + array.length] = 0x00;
+			pos += array.length + 1;
+		}
+		return merged;
+	}
 
 	private Date createDate;
 
@@ -103,6 +166,14 @@ public abstract class DistributedEntity extends Hashable implements
 			chars[2 * i + 1] = HEX_CHARS[hashBytes[i] & 0x0F];
 		}
 		return new String(chars);
+	}
+
+	protected final byte[] getHashBytes() {
+		String prefix = getClass().getCanonicalName();
+		byte[] prefixBytes = prefix.getBytes(Charsets.UTF_8);
+		byte[] payload = getBytes();
+		byte[] data = merge(prefixBytes, payload);
+		return digest.digest(data);
 	}
 
 	protected void setHash(String hash) {
@@ -196,7 +267,7 @@ public abstract class DistributedEntity extends Hashable implements
 	 */
 	@Transient
 	@Override
-	protected abstract byte[] getBytes();
+	public abstract byte[] getBytes();
 
 	@PrePersist
 	@SuppressWarnings("unused")

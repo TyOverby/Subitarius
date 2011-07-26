@@ -102,12 +102,13 @@ public class User extends SignedEntity {
 
 	@Transient
 	@Override
-	protected byte[] getBytes() {
+	public byte[] getBytes() {
 		byte[] idBytes = getIdBytes();
 		byte[] nameBytes = name.getBytes(Charsets.UTF_8);
 		byte[] hashBytes = hash.getBytes();
 		byte[] teamBytes = team.getIdBytes();
-		return Hashable.merge(idBytes, nameBytes, hashBytes, teamBytes);
+		return DistributedEntity
+				.merge(idBytes, nameBytes, hashBytes, teamBytes);
 	}
 
 	@Override

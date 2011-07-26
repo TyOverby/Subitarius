@@ -118,18 +118,18 @@ public class Tag extends DistributedEntity {
 
 	@Transient
 	@Override
-	protected byte[] getBytes() {
+	public byte[] getBytes() {
 		byte[] nameBytes = name.toUpperCase().getBytes(Charsets.UTF_8);
 		byte[] typeBytes = type.name().getBytes(Charsets.UTF_8);
 		// XOR the parent hashes together to prevent order sensitivity
-		byte[] parentsBytes = new byte[Hashable.getHashLength()];
+		byte[] parentsBytes = new byte[DistributedEntity.getHashLength()];
 		for (Tag parent : parents) {
 			byte[] hash = parent.getHashBytes();
-			for (int i = 0; i < Hashable.getHashLength(); i++) {
+			for (int i = 0; i < DistributedEntity.getHashLength(); i++) {
 				parentsBytes[i] ^= hash[i];
 			}
 		}
-		return Hashable.merge(nameBytes, typeBytes, parentsBytes);
+		return DistributedEntity.merge(nameBytes, typeBytes, parentsBytes);
 	}
 
 	@Override

@@ -118,7 +118,7 @@ public class Article extends DistributedEntity {
 
 	@Transient
 	@Override
-	protected byte[] getBytes() {
+	public byte[] getBytes() {
 		byte[] urlBytes = url.getHashBytes();
 		byte[] titleBytes = title.getBytes(Charsets.UTF_8);
 		byte[] bylineBytes = (byline == null ? new byte[0] : byline
@@ -131,8 +131,8 @@ public class Article extends DistributedEntity {
 						return input.getBytes(Charsets.UTF_8);
 					}
 				});
-		return Hashable.merge(urlBytes, titleBytes, bylineBytes, dateBytes,
-				Hashable.merge(paragraphBytes));
+		return DistributedEntity.merge(urlBytes, titleBytes, bylineBytes,
+				dateBytes, DistributedEntity.merge(paragraphBytes));
 	}
 
 	@Override

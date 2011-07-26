@@ -118,12 +118,13 @@ public class Team extends SignedEntity {
 
 	@Transient
 	@Override
-	protected byte[] getBytes() {
+	public byte[] getBytes() {
 		byte[] idBytes = getIdBytes();
 		byte[] nameBytes = name.getBytes(Charsets.UTF_8);
 		byte[] expiryBytes = Longs.toByteArray(expiry.getTime());
 		byte[] licenseCapBytes = Ints.toByteArray(licenseCap);
-		return Hashable.merge(idBytes, nameBytes, expiryBytes, licenseCapBytes);
+		return DistributedEntity.merge(idBytes, nameBytes, expiryBytes,
+				licenseCapBytes);
 	}
 
 	@Override

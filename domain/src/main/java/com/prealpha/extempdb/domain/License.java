@@ -92,7 +92,7 @@ public class License extends SignedEntity {
 
 	@Transient
 	@Override
-	protected byte[] getBytes() {
+	public byte[] getBytes() {
 		byte[] idBytes = getIdBytes();
 		byte[] teamBytes = team.getIdBytes();
 		// XOR all MACs together to prevent the order from affecting the hash
@@ -100,7 +100,8 @@ public class License extends SignedEntity {
 		for (long mac : macAddresses) {
 			macBytes ^= mac;
 		}
-		return Hashable.merge(idBytes, teamBytes, Longs.toByteArray(macBytes));
+		return DistributedEntity.merge(idBytes, teamBytes,
+				Longs.toByteArray(macBytes));
 	}
 
 	@Override
