@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
@@ -115,6 +116,7 @@ public class Tag extends DistributedEntity {
 		this.mappings = ImmutableSet.copyOf(mappings);
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] nameBytes = name.toUpperCase().getBytes(Charsets.UTF_8);

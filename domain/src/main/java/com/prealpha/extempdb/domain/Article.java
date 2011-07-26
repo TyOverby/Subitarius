@@ -21,6 +21,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
@@ -115,6 +116,7 @@ public class Article extends DistributedEntity {
 		this.paragraphs = ImmutableList.copyOf(paragraphs);
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] urlBytes = url.getHashBytes();

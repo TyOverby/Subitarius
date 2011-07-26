@@ -20,7 +20,9 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterators;
@@ -47,7 +49,7 @@ public class License extends SignedEntity {
 	}
 
 	@ManyToOne
-	@Column(nullable = false, updatable = false)
+	@JoinColumn(nullable = false, updatable = false)
 	public Team getTeam() {
 		return team;
 	}
@@ -88,6 +90,7 @@ public class License extends SignedEntity {
 		return false;
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] idBytes = getIdBytes();

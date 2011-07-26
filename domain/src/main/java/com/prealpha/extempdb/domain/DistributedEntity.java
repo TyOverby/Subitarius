@@ -90,8 +90,11 @@ public abstract class DistributedEntity extends Hashable implements
 		this.parent = parent;
 	}
 
+	/*
+	 * TODO: the column length depends on the implementation in Hashable
+	 */
 	@Id
-	@Column(nullable = false, updatable = false)
+	@Column(length = 64, nullable = false, updatable = false)
 	protected String getHash() {
 		byte[] hashBytes = getHashBytes();
 		char[] chars = new char[2 * hashBytes.length];
@@ -154,7 +157,7 @@ public abstract class DistributedEntity extends Hashable implements
 		this.parent = parent;
 	}
 
-	@OneToOne(mappedBy = "child")
+	@OneToOne(mappedBy = "parent")
 	public DistributedEntity getChild() {
 		return child;
 	}

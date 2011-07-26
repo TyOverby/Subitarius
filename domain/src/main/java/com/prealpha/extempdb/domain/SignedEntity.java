@@ -45,11 +45,12 @@ abstract class SignedEntity extends Hashable implements Serializable {
 	}
 
 	@Id
-	@Column(nullable = false, updatable = false)
+	@Column(length = 36, nullable = false, updatable = false)
 	protected String getId() {
 		return uuid.toString();
 	}
 
+	@Transient
 	protected byte[] getIdBytes() {
 		byte[] idBytes = new byte[16];
 		byte[] upperBytes = Longs.toByteArray(uuid.getMostSignificantBits());

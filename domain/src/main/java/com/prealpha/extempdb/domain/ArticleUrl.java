@@ -17,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
@@ -75,6 +76,7 @@ public class ArticleUrl extends DistributedEntity {
 		this.mappings = ImmutableSet.copyOf(mappings);
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] urlData = url.getBytes(Charsets.UTF_8);

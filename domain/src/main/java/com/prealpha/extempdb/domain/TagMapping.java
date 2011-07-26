@@ -17,6 +17,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 
@@ -92,6 +93,7 @@ public class TagMapping extends DistributedEntity {
 		this.state = state;
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] tagBytes = tag.getHashBytes();

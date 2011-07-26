@@ -21,6 +21,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
@@ -115,6 +116,7 @@ public class Team extends SignedEntity {
 		this.licenses = ImmutableSet.copyOf(licenses);
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] idBytes = getIdBytes();

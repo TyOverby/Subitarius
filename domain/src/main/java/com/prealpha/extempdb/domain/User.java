@@ -17,7 +17,9 @@ import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 
@@ -65,7 +67,7 @@ public class User extends SignedEntity {
 		this.name = name;
 	}
 
-	@Column(nullable = false)
+	@Column(length = 60, nullable = false)
 	protected String getHash() {
 		return hash;
 	}
@@ -88,7 +90,7 @@ public class User extends SignedEntity {
 	}
 
 	@ManyToOne
-	@Column(nullable = false, updatable = false)
+	@JoinColumn(nullable = false, updatable = false)
 	public Team getTeam() {
 		return team;
 	}
@@ -98,6 +100,7 @@ public class User extends SignedEntity {
 		this.team = team;
 	}
 
+	@Transient
 	@Override
 	protected byte[] getBytes() {
 		byte[] idBytes = getIdBytes();
