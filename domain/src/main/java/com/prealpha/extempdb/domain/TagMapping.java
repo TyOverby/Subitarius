@@ -9,209 +9,95 @@ package com.prealpha.extempdb.domain;
 import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+
+import com.google.common.base.Charsets;
 
 @Entity
-public class TagMapping {
-	/*
-	 * Note that hashCode() and equals() ignore the tag name's case.
-	 */
-	@Embeddable
-	public static final class Key implements Serializable {
-		private static final long serialVersionUID = 1139347306367529620L;
-
-		private String tagName;
-
-		private Long articleId;
-
-		// persistence support
-		@SuppressWarnings("unused")
-		private Key() {
-		}
-
-		public Key(String tagName, Long articleId) {
-			setTagName(tagName);
-			setArticleId(articleId);
-		}
-
-		public String getTagName() {
-			return tagName;
-		}
-
-		public void setTagName(String tagName) {
-			checkNotNull(tagName);
-			this.tagName = tagName;
-		}
-
-		public Long getArticleId() {
-			return articleId;
-		}
-
-		public void setArticleId(Long articleId) {
-			checkNotNull(articleId);
-			this.articleId = articleId;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result
-					+ ((articleId == null) ? 0 : articleId.hashCode());
-			result = prime
-					* result
-					+ ((tagName == null) ? 0 : tagName.toUpperCase().hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (!(obj instanceof Key)) {
-				return false;
-			}
-			Key other = (Key) obj;
-			if (articleId == null) {
-				if (other.articleId != null) {
-					return false;
-				}
-			} else if (!articleId.equals(other.articleId)) {
-				return false;
-			}
-			if (tagName == null) {
-				if (other.tagName != null) {
-					return false;
-				}
-			} else if (!tagName.equalsIgnoreCase(other.tagName)) {
-				return false;
-			}
-			return true;
-		}
-
-		@Override
-		public String toString() {
-			return String.format("{ %s; %d }", tagName, articleId);
-		}
-
-		private void readObject(ObjectInputStream ois) throws IOException,
-				ClassNotFoundException {
-			ois.defaultReadObject();
-
-			if (tagName == null || articleId == null) {
-				throw new InvalidObjectException("null instance field");
-			}
-		}
-	}
-
+public class TagMapping extends DistributedEntity {
 	public static enum State {
-		PATROLLED, UNPATROLLED, REMOVED;
+		STICKIED, PATROLLED, UNPATROLLED, REMOVED, ARCHIVED;
 	}
-
-	private Key key;
 
 	private Tag tag;
 
 	private Article article;
 
-	private Date added;
+	private State state;
 
-	private List<TagMappingAction> actions;
-
-	public TagMapping() {
+	/**
+	 * This constructor should only be invoked by the JPA provider.
+	 */
+	protected TagMapping() {
 	}
 
-	@EmbeddedId
-	public Key getKey() {
-		return key;
+	/**
+	 * This constructor is intended for use by the searcher on the central
+	 * server. It sets the state to {@link State#UNPATROLLED}.
+	 * 
+	 * @param tag
+	 *            the tag to map
+	 * @param article
+	 *            the article to map
+	 */
+	public TagMapping(Tag tag, Article article) {
+		this(null, null, tag, article, State.UNPATROLLED);
 	}
 
-	public void setKey(Key key) {
-		this.key = key;
+	public TagMapping(User creator, TagMapping parent, Tag tag,
+			Article article, State state) {
+		super(creator, parent);
+		setTag(tag);
+		setArticle(article);
+		setState(state);
 	}
 
-	@MapsId("tagName")
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = false, updatable = false)
 	public Tag getTag() {
 		return tag;
 	}
 
-	public void setTag(Tag tag) {
+	protected void setTag(Tag tag) {
+		checkNotNull(tag);
 		this.tag = tag;
 	}
 
-	@MapsId("articleId")
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(nullable = false, updatable = false)
 	public Article getArticle() {
 		return article;
 	}
 
-	public void setArticle(Article article) {
+	protected void setArticle(Article article) {
+		checkNotNull(article);
 		this.article = article;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
-	public Date getAdded() {
-		return added;
-	}
-
-	public void setAdded(Date added) {
-		this.added = added;
-	}
-
-	@OneToMany(mappedBy = "mapping")
-	@OrderBy("timestamp")
-	public List<TagMappingAction> getActions() {
-		return actions;
-	}
-
-	public void setActions(List<TagMappingAction> actions) {
-		this.actions = actions;
-	}
-
-	@Transient
-	public TagMappingAction getLastAction() {
-		return (actions.isEmpty() ? null : actions.get(actions.size() - 1));
-	}
-
-	@Transient
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, updatable = false)
 	public State getState() {
-		if (actions.isEmpty()) {
-			return State.UNPATROLLED;
-		} else {
-			switch (getLastAction().getType()) {
-			case PATROL:
-				return State.PATROLLED;
-			case REMOVE:
-				return State.REMOVED;
-			default:
-				throw new IllegalStateException();
-			}
-		}
+		return state;
+	}
+
+	protected void setState(State state) {
+		checkNotNull(state);
+		this.state = state;
+	}
+
+	@Override
+	protected byte[] getBytes() {
+		byte[] tagBytes = tag.getHashBytes();
+		byte[] articleBytes = article.getHashBytes();
+		byte[] stateBytes = state.name().getBytes(Charsets.UTF_8);
+		return Hashable.merge(tagBytes, articleBytes, stateBytes);
 	}
 
 	@Override
@@ -219,6 +105,7 @@ public class TagMapping {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((article == null) ? 0 : article.hashCode());
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
 		return result;
 	}
@@ -242,6 +129,9 @@ public class TagMapping {
 		} else if (!article.equals(other.article)) {
 			return false;
 		}
+		if (state != other.state) {
+			return false;
+		}
 		if (tag == null) {
 			if (other.tag != null) {
 				return false;
@@ -250,5 +140,13 @@ public class TagMapping {
 			return false;
 		}
 		return true;
+	}
+
+	private void readObject(ObjectInputStream ois) throws IOException,
+			ClassNotFoundException {
+		ois.defaultReadObject();
+		setTag(tag);
+		setArticle(article);
+		setState(state);
 	}
 }
