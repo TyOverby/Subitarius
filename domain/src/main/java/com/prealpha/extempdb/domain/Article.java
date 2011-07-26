@@ -117,7 +117,7 @@ public class Article extends DistributedEntity {
 
 	@Override
 	protected byte[] getBytes() {
-		byte[] urlBytes = url.getBytes();
+		byte[] urlBytes = url.getHashBytes();
 		byte[] titleBytes = title.getBytes(Charsets.UTF_8);
 		byte[] bylineBytes = (byline == null ? new byte[0] : byline
 				.getBytes(Charsets.UTF_8));
