@@ -28,6 +28,7 @@ import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * Abstract base class for entities which are "distributed" across multiple
@@ -161,6 +162,17 @@ public abstract class DistributedEntity extends Hashable implements
 	protected void setChild(DistributedEntity child) {
 		this.child = child;
 	}
+	
+	@Transient
+	public DistributedEntity getCurrent() {
+		DistributedEntity parent = this;
+		DistributedEntity child = getChild();
+		while (child != null) {
+			parent = child;
+			child = parent.getChild();
+		}
+		return parent;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -179,6 +191,7 @@ public abstract class DistributedEntity extends Hashable implements
 	 * {@code DistributedEntity} becomes much less useful if properties such as
 	 * the creator or creation date are used to determine the hash.
 	 */
+	@Transient
 	@Override
 	protected abstract byte[] getBytes();
 
