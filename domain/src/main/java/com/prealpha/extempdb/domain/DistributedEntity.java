@@ -59,6 +59,8 @@ import com.google.inject.Inject;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DistributedEntity implements HasBytes, Serializable {
+	private static final long serialVersionUID = 4726912875408999214L;
+
 	private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
 	private static final Pattern HEX_REGEX = Pattern.compile("[0-9a-f]*");

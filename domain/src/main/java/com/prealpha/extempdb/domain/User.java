@@ -28,6 +28,8 @@ import com.google.common.base.Charsets;
  */
 @Entity
 public class User extends SignedEntity {
+	private static final long serialVersionUID = 2141076023094921025L;
+
 	private static final int BCRYPT_ROUNDS = 12;
 
 	private static final Pattern BCRYPT_REGEX = Pattern.compile("\\$2a\\$"

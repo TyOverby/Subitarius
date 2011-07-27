@@ -30,6 +30,8 @@ import com.google.common.primitives.Longs;
 
 @Entity
 public class License extends SignedEntity {
+	private static final long serialVersionUID = -2191719056095886874L;
+
 	private Team team;
 
 	private ImmutableSet<Long> macAddresses;

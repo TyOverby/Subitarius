@@ -24,6 +24,8 @@ import com.google.common.collect.ImmutableSet;
 
 @Entity
 public class ArticleUrl extends DistributedEntity {
+	private static final long serialVersionUID = 6702774638953560323L;
+
 	private String url;
 
 	private Source source;

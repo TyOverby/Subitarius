@@ -30,6 +30,8 @@ import com.google.common.collect.ImmutableSet;
  */
 @Entity
 public class Tag extends DistributedEntity {
+	private static final long serialVersionUID = -3751914996475594880L;
+
 	public static enum Type {
 		PLACEHOLDER, SEARCHED, ARCHIVED;
 	}

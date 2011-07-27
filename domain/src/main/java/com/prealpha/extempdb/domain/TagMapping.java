@@ -23,6 +23,8 @@ import com.google.common.base.Charsets;
 
 @Entity
 public class TagMapping extends DistributedEntity {
+	private static final long serialVersionUID = 5771288363220443416L;
+
 	public static enum State {
 		STICKIED, PATROLLED, UNPATROLLED, REMOVED, ARCHIVED;
 	}

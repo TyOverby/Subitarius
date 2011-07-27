@@ -30,6 +30,8 @@ import com.google.common.primitives.Longs;
 
 @Entity
 public class Team extends SignedEntity {
+	private static final long serialVersionUID = 6357347517747676031L;
+
 	private String name;
 
 	private Date expiry;

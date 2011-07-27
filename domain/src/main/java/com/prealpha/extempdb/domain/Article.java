@@ -31,6 +31,8 @@ import com.google.common.primitives.Longs;
 
 @Entity
 public class Article extends DistributedEntity {
+	private static final long serialVersionUID = 1511193507021475585L;
+
 	private ArticleUrl url;
 
 	private String title;
