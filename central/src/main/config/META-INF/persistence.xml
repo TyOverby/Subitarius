@@ -3,13 +3,16 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
-	<persistence-unit name="extempdb" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="central" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.prealpha.extempdb.domain.Article</class>
-		<class>com.prealpha.extempdb.domain.Source</class>
+		<class>com.prealpha.extempdb.domain.ArticleUrl</class>
+		<class>com.prealpha.extempdb.domain.DistributedEntity</class>
+		<class>com.prealpha.extempdb.domain.License</class>
+		<class>com.prealpha.extempdb.domain.SignedEntity</class>
 		<class>com.prealpha.extempdb.domain.Tag</class>
 		<class>com.prealpha.extempdb.domain.TagMapping</class>
-		<class>com.prealpha.extempdb.domain.TagMappingAction</class>
+		<class>com.prealpha.extempdb.domain.Team</class>
 		<class>com.prealpha.extempdb.domain.User</class>
 		<validation-mode>NONE</validation-mode>
 		<properties>
@@ -20,7 +23,7 @@
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.connection.provider_class"
 				value="org.hibernate.connection.C3P0ConnectionProvider" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 		</properties>
 	</persistence-unit>
 </persistence>
