@@ -4,6 +4,7 @@
 * Domain now contains classes designed for distributed use (DistributedEntity)
 * Domain now contains classes digitally signed by central server (SignedEntity)
 * Added central module
+* Added util module
 
 0.1-alpha
 =========
