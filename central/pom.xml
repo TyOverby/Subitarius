@@ -14,6 +14,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-persist</artifactId>
+			<version>3.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-servlet</artifactId>
 			<version>3.0</version>
 			<scope>compile</scope>
@@ -21,6 +27,12 @@
 		<dependency>
 			<groupId>com.prealpha.extempdb</groupId>
 			<artifactId>domain</artifactId>
+			<version>${pom.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.prealpha.extempdb</groupId>
+			<artifactId>util</artifactId>
 			<version>${pom.version}</version>
 			<scope>compile</scope>
 		</dependency>
@@ -55,7 +67,7 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
