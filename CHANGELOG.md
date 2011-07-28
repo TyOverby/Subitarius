@@ -1,6 +1,9 @@
 0.2-alpha
 =========
 * Added domain module
+* Domain now contains classes designed for distributed use (DistributedEntity)
+* Domain now contains classes digitally signed by central server (SignedEntity)
+* Added central module
 
 0.1-alpha
 =========
