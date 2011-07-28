@@ -15,9 +15,9 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.LogOut;
 import com.prealpha.extempdb.shared.action.MutationResult;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class LogOutHandler implements ActionHandler<LogOut, MutationResult> {
 	@InjectLogger

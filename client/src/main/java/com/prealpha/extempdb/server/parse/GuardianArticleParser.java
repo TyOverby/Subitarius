@@ -22,8 +22,8 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
 final class GuardianArticleParser extends AbstractArticleParser {
 	private static enum Feed {
@@ -71,10 +71,10 @@ final class GuardianArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT_US = new SimpleDateFormat(
 			"EEEEE MMMMM d yyyy");
 
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private GuardianArticleParser(HttpClient httpClient) {
+	private GuardianArticleParser(SimpleHttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 

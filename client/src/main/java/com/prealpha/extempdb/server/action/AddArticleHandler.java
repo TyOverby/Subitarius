@@ -18,13 +18,13 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
 import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.prealpha.extempdb.server.search.ArticleProcessor;
 import com.prealpha.extempdb.server.search.UnsupportedSiteException;
 import com.prealpha.extempdb.shared.action.AddArticle;
 import com.prealpha.extempdb.shared.action.AddArticleResult;
 import com.prealpha.extempdb.shared.action.AddArticleResult.Type;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	@InjectLogger

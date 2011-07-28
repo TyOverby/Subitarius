@@ -27,10 +27,10 @@ import com.prealpha.extempdb.domain.TagMapping;
 import com.prealpha.extempdb.domain.TagMappingAction;
 import com.prealpha.extempdb.domain.TagMapping_;
 import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetPoints;
 import com.prealpha.extempdb.shared.action.GetPointsResult;
 import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetPointsHandler implements ActionHandler<GetPoints, GetPointsResult> {
 	@InjectLogger

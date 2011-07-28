@@ -14,8 +14,8 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 
-class Slf4jTypeListener implements TypeListener {
-	Slf4jTypeListener() {
+public class Slf4jTypeListener implements TypeListener {
+	public Slf4jTypeListener() {
 	}
 
 	@Override

@@ -25,11 +25,11 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.domain.Article;
 import com.prealpha.extempdb.domain.Article_;
 import com.prealpha.extempdb.domain.Source;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
 import com.prealpha.extempdb.server.parse.ArticleParser;
 import com.prealpha.extempdb.server.parse.ArticleParserFactory;
 import com.prealpha.extempdb.server.parse.ProtoArticle;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 public class ArticleProcessor {
 	@InjectLogger

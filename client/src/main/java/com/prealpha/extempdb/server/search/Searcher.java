@@ -23,9 +23,9 @@ import com.prealpha.extempdb.domain.Article;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.TagMapping;
-import com.prealpha.extempdb.server.InjectLogger;
-import com.prealpha.extempdb.server.http.StatusCodeException;
 import com.prealpha.extempdb.server.parse.ArticleParseException;
+import com.prealpha.extempdb.util.http.StatusCodeException;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 public class Searcher {
 	@InjectLogger

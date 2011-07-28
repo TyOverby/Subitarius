@@ -23,10 +23,10 @@ import com.prealpha.extempdb.domain.TagMapping;
 import com.prealpha.extempdb.domain.TagMappingAction;
 import com.prealpha.extempdb.domain.TagMappingAction.Type;
 import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.AddMappingAction;
 import com.prealpha.extempdb.shared.action.MutationResult;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class AddMappingActionHandler implements
 		ActionHandler<AddMappingAction, MutationResult> {

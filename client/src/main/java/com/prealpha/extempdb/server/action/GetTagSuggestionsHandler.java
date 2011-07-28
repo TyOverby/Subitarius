@@ -26,9 +26,9 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.Tag_;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetTagSuggestionsHandler implements
 		ActionHandler<GetTagSuggestions, GetTagSuggestionsResult> {

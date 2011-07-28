@@ -17,10 +17,10 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetArticle;
 import com.prealpha.extempdb.shared.action.GetArticleResult;
 import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
 	@InjectLogger

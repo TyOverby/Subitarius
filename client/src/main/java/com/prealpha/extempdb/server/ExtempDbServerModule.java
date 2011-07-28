@@ -10,6 +10,7 @@ import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.ServletModule;
+import com.prealpha.extempdb.util.logging.Slf4jTypeListener;
 
 public class ExtempDbServerModule extends ServletModule {
 	public ExtempDbServerModule() {

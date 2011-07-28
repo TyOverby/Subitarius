@@ -23,8 +23,8 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
 final class BingSearchProvider implements SearchProvider {
 	/*
@@ -36,12 +36,12 @@ final class BingSearchProvider implements SearchProvider {
 
 	private static final int RESULT_COUNT = 15;
 
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 
 	private final Gson gson;
 
 	@Inject
-	public BingSearchProvider(HttpClient httpClient, Gson gson) {
+	public BingSearchProvider(SimpleHttpClient httpClient, Gson gson) {
 		this.httpClient = httpClient;
 		this.gson = gson;
 	}

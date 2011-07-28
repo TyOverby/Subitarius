@@ -17,10 +17,10 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.TagMapping;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetMapping;
 import com.prealpha.extempdb.shared.action.GetMappingResult;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetMappingHandler implements ActionHandler<GetMapping, GetMappingResult> {
 	@InjectLogger

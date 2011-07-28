@@ -16,10 +16,10 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetUser;
 import com.prealpha.extempdb.shared.action.GetUserResult;
 import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetUserHandler implements ActionHandler<GetUser, GetUserResult> {
 	@InjectLogger

@@ -19,9 +19,9 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetParagraphs;
 import com.prealpha.extempdb.shared.action.GetParagraphsResult;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetParagraphsHandler implements
 		ActionHandler<GetParagraphs, GetParagraphsResult> {

@@ -24,8 +24,8 @@ import org.jsoup.nodes.Element;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
 final class WsjArticleParser extends AbstractArticleParser {
 	private static enum ArticleType {
@@ -51,10 +51,10 @@ final class WsjArticleParser extends AbstractArticleParser {
 	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
 			"Letters", "Journal Concierge", "Spanish");
 
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private WsjArticleParser(HttpClient httpClient) {
+	private WsjArticleParser(SimpleHttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 

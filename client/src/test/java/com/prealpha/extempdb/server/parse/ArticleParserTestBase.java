@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
 import com.mycila.testing.junit.MycilaJunitRunner;
 import com.mycila.testing.plugin.guice.GuiceContext;
 import com.prealpha.extempdb.server.LoggingModule;
-import com.prealpha.extempdb.server.http.HttpModule;
+import com.prealpha.extempdb.util.http.HttpModule;
 
 @RunWith(MycilaJunitRunner.class)
 @GuiceContext({ HttpModule.class, LoggingModule.class })

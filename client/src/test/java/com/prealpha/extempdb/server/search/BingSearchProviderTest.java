@@ -25,9 +25,9 @@ import com.mycila.testing.plugin.guice.GuiceContext;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.server.LoggingModule;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.HttpModule;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.HttpModule;
+import com.prealpha.extempdb.util.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
 @RunWith(MycilaJunitRunner.class)
 @GuiceContext({ HttpModule.class, LoggingModule.class, SearchModule.class })
@@ -37,7 +37,7 @@ public final class BingSearchProviderTest {
 
 	@Mock(Mock.Type.STRICT)
 	@Bind
-	private HttpClient mockHttpClient;
+	private SimpleHttpClient mockHttpClient;
 
 	@Mock(Mock.Type.STRICT)
 	private Tag mockTag;

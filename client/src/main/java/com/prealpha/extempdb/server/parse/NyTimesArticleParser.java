@@ -23,8 +23,8 @@ import org.jsoup.nodes.Element;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.server.http.HttpClient;
-import com.prealpha.extempdb.server.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
 final class NyTimesArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
@@ -33,10 +33,10 @@ final class NyTimesArticleParser extends AbstractArticleParser {
 	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
 			"Interactive", "blog post", "Subject", "Gift Guide", "Login");
 
-	private final HttpClient httpClient;
+	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private NyTimesArticleParser(HttpClient httpClient) {
+	private NyTimesArticleParser(SimpleHttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
 

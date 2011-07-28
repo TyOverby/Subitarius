@@ -13,8 +13,8 @@ import com.google.inject.servlet.GuiceServletContextListener;
 import com.prealpha.dispatch.server.DispatchServerModule;
 import com.prealpha.dispatch.server.filter.BatchActionModule;
 import com.prealpha.extempdb.server.action.ActionModule;
-import com.prealpha.extempdb.server.http.HttpModule;
 import com.prealpha.extempdb.server.search.SearchModule;
+import com.prealpha.extempdb.util.http.HttpModule;
 
 public class ExtempDbContextListener extends GuiceServletContextListener {
 	public ExtempDbContextListener() {

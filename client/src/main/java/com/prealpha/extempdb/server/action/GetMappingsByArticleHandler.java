@@ -22,10 +22,10 @@ import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
 import com.prealpha.extempdb.domain.TagMapping;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetMappingsByArticleHandler implements
 		ActionHandler<GetMappingsByArticle, GetMappingsResult> {

@@ -23,9 +23,9 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Tag;
-import com.prealpha.extempdb.server.InjectLogger;
 import com.prealpha.extempdb.shared.action.GetHierarchy;
 import com.prealpha.extempdb.shared.action.GetHierarchyResult;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetHierarchyHandler implements
 		ActionHandler<GetHierarchy, GetHierarchyResult> {

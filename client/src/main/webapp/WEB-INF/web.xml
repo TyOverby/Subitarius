@@ -16,7 +16,7 @@
 	</filter-mapping>
 
 	<listener>
-		<listener-class>com.prealpha.extempdb.server.Slf4jBridgeContextListener</listener-class>
+		<listener-class>com.prealpha.extempdb.util.logging.Slf4jBridgeContextListener</listener-class>
 	</listener>
 
 	<listener>
