@@ -36,7 +36,7 @@ public final class DomainModule extends AbstractModule {
 	@Provides
 	Signature getAlgorithm() {
 		try {
-			return Signature.getInstance("SHA256withECDSA", "BC");
+			return Signature.getInstance("SHA512withECDSA", "BC");
 		} catch (GeneralSecurityException gsx) {
 			throw new AssertionError(gsx);
 		}
