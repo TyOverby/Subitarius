@@ -23,7 +23,7 @@ import com.google.common.base.Charsets;
 
 @Entity
 public class TagMapping extends DistributedEntity {
-	private static final long serialVersionUID = 5771288363220443416L;
+	private static final long serialVersionUID = 7388688488777734817L;
 
 	public static enum State {
 		STICKIED, PATROLLED, UNPATROLLED, REMOVED, ARCHIVED;
@@ -31,7 +31,7 @@ public class TagMapping extends DistributedEntity {
 
 	private Tag tag;
 
-	private Article article;
+	private ArticleUrl articleUrl;
 
 	private State state;
 
@@ -47,18 +47,18 @@ public class TagMapping extends DistributedEntity {
 	 * 
 	 * @param tag
 	 *            the tag to map
-	 * @param article
-	 *            the article to map
+	 * @param articleUrl
+	 *            the article URL to map
 	 */
-	public TagMapping(Tag tag, Article article) {
-		this(null, null, tag, article, State.UNPATROLLED);
+	public TagMapping(Tag tag, ArticleUrl articleUrl) {
+		this(null, null, tag, articleUrl, State.UNPATROLLED);
 	}
 
 	public TagMapping(User creator, TagMapping parent, Tag tag,
-			Article article, State state) {
+			ArticleUrl articleUrl, State state) {
 		super(creator, parent);
 		setTag(tag);
-		setArticle(article);
+		setArticleUrl(articleUrl);
 		setState(state);
 	}
 
@@ -75,13 +75,13 @@ public class TagMapping extends DistributedEntity {
 
 	@ManyToOne
 	@JoinColumn(nullable = false, updatable = false)
-	public Article getArticle() {
-		return article;
+	public ArticleUrl getArticleUrl() {
+		return articleUrl;
 	}
 
-	protected void setArticle(Article article) {
-		checkNotNull(article);
-		this.article = article;
+	protected void setArticleUrl(ArticleUrl articleUrl) {
+		checkNotNull(articleUrl);
+		this.articleUrl = articleUrl;
 	}
 
 	@Enumerated(EnumType.STRING)
@@ -99,7 +99,7 @@ public class TagMapping extends DistributedEntity {
 	@Override
 	public byte[] getBytes() {
 		byte[] tagBytes = tag.getHashBytes();
-		byte[] articleBytes = article.getHashBytes();
+		byte[] articleBytes = articleUrl.getHashBytes();
 		byte[] stateBytes = state.name().getBytes(Charsets.UTF_8);
 		return DistributedEntity.merge(tagBytes, articleBytes, stateBytes);
 	}
@@ -108,7 +108,8 @@ public class TagMapping extends DistributedEntity {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((article == null) ? 0 : article.hashCode());
+		result = prime * result
+				+ ((articleUrl == null) ? 0 : articleUrl.hashCode());
 		result = prime * result + ((state == null) ? 0 : state.hashCode());
 		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
 		return result;
@@ -126,11 +127,11 @@ public class TagMapping extends DistributedEntity {
 			return false;
 		}
 		TagMapping other = (TagMapping) obj;
-		if (article == null) {
-			if (other.article != null) {
+		if (articleUrl == null) {
+			if (other.articleUrl != null) {
 				return false;
 			}
-		} else if (!article.equals(other.article)) {
+		} else if (!articleUrl.equals(other.articleUrl)) {
 			return false;
 		}
 		if (state != other.state) {
@@ -150,7 +151,7 @@ public class TagMapping extends DistributedEntity {
 			ClassNotFoundException {
 		ois.defaultReadObject();
 		setTag(tag);
-		setArticle(article);
+		setArticleUrl(articleUrl);
 		setState(state);
 	}
 }

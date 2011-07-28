@@ -37,6 +37,10 @@ public class ArticleUrl extends DistributedEntity {
 	 */
 	protected ArticleUrl() {
 	}
+	
+	public ArticleUrl(String url, Source source) {
+		this(null, url, source);
+	}
 
 	public ArticleUrl(User creator, String url, Source source) {
 		super(creator);
