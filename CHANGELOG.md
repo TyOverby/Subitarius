@@ -4,7 +4,7 @@
 * Domain now contains classes designed for distributed use (DistributedEntity)
 * Domain now contains classes digitally signed by central server (SignedEntity)
 * Added central module
-* Added util module
+* Added util module to contain SimpleHttpClient and SLF4J utilities
 
 0.1-alpha
 =========
