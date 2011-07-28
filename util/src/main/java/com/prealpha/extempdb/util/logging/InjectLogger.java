@@ -1,10 +1,10 @@
 /*
  * InjectLogger.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server;
+package com.prealpha.extempdb.util.logging;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

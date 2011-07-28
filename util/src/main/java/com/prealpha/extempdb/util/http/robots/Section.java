@@ -1,10 +1,10 @@
 /*
  * Section.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.http.robots;
+package com.prealpha.extempdb.util.http.robots;
 
 import static com.google.common.base.Preconditions.*;
 

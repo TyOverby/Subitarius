@@ -1,10 +1,10 @@
 /*
  * RobotsTxt.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.http.robots;
+package com.prealpha.extempdb.util.http.robots;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -19,7 +19,7 @@ import org.apache.http.Header;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.google.common.base.Predicate;
-import com.prealpha.extempdb.server.http.robots.Directive.Type;
+import com.prealpha.extempdb.util.http.robots.Directive.Type;
 
 public class RobotsTxt implements Predicate<HttpUriRequest> {
 	private final Map<Set<Directive>, Section> sections;

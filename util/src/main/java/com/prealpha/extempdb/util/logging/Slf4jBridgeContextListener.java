@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server;
+package com.prealpha.extempdb.util.logging;
 
 import java.util.logging.Handler;
 import java.util.logging.LogManager;

@@ -1,12 +1,12 @@
 /*
  * RobotsExclusionException.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.http;
+package com.prealpha.extempdb.util.http;
 
-import com.prealpha.extempdb.server.http.robots.RobotsTxt;
+import com.prealpha.extempdb.util.http.robots.RobotsTxt;
 
 public class RobotsExclusionException extends Exception {
 	private final RobotsTxt robotsTxt;

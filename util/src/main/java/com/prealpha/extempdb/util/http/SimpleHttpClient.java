@@ -1,10 +1,10 @@
 /*
- * HttpClient.java
+ * SimpleHttpClient.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.http;
+package com.prealpha.extempdb.util.http;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +20,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -31,24 +32,24 @@ import org.slf4j.Logger;
 
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.server.InjectLogger;
-import com.prealpha.extempdb.server.http.robots.RobotsTxt;
+import com.prealpha.extempdb.util.logging.InjectLogger;
+import com.prealpha.extempdb.util.http.robots.RobotsTxt;
 
 /*
  * NOTE: this class is not thread-safe
  */
-public class HttpClient {
+public final class SimpleHttpClient {
 	private static final String USER_AGENT = "ExtempDB";
 
 	@InjectLogger
 	private Logger log;
 
-	private final org.apache.http.client.HttpClient httpClient;
+	private final HttpClient httpClient;
 
 	private final Map<String, RobotsTxt> robotsExclusion;
 
 	@Inject
-	public HttpClient(org.apache.http.client.HttpClient httpClient) {
+	public SimpleHttpClient(HttpClient httpClient) {
 		this.httpClient = httpClient;
 		robotsExclusion = new HashMap<String, RobotsTxt>();
 	}
