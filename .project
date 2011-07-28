@@ -16,7 +16,16 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1309843874527</id>
+			<id>1311887725857</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-central</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1311887725843</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
@@ -25,7 +34,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1309843874533</id>
+			<id>1311887725853</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
