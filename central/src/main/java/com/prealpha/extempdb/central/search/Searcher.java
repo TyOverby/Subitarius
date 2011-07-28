@@ -46,14 +46,14 @@ public class Searcher {
 	}
 
 	public void run() {
-		run(Collections.<Long> emptySet());
+		run(null);
 	}
 
-	public void run(Set<Long> sourceOrdinals) {
+	public void run(Set<Integer> sourceOrdinals) {
 		log.info("starting search");
 		try {
 			for (Source source : Source.values()) {
-				if (sourceOrdinals.isEmpty()
+				if (sourceOrdinals == null
 						|| sourceOrdinals.contains(source.ordinal())) {
 					try {
 						for (Tag tag : getAll(Tag.class)) {

@@ -8,8 +8,6 @@ package com.prealpha.extempdb.central;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -17,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
@@ -41,7 +40,7 @@ final class SearcherServlet extends HttpServlet {
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
 
 		if (localAddress.equals(remoteAddress)) {
-			final Set<Long> sourceOrdinals = parseSourceOrdinals(req);
+			final Set<Integer> sourceOrdinals = parseSourceOrdinals(req);
 
 			new Thread(new Runnable() {
 				@Override
@@ -62,15 +61,15 @@ final class SearcherServlet extends HttpServlet {
 		}
 	}
 
-	private Set<Long> parseSourceOrdinals(HttpServletRequest req) {
+	private Set<Integer> parseSourceOrdinals(HttpServletRequest req) {
 		String rawSourceIds = req.getParameter("sourceOrdinals");
 		if (rawSourceIds == null) {
-			return Collections.<Long> emptySet();
+			return null;
 		} else {
-			Set<Long> sourceIds = new HashSet<Long>();
+			Set<Integer> sourceIds = Sets.newHashSet();
 			String[] tokens = rawSourceIds.split(",");
 			for (String token : tokens) {
-				sourceIds.add(Long.parseLong(token));
+				sourceIds.add(Integer.parseInt(token));
 			}
 			return sourceIds;
 		}
