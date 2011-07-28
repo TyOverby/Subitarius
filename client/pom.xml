@@ -13,10 +13,6 @@
 	<artifactId>client</artifactId>
 	<packaging>war</packaging>
 
-	<properties>
-		<project.build.webappDirectory>${project.build.directory}/webapp</project.build.webappDirectory>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -184,25 +180,6 @@
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.5</version>
-				<executions>
-					<execution>
-						<phase>process-sources</phase>
-						<configuration>
-							<sources>
-								<source>${project.build.directory}/generated-sources/annotations</source>
-							</sources>
-						</configuration>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.3.0</version>
 				<executions>
@@ -254,25 +231,6 @@
 										<goals>
 											<goal>compile</goal>
 											<goal>testCompile</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.codehaus.mojo
-										</groupId>
-										<artifactId>
-											build-helper-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.5,)
-										</versionRange>
-										<goals>
-											<goal>add-source</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

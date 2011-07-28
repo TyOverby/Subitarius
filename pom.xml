@@ -19,6 +19,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.webappDirectory>${project.build.directory}/webapp</project.build.webappDirectory>
 	</properties>
 
 	<dependencies>
