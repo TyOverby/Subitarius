@@ -1,12 +1,12 @@
 /*
  * BingQuery.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.central.search;
 
-class BingQuery {
+final class BingQuery {
 	private String searchTerms;
 
 	protected BingQuery() {

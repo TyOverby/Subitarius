@@ -1,14 +1,14 @@
 /*
  * BingNews.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.central.search;
 
 import java.util.List;
 
-class BingNews {
+final class BingNews {
 	private int total;
 
 	private int offset;

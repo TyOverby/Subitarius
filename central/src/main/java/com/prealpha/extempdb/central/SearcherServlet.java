@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server;
+package com.prealpha.extempdb.central;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
-import com.prealpha.extempdb.server.search.Searcher;
+import com.prealpha.extempdb.central.search.Searcher;
 
 final class SearcherServlet extends HttpServlet {
 	private final UnitOfWork unitOfWork;

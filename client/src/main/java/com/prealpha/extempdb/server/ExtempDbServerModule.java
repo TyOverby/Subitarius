@@ -23,9 +23,6 @@ public class ExtempDbServerModule extends ServletModule {
 		bind(GuiceServiceServlet.class).in(Singleton.class);
 		serve("/GWT.rpc").with(GuiceServiceServlet.class);
 
-		bind(SearcherServlet.class).in(Singleton.class);
-		serve("/searcher").with(SearcherServlet.class);
-
 		bindListener(Matchers.any(), new Slf4jTypeListener());
 	}
 }

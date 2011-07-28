@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.central.search;
 
 import static com.google.common.base.Preconditions.*;
 

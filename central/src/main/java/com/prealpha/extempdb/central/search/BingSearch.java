@@ -1,12 +1,12 @@
 /*
  * BingSearch.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.central.search;
 
-class BingSearch {
+final class BingSearch {
 	private BingSearchResponse searchResponse;
 
 	protected BingSearch() {

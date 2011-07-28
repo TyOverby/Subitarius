@@ -10,6 +10,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
+import com.prealpha.extempdb.central.search.SearchModule;
+import com.prealpha.extempdb.util.http.HttpModule;
 
 public final class CentralContextListener extends GuiceServletContextListener {
 	public CentralContextListener() {
@@ -17,6 +19,7 @@ public final class CentralContextListener extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice.createInjector(new JpaPersistModule("central"));
+		return Guice.createInjector(new JpaPersistModule("central"),
+				new CentralModule(), new SearchModule(), new HttpModule());
 	}
 }

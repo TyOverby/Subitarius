@@ -1,14 +1,14 @@
 /*
  * BingNewsResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.central.search;
 
 import java.util.Date;
 
-class BingNewsResult {
+final class BingNewsResult {
 	private String title;
 
 	private String url;

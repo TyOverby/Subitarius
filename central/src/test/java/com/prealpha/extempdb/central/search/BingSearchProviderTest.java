@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.search;
+package com.prealpha.extempdb.central.search;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -24,13 +24,13 @@ import com.mycila.testing.plugin.guice.Bind;
 import com.mycila.testing.plugin.guice.GuiceContext;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
-import com.prealpha.extempdb.server.LoggingModule;
 import com.prealpha.extempdb.util.http.HttpModule;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
+import com.prealpha.extempdb.util.logging.TestLoggingModule;
 
 @RunWith(MycilaJunitRunner.class)
-@GuiceContext({ HttpModule.class, LoggingModule.class, SearchModule.class })
+@GuiceContext({ HttpModule.class, SearchModule.class, TestLoggingModule.class })
 public final class BingSearchProviderTest {
 	@Inject
 	private BingSearchProvider searchProvider;

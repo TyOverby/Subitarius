@@ -19,11 +19,11 @@ import org.junit.runner.RunWith;
 
 import com.mycila.testing.junit.MycilaJunitRunner;
 import com.mycila.testing.plugin.guice.GuiceContext;
-import com.prealpha.extempdb.server.LoggingModule;
 import com.prealpha.extempdb.util.http.HttpModule;
+import com.prealpha.extempdb.util.logging.TestLoggingModule;
 
 @RunWith(MycilaJunitRunner.class)
-@GuiceContext({ HttpModule.class, LoggingModule.class })
+@GuiceContext({ HttpModule.class, TestLoggingModule.class })
 public abstract class ArticleParserTestBase {
 	private static final String URL = "http://www.nytimes.com/interactive/2010/11/13/weekinreview/deficits-graphic.html";
 
