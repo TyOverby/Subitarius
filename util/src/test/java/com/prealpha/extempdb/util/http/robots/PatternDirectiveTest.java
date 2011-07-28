@@ -1,17 +1,17 @@
 /*
  * PatternDirectiveTest.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.http.robots;
+package com.prealpha.extempdb.util.http.robots;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import com.google.common.base.Predicate;
-import com.prealpha.extempdb.server.http.robots.Directive.Type;
+import com.prealpha.extempdb.util.http.robots.Directive.Type;
 
 public class PatternDirectiveTest {
 	@Test
