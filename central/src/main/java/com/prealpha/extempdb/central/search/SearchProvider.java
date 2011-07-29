@@ -9,10 +9,13 @@ package com.prealpha.extempdb.central.search;
 import java.util.List;
 
 import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.domain.Tag;
 
 interface SearchProvider {
-	List<ArticleUrl> search(SearchQuery query) throws SearchUnavailableException;
+	List<ArticleUrl> search(Tag tag, Source source)
+			throws SearchUnavailableException;
 
-	List<ArticleUrl> search(SearchQuery query, int limit)
+	List<ArticleUrl> search(Tag tag, Source source, int limit)
 			throws SearchUnavailableException;
 }

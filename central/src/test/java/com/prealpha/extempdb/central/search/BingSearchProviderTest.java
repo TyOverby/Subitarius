@@ -11,9 +11,11 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,8 +24,10 @@ import com.mycila.testing.junit.MycilaJunitRunner;
 import com.mycila.testing.plugin.easymock.Mock;
 import com.mycila.testing.plugin.guice.Bind;
 import com.mycila.testing.plugin.guice.GuiceContext;
+import com.prealpha.extempdb.domain.ArticleUrl;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
+import com.prealpha.extempdb.domain.Tag.Type;
 import com.prealpha.extempdb.util.http.HttpModule;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
@@ -39,41 +43,49 @@ public final class BingSearchProviderTest {
 	@Bind
 	private SimpleHttpClient mockHttpClient;
 
-	@Mock(Mock.Type.STRICT)
-	private Tag mockTag;
+	private Tag tag;
 
-	@Mock(Mock.Type.STRICT)
-	private Source mockSource;
+	private Source source;
+
+	@Before
+	public void setUp() {
+		tag = new Tag(null, "Network neutrality", Type.SEARCHED,
+				Collections.<Tag> emptySet());
+		source = Source.NY_TIMES;
+	}
 
 	@Test(expected = NullPointerException.class)
-	public void testNullQuery() throws SearchUnavailableException {
-		searchProvider.search(null);
+	public void testNullTag() throws SearchUnavailableException {
+		searchProvider.search(null, source);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testNullSource() throws SearchUnavailableException {
+		searchProvider.search(tag, null);
 	}
 
 	@Test
 	public void testSearch() throws SearchUnavailableException, IOException,
 			RobotsExclusionException {
-		expect(mockTag.getName()).andReturn("network neutrality");
-		expect(mockSource.getDomainName()).andReturn("www.nytimes.com");
-
 		InputStream stream = getClass().getResourceAsStream("bing.json");
 		String searchUrl = eq(BingSearchProvider.BASE_URL);
 		Map<String, String> parameters = anyObject();
 		expect(mockHttpClient.doGet(searchUrl, parameters)).andReturn(stream);
 
-		String articleUrl = "http://www.nytimes.com/2010/08/05/technology/05secret.html";
+		ArticleUrl expectedUrl = new ArticleUrl(
+				"http://www.nytimes.com/2010/08/05/technology/05secret.html",
+				source);
 
-		replay(mockHttpClient, mockTag, mockSource);
+		replay(mockHttpClient);
 
-		SearchQuery query = new SearchQuery(mockSource, mockTag);
-		List<String> urls = searchProvider.search(query);
-		assertNotNull(urls);
-		assertEquals(1, urls.size());
+		List<ArticleUrl> articleUrls = searchProvider.search(tag, source);
+		assertNotNull(articleUrls);
+		assertEquals(1, articleUrls.size());
 
-		String url = urls.iterator().next();
-		assertEquals(articleUrl, url);
+		ArticleUrl actualUrl = articleUrls.iterator().next();
+		assertEquals(expectedUrl, actualUrl);
 
-		verify(mockHttpClient, mockTag, mockSource);
+		verify(mockHttpClient);
 	}
 
 	@Test(expected = SearchUnavailableException.class)
@@ -86,8 +98,7 @@ public final class BingSearchProviderTest {
 
 		replay(mockHttpClient);
 
-		SearchQuery query = new SearchQuery(mockSource, mockTag);
-		searchProvider.search(query);
+		searchProvider.search(tag, source);
 
 		verify(mockHttpClient);
 	}
@@ -102,8 +113,7 @@ public final class BingSearchProviderTest {
 
 		replay(mockHttpClient);
 
-		SearchQuery query = new SearchQuery(mockSource, mockTag);
-		searchProvider.search(query);
+		searchProvider.search(tag, source);
 
 		verify(mockHttpClient);
 	}

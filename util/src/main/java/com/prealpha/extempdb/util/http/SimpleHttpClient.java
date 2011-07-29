@@ -38,7 +38,7 @@ import com.prealpha.extempdb.util.http.robots.RobotsTxt;
 /*
  * NOTE: this class is not thread-safe
  */
-public final class SimpleHttpClient {
+public class SimpleHttpClient {
 	private static final String USER_AGENT = "ExtempDB";
 
 	@InjectLogger

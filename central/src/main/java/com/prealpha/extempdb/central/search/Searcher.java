@@ -54,8 +54,7 @@ public class Searcher {
 					try {
 						for (Tag tag : getAllCurrent(Tag.class)) {
 							if (tag.getType() == Type.SEARCHED) {
-								SearchQuery query = new SearchQuery(source, tag);
-								execute(query);
+								search(tag, source);
 							}
 						}
 					} catch (RuntimeException rx) {
@@ -70,14 +69,14 @@ public class Searcher {
 	}
 
 	@Transactional
-	void execute(SearchQuery query) throws SearchUnavailableException {
+	void search(Tag tag, Source source) throws SearchUnavailableException {
 		int resultCount = 0;
-		List<ArticleUrl> articleUrls = searchProvider.search(query, 1);
+		List<ArticleUrl> articleUrls = searchProvider.search(tag, source, 1);
 		for (ArticleUrl articleUrl : articleUrls) {
 			entityManager.persist(articleUrl);
 			log.debug("persisted article URL: {}", articleUrl);
 
-			TagMapping mapping = new TagMapping(query.getTag(), articleUrl);
+			TagMapping mapping = new TagMapping(tag, articleUrl);
 			if (mappingExists(mapping)) {
 				log.debug("mapping already exists: {}", mapping);
 			} else {
@@ -85,8 +84,8 @@ public class Searcher {
 				log.debug("persisted mapping: {}", mapping);
 			}
 		}
-		log.info("handled {} search result(s) for query: {}", resultCount,
-				query);
+		Object[] args = { resultCount, tag, source };
+		log.info("handled {} search result(s) for query: ({}; {})", args);
 	}
 
 	@Transactional

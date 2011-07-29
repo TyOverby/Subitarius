@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,24 +49,31 @@ final class BingSearchProvider implements SearchProvider {
 	}
 
 	@Override
-	public List<ArticleUrl> search(SearchQuery query)
+	public List<ArticleUrl> search(Tag tag, Source source)
 			throws SearchUnavailableException {
-		return search(query, -1);
+		return search(tag, source, -1);
 	}
 
 	@Override
-	public List<ArticleUrl> search(SearchQuery query, int limit)
+	public List<ArticleUrl> search(Tag tag, Source source, int limit)
 			throws SearchUnavailableException {
-		checkNotNull(query);
-		checkArgument(limit != 0);
+		checkNotNull(tag);
+		checkNotNull(source);
 
-		List<ArticleUrl> articleUrls = Lists.newArrayListWithCapacity(limit);
+		List<ArticleUrl> articleUrls;
+		if (limit == 0) {
+			return Collections.<ArticleUrl> emptyList();
+		} else if (limit > 0) {
+			articleUrls = Lists.newArrayListWithCapacity(limit);
+		} else {
+			articleUrls = Lists.newArrayList();
+		}
+
 		int offset = 0;
 		BingSearch search;
-
 		do {
 			try {
-				search = doRequest(query.getSource(), query.getTag(), offset);
+				search = doRequest(tag, source, offset);
 				BingNews news = search.getSearchResponse().getNews();
 
 				if (news == null) {
@@ -82,8 +90,7 @@ final class BingSearchProvider implements SearchProvider {
 					if (limit < 0 || articleUrls.size() < limit) {
 						// handle Bing's apiclick.aspx
 						String rawUrl = handleApiClick(result.getUrl());
-						ArticleUrl articleUrl = new ArticleUrl(rawUrl,
-								query.getSource());
+						ArticleUrl articleUrl = new ArticleUrl(rawUrl, source);
 						articleUrls.add(articleUrl);
 					}
 				}
@@ -100,11 +107,11 @@ final class BingSearchProvider implements SearchProvider {
 		return articleUrls;
 	}
 
-	private BingSearch doRequest(Source source, Tag tag, int offset)
+	private BingSearch doRequest(Tag tag, Source source, int offset)
 			throws IOException, RobotsExclusionException {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("AppId", APP_ID);
-		params.put("Query", getQuery(source, tag));
+		params.put("Query", getQuery(tag, source));
 		params.put("Sources", "News");
 		params.put("Version", "2.0");
 		params.put("News.Count", Integer.toString(RESULT_COUNT));
@@ -117,7 +124,7 @@ final class BingSearchProvider implements SearchProvider {
 		return gson.fromJson(json, BingSearch.class);
 	}
 
-	private static String getQuery(Source source, Tag tag) {
+	private static String getQuery(Tag tag, Source source) {
 		String query = "site:";
 		query += source.getDomainName();
 		query += " " + tag.getName();
