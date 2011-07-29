@@ -21,6 +21,15 @@ import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
 import com.prealpha.extempdb.central.search.Searcher;
 
+/**
+ * Accepts requests to begin searching for article URLs using {@link Searcher}.
+ * HTTP {@code HEAD} is the only method implemented by this servlet; see
+ * {@link #doHead(HttpServletRequest, HttpServletResponse) doHead} for details.
+ * 
+ * @author Meyer Kizner
+ * @see #doHead(HttpServletRequest, HttpServletResponse)
+ * 
+ */
 public final class SearcherServlet extends HttpServlet {
 	private final UnitOfWork unitOfWork;
 
@@ -33,8 +42,24 @@ public final class SearcherServlet extends HttpServlet {
 		this.searcherProvider = searcherProvider;
 	}
 
+	/**
+	 * Services a request to begin a new search. The request must originate from
+	 * the local machine; this is checked by comparing the local and remote IP
+	 * addresses. If they are equal, a separate thread is started for the search
+	 * and status code 200 (OK) is immediately sent in response. Otherwise, no
+	 * search is performed and status code 403 (Forbidden) is sent instead.
+	 * <p>
+	 * 
+	 * One parameter is recognized by this method, {@code sourceOrdinals}. If
+	 * present, its value is used to limit the sources which will be searched.
+	 * The value is interpreted as a comma-separated set of integers; each
+	 * integer corresponds to a {@link Source} ordinal. All sources will be
+	 * skipped if the value is empty. The set's order is disregarded and does
+	 * not influence the search order; duplicates are similarly ignored. If
+	 * {@code sourceOrdinals} is absent, all sources are searched.
+	 */
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse res)
+	protected void doHead(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		InetAddress localAddress = InetAddress.getByName(req.getLocalAddr());
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
@@ -61,7 +86,7 @@ public final class SearcherServlet extends HttpServlet {
 		}
 	}
 
-	private Set<Integer> parseSourceOrdinals(HttpServletRequest req) {
+	private static Set<Integer> parseSourceOrdinals(HttpServletRequest req) {
 		String rawSourceIds = req.getParameter("sourceOrdinals");
 		if (rawSourceIds == null) {
 			return null;
