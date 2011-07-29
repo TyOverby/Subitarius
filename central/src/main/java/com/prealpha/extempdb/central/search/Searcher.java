@@ -27,7 +27,7 @@ import com.prealpha.extempdb.domain.Tag.Type;
 import com.prealpha.extempdb.domain.TagMapping;
 import com.prealpha.extempdb.util.logging.InjectLogger;
 
-public class Searcher {
+class Searcher {
 	@InjectLogger
 	private Logger log;
 
@@ -36,7 +36,7 @@ public class Searcher {
 	private final SearchProvider searchProvider;
 
 	@Inject
-	public Searcher(EntityManager entityManager, SearchProvider searchProvider) {
+	private Searcher(EntityManager entityManager, SearchProvider searchProvider) {
 		this.entityManager = entityManager;
 		this.searchProvider = searchProvider;
 	}

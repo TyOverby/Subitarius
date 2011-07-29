@@ -43,7 +43,7 @@ final class BingSearchProvider implements SearchProvider {
 	private final Gson gson;
 
 	@Inject
-	public BingSearchProvider(SimpleHttpClient httpClient, Gson gson) {
+	private BingSearchProvider(SimpleHttpClient httpClient, Gson gson) {
 		this.httpClient = httpClient;
 		this.gson = gson;
 	}

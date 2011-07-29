@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.central;
+package com.prealpha.extempdb.central.search;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -21,13 +21,13 @@ import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
 import com.prealpha.extempdb.central.search.Searcher;
 
-final class SearcherServlet extends HttpServlet {
+public final class SearcherServlet extends HttpServlet {
 	private final UnitOfWork unitOfWork;
 
 	private final Provider<Searcher> searcherProvider;
 
 	@Inject
-	public SearcherServlet(UnitOfWork unitOfWork,
+	private SearcherServlet(UnitOfWork unitOfWork,
 			Provider<Searcher> searcherProvider) {
 		this.unitOfWork = unitOfWork;
 		this.searcherProvider = searcherProvider;
