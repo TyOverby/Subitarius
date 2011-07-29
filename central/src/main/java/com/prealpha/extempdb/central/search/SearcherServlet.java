@@ -57,7 +57,7 @@ public final class SearcherServlet extends HttpServlet {
 
 			res.setStatus(HttpServletResponse.SC_OK);
 		} else {
-			res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}
 	}
 
