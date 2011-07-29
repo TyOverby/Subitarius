@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableSet;
 
 @Entity
 public class ArticleUrl extends DistributedEntity {
-	private static final long serialVersionUID = 6702774638953560323L;
+	private static final long serialVersionUID = 4371586612973910099L;
 
 	private String url;
 
@@ -122,6 +122,11 @@ public class ArticleUrl extends DistributedEntity {
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return url;
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,

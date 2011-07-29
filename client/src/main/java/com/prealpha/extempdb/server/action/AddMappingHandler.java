@@ -76,7 +76,7 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 			mapping = new TagMapping();
 			mapping.setKey(key);
 			mapping.setTag(tag);
-			mapping.setArticle(article);
+			mapping.setArticleUrl(article);
 			mapping.setAdded(new Date());
 			mapping.setActions(new ArrayList<TagMappingAction>());
 			entityManager.persist(mapping);

@@ -8,14 +8,8 @@ package com.prealpha.extempdb.central.search;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import com.prealpha.extempdb.domain.Article;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
-import com.prealpha.extempdb.domain.TagMapping;
-import com.prealpha.extempdb.domain.TagMappingAction;
 
 final class SearchQuery {
 	private final Source source;
@@ -35,19 +29,6 @@ final class SearchQuery {
 
 	public Tag getTag() {
 		return tag;
-	}
-
-	public TagMapping createTagMapping(Article article) {
-		checkNotNull(article);
-		TagMapping mapping = new TagMapping();
-		TagMapping.Key mappingKey = new TagMapping.Key(tag.getName(),
-				article.getId());
-		mapping.setKey(mappingKey);
-		mapping.setTag(tag);
-		mapping.setArticle(article);
-		mapping.setAdded(new Date());
-		mapping.setActions(new ArrayList<TagMappingAction>());
-		return mapping;
 	}
 
 	@Override

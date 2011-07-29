@@ -59,7 +59,7 @@ import com.google.inject.Inject;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DistributedEntity implements HasBytes, Serializable {
-	private static final long serialVersionUID = 4726912875408999214L;
+	private static final long serialVersionUID = 7547760315320101572L;
 
 	private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
@@ -155,12 +155,9 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this.parent = parent;
 	}
 
-	/*
-	 * TODO: the column length depends on the implementation in Hashable
-	 */
 	@Id
 	@Column(length = 64, nullable = false, updatable = false)
-	protected String getHash() {
+	public String getHash() {
 		byte[] hashBytes = getHashBytes();
 		char[] chars = new char[2 * hashBytes.length];
 		for (int i = 0; i < hashBytes.length; i++) {

@@ -23,7 +23,7 @@ import com.google.common.base.Charsets;
 
 @Entity
 public class TagMapping extends DistributedEntity {
-	private static final long serialVersionUID = 7388688488777734817L;
+	private static final long serialVersionUID = 7203346068545976447L;
 
 	public static enum State {
 		STICKIED, PATROLLED, UNPATROLLED, REMOVED, ARCHIVED;
@@ -145,6 +145,11 @@ public class TagMapping extends DistributedEntity {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("(%s -> %s)", tag, articleUrl);
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,

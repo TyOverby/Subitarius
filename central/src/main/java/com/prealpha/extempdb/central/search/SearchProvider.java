@@ -8,9 +8,11 @@ package com.prealpha.extempdb.central.search;
 
 import java.util.List;
 
-interface SearchProvider {
-	List<String> search(SearchQuery query) throws SearchUnavailableException;
+import com.prealpha.extempdb.domain.ArticleUrl;
 
-	List<String> search(SearchQuery query, int limit)
+interface SearchProvider {
+	List<ArticleUrl> search(SearchQuery query) throws SearchUnavailableException;
+
+	List<ArticleUrl> search(SearchQuery query, int limit)
 			throws SearchUnavailableException;
 }

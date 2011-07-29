@@ -30,7 +30,7 @@ import com.google.common.collect.ImmutableSet;
  */
 @Entity
 public class Tag extends DistributedEntity {
-	private static final long serialVersionUID = -3751914996475594880L;
+	private static final long serialVersionUID = 2124862260409374293L;
 
 	public static enum Type {
 		PLACEHOLDER, SEARCHED, ARCHIVED;
@@ -175,6 +175,11 @@ public class Tag extends DistributedEntity {
 			return false;
 		}
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,

@@ -13,14 +13,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
+import com.prealpha.extempdb.domain.ArticleUrl;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
@@ -47,18 +48,18 @@ final class BingSearchProvider implements SearchProvider {
 	}
 
 	@Override
-	public List<String> search(SearchQuery query)
+	public List<ArticleUrl> search(SearchQuery query)
 			throws SearchUnavailableException {
 		return search(query, -1);
 	}
 
 	@Override
-	public List<String> search(SearchQuery query, int limit)
+	public List<ArticleUrl> search(SearchQuery query, int limit)
 			throws SearchUnavailableException {
 		checkNotNull(query);
 		checkArgument(limit != 0);
 
-		List<String> urls = new ArrayList<String>();
+		List<ArticleUrl> articleUrls = Lists.newArrayListWithCapacity(limit);
 		int offset = 0;
 		BingSearch search;
 
@@ -78,10 +79,12 @@ final class BingSearchProvider implements SearchProvider {
 				}
 
 				for (BingNewsResult result : results) {
-					if (limit < 0 || urls.size() < limit) {
+					if (limit < 0 || articleUrls.size() < limit) {
 						// handle Bing's apiclick.aspx
-						String url = handleApiClick(result.getUrl());
-						urls.add(url);
+						String rawUrl = handleApiClick(result.getUrl());
+						ArticleUrl articleUrl = new ArticleUrl(rawUrl,
+								query.getSource());
+						articleUrls.add(articleUrl);
 					}
 				}
 
@@ -91,9 +94,10 @@ final class BingSearchProvider implements SearchProvider {
 			} catch (RobotsExclusionException rex) {
 				throw new SearchUnavailableException(rex);
 			}
-		} while (!isComplete(search) && (limit < 0 || urls.size() < limit));
+		} while (!isComplete(search)
+				&& (limit < 0 || articleUrls.size() < limit));
 
-		return urls;
+		return articleUrls;
 	}
 
 	private BingSearch doRequest(Source source, Tag tag, int offset)
