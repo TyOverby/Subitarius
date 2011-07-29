@@ -23,11 +23,11 @@ import com.prealpha.extempdb.central.search.Searcher;
 
 /**
  * Accepts requests to begin searching for article URLs using {@link Searcher}.
- * HTTP {@code HEAD} is the only method implemented by this servlet; see
- * {@link #doHead(HttpServletRequest, HttpServletResponse) doHead} for details.
+ * HTTP {@code POST} is the only method implemented by this servlet; see
+ * {@link #doPost(HttpServletRequest, HttpServletResponse) doPost} for details.
  * 
  * @author Meyer Kizner
- * @see #doHead(HttpServletRequest, HttpServletResponse)
+ * @see #doPost(HttpServletRequest, HttpServletResponse)
  * 
  */
 public final class SearcherServlet extends HttpServlet {
@@ -59,7 +59,7 @@ public final class SearcherServlet extends HttpServlet {
 	 * {@code sourceOrdinals} is absent, all sources are searched.
 	 */
 	@Override
-	protected void doHead(HttpServletRequest req, HttpServletResponse res)
+	protected void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		InetAddress localAddress = InetAddress.getByName(req.getLocalAddr());
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
