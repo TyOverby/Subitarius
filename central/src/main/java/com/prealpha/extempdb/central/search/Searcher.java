@@ -16,6 +16,8 @@ import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.domain.ArticleUrl;
@@ -48,14 +50,20 @@ class Searcher {
 	public void run(Set<Integer> sourceOrdinals) {
 		log.info("starting search");
 		try {
+			Iterable<Tag> searchedTags = getAllCurrent(Tag.class);
+			searchedTags = Iterables.filter(searchedTags, new Predicate<Tag>() {
+				@Override
+				public boolean apply(Tag input) {
+					return (input.getType() == Type.SEARCHED);
+				}
+			});
+
 			for (Source source : Source.values()) {
 				if (sourceOrdinals == null
 						|| sourceOrdinals.contains(source.ordinal())) {
 					try {
-						for (Tag tag : getAllCurrent(Tag.class)) {
-							if (tag.getType() == Type.SEARCHED) {
-								search(tag, source);
-							}
+						for (Tag tag : searchedTags) {
+							search(tag, source);
 						}
 					} catch (RuntimeException rx) {
 						log.error("unexpected exception was thrown", rx);
@@ -89,7 +97,7 @@ class Searcher {
 	}
 
 	@Transactional
-	<T extends DistributedEntity> List<T> getAllCurrent(Class<T> entityClass) {
+	<T extends DistributedEntity> Iterable<T> getAllCurrent(Class<T> entityClass) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
 		Root<T> root = criteria.from(entityClass);
