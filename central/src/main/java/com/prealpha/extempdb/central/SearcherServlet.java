@@ -4,10 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.central.search;
+package com.prealpha.extempdb.central;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.EnumSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -15,11 +16,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
 import com.prealpha.extempdb.central.search.Searcher;
+import com.prealpha.extempdb.domain.Source;
 
 /**
  * Accepts requests to begin searching for article URLs using {@link Searcher}.
@@ -30,7 +31,7 @@ import com.prealpha.extempdb.central.search.Searcher;
  * @see #doPost(HttpServletRequest, HttpServletResponse)
  * 
  */
-public final class SearcherServlet extends HttpServlet {
+final class SearcherServlet extends HttpServlet {
 	private final UnitOfWork unitOfWork;
 
 	private final Provider<Searcher> searcherProvider;
@@ -65,7 +66,7 @@ public final class SearcherServlet extends HttpServlet {
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
 
 		if (localAddress.equals(remoteAddress)) {
-			final Set<Integer> sourceOrdinals = parseSourceOrdinals(req);
+			final Set<Source> sources = parseSourceOrdinals(req);
 
 			new Thread(new Runnable() {
 				@Override
@@ -73,7 +74,7 @@ public final class SearcherServlet extends HttpServlet {
 					unitOfWork.begin();
 					try {
 						Searcher searcher = searcherProvider.get();
-						searcher.run(sourceOrdinals);
+						searcher.run(sources);
 					} finally {
 						unitOfWork.end();
 					}
@@ -86,17 +87,18 @@ public final class SearcherServlet extends HttpServlet {
 		}
 	}
 
-	private static Set<Integer> parseSourceOrdinals(HttpServletRequest req) {
-		String rawSourceIds = req.getParameter("sourceOrdinals");
-		if (rawSourceIds == null) {
-			return null;
+	private static Set<Source> parseSourceOrdinals(HttpServletRequest req) {
+		String sourceOrdinals = req.getParameter("sourceOrdinals");
+		if (sourceOrdinals == null) {
+			return EnumSet.allOf(Source.class);
 		} else {
-			Set<Integer> sourceIds = Sets.newHashSet();
-			String[] tokens = rawSourceIds.split(",");
+			Set<Source> sources = EnumSet.noneOf(Source.class);
+			String[] tokens = sourceOrdinals.split(",");
 			for (String token : tokens) {
-				sourceIds.add(Integer.parseInt(token));
+				int ordinal = Integer.parseInt(token);
+				sources.add(Source.values()[ordinal]);
 			}
-			return sourceIds;
+			return sources;
 		}
 	}
 }

@@ -15,7 +15,6 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
-import com.prealpha.extempdb.central.search.SearcherServlet;
 import com.prealpha.extempdb.domain.User;
 import com.prealpha.extempdb.util.logging.Slf4jTypeListener;
 

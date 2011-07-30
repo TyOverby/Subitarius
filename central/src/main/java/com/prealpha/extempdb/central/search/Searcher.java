@@ -29,7 +29,7 @@ import com.prealpha.extempdb.domain.Tag.Type;
 import com.prealpha.extempdb.domain.TagMapping;
 import com.prealpha.extempdb.util.logging.InjectLogger;
 
-class Searcher {
+public class Searcher {
 	@InjectLogger
 	private Logger log;
 
@@ -43,11 +43,7 @@ class Searcher {
 		this.searchProvider = searchProvider;
 	}
 
-	public void run() {
-		run(null);
-	}
-
-	public void run(Set<Integer> sourceOrdinals) {
+	public void run(Set<Source> sources) {
 		log.info("starting search");
 		try {
 			Iterable<Tag> searchedTags = getAllCurrent(Tag.class);
@@ -58,16 +54,13 @@ class Searcher {
 				}
 			});
 
-			for (Source source : Source.values()) {
-				if (sourceOrdinals == null
-						|| sourceOrdinals.contains(source.ordinal())) {
-					try {
-						for (Tag tag : searchedTags) {
-							search(tag, source);
-						}
-					} catch (RuntimeException rx) {
-						log.error("unexpected exception was thrown", rx);
+			for (Source source : sources) {
+				try {
+					for (Tag tag : searchedTags) {
+						search(tag, source);
 					}
+				} catch (RuntimeException rx) {
+					log.error("unexpected exception was thrown", rx);
 				}
 			}
 			log.info("search complete");
