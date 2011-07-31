@@ -118,7 +118,9 @@ final class AuthenticationServlet extends HttpServlet {
 		Root<User> userRoot = criteria.from(User.class);
 		criteria.where(builder.equal(userRoot.get(User_.name), name));
 		try {
-			return entityManager.createQuery(criteria).getSingleResult();
+			User result = entityManager.createQuery(criteria).getSingleResult();
+			entityManager.detach(result);
+			return result;
 		} catch (NoResultException nrx) {
 			return null;
 		}
