@@ -30,7 +30,7 @@ import com.google.common.primitives.Longs;
 
 @Entity
 public class Team extends SignedEntity {
-	private static final long serialVersionUID = 6357347517747676031L;
+	private static final long serialVersionUID = -7875144096585811927L;
 
 	private String name;
 
@@ -71,13 +71,18 @@ public class Team extends SignedEntity {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	public Date getExpiry() {
+	protected Date getExpiry() {
 		return new Date(expiry.getTime());
 	}
 
 	protected void setExpiry(Date expiry) {
 		checkNotNull(expiry);
 		this.expiry = new Date(expiry.getTime());
+	}
+	
+	@Transient
+	public boolean isExpired() {
+		return (expiry.compareTo(new Date()) < 0);
 	}
 
 	public void updateExpiry(Date newExpiry, PrivateKey privateKey)
