@@ -98,7 +98,7 @@ public class TagMapping extends DistributedEntity {
 	@Transient
 	@Override
 	public byte[] getBytes() {
-		byte[] tagBytes = tag.getHashBytes();
+		byte[] tagBytes = tag.getIdBytes();
 		byte[] articleBytes = articleUrl.getHashBytes();
 		byte[] stateBytes = state.name().getBytes(Charsets.UTF_8);
 		return DistributedEntity.merge(tagBytes, articleBytes, stateBytes);

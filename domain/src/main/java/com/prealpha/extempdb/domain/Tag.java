@@ -20,16 +20,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
  */
 @Entity
-public class Tag extends DistributedEntity {
+public class Tag extends CentralEntity {
 	private static final long serialVersionUID = 2124862260409374293L;
 
 	public static enum Type {
@@ -52,13 +50,7 @@ public class Tag extends DistributedEntity {
 	protected Tag() {
 	}
 
-	public Tag(User creator, String name, Type type, Set<Tag> parents) {
-		this(creator, null, name, type, parents);
-	}
-
-	public Tag(User creator, Tag parent, String name, Type type,
-			Set<Tag> parents) {
-		super(creator, parent);
+	public Tag(String name, Type type, Set<Tag> parents) {
 		setName(name);
 		setType(type);
 		setParents(parents);
@@ -116,22 +108,6 @@ public class Tag extends DistributedEntity {
 	protected void setMappings(Set<TagMapping> mappings) {
 		checkNotNull(mappings);
 		this.mappings = ImmutableSet.copyOf(mappings);
-	}
-
-	@Transient
-	@Override
-	public byte[] getBytes() {
-		byte[] nameBytes = name.toUpperCase().getBytes(Charsets.UTF_8);
-		byte[] typeBytes = type.name().getBytes(Charsets.UTF_8);
-		// XOR the parent hashes together to prevent order sensitivity
-		byte[] parentsBytes = new byte[DistributedEntity.getHashLength()];
-		for (Tag parent : parents) {
-			byte[] hash = parent.getHashBytes();
-			for (int i = 0; i < DistributedEntity.getHashLength(); i++) {
-				parentsBytes[i] ^= hash[i];
-			}
-		}
-		return DistributedEntity.merge(nameBytes, typeBytes, parentsBytes);
 	}
 
 	@Override
