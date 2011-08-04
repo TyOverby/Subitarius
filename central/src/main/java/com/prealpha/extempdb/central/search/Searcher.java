@@ -21,8 +21,6 @@ import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.domain.ArticleUrl;
-import com.prealpha.extempdb.domain.DistributedEntity;
-import com.prealpha.extempdb.domain.DistributedEntity_;
 import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.Tag.Type;
@@ -46,7 +44,7 @@ public class Searcher {
 	public void run(Set<Source> sources) {
 		log.info("starting search");
 		try {
-			Iterable<Tag> searchedTags = getAllCurrent(Tag.class);
+			Iterable<Tag> searchedTags = getAllTags();
 			searchedTags = Iterables.filter(searchedTags, new Predicate<Tag>() {
 				@Override
 				public boolean apply(Tag input) {
@@ -78,7 +76,9 @@ public class Searcher {
 			log.debug("persisted article URL: {}", articleUrl);
 
 			TagMapping mapping = new TagMapping(tag, articleUrl);
-			if (mappingExists(mapping)) {
+			TagMapping existing = entityManager.find(TagMapping.class,
+					mapping.getHash());
+			if (existing != null) {
 				log.debug("mapping already exists: {}", mapping);
 			} else {
 				entityManager.persist(mapping);
@@ -90,26 +90,12 @@ public class Searcher {
 	}
 
 	@Transactional
-	<T extends DistributedEntity> Iterable<T> getAllCurrent(Class<T> entityClass) {
+	Iterable<Tag> getAllTags() {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<T> criteria = builder.createQuery(entityClass);
-		Root<T> root = criteria.from(entityClass);
-		criteria.where(builder.isNull(root.get(DistributedEntity_.child)));
+		CriteriaQuery<Tag> criteria = builder.createQuery(Tag.class);
+		Root<Tag> root = criteria.from(Tag.class);
+		criteria.select(root);
 		criteria.distinct(true);
 		return entityManager.createQuery(criteria).getResultList();
-	}
-
-	private boolean mappingExists(TagMapping mapping) {
-		TagMapping existing = entityManager.find(TagMapping.class,
-				mapping.getHash());
-		if (existing != null) {
-			return true;
-		} else if (mapping.getTag().getParent() != null) {
-			Tag parentTag = (Tag) mapping.getTag().getParent();
-			ArticleUrl articleUrl = mapping.getArticleUrl();
-			return mappingExists(new TagMapping(parentTag, articleUrl));
-		} else {
-			return false;
-		}
 	}
 }

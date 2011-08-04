@@ -49,7 +49,7 @@ public final class BingSearchProviderTest {
 
 	@Before
 	public void setUp() {
-		tag = new Tag(null, "Network neutrality", Type.SEARCHED,
+		tag = new Tag("Network neutrality", Type.SEARCHED,
 				Collections.<Tag> emptySet());
 		source = Source.NY_TIMES;
 	}
