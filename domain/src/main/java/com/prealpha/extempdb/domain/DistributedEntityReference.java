@@ -16,7 +16,10 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 
 @Entity
 public class DistributedEntityReference {
@@ -106,6 +109,8 @@ public class DistributedEntityReference {
 	}
 
 	private Key key;
+	
+	private Team team;
 
 	private byte[] blob;
 
@@ -118,13 +123,25 @@ public class DistributedEntityReference {
 	}
 
 	@EmbeddedId
-	protected Key getKey() {
+	public Key getKey() {
 		return key;
 	}
 
 	protected void setKey(Key key) {
 		checkNotNull(key);
 		this.key = key;
+	}
+	
+	@MapsId("teamId")
+	@ManyToOne
+	@JoinColumn(nullable = false, updatable = false)
+	protected Team getTeam() {
+		return team;
+	}
+	
+	protected void setTeam(Team team) {
+		checkNotNull(team);
+		this.team = team;
 	}
 
 	@Lob

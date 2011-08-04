@@ -36,7 +36,7 @@ abstract class CentralEntity implements Serializable {
 
 	@Id
 	@Column(length = 36, nullable = false, updatable = false)
-	protected String getId() {
+	public String getId() {
 		return uuid.toString();
 	}
 
