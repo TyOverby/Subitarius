@@ -251,12 +251,26 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 	 * {@inheritDoc}
 	 * <p>
 	 * 
-	 * {@code DistributedEntity} adds the additional requirement that the result
-	 * of this method must be consistent with {@link Object#equals(Object)
-	 * equals}. For a particular class, equal objects must generate equal byte
-	 * representations, and unequal objects must generate unequal byte
-	 * representations, to a reasonable extent. (This is stronger than the
-	 * requirement for {@link Object#hashCode() hashCode}.)
+	 * {@code DistributedEntity} adds two additional requirements to the
+	 * contract inherited from {@code HasBytes}.
+	 * <p>
+	 * 
+	 * The first additional requirement is that the result of this method must
+	 * be consistent with {@link Object#equals(Object) equals}. For a particular
+	 * class, equal objects must generate equal byte representations, and
+	 * unequal objects must generate unequal byte representations, to a
+	 * reasonable extent. (This is stronger than the requirement for
+	 * {@link Object#hashCode() hashCode}.)
+	 * <p>
+	 * 
+	 * The second additional requirement is that the result of this method be
+	 * fully determined upon deserialization. In practice, this applies mainly
+	 * to JPA entity relationships declared by the class. The owning side of the
+	 * relationship will usually take responsibility for serialization, so the
+	 * unowned side declares its corresponding instance field as
+	 * {@code transient}. If this is the case, the entity with the unowned side
+	 * may not rely on the relationship in determining the result of
+	 * {@code getBytes()}.
 	 * <p>
 	 * 
 	 * In general, subclass implementations should include only the state of
