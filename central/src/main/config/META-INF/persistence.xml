@@ -8,6 +8,7 @@
 		<class>com.prealpha.extempdb.domain.Article</class>
 		<class>com.prealpha.extempdb.domain.ArticleUrl</class>
 		<class>com.prealpha.extempdb.domain.DistributedEntity</class>
+		<class>com.prealpha.extempdb.domain.DistributedEntityReference</class>
 		<class>com.prealpha.extempdb.domain.License</class>
 		<class>com.prealpha.extempdb.domain.SignedEntity</class>
 		<class>com.prealpha.extempdb.domain.Tag</class>
@@ -16,7 +17,7 @@
 		<class>com.prealpha.extempdb.domain.User</class>
 		<validation-mode>NONE</validation-mode>
 		<properties>
-			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="javax.persistence.jdbc.url"
 				value="jdbc:mysql://meyer.pre-alpha.com/extempdb?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8" />
 			<property name="javax.persistence.jdbc.user" value="extempdb" />
