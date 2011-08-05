@@ -93,7 +93,7 @@ final class SearcherServlet extends HttpServlet {
 				});
 				res.setStatus(HttpServletResponse.SC_OK);
 			} catch (IllegalArgumentException iax) {
-				log.info("bad sourceOrdinals parameter: {}",
+				log.warn("bad sourceOrdinals parameter: {}",
 						req.getParameter("sourceOrdinals"));
 				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
