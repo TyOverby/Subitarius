@@ -72,7 +72,7 @@ public class ArticleUrl extends DistributedEntity {
 		this.source = source;
 	}
 
-	@OneToMany(mappedBy = "article")
+	@OneToMany(mappedBy = "articleUrl")
 	public Set<TagMapping> getMappings() {
 		return mappings;
 	}

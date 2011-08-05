@@ -167,6 +167,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		return new String(chars);
 	}
 
+	@Transient
 	protected final byte[] getHashBytes() {
 		String prefix = getClass().getCanonicalName();
 		byte[] prefixBytes = prefix.getBytes(Charsets.UTF_8);
