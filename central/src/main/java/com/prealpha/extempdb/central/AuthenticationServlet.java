@@ -20,10 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.extempdb.domain.User;
 import com.prealpha.extempdb.domain.User_;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /**
  * Authenticates an HTTP client. Two methods are supported: {@code POST} allows
@@ -44,6 +47,9 @@ import com.prealpha.extempdb.domain.User_;
  * 
  */
 final class AuthenticationServlet extends HttpServlet {
+	@InjectLogger
+	private Logger log;
+
 	private final Provider<EntityManager> entityManagerProvider;
 
 	@Inject
@@ -86,31 +92,43 @@ final class AuthenticationServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String[]> params = req.getParameterMap();
 		if (!checkParameters(params, "version", "name", "password")) {
+			log.info("rejected request with missing parameters: {}", params);
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
 		HttpSession session = req.getSession();
 
-		String version = params.get("version")[0];
+		String version = req.getParameter("version");
 		if (!version.equals("0.2-alpha")) {
+			log.info("rejected request with unknown version: {}", version);
 			res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			return;
 		}
 
-		String name = params.get("name")[0];
+		String name = req.getParameter("name");
 		User user = findUser(name);
 		if (user != null) {
-			String password = params.get("password")[0];
+			String password = req.getParameter("password");
 			if (user.authenticate(password)) {
+				log.info(
+						"successfully authenticated session ID {} with user: {}",
+						session.getId(), user);
 				session.setAttribute(CentralModule.USER_ATTR, user);
 				res.setStatus(HttpServletResponse.SC_OK);
 				return;
 			}
 		}
 
+		log.info("failed authentication against user name: {}", name);
 		res.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 
+	/**
+	 * @param name
+	 *            a user's name
+	 * @return a detached {@link User} with the specified name, or {@code null}
+	 *         if none exists
+	 */
 	private User findUser(String name) {
 		EntityManager entityManager = entityManagerProvider.get();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -126,6 +144,15 @@ final class AuthenticationServlet extends HttpServlet {
 		}
 	}
 
+	/**
+	 * @param params
+	 *            a parameter map
+	 * @param keys
+	 *            parameter names to search for
+	 * @return {@code true} if all specified keys appear in the map and have
+	 *         exactly one value, which must be non-empty; otherwise,
+	 *         {@code false}
+	 */
 	private static boolean checkParameters(Map<String, String[]> params,
 			String... keys) {
 		for (String key : keys) {
@@ -152,6 +179,7 @@ final class AuthenticationServlet extends HttpServlet {
 			throws IOException, ServletException {
 		HttpSession session = req.getSession(false);
 		if (session != null) {
+			log.info("invalidated session, ID {}", session.getId());
 			session.invalidate();
 		}
 	}

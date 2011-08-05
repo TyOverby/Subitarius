@@ -79,7 +79,7 @@ public class Team extends SignedEntity {
 		checkNotNull(expiry);
 		this.expiry = new Date(expiry.getTime());
 	}
-	
+
 	@Transient
 	public boolean isExpired() {
 		return (expiry.compareTo(new Date()) < 0);
@@ -162,6 +162,11 @@ public class Team extends SignedEntity {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,

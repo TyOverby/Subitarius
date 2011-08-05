@@ -144,6 +144,11 @@ public class User extends SignedEntity {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return name + " of " + team;
+	}
+
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();
