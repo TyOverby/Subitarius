@@ -14,6 +14,7 @@
 		<class>com.prealpha.extempdb.domain.TagMapping</class>
 		<class>com.prealpha.extempdb.domain.Team</class>
 		<class>com.prealpha.extempdb.domain.User</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
