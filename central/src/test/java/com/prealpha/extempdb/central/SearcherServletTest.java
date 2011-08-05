@@ -36,11 +36,9 @@ public final class SearcherServletTest {
 	private SearcherServlet servlet;
 
 	@Mock(Mock.Type.NICE)
-	@Bind
 	private HttpServletRequest req;
 
 	@Mock(Mock.Type.STANDARD)
-	@Bind
 	private HttpServletResponse res;
 
 	@SuppressWarnings("unused")
