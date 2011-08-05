@@ -79,8 +79,9 @@ import com.prealpha.extempdb.domain.User;
  * <p>
  * 
  * <b>This servlet is intended to be secured, and undefined behavior will result
- * if {@link AuthenticationServlet} has not accepted credentials. Use a filter
- * in front of this servlet to guarantee that requests are authorized.</b>
+ * if {@link AuthenticationServlet} has not accepted credentials. Use
+ * {@link AuthenticationFilter} in front of this servlet to guarantee that
+ * requests are authorized.</b>
  * 
  * @author Meyer Kizner
  * @see #doGet(HttpServletRequest, HttpServletResponse)

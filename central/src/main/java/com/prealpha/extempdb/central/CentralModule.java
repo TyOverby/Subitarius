@@ -30,9 +30,13 @@ public final class CentralModule extends ServletModule {
 
 		bind(SearcherServlet.class).in(Singleton.class);
 		serve("/searcher").with(SearcherServlet.class);
-		
+
 		bind(AuthenticationServlet.class).in(Singleton.class);
 		serve("/auth").with(AuthenticationServlet.class);
+
+		bind(DistributedEntityServlet.class).in(Singleton.class);
+		filter("/DistributedEntity").through(AuthenticationFilter.class);
+		serve("/DistributedEntity").with(DistributedEntityServlet.class);
 
 		bindListener(Matchers.any(), new Slf4jTypeListener());
 	}
