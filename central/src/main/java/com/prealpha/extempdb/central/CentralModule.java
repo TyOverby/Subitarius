@@ -6,6 +6,8 @@
 
 package com.prealpha.extempdb.central;
 
+import java.util.concurrent.Executor;
+
 import javax.servlet.http.HttpSession;
 
 import com.google.inject.Inject;
@@ -39,6 +41,16 @@ public final class CentralModule extends ServletModule {
 		serve("/DistributedEntity").with(DistributedEntityServlet.class);
 
 		bindListener(Matchers.any(), new Slf4jTypeListener());
+	}
+
+	@Provides
+	Executor getExecutor() {
+		return new Executor() {
+			@Override
+			public void execute(Runnable runnable) {
+				new Thread(runnable, "Searcher").start();
+			}
+		};
 	}
 
 	@Provides

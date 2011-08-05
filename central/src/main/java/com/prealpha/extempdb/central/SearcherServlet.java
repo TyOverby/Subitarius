@@ -10,17 +10,21 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
 import com.prealpha.extempdb.central.search.Searcher;
 import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /**
  * Accepts requests to begin searching for article URLs using {@link Searcher}.
@@ -32,13 +36,19 @@ import com.prealpha.extempdb.domain.Source;
  * 
  */
 final class SearcherServlet extends HttpServlet {
+	@InjectLogger
+	private Logger log;
+
+	private final Executor executor;
+
 	private final UnitOfWork unitOfWork;
 
 	private final Provider<Searcher> searcherProvider;
 
 	@Inject
-	private SearcherServlet(UnitOfWork unitOfWork,
+	private SearcherServlet(Executor executor, UnitOfWork unitOfWork,
 			Provider<Searcher> searcherProvider) {
+		this.executor = executor;
 		this.unitOfWork = unitOfWork;
 		this.searcherProvider = searcherProvider;
 	}
@@ -64,11 +74,10 @@ final class SearcherServlet extends HttpServlet {
 			throws IOException, ServletException {
 		InetAddress localAddress = InetAddress.getByName(req.getLocalAddr());
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
-
 		if (localAddress.equals(remoteAddress)) {
 			final Set<Source> sources = parseSourceOrdinals(req);
-
-			new Thread(new Runnable() {
+			log.info("accepted request to search sources: {}", sources);
+			executor.execute(new Runnable() {
 				@Override
 				public void run() {
 					unitOfWork.begin();
@@ -79,10 +88,10 @@ final class SearcherServlet extends HttpServlet {
 						unitOfWork.end();
 					}
 				}
-			}, "Searcher").start();
-
+			});
 			res.setStatus(HttpServletResponse.SC_OK);
 		} else {
+			log.info("rejected request to search from IP: {}", remoteAddress);
 			res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}
 	}
