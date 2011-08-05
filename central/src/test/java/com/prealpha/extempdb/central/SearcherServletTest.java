@@ -113,4 +113,17 @@ public final class SearcherServletTest {
 		servlet.doPost(req, res);
 		verify(req, res, unitOfWork, searcher);
 	}
+
+	@Test
+	public void testDoPostBounds() throws IOException, ServletException {
+		expect(req.getLocalAddr()).andReturn("127.0.0.1").anyTimes();
+		expect(req.getRemoteAddr()).andReturn("127.0.0.1").anyTimes();
+		expect(req.getParameter("sourceOrdinals")).andReturn("-1").anyTimes();
+		res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		expectLastCall();
+
+		replay(req, res, unitOfWork, searcher);
+		servlet.doPost(req, res);
+		verify(req, res, unitOfWork, searcher);
+	}
 }

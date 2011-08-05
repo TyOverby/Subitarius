@@ -92,7 +92,7 @@ final class SearcherServlet extends HttpServlet {
 					}
 				});
 				res.setStatus(HttpServletResponse.SC_OK);
-			} catch (NumberFormatException nfx) {
+			} catch (IllegalArgumentException iax) {
 				log.info("bad sourceOrdinals parameter: {}",
 						req.getParameter("sourceOrdinals"));
 				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -111,8 +111,9 @@ final class SearcherServlet extends HttpServlet {
 	 * @param req
 	 *            the request to parse
 	 * @return a set of sources to search based on the request
-	 * @throws NumberFormatException
-	 *             if the parameter contains non-numeric "ordinals"
+	 * @throws IllegalArgumentException
+	 *             if the parameter contains ordinals which are non-numeric or
+	 *             out of bounds
 	 * @see #doPost(HttpServletRequest, HttpServletResponse)
 	 */
 	private static Set<Source> parseSourceOrdinals(HttpServletRequest req) {
@@ -123,8 +124,16 @@ final class SearcherServlet extends HttpServlet {
 			Set<Source> sources = EnumSet.noneOf(Source.class);
 			String[] tokens = sourceOrdinals.split(",");
 			for (String token : tokens) {
-				int ordinal = Integer.parseInt(token);
-				sources.add(Source.values()[ordinal]);
+				try {
+					int ordinal = Integer.parseInt(token);
+					if (ordinal < 0 || ordinal >= Source.values().length) {
+						throw new IllegalArgumentException(
+								"ordinal out of bounds: " + ordinal);
+					}
+					sources.add(Source.values()[ordinal]);
+				} catch (NumberFormatException nfx) {
+					throw new IllegalArgumentException(nfx);
+				}
 			}
 			return sources;
 		}
