@@ -103,6 +103,18 @@ final class SearcherServlet extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Parses the {@code sourceOrdinals} parameter on the request into a set of
+	 * sources to search. The parameter is interpreted as a comma-separated list
+	 * of {@link Source} ordinals.
+	 * 
+	 * @param req
+	 *            the request to parse
+	 * @return a set of sources to search based on the request
+	 * @throws NumberFormatException
+	 *             if the parameter contains non-numeric "ordinals"
+	 * @see #doPost(HttpServletRequest, HttpServletResponse)
+	 */
 	private static Set<Source> parseSourceOrdinals(HttpServletRequest req) {
 		String sourceOrdinals = req.getParameter("sourceOrdinals");
 		if (sourceOrdinals == null) {
