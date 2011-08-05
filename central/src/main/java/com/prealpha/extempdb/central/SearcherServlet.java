@@ -64,10 +64,11 @@ final class SearcherServlet extends HttpServlet {
 	 * One parameter is recognized by this method, {@code sourceOrdinals}. If
 	 * present, its value is used to limit the sources which will be searched.
 	 * The value is interpreted as a comma-separated set of integers; each
-	 * integer corresponds to a {@link Source} ordinal. All sources will be
-	 * skipped if the value is empty. The set's order is disregarded and does
-	 * not influence the search order; duplicates are similarly ignored. If
-	 * {@code sourceOrdinals} is absent, all sources are searched.
+	 * integer corresponds to a {@link Source} ordinal. If the value cannot be
+	 * parsed as such, status code 400 (bad request) is sent to the client. The
+	 * set's order is disregarded and does not influence the search order;
+	 * duplicates are similarly ignored. If {@code sourceOrdinals} is absent,
+	 * all sources are searched.
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -75,21 +76,27 @@ final class SearcherServlet extends HttpServlet {
 		InetAddress localAddress = InetAddress.getByName(req.getLocalAddr());
 		InetAddress remoteAddress = InetAddress.getByName(req.getRemoteAddr());
 		if (localAddress.equals(remoteAddress)) {
-			final Set<Source> sources = parseSourceOrdinals(req);
-			log.info("accepted request to search sources: {}", sources);
-			executor.execute(new Runnable() {
-				@Override
-				public void run() {
-					unitOfWork.begin();
-					try {
-						Searcher searcher = searcherProvider.get();
-						searcher.run(sources);
-					} finally {
-						unitOfWork.end();
+			try {
+				final Set<Source> sources = parseSourceOrdinals(req);
+				log.info("accepted request to search sources: {}", sources);
+				executor.execute(new Runnable() {
+					@Override
+					public void run() {
+						unitOfWork.begin();
+						try {
+							Searcher searcher = searcherProvider.get();
+							searcher.run(sources);
+						} finally {
+							unitOfWork.end();
+						}
 					}
-				}
-			});
-			res.setStatus(HttpServletResponse.SC_OK);
+				});
+				res.setStatus(HttpServletResponse.SC_OK);
+			} catch (NumberFormatException nfx) {
+				log.info("bad sourceOrdinals parameter: {}",
+						req.getParameter("sourceOrdinals"));
+				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			}
 		} else {
 			log.info("rejected request to search from IP: {}", remoteAddress);
 			res.sendError(HttpServletResponse.SC_FORBIDDEN);
