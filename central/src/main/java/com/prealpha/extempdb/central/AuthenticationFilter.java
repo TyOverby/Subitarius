@@ -16,10 +16,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.domain.User;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /**
  * A simple filter to check that a requester has authenticated through
@@ -32,6 +35,9 @@ import com.prealpha.extempdb.domain.User;
  * 
  */
 final class AuthenticationFilter implements Filter {
+	@InjectLogger
+	private Logger log;
+
 	private final Provider<User> userProvider;
 
 	@Inject
@@ -50,9 +56,14 @@ final class AuthenticationFilter implements Filter {
 		if (user != null) {
 			Team team = user.getTeam();
 			if (!team.isExpired()) {
+				log.debug("access granted to user {}", user);
 				chain.doFilter(request, response);
 				return;
+			} else {
+				log.info("access denied to user {}; subscription expired", user);
 			}
+		} else {
+			log.info("access denied; not authenticated");
 		}
 
 		((HttpServletResponse) response)
