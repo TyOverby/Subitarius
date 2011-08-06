@@ -92,11 +92,10 @@ final class AuthenticationServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		Map<String, String[]> params = req.getParameterMap();
 		if (!checkParameters(params, "version", "name", "password")) {
-			log.info("rejected request with missing parameters: {}", params);
+			log.info("rejected request with missing parameters");
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		HttpSession session = req.getSession();
 
 		String version = req.getParameter("version");
 		if (!version.equals("0.2-alpha")) {
@@ -110,17 +109,20 @@ final class AuthenticationServlet extends HttpServlet {
 		if (user != null) {
 			String password = req.getParameter("password");
 			if (user.authenticate(password)) {
+				HttpSession session = req.getSession(true);
 				log.info(
 						"successfully authenticated session ID {} with user: {}",
 						session.getId(), user);
 				session.setAttribute(CentralModule.USER_ATTR, user);
 				res.setStatus(HttpServletResponse.SC_OK);
-				return;
+			} else {
+				log.info("bad password provided for user: {}", user);
+				res.sendError(HttpServletResponse.SC_FORBIDDEN);
 			}
+		} else {
+			log.info("requested user does not exist: \"{}\"", name);
+			res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}
-
-		log.info("failed authentication against user name: {}", name);
-		res.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	/**
