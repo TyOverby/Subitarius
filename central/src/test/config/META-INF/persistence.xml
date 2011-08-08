@@ -10,7 +10,6 @@
 		<class>com.prealpha.extempdb.domain.DistributedEntity</class>
 		<class>com.prealpha.extempdb.domain.DistributedEntityReference</class>
 		<class>com.prealpha.extempdb.domain.License</class>
-		<class>com.prealpha.extempdb.domain.SignedEntity</class>
 		<class>com.prealpha.extempdb.domain.Tag</class>
 		<class>com.prealpha.extempdb.domain.TagMapping</class>
 		<class>com.prealpha.extempdb.domain.Team</class>
