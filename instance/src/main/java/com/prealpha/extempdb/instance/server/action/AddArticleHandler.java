@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -17,14 +18,11 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
-import com.prealpha.extempdb.instance.domain.User;
 import com.prealpha.extempdb.instance.server.parse.ArticleParseException;
-import com.prealpha.extempdb.instance.server.search.ArticleProcessor;
-import com.prealpha.extempdb.instance.server.search.UnsupportedSiteException;
 import com.prealpha.extempdb.instance.shared.action.AddArticle;
 import com.prealpha.extempdb.instance.shared.action.AddArticleResult;
 import com.prealpha.extempdb.instance.shared.action.AddArticleResult.Type;
-import com.prealpha.extempdb.instance.util.logging.InjectLogger;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	@InjectLogger

@@ -12,6 +12,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -19,15 +20,11 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.instance.domain.Article;
-import com.prealpha.extempdb.instance.domain.Tag;
-import com.prealpha.extempdb.instance.domain.TagMapping;
-import com.prealpha.extempdb.instance.domain.TagMapping.State;
-import com.prealpha.extempdb.instance.domain.TagMappingAction;
-import com.prealpha.extempdb.instance.domain.User;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.TagMapping;
 import com.prealpha.extempdb.instance.shared.action.AddMapping;
 import com.prealpha.extempdb.instance.shared.action.MutationResult;
-import com.prealpha.extempdb.instance.util.logging.InjectLogger;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 	@InjectLogger

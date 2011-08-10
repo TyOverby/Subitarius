@@ -8,6 +8,7 @@ package com.prealpha.extempdb.instance.server.action;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.User;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 
@@ -15,11 +16,10 @@ import com.google.inject.Inject;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.instance.domain.User;
 import com.prealpha.extempdb.instance.shared.action.GetUser;
 import com.prealpha.extempdb.instance.shared.action.GetUserResult;
 import com.prealpha.extempdb.instance.shared.dto.UserDto;
-import com.prealpha.extempdb.instance.util.logging.InjectLogger;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetUserHandler implements ActionHandler<GetUser, GetUserResult> {
 	@InjectLogger

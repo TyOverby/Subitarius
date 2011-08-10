@@ -24,11 +24,10 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.instance.domain.Tag;
-import com.prealpha.extempdb.instance.domain.Tag_;
+import com.prealpha.extempdb.domain.Tag_;
 import com.prealpha.extempdb.instance.shared.action.GetTagSuggestions;
 import com.prealpha.extempdb.instance.shared.action.GetTagSuggestionsResult;
-import com.prealpha.extempdb.instance.util.logging.InjectLogger;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 class GetTagSuggestionsHandler implements
 		ActionHandler<GetTagSuggestions, GetTagSuggestionsResult> {

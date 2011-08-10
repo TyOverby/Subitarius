@@ -22,8 +22,8 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.instance.util.http.RobotsExclusionException;
-import com.prealpha.extempdb.instance.util.http.SimpleHttpClient;
+import com.prealpha.extempdb.util.http.RobotsExclusionException;
+import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
 final class GuardianArticleParser extends AbstractArticleParser {
 	private static enum Feed {
