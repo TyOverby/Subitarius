@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class WaPostArticleParser extends AbstractArticleParser {
+final class WaPostArticleParser implements ArticleParser {
 	private static enum ArticleType {
 		STORY {
 			@Override
@@ -49,39 +53,21 @@ final class WaPostArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd");
 
+	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private WaPostArticleParser(SimpleHttpClient httpClient) {
+	private WaPostArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
+		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
 
 	@Override
-	public String getCanonicalUrl(String url) {
-		url = super.getCanonicalUrl(url);
-
-		if (url.matches(".*_story_\\d+.html")) {
-			// page numbers
-			int index = url.lastIndexOf("_story");
-			return url.substring(0, index) + "_story.html";
-		} else if (url.endsWith("_singlePage.html")) {
-			// single page version
-			int index = url.lastIndexOf("_singlePage");
-			return url.substring(0, index) + "_story.html";
-		} else if (url.endsWith("_print.html")) {
-			// printable version
-			int index = url.lastIndexOf("_print");
-			return url.substring(0, index) + "_story.html";
-		} else {
-			return url;
-		}
-	}
-
-	@Override
-	public ProtoArticle parse(String url) throws ArticleParseException {
-		checkNotNull(url);
-
-		Map<String, String> params = Collections.emptyMap();
+	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
+		String url = articleUrl.getUrl();
+		Map<String, String> params = ImmutableMap.of();
 
 		try {
 			if (url.endsWith("_story.html")) {
@@ -110,30 +96,30 @@ final class WaPostArticleParser extends AbstractArticleParser {
 					url = url.substring(0, index) + suffix;
 				} while (!document.select("a.next-page").isEmpty());
 
-				List<ProtoArticle> articles = Lists.newArrayList();
+				List<Article> articles = Lists.newArrayList();
 				for (Document doc : documents) {
-					articles.add(getFromHtml(doc, ArticleType.STORY));
+					articles.add(parsePage(articleUrl, doc, ArticleType.STORY));
 				}
 				return combine(articles);
 			} else if (url.endsWith("_blog.html")) {
 				InputStream stream = httpClient.doGet(url, params);
 				Document document = Jsoup.parse(stream, null, url);
-				return getFromHtml(document, ArticleType.BLOG);
+				return parsePage(articleUrl, document, ArticleType.BLOG);
 			} else {
 				// we don't know how to deal with this
 				return null;
 			}
 		} catch (ParseException px) {
-			throw new ArticleParseException(url, px);
+			throw new ArticleParseException(articleUrl, px);
 		} catch (IOException iox) {
-			throw new ArticleParseException(url, iox);
+			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
 
-	private static ProtoArticle getFromHtml(Document document, ArticleType type)
-			throws ParseException {
+	private Article parsePage(ArticleUrl articleUrl, Document document,
+			ArticleType type) throws ParseException {
 		String title = document.select("meta[name=DC.title]").attr("content")
 				.trim();
 		String creator = document.select("meta[name=DC.creator]").attr(
@@ -162,18 +148,23 @@ final class WaPostArticleParser extends AbstractArticleParser {
 			}
 		}
 
-		return new ProtoArticle(title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date,
+				paragraphs);
 	}
 
-	private static ProtoArticle combine(List<ProtoArticle> articles) {
+	private static Article combine(List<Article> articles) {
 		checkArgument(articles.size() > 0);
 
+		Team creator = articles.get(0).getCreator();
+		ArticleUrl url = articles.get(0).getUrl();
 		String title = articles.get(0).getTitle();
 		String byline = articles.get(0).getByline();
 		Date date = articles.get(0).getDate();
 		List<String> paragraphs = Lists.newArrayList();
 
-		for (ProtoArticle article : articles) {
+		for (Article article : articles) {
+			checkArgument(creator.equals(article.getCreator()));
+			checkArgument(url.equals(article.getUrl()));
 			checkArgument(title.equals(article.getTitle()));
 			if (byline == null) {
 				checkArgument(article.getByline() == null);
@@ -184,6 +175,6 @@ final class WaPostArticleParser extends AbstractArticleParser {
 			paragraphs.addAll(article.getParagraphs());
 		}
 
-		return new ProtoArticle(title, byline, date, paragraphs);
+		return new Article(creator, url, title, byline, date, paragraphs);
 	}
 }

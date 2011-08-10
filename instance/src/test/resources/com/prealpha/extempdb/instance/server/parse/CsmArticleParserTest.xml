@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <java version="1.6.0_24" class="java.beans.XMLDecoder">
-	<object class="java.util.LinkedHashMap">
-		<void method="put">
-			<string>http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task</string>
 				<string>Haiti elects new president for Herculean task</string>
 				<string>By Isabeau Doucet and Ezra Fieser</string>
 				<object class="java.util.Date">
@@ -76,9 +76,9 @@
 				</object>
 			</object>
 		</void>
-		<void method="put">
-			<string>http://www.csmonitor.com/World/Americas/Latin-America-Monitor/2011/0614/Major-blackouts-hit-Venezuela-again</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/World/Americas/Latin-America-Monitor/2011/0614/Major-blackouts-hit-Venezuela-again</string>
 				<string>Major blackouts hit Venezuela - again</string>
 				<string>By Miguel Octavio</string>
 				<object class="java.util.Date">
@@ -121,17 +121,20 @@
 				</object>
 			</object>
 		</void>
-		<void method="put">
-			<string>http://www.csmonitor.com/World/Asia-South-Central/2010/1117/Five-reasons-the-US-went-after-merchant-of-death-Viktor-Bout</string>
-			<null/>
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/World/Asia-South-Central/2010/1117/Five-reasons-the-US-went-after-merchant-of-death-Viktor-Bout</string>
+			</object>
 		</void>
-		<void method="put">
-			<string>http://www.csmonitor.com/USA/Elections/2010/1102/Top-10-mistakes-of-Election-2010/Alan-Grayson-s-Taliban-Dan-ad</string>
-			<null/>
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/USA/Elections/2010/1102/Top-10-mistakes-of-Election-2010/Alan-Grayson-s-Taliban-Dan-ad</string>
+			</object>
 		</void>
-		<void method="put">
-			<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
-			<null/>
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
+			</object>
 		</void>
 	</object>
 </java>

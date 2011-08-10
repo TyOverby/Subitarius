@@ -8,20 +8,23 @@ package com.prealpha.extempdb.instance.server.parse;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.prealpha.extempdb.domain.ArticleUrl;
+
 public class ArticleParseException extends Exception {
-	private final String url;
+	private final ArticleUrl articleUrl;
 
-	public ArticleParseException(String url) {
-		this(url, null);
+	public ArticleParseException(ArticleUrl articleUrl) {
+		this(articleUrl, null);
 	}
 
-	public ArticleParseException(String url, Throwable cause) {
-		super("raised an exception while parsing article, URL " + url, cause);
-		checkNotNull(url);
-		this.url = url;
+	public ArticleParseException(ArticleUrl articleUrl, Throwable cause) {
+		super("raised an exception while parsing article, URL " + articleUrl,
+				cause);
+		checkNotNull(articleUrl);
+		this.articleUrl = articleUrl;
 	}
 
-	public String getUrl() {
-		return url;
+	public ArticleUrl getArticleUrl() {
+		return articleUrl;
 	}
 }

@@ -35,17 +35,22 @@ public final class GuardianArticleParserTest extends ArticleParserTestBase {
 	}
 	
 	@Test
-	public void testParsePa() throws ArticleParseException {
+	public void testParseReutersExpired() throws ArticleParseException {
 		testVector(3);
 	}
-
+	
 	@Test
-	public void testParseBlog() throws ArticleParseException {
+	public void testParsePa() throws ArticleParseException {
 		testVector(4);
 	}
 
 	@Test
-	public void testParseContest() throws ArticleParseException {
+	public void testParseBlog() throws ArticleParseException {
 		testVector(5);
+	}
+
+	@Test
+	public void testParseContest() throws ArticleParseException {
+		testVector(6);
 	}
 }

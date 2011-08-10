@@ -24,10 +24,14 @@ import org.jsoup.nodes.Element;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class WsjArticleParser extends AbstractArticleParser {
+final class WsjArticleParser implements ArticleParser {
 	private static enum ArticleType {
 		COMPLETE("div.articlePage > p") {
 		},
@@ -51,15 +55,20 @@ final class WsjArticleParser extends AbstractArticleParser {
 	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
 			"Letters", "Journal Concierge", "Spanish");
 
+	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private WsjArticleParser(SimpleHttpClient httpClient) {
+	private WsjArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
+		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
 
 	@Override
-	public ProtoArticle parse(String url) throws ArticleParseException {
+	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
+		String url = articleUrl.getUrl();
 		if (!URL_REGEX.matcher(url).matches()) {
 			// articles that don't match tend to disappear
 			return null;
@@ -103,7 +112,7 @@ final class WsjArticleParser extends AbstractArticleParser {
 				String dateStr = document.select("li.dateStamp").first().text();
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
-				throw new ArticleParseException(url, px);
+				throw new ArticleParseException(articleUrl, px);
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
@@ -115,11 +124,12 @@ final class WsjArticleParser extends AbstractArticleParser {
 				}
 			}
 
-			return new ProtoArticle(title, byline, date, paragraphs);
+			return new Article(teamProvider.get(), articleUrl, title, byline,
+					date, paragraphs);
 		} catch (IOException iox) {
-			throw new ArticleParseException(url, iox);
+			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
 }

@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +19,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class ReutersArticleParser extends AbstractArticleParser {
+final class ReutersArticleParser implements ArticleParser {
 	/**
 	 * The canonical URL for a slideshow feature.
 	 */
@@ -34,22 +38,27 @@ final class ReutersArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"EEE MMM d, yyyy");
 
+	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private ReutersArticleParser(SimpleHttpClient httpClient) {
+	private ReutersArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
+		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
 
 	@Override
-	public ProtoArticle parse(String url) throws ArticleParseException {
+	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
+		String url = articleUrl.getUrl();
 		if (url.equals(SLIDESHOW_URL)) {
 			// slideshow, we can't parse this
 			return null;
 		}
 
 		try {
-			Map<String, String> params = Collections.emptyMap();
+			Map<String, String> params = ImmutableMap.of();
 			InputStream stream = httpClient.doGet(url, params);
 			Document document = Jsoup.parse(stream, null, url);
 			Element container = document.select("div.column2").first();
@@ -67,7 +76,7 @@ final class ReutersArticleParser extends AbstractArticleParser {
 						.text();
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
-				throw new ArticleParseException(url, px);
+				throw new ArticleParseException(articleUrl, px);
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
@@ -83,11 +92,12 @@ final class ReutersArticleParser extends AbstractArticleParser {
 				}
 			}
 
-			return new ProtoArticle(title, byline, date, paragraphs);
+			return new Article(teamProvider.get(), articleUrl, title, byline,
+					date, paragraphs);
 		} catch (IOException iox) {
-			throw new ArticleParseException(url, iox);
+			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
 }

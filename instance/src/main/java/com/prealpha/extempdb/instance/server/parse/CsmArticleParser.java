@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -22,39 +21,35 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class CsmArticleParser extends AbstractArticleParser {
+final class CsmArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"MMMMM d, yyyy");
+
+	private final Provider<Team> teamProvider;
 
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private CsmArticleParser(SimpleHttpClient httpClient) {
+	private CsmArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
+		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
 
 	@Override
-	public String getCanonicalUrl(String url) {
-		url = super.getCanonicalUrl(url);
-		if (url.matches(".*/\\(page\\)/\\d+")) {
-			int index = url.lastIndexOf("/(page)");
-			return url.substring(0, index);
-		} else {
-			return url;
-		}
-	}
-
-	@Override
-	public ProtoArticle parse(String url) throws ArticleParseException {
-		checkNotNull(url);
-
-		Map<String, String> params = Collections.emptyMap();
-
+	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
+		String url = articleUrl.getUrl();
+		Map<String, String> params = ImmutableMap.of();
 		try {
 			List<Document> documents = Lists.newArrayList();
 			Document document;
@@ -71,13 +66,13 @@ final class CsmArticleParser extends AbstractArticleParser {
 				}
 			} while (!document.select("a#next-button").isEmpty());
 
-			return getFromDocuments(documents);
+			return getFromDocuments(articleUrl, documents);
 		} catch (ParseException px) {
-			throw new ArticleParseException(url, px);
+			throw new ArticleParseException(articleUrl, px);
 		} catch (IOException iox) {
-			throw new ArticleParseException(url, iox);
+			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
 
@@ -88,8 +83,8 @@ final class CsmArticleParser extends AbstractArticleParser {
 		return (content == null);
 	}
 
-	private static ProtoArticle getFromDocuments(List<Document> documents)
-			throws ParseException {
+	private Article getFromDocuments(ArticleUrl articleUrl,
+			List<Document> documents) throws ParseException {
 		checkArgument(!documents.isEmpty());
 		String title = documents.get(0).select("h1.head").first().text();
 		String[] metaStr = documents.get(0).select("p.sByline").first().text()
@@ -114,6 +109,7 @@ final class CsmArticleParser extends AbstractArticleParser {
 			}
 		}
 
-		return new ProtoArticle(title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date,
+				paragraphs);
 	}
 }

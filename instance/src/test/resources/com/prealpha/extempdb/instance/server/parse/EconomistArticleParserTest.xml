@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.6.0_24" class="java.beans.XMLDecoder">
-	<object class="java.util.LinkedHashMap">
-		<void method="put">
-			<string>http://www.economist.com/node/18388998</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.economist.com/node/18388998</string>
 				<string>Video nasty: The film business is slumping. It needs to start dealing directly with consumers</string>
 				<null/>
 				<object class="java.util.Date">
@@ -37,9 +37,9 @@
 				</object>
 			</object>
 		</void>
-		<void method="put">
-			<string>http://www.economist.com/blogs/baobab/2011/03/drug-smuggling</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.economist.com/blogs/baobab/2011/03/drug-smuggling</string>
 				<string>The classic car-boot story</string>
 				<string>by J.L.</string>
 				<object class="java.util.Date">
@@ -61,9 +61,9 @@
 				</object>
 			</object>
 		</void>
-		<void method="put">
-			<string>http://www.economist.com/blogs/bagehot/2011/06/david-cameron</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.economist.com/blogs/bagehot/2011/06/david-cameron</string>
 				<string>David Cameron says U-turns are a sign of strength: nobody sniggers</string>
 				<string>by Bagehot</string>
 				<object class="java.util.Date">

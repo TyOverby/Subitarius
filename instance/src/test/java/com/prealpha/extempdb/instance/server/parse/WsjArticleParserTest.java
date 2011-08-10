@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.google.inject.Inject;
+import com.prealpha.extempdb.domain.ArticleUrl;
 
 public final class WsjArticleParserTest extends ArticleParserTestBase {
 	@Inject
@@ -48,11 +49,11 @@ public final class WsjArticleParserTest extends ArticleParserTestBase {
 
 	@Test
 	public void testParseTemporary() throws ArticleParseException {
-		assertNull(parser
-				.parse("http://online.wsj.com/article/BT-CO-20110309-703720.html"));
-		assertNull(parser
-				.parse("http://online.wsj.com/article/PR-CO-20101117-906923.html"));
-		assertNull(parser
-				.parse("http://online.wsj.com/article/SB128934068314955423.html"));
+		assertNull(parser.parse(new ArticleUrl(
+				"http://online.wsj.com/article/BT-CO-20110309-703720.html")));
+		assertNull(parser.parse(new ArticleUrl(
+				"http://online.wsj.com/article/PR-CO-20101117-906923.html")));
+		assertNull(parser.parse(new ArticleUrl(
+				"http://online.wsj.com/article/SB128934068314955423.html")));
 	}
 }

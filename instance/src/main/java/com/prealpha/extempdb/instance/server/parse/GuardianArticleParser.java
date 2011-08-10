@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +19,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class GuardianArticleParser extends AbstractArticleParser {
+final class GuardianArticleParser implements ArticleParser {
 	private static enum Feed {
 		NONE(null, DATE_FORMAT_UK) {
 		},
@@ -71,17 +75,22 @@ final class GuardianArticleParser extends AbstractArticleParser {
 	private static final DateFormat DATE_FORMAT_US = new SimpleDateFormat(
 			"EEEEE MMMMM d yyyy");
 
+	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private GuardianArticleParser(SimpleHttpClient httpClient) {
+	private GuardianArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
+		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
 
 	@Override
-	public ProtoArticle parse(String url) throws ArticleParseException {
+	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
-			Map<String, String> params = Collections.emptyMap();
+			String url = articleUrl.getUrl();
+			Map<String, String> params = ImmutableMap.of();
 			InputStream stream = httpClient.doGet(url, params);
 			Document document = Jsoup.parse(stream, null, url);
 
@@ -95,16 +104,22 @@ final class GuardianArticleParser extends AbstractArticleParser {
 			Element bylineElem = document.select("a.contributor").first();
 			String byline = ((bylineElem == null) ? null : bylineElem.text());
 
+			// publication element is absent if expired
+			Element publicationElem = document.select("li.publication").first();
+			if (publicationElem == null) {
+				// expired Reuters articles do this
+				return null;
+			}
+
 			// get both the date and the feed from the publication element
 			Date date;
-			String[] publication = document.select("li.publication").first()
-					.text().split(",");
+			String[] publication = publicationElem.text().split(",");
 			Feed feed = Feed.fromName(publication[0].trim());
 			try {
 				String dateStr = publication[1].trim();
 				date = feed.dateFormat.parse(dateStr);
 			} catch (ParseException px) {
-				throw new ArticleParseException(url, px);
+				throw new ArticleParseException(articleUrl, px);
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
@@ -116,11 +131,12 @@ final class GuardianArticleParser extends AbstractArticleParser {
 				}
 			}
 
-			return new ProtoArticle(title, byline, date, paragraphs);
+			return new Article(teamProvider.get(), articleUrl, title, byline,
+					date, paragraphs);
 		} catch (IOException iox) {
-			throw new ArticleParseException(url, iox);
+			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.6.0_24" class="java.beans.XMLDecoder">
-	<object class="java.util.LinkedHashMap">
-		<void method="put">
-			<string>http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html</string>
 				<string>As global crises mount, Obama has become the world’s master of ceremonies</string>
 				<string>By David J. Rothkopf</string>
 				<object class="java.util.Date">
@@ -67,9 +67,9 @@
 				</object>
 			</object>
 		</void>
-		<void method="put">
-			<string>http://www.washingtonpost.com/blogs/blogpost/post/vancouver-kissing-couple-knocked-down-by-riot-police-new-video-shows-watch/2011/06/23/AGXSg1hH_blog.html</string>
-			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://www.washingtonpost.com/blogs/blogpost/post/vancouver-kissing-couple-knocked-down-by-riot-police-new-video-shows-watch/2011/06/23/AGXSg1hH_blog.html</string>
 				<string>Vancouver kissing couple knocked down by riot police, new video shows (Watch)</string>
 				<string>By Melissa Bell</string>
 				<object class="java.util.Date">

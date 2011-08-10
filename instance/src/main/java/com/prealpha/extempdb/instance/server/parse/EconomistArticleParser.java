@@ -6,8 +6,6 @@
 
 package com.prealpha.extempdb.instance.server.parse;
 
-import static com.google.common.base.Preconditions.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -26,10 +24,14 @@ import org.jsoup.nodes.Element;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class EconomistArticleParser extends AbstractArticleParser {
+final class EconomistArticleParser implements ArticleParser {
 	private static enum ArticleType {
 		BLOG("p.ec-blog-info", "div.ec-blog-body p") {
 			@Override
@@ -87,18 +89,21 @@ final class EconomistArticleParser extends AbstractArticleParser {
 	private static final Pattern BYLINE_PATTERN = Pattern
 			.compile("(by (.+?))( \\||$)");
 
+	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private EconomistArticleParser(SimpleHttpClient httpClient) {
+	private EconomistArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
+		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
 
 	@Override
-	public ProtoArticle parse(String url) throws ArticleParseException {
-		checkNotNull(url);
-
+	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
+			String url = articleUrl.getUrl();
 			Map<String, String> params = Collections.emptyMap();
 			InputStream stream = httpClient.doGet(url, params);
 			Document document = Jsoup.parse(stream, null, url);
@@ -119,7 +124,7 @@ final class EconomistArticleParser extends AbstractArticleParser {
 						.replace("st", "").replace("rd", "").replace("nd", "");
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
-				throw new ArticleParseException(url, px);
+				throw new ArticleParseException(articleUrl, px);
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
@@ -131,11 +136,12 @@ final class EconomistArticleParser extends AbstractArticleParser {
 				}
 			}
 
-			return new ProtoArticle(title, byline, date, paragraphs);
+			return new Article(teamProvider.get(), articleUrl, title, byline,
+					date, paragraphs);
 		} catch (IOException iox) {
-			throw new ArticleParseException(url, iox);
+			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
-			throw new ArticleParseException(url, rex);
+			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
 }
