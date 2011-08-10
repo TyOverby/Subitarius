@@ -12,8 +12,8 @@
 
 	<modules>
 		<module>central</module>
-		<module>client</module>
 		<module>domain</module>
+		<module>instance</module>
 		<module>util</module>
 	</modules>
 

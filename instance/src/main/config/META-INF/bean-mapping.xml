@@ -4,13 +4,8 @@
 
 	<!-- NOTE: the client depends on lexicographical ordering to sort dates -->
 	<mapping date-format="yyyy-MM-dd">
-		<class-a>com.prealpha.extempdb.server.domain.Article</class-a>
-		<class-b>com.prealpha.extempdb.shared.dto.ArticleDto</class-b>
-	</mapping>
-
-	<mapping>
-		<class-a>com.prealpha.extempdb.server.domain.TagMapping$Key</class-a>
-		<class-b>com.prealpha.extempdb.shared.dto.TagMappingDto$Key</class-b>
+		<class-a>com.prealpha.extempdb.instance.server.domain.Article</class-a>
+		<class-b>com.prealpha.extempdb.instance.shared.dto.ArticleDto</class-b>
 	</mapping>
 
 </mappings>

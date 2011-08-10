@@ -6,6 +6,7 @@
 * Added central module
     * Searcher only stores URLs and is now in the central module
 * Added util module to contain SimpleHttpClient and SLF4J utilities
+* Renamed client module to instance
 
 0.1-alpha
 =========

@@ -10,7 +10,7 @@
 		<artifactId>parent</artifactId>
 		<version>0.2-alpha</version>
 	</parent>
-	<artifactId>client</artifactId>
+	<artifactId>instance</artifactId>
 	<packaging>war</packaging>
 
 	<dependencies>

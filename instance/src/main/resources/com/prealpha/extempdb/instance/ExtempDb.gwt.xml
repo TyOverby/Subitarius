@@ -7,7 +7,7 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.prealpha.dispatch.Dispatch" />
 
-	<entry-point class="com.prealpha.extempdb.client.core.ExtempDb" />
+	<entry-point class="com.prealpha.extempdb.instance.client.core.ExtempDb" />
 
 	<source path="client" />
 	<source path="shared" />
