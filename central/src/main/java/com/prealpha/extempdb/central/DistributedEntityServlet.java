@@ -20,11 +20,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.extempdb.domain.DistributedEntity;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /**
  * Provides access to {@link DistributedEntity} objects stored on the server.
@@ -36,6 +39,9 @@ import com.prealpha.extempdb.domain.DistributedEntity;
  * 
  */
 final class DistributedEntityServlet extends HttpServlet {
+	@InjectLogger
+	private Logger log;
+
 	private final Provider<EntityManager> entityManagerProvider;
 
 	@Inject
@@ -74,24 +80,30 @@ final class DistributedEntityServlet extends HttpServlet {
 		String pathInfo = req.getPathInfo();
 		if (pathInfo.isEmpty() || pathInfo.equals("/")) {
 			PrintWriter writer = res.getWriter();
+			int count = 0;
 			for (String hash : fetchHashes()) {
 				writer.println(hash);
+				count++;
 			}
 			writer.flush();
+			log.info("returned {} entity hashes", count);
 		} else if (pathInfo.startsWith("/")) {
 			String hash = pathInfo.substring(1);
 			EntityManager entityManager = entityManagerProvider.get();
 			DistributedEntity entity = entityManager.find(
 					DistributedEntity.class, hash);
 			if (entity == null) {
+				log.info("entity hash not found: {}", hash);
 				res.sendError(HttpServletResponse.SC_NOT_FOUND);
 			} else {
 				OutputStream stream = res.getOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(stream);
 				oos.writeObject(entity);
 				stream.flush();
+				log.info("entity found and returned: {}", hash);
 			}
 		} else {
+			log.info("bad request; path info: {}", pathInfo);
 			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
