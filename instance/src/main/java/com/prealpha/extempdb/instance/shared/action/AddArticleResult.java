@@ -20,9 +20,7 @@ public class AddArticleResult implements Result {
 
 		NO_ARTICLE(false),
 
-		PARSE_FAILED(false),
-
-		PERMISSION_DENIED(false);
+		PARSE_FAILED(false);
 
 		private boolean success;
 

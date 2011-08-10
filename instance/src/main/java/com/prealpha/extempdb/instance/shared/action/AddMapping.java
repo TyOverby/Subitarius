@@ -8,9 +8,9 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-public class AddMapping implements AuthenticatedAction<MutationResult> {
-	private String sessionId;
+import com.prealpha.dispatch.shared.Action;
 
+public class AddMapping implements Action<MutationResult> {
 	private String tagName;
 
 	private Long articleId;
@@ -20,19 +20,11 @@ public class AddMapping implements AuthenticatedAction<MutationResult> {
 	private AddMapping() {
 	}
 
-	public AddMapping(String sessionId, String tagName, Long articleId) {
-		checkNotNull(sessionId);
+	public AddMapping(String tagName, Long articleId) {
 		checkNotNull(tagName);
 		checkNotNull(articleId);
-
-		this.sessionId = sessionId;
 		this.tagName = tagName;
 		this.articleId = articleId;
-	}
-
-	@Override
-	public String getSessionId() {
-		return sessionId;
 	}
 
 	public String getTagName() {

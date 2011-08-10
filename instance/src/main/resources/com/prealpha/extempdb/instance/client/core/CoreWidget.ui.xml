@@ -21,8 +21,6 @@
 					<g:Hyperlink targetHistoryToken="HIERARCHY" text="{msg.hierarchy}" />
 				</span>
 			</span>
-
-			<g:Widget addStyleNames="{res.style.loginStatus}" ui:field="loginStatus" />
 		</div>
 
 		<g:SimplePanel addStyleNames="{res.style.contentPanel}"

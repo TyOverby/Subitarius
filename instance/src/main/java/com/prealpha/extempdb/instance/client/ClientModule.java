@@ -42,9 +42,7 @@ public final class ClientModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
 		bind(EventBus.class).to(SimpleEventBus.class).in(Singleton.class);
-
 		bind(HistoryManager.class).in(Singleton.class);
-		bind(SessionManager.class).in(Singleton.class);
 
 		bind(ActionFilter.class).annotatedWith(CachingFilter.class)
 				.to(CachingActionFilter.class).in(Singleton.class);

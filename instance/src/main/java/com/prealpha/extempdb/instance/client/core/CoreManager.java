@@ -18,7 +18,6 @@ import com.prealpha.extempdb.instance.client.AppStateException;
 import com.prealpha.extempdb.instance.client.CommonResources;
 import com.prealpha.extempdb.instance.client.HistoryManager;
 import com.prealpha.extempdb.instance.client.PlacePresenter;
-import com.prealpha.extempdb.instance.client.SessionManager;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
 import com.prealpha.extempdb.instance.client.event.AppStateEvent;
 import com.prealpha.extempdb.instance.client.event.AppStateHandler;
@@ -30,8 +29,6 @@ public final class CoreManager {
 
 	private final HistoryManager historyManager;
 
-	private final SessionManager sessionManager;
-
 	private final CommonResources commonResources;
 
 	private final CoreResources coreResources;
@@ -42,12 +39,11 @@ public final class CoreManager {
 
 	@Inject
 	public CoreManager(CoreWidget widget, EventBus eventBus,
-			HistoryManager historyManager, SessionManager sessionManager,
-			CommonResources commonResources, CoreResources coreResources) {
+			HistoryManager historyManager, CommonResources commonResources,
+			CoreResources coreResources) {
 		this.coreWidget = widget;
 		this.eventBus = eventBus;
 		this.historyManager = historyManager;
-		this.sessionManager = sessionManager;
 		this.commonResources = commonResources;
 		this.coreResources = coreResources;
 	}
@@ -65,7 +61,6 @@ public final class CoreManager {
 		});
 
 		historyManager.fireCurrentState();
-		sessionManager.fireActiveUser();
 	}
 
 	private void handleAppState(final AppState appState) {

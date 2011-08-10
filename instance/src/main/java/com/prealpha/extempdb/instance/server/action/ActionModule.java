@@ -15,28 +15,18 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.google.inject.matcher.Matcher;
-import com.google.inject.matcher.Matchers;
-import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.server.ActionHandlerModule;
 import com.prealpha.extempdb.instance.shared.action.AddArticle;
 import com.prealpha.extempdb.instance.shared.action.AddMapping;
 import com.prealpha.extempdb.instance.shared.action.AddMappingAction;
-import com.prealpha.extempdb.instance.shared.action.ChangePassword;
-import com.prealpha.extempdb.instance.shared.action.DeleteTag;
 import com.prealpha.extempdb.instance.shared.action.GetArticle;
 import com.prealpha.extempdb.instance.shared.action.GetHierarchy;
 import com.prealpha.extempdb.instance.shared.action.GetMapping;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.instance.shared.action.GetParagraphs;
-import com.prealpha.extempdb.instance.shared.action.GetPoints;
 import com.prealpha.extempdb.instance.shared.action.GetTag;
 import com.prealpha.extempdb.instance.shared.action.GetTagSuggestions;
-import com.prealpha.extempdb.instance.shared.action.GetUser;
-import com.prealpha.extempdb.instance.shared.action.LogIn;
-import com.prealpha.extempdb.instance.shared.action.LogOut;
-import com.prealpha.extempdb.instance.shared.action.UpdateTag;
 
 public class ActionModule extends ActionHandlerModule {
 	public ActionModule() {
@@ -47,8 +37,6 @@ public class ActionModule extends ActionHandlerModule {
 		bindHandler(AddArticle.class, AddArticleHandler.class);
 		bindHandler(AddMapping.class, AddMappingHandler.class);
 		bindHandler(AddMappingAction.class, AddMappingActionHandler.class);
-		bindHandler(ChangePassword.class, ChangePasswordHandler.class);
-		bindHandler(DeleteTag.class, DeleteTagHandler.class);
 		bindHandler(GetArticle.class, GetArticleHandler.class);
 		bindHandler(GetHierarchy.class, GetHierarchyHandler.class);
 		bindHandler(GetMapping.class, GetMappingHandler.class);
@@ -56,21 +44,8 @@ public class ActionModule extends ActionHandlerModule {
 				GetMappingsByArticleHandler.class);
 		bindHandler(GetMappingsByTag.class, GetMappingsByTagHandler.class);
 		bindHandler(GetParagraphs.class, GetParagraphsHandler.class);
-		bindHandler(GetPoints.class, GetPointsHandler.class);
 		bindHandler(GetTag.class, GetTagHandler.class);
 		bindHandler(GetTagSuggestions.class, GetTagSuggestionsHandler.class);
-		bindHandler(GetUser.class, GetUserHandler.class);
-		bindHandler(LogIn.class, LogInHandler.class);
-		bindHandler(LogOut.class, LogOutHandler.class);
-		bindHandler(UpdateTag.class, UpdateTagHandler.class);
-
-		@SuppressWarnings("rawtypes")
-		Matcher<Class> classMatcher = Matchers.inPackage(
-				getClass().getPackage()).and(
-				Matchers.subclassesOf(ActionHandler.class));
-		SessionValidator interceptor = new SessionValidator();
-		requestInjection(interceptor);
-		bindInterceptor(classMatcher, Matchers.any(), interceptor);
 	}
 
 	@Provides

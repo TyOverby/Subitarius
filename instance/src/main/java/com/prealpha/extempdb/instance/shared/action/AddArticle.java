@@ -8,9 +8,9 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-public class AddArticle implements AuthenticatedAction<AddArticleResult> {
-	private String sessionId;
+import com.prealpha.dispatch.shared.Action;
 
+public class AddArticle implements Action<AddArticleResult> {
 	private String url;
 
 	// serialization support
@@ -18,16 +18,9 @@ public class AddArticle implements AuthenticatedAction<AddArticleResult> {
 	private AddArticle() {
 	}
 
-	public AddArticle(String sessionId, String url) {
-		checkNotNull(sessionId);
+	public AddArticle(String url) {
 		checkNotNull(url);
-		this.sessionId = sessionId;
 		this.url = url;
-	}
-
-	@Override
-	public String getSessionId() {
-		return sessionId;
 	}
 
 	public String getUrl() {

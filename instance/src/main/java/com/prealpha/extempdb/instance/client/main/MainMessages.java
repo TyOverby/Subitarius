@@ -9,22 +9,6 @@ package com.prealpha.extempdb.instance.client.main;
 import com.google.gwt.i18n.client.Messages;
 
 public interface MainMessages extends Messages {
-	String username();
-
-	String password();
-
-	String submit();
-
-	String logInHeading();
-
-	String logInText();
-
-	String logInTextPending();
-
-	String logInTextInvalid();
-
-	String noCookies();
-
 	String aboutHeading();
 
 	String aboutText();
@@ -32,6 +16,4 @@ public interface MainMessages extends Messages {
 	String usageHeading();
 
 	String usageText();
-
-	String pointsHeading();
 }

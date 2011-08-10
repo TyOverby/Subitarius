@@ -19,31 +19,13 @@ public class SettingsWidget extends Composite implements
 	}
 
 	@UiField(provided = true)
-	final Widget passwordChangeWidget;
-
-	@UiField(provided = true)
-	final Widget tagManagerWidget;
-
-	@UiField(provided = true)
 	final Widget addArticleWidget;
 
-	/*
-	 * TODO: some way to do permission control. Not a real security hole though.
-	 * Maybe just make the presenters bind on UserSession?
-	 */
 	@Inject
 	public SettingsWidget(ToolsUiBinder uiBinder,
-			PasswordChangePresenter passwordChangePresenter,
-			TagManagerPresenter tagManagerPresenter,
 			AddArticlePresenter addArticlePresenter) {
-		passwordChangePresenter.bind(null);
-		tagManagerPresenter.bind(null);
 		addArticlePresenter.bind(null);
-
-		passwordChangeWidget = passwordChangePresenter.getDisplay().asWidget();
-		tagManagerWidget = tagManagerPresenter.getDisplay().asWidget();
 		addArticleWidget = addArticlePresenter.getDisplay().asWidget();
-
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 }

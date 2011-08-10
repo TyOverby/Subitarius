@@ -20,7 +20,6 @@ import com.prealpha.extempdb.instance.client.AppPlace;
 import com.prealpha.extempdb.instance.client.AppState;
 import com.prealpha.extempdb.instance.client.HistoryManager;
 import com.prealpha.extempdb.instance.client.Presenter;
-import com.prealpha.extempdb.instance.client.SessionManager;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
 import com.prealpha.extempdb.instance.shared.action.AddArticle;
 import com.prealpha.extempdb.instance.shared.action.AddArticleResult;
@@ -41,19 +40,15 @@ public class AddArticlePresenter implements Presenter<Void> {
 
 	private final DispatcherAsync dispatcher;
 
-	private final SessionManager sessionManager;
-
 	private final HistoryManager historyManager;
 
 	private final SettingsMessages messages;
 
 	@Inject
 	public AddArticlePresenter(Display display, DispatcherAsync dispatcher,
-			SessionManager sessionManager, HistoryManager historyManager,
-			SettingsMessages messages) {
+			HistoryManager historyManager, SettingsMessages messages) {
 		this.display = display;
 		this.dispatcher = dispatcher;
-		this.sessionManager = sessionManager;
 		this.historyManager = historyManager;
 		this.messages = messages;
 
@@ -75,9 +70,8 @@ public class AddArticlePresenter implements Presenter<Void> {
 	}
 
 	private void add() {
-		String sessionId = sessionManager.getSessionId();
 		String url = display.getUrlBox().getText();
-		AddArticle action = new AddArticle(sessionId, url);
+		AddArticle action = new AddArticle(url);
 		dispatcher.execute(action, new ManagedCallback<AddArticleResult>() {
 			@Override
 			public void onSuccess(AddArticleResult result) {
@@ -102,9 +96,6 @@ public class AddArticlePresenter implements Presenter<Void> {
 						break;
 					case PARSE_FAILED:
 						message = messages.statusLabelFailed();
-						break;
-					case PERMISSION_DENIED:
-						message = messages.notLoggedIn();
 						break;
 					default:
 						throw new IllegalStateException();
