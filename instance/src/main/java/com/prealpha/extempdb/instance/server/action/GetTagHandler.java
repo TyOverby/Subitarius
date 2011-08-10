@@ -20,6 +20,7 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.Tag_;
 import com.prealpha.extempdb.instance.shared.action.GetTag;
 import com.prealpha.extempdb.instance.shared.action.GetTagResult;
