@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.parse;
+package com.prealpha.extempdb.instance.server.parse;
 
 public interface ArticleParser {
 	/**

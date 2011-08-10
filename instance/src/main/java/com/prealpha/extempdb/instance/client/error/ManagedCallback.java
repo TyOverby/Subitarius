@@ -4,13 +4,13 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.error;
+package com.prealpha.extempdb.instance.client.error;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.client.HistoryManager;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.client.HistoryManager;
 
 public abstract class ManagedCallback<T> implements AsyncCallback<T> {
 	@Inject

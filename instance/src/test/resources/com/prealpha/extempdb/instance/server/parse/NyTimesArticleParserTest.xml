@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://www.nytimes.com/2010/08/05/technology/05secret.html</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Google and Verizon Near Deal on Pay Tiers for Web</string>
 				<string>By EDWARD WYATT</string>
 				<object class="java.util.Date">

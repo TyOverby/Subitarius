@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.settings;
+package com.prealpha.extempdb.instance.client.settings;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,14 +20,14 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.taginput.TagSelector;
-import com.prealpha.extempdb.shared.action.DeleteTag;
-import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.action.UpdateTag;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.SessionManager;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.taginput.TagSelector;
+import com.prealpha.extempdb.instance.shared.action.DeleteTag;
+import com.prealpha.extempdb.instance.shared.action.MutationResult;
+import com.prealpha.extempdb.instance.shared.action.UpdateTag;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 /*
  * TODO: doesn't present anything

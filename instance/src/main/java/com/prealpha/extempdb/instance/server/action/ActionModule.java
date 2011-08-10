@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.action;
+package com.prealpha.extempdb.instance.server.action;
 
 import java.util.List;
 
@@ -19,24 +19,24 @@ import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.server.ActionHandlerModule;
-import com.prealpha.extempdb.shared.action.AddArticle;
-import com.prealpha.extempdb.shared.action.AddMapping;
-import com.prealpha.extempdb.shared.action.AddMappingAction;
-import com.prealpha.extempdb.shared.action.ChangePassword;
-import com.prealpha.extempdb.shared.action.DeleteTag;
-import com.prealpha.extempdb.shared.action.GetArticle;
-import com.prealpha.extempdb.shared.action.GetHierarchy;
-import com.prealpha.extempdb.shared.action.GetMapping;
-import com.prealpha.extempdb.shared.action.GetMappingsByArticle;
-import com.prealpha.extempdb.shared.action.GetMappingsByTag;
-import com.prealpha.extempdb.shared.action.GetParagraphs;
-import com.prealpha.extempdb.shared.action.GetPoints;
-import com.prealpha.extempdb.shared.action.GetTag;
-import com.prealpha.extempdb.shared.action.GetTagSuggestions;
-import com.prealpha.extempdb.shared.action.GetUser;
-import com.prealpha.extempdb.shared.action.LogIn;
-import com.prealpha.extempdb.shared.action.LogOut;
-import com.prealpha.extempdb.shared.action.UpdateTag;
+import com.prealpha.extempdb.instance.shared.action.AddArticle;
+import com.prealpha.extempdb.instance.shared.action.AddMapping;
+import com.prealpha.extempdb.instance.shared.action.AddMappingAction;
+import com.prealpha.extempdb.instance.shared.action.ChangePassword;
+import com.prealpha.extempdb.instance.shared.action.DeleteTag;
+import com.prealpha.extempdb.instance.shared.action.GetArticle;
+import com.prealpha.extempdb.instance.shared.action.GetHierarchy;
+import com.prealpha.extempdb.instance.shared.action.GetMapping;
+import com.prealpha.extempdb.instance.shared.action.GetMappingsByArticle;
+import com.prealpha.extempdb.instance.shared.action.GetMappingsByTag;
+import com.prealpha.extempdb.instance.shared.action.GetParagraphs;
+import com.prealpha.extempdb.instance.shared.action.GetPoints;
+import com.prealpha.extempdb.instance.shared.action.GetTag;
+import com.prealpha.extempdb.instance.shared.action.GetTagSuggestions;
+import com.prealpha.extempdb.instance.shared.action.GetUser;
+import com.prealpha.extempdb.instance.shared.action.LogIn;
+import com.prealpha.extempdb.instance.shared.action.LogOut;
+import com.prealpha.extempdb.instance.shared.action.UpdateTag;
 
 public class ActionModule extends ActionHandlerModule {
 	public ActionModule() {

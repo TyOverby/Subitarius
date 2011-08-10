@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server;
+package com.prealpha.extempdb.instance.server;
 
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;

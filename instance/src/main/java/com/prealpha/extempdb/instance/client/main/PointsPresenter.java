@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.main;
+package com.prealpha.extempdb.instance.client.main;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +16,11 @@ import java.util.Map;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.shared.action.GetPoints;
-import com.prealpha.extempdb.shared.action.GetPointsResult;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.shared.action.GetPoints;
+import com.prealpha.extempdb.instance.shared.action.GetPointsResult;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class PointsPresenter implements Presenter<UserDto> {
 	public static interface Display extends IsWidget {

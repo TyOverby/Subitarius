@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.error;
+package com.prealpha.extempdb.instance.client.error;
 
 import com.google.gwt.i18n.client.Messages;
 

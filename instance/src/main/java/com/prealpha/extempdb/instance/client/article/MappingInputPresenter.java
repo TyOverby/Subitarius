@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.article;
+package com.prealpha.extempdb.instance.client.article;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -17,15 +17,15 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.ActiveUserEvent;
-import com.prealpha.extempdb.client.event.ActiveUserHandler;
-import com.prealpha.extempdb.shared.action.AddMapping;
-import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.SessionManager;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.instance.client.event.ActiveUserHandler;
+import com.prealpha.extempdb.instance.shared.action.AddMapping;
+import com.prealpha.extempdb.instance.shared.action.MutationResult;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public final class MappingInputPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {

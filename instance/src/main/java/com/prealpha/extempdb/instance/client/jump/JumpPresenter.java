@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import java.util.List;
 
@@ -14,10 +14,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.client.HistoryManager;
-import com.prealpha.extempdb.client.PlacePresenter;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.client.HistoryManager;
+import com.prealpha.extempdb.instance.client.PlacePresenter;
 
 public class JumpPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget, HasValue<JumpState> {

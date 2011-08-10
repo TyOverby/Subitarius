@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import java.util.Comparator;
 
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 enum ArticleField implements Comparator<ArticleDto> {
 	ID {

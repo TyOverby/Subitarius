@@ -4,10 +4,10 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.taginput;
+package com.prealpha.extempdb.instance.client.taginput;
 
 import com.google.gwt.user.client.ui.HasValue;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public interface TagSelector extends HasValue<TagDto> {
 	String getSelectedName();

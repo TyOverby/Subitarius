@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.action;
+package com.prealpha.extempdb.instance.server.action;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +23,14 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.domain.TagMapping;
-import com.prealpha.extempdb.domain.TagMappingAction;
-import com.prealpha.extempdb.domain.TagMapping_;
-import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.shared.action.GetPoints;
-import com.prealpha.extempdb.shared.action.GetPointsResult;
-import com.prealpha.extempdb.shared.dto.UserDto;
-import com.prealpha.extempdb.util.logging.InjectLogger;
+import com.prealpha.extempdb.instance.domain.TagMapping;
+import com.prealpha.extempdb.instance.domain.TagMappingAction;
+import com.prealpha.extempdb.instance.domain.TagMapping_;
+import com.prealpha.extempdb.instance.domain.User;
+import com.prealpha.extempdb.instance.shared.action.GetPoints;
+import com.prealpha.extempdb.instance.shared.action.GetPointsResult;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.util.logging.InjectLogger;
 
 class GetPointsHandler implements ActionHandler<GetPoints, GetPointsResult> {
 	@InjectLogger

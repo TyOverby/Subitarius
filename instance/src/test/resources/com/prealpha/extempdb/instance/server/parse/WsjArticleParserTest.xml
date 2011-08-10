@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://online.wsj.com/article/SB10001424052748704281204575002852055561406.html</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>11 Minutes of Action</string>
 				<string>By DAVID BIDERMAN</string>
 				<object class="java.util.Date">
@@ -84,7 +84,7 @@
 		</void>
 		<void method="put">
 			<string>http://online.wsj.com/article/SB10001424052748703384204575509630629800258.html</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>China Extends Africa Push With Loans, Deal in Ghana</string>
 				<string>BY WILL CONNORS</string>
 				<object class="java.util.Date">

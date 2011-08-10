@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -21,16 +21,16 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.taginput.TagInputWidget;
-import com.prealpha.extempdb.shared.action.GetMappingsByTag;
-import com.prealpha.extempdb.shared.action.GetMappingsResult;
-import com.prealpha.extempdb.shared.action.GetTag;
-import com.prealpha.extempdb.shared.action.GetTagResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.dto.TagDto;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.taginput.TagInputWidget;
+import com.prealpha.extempdb.instance.shared.action.GetMappingsByTag;
+import com.prealpha.extempdb.instance.shared.action.GetMappingsResult;
+import com.prealpha.extempdb.instance.shared.action.GetTag;
+import com.prealpha.extempdb.instance.shared.action.GetTagResult;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class JumpWidget extends Composite implements JumpPresenter.Display {
 	public static interface JumpUiBinder extends UiBinder<Widget, JumpWidget> {

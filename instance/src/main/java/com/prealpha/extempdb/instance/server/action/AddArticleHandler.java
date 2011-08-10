@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.action;
+package com.prealpha.extempdb.instance.server.action;
 
 import java.net.URISyntaxException;
 
@@ -17,14 +17,14 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
-import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.server.parse.ArticleParseException;
-import com.prealpha.extempdb.server.search.ArticleProcessor;
-import com.prealpha.extempdb.server.search.UnsupportedSiteException;
-import com.prealpha.extempdb.shared.action.AddArticle;
-import com.prealpha.extempdb.shared.action.AddArticleResult;
-import com.prealpha.extempdb.shared.action.AddArticleResult.Type;
-import com.prealpha.extempdb.util.logging.InjectLogger;
+import com.prealpha.extempdb.instance.domain.User;
+import com.prealpha.extempdb.instance.server.parse.ArticleParseException;
+import com.prealpha.extempdb.instance.server.search.ArticleProcessor;
+import com.prealpha.extempdb.instance.server.search.UnsupportedSiteException;
+import com.prealpha.extempdb.instance.shared.action.AddArticle;
+import com.prealpha.extempdb.instance.shared.action.AddArticleResult;
+import com.prealpha.extempdb.instance.shared.action.AddArticleResult.Type;
+import com.prealpha.extempdb.instance.util.logging.InjectLogger;
 
 class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	@InjectLogger

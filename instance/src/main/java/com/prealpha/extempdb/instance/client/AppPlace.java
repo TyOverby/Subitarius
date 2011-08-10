@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client;
+package com.prealpha.extempdb.instance.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.AsyncProvider;
-import com.prealpha.extempdb.client.core.CoreManager;
+import com.prealpha.extempdb.instance.client.core.CoreManager;
 
 public enum AppPlace {
 	ARTICLE {

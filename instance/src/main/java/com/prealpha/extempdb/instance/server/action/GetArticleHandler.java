@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.action;
+package com.prealpha.extempdb.instance.server.action;
 
 import javax.persistence.EntityManager;
 
@@ -16,11 +16,11 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.domain.Article;
-import com.prealpha.extempdb.shared.action.GetArticle;
-import com.prealpha.extempdb.shared.action.GetArticleResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.util.logging.InjectLogger;
+import com.prealpha.extempdb.instance.domain.Article;
+import com.prealpha.extempdb.instance.shared.action.GetArticle;
+import com.prealpha.extempdb.instance.shared.action.GetArticleResult;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.util.logging.InjectLogger;
 
 class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
 	@InjectLogger

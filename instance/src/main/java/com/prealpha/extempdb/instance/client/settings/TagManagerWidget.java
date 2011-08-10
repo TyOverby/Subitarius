@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.settings;
+package com.prealpha.extempdb.instance.client.settings;
 
 import java.util.Set;
 
@@ -17,9 +17,9 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.taginput.TagInputWidget;
-import com.prealpha.extempdb.client.taginput.TagSelector;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.taginput.TagInputWidget;
+import com.prealpha.extempdb.instance.client.taginput.TagSelector;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public final class TagManagerWidget extends Composite implements
 		TagManagerPresenter.Display {

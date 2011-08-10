@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.settings;
+package com.prealpha.extempdb.instance.client.settings;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.PlacePresenter;
+import com.prealpha.extempdb.instance.client.PlacePresenter;
 
 public class SettingsPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {

@@ -15,9 +15,9 @@
 		}
 	</ui:style>
 
-	<ui:with field="res" type="com.prealpha.extempdb.client.CommonResources" />
+	<ui:with field="res" type="com.prealpha.extempdb.instance.client.CommonResources" />
 	<ui:with field="msg"
-		type="com.prealpha.extempdb.client.hierarchy.HierarchyMessages" />
+		type="com.prealpha.extempdb.instance.client.hierarchy.HierarchyMessages" />
 
 	<g:VerticalPanel addStyleNames="{res.style.contentSection}">
 		<g:Label addStyleNames="{res.style.heading}" text="{msg.heading}" />

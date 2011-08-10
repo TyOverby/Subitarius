@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.article;
+package com.prealpha.extempdb.instance.client.article;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,10 +19,10 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.client.CommonResources;
-import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.client.CommonResources;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class TagMappingWidget extends Composite implements
 		TagMappingPresenter.Display {

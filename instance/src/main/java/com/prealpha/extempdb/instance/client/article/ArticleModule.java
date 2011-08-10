@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.article;
+package com.prealpha.extempdb.instance.client.article;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.hierarchy;
+package com.prealpha.extempdb.instance.client.hierarchy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,12 +18,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.shared.action.GetHierarchy;
-import com.prealpha.extempdb.shared.action.GetHierarchyResult;
-import com.prealpha.extempdb.shared.action.GetTag;
-import com.prealpha.extempdb.shared.action.GetTagResult;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.shared.action.GetHierarchy;
+import com.prealpha.extempdb.instance.shared.action.GetHierarchyResult;
+import com.prealpha.extempdb.instance.shared.action.GetTag;
+import com.prealpha.extempdb.instance.shared.action.GetTagResult;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 	private static SetMultimap<String, String> hierarchy;

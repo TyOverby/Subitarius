@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.main;
+package com.prealpha.extempdb.instance.client.main;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,13 +15,13 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.ActiveUserEvent;
-import com.prealpha.extempdb.shared.action.GetUserResult;
-import com.prealpha.extempdb.shared.action.LogIn;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.SessionManager;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.instance.shared.action.GetUserResult;
+import com.prealpha.extempdb.instance.shared.action.LogIn;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class LoginPresenter implements Presenter<UserDto> {
 	public static interface Display extends IsWidget {

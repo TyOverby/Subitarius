@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client;
+package com.prealpha.extempdb.instance.client;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -13,7 +13,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.event.AppStateEvent;
+import com.prealpha.extempdb.instance.client.event.AppStateEvent;
 
 public final class HistoryManager {
 	@Inject

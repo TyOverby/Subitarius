@@ -4,14 +4,14 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.parse;
+package com.prealpha.extempdb.instance.server.parse;
 
 import static com.google.common.base.Preconditions.*;
 
 import java.util.Date;
 import java.util.List;
 
-import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.instance.domain.Article;
 
 public final class ProtoArticle {
 	private final String title;

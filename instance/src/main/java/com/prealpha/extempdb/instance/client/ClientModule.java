@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client;
+package com.prealpha.extempdb.instance.client;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

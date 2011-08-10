@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.hierarchy;
+package com.prealpha.extempdb.instance.client.hierarchy;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +15,9 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public class TagTreeViewModel implements TreeViewModel {
 	private final Provider<ChildTagDataProvider> dataSourceProvider;

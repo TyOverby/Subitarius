@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.hierarchy;
+package com.prealpha.extempdb.instance.client.hierarchy;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.PlacePresenter;
+import com.prealpha.extempdb.instance.client.PlacePresenter;
 
 public class HierarchyPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {

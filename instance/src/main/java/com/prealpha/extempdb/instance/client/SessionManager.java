@@ -4,18 +4,18 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client;
+package com.prealpha.extempdb.instance.client;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.ActiveUserEvent;
-import com.prealpha.extempdb.shared.action.GetUser;
-import com.prealpha.extempdb.shared.action.GetUserResult;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.instance.shared.action.GetUser;
+import com.prealpha.extempdb.instance.shared.action.GetUserResult;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public final class SessionManager {
 	private static final String COOKIE_NAME = "JSESSIONID";

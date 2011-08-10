@@ -4,13 +4,13 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class GetMapping implements CacheableAction<GetMappingResult>,
 		MergeableAction<GetMappingResult> {

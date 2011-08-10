@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -16,7 +16,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.CommonResources;
+import com.prealpha.extempdb.instance.client.CommonResources;
 
 public class ArticleTableHeader extends Header<String> {
 	private final CommonResources resources;

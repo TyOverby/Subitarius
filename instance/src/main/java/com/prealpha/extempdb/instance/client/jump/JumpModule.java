@@ -4,13 +4,13 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Provides;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 public class JumpModule extends AbstractGinModule {
 	public JumpModule() {

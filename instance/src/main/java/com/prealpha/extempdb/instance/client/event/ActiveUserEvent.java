@@ -4,10 +4,10 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.event;
+package com.prealpha.extempdb.instance.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class ActiveUserEvent extends GwtEvent<ActiveUserHandler> {
 	private static final Type<ActiveUserHandler> TYPE = new Type<ActiveUserHandler>();

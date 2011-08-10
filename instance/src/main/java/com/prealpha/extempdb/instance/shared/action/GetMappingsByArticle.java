@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class GetMappingsByArticle extends GetMappings {
 	private Long articleId;

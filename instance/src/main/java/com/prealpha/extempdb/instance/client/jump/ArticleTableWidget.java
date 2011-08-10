@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.HasData;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 public class ArticleTableWidget extends Composite implements
 		ArticleTablePresenter.Display {

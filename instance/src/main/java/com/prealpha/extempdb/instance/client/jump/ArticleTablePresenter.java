@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -21,12 +21,12 @@ import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.shared.action.GetMapping;
-import com.prealpha.extempdb.shared.action.GetMappingResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.shared.action.GetMapping;
+import com.prealpha.extempdb.instance.shared.action.GetMappingResult;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class ArticleTablePresenter implements
 		Presenter<List<TagMappingDto.Key>> {

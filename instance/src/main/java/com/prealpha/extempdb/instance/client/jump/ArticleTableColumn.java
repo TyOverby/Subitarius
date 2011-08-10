@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -16,9 +16,9 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Hyperlink;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 class ArticleTableColumn extends Column<ArticleDto, String> {
 	private final ArticleField field;

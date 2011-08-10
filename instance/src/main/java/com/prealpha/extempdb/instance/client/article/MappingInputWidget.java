@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.article;
+package com.prealpha.extempdb.instance.client.article;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -16,9 +16,9 @@ import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.article.MappingInputPresenter.DisplayState;
-import com.prealpha.extempdb.client.taginput.TagInputWidget;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.article.MappingInputPresenter.DisplayState;
+import com.prealpha.extempdb.instance.client.taginput.TagInputWidget;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public final class MappingInputWidget extends Composite implements
 		MappingInputPresenter.Display {

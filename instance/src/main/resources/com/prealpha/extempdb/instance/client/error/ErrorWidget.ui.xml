@@ -3,9 +3,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field="res" type="com.prealpha.extempdb.client.CommonResources" />
+	<ui:with field="res" type="com.prealpha.extempdb.instance.client.CommonResources" />
 	<ui:with field="msg"
-		type="com.prealpha.extempdb.client.error.ErrorMessages" />
+		type="com.prealpha.extempdb.instance.client.error.ErrorMessages" />
 
 	<g:HTMLPanel addStyleNames="{res.style.contentSection}">
 		<g:VerticalPanel>

@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>As global crises mount, Obama has become the world’s master of ceremonies</string>
 				<string>By David J. Rothkopf</string>
 				<object class="java.util.Date">
@@ -69,7 +69,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.washingtonpost.com/blogs/blogpost/post/vancouver-kissing-couple-knocked-down-by-riot-police-new-video-shows-watch/2011/06/23/AGXSg1hH_blog.html</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Vancouver kissing couple knocked down by riot police, new video shows (Watch)</string>
 				<string>By Melissa Bell</string>
 				<object class="java.util.Date">

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.

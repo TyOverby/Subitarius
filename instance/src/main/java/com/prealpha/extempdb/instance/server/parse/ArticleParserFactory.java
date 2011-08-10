@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.parse;
+package com.prealpha.extempdb.instance.server.parse;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.instance.domain.Source;
 
 /*
  * TODO: it would be nice if this were done without this factory

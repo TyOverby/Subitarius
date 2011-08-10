@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.event;
+package com.prealpha.extempdb.instance.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 

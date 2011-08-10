@@ -4,7 +4,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
 	<ui:with field="msg"
-		type="com.prealpha.extempdb.client.article.ArticleMessages" />
+		type="com.prealpha.extempdb.instance.client.article.ArticleMessages" />
 
 	<ui:style>
 		.metaSectionEven,.metaSectionOdd {

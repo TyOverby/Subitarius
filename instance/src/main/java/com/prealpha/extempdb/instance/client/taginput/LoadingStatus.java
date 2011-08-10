@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.taginput;
+package com.prealpha.extempdb.instance.client.taginput;
 
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.CommonResources;
+import com.prealpha.extempdb.instance.client.CommonResources;
 
 enum LoadingStatus {
 	NONE(false) {

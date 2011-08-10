@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.dto;
+package com.prealpha.extempdb.instance.shared.dto;
 
 import java.util.HashSet;
 import java.util.Set;

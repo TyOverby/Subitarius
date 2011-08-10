@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.main;
+package com.prealpha.extempdb.instance.client.main;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -16,10 +16,10 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.PlacePresenter;
-import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.event.ActiveUserEvent;
-import com.prealpha.extempdb.client.event.ActiveUserHandler;
+import com.prealpha.extempdb.instance.client.PlacePresenter;
+import com.prealpha.extempdb.instance.client.SessionManager;
+import com.prealpha.extempdb.instance.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.instance.client.event.ActiveUserHandler;
 
 public class MainPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {

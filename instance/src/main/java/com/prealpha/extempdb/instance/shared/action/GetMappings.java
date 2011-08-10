@@ -4,12 +4,12 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import com.google.common.base.Predicate;
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 /*
  * TODO: the caching behavior is not ideal. Needs to be sensitive to mutation.

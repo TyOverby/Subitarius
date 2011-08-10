@@ -4,12 +4,12 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingActionDto.Type;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class AddMappingAction implements AuthenticatedAction<MutationResult> {
 	private String sessionId;

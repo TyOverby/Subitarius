@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.hierarchy;
+package com.prealpha.extempdb.instance.client.hierarchy;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.view.client.TreeViewModel;

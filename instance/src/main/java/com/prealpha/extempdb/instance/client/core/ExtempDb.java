@@ -4,12 +4,12 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.core;
+package com.prealpha.extempdb.instance.client.core;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
 
 class ExtempDb {
 	public static void onModuleLoad() {

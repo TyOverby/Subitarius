@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://www.csmonitor.com/World/Americas/2011/0321/Haiti-elects-new-president-for-Herculean-task</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Haiti elects new president for Herculean task</string>
 				<string>By Isabeau Doucet and Ezra Fieser</string>
 				<object class="java.util.Date">
@@ -78,7 +78,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.csmonitor.com/World/Americas/Latin-America-Monitor/2011/0614/Major-blackouts-hit-Venezuela-again</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Major blackouts hit Venezuela - again</string>
 				<string>By Miguel Octavio</string>
 				<object class="java.util.Date">

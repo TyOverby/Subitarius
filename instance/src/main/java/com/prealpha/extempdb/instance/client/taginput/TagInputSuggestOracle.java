@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.taginput;
+package com.prealpha.extempdb.instance.client.taginput;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -14,9 +14,9 @@ import java.util.Set;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.shared.action.GetTagSuggestions;
-import com.prealpha.extempdb.shared.action.GetTagSuggestionsResult;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.shared.action.GetTagSuggestions;
+import com.prealpha.extempdb.instance.shared.action.GetTagSuggestionsResult;
 
 public final class TagInputSuggestOracle extends SuggestOracle {
 	private final DispatcherAsync dispatcher;

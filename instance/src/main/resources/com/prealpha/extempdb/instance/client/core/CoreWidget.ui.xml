@@ -4,8 +4,8 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
 	<ui:with field="res"
-		type="com.prealpha.extempdb.client.core.CoreResources" />
-	<ui:with field="msg" type="com.prealpha.extempdb.client.core.CoreMessages" />
+		type="com.prealpha.extempdb.instance.client.core.CoreResources" />
+	<ui:with field="msg" type="com.prealpha.extempdb.instance.client.core.CoreMessages" />
 
 	<g:HTMLPanel addStyleNames="{res.style.container}">
 		<div class="{res.style.titleBar}">

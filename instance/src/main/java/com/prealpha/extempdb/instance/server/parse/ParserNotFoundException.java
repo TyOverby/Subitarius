@@ -4,11 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.parse;
+package com.prealpha.extempdb.instance.server.parse;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.extempdb.domain.Source;
+import com.prealpha.extempdb.instance.domain.Source;
 
 public class ParserNotFoundException extends RuntimeException {
 	private final Source source;

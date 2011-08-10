@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://www.economist.com/node/18388998</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Video nasty: The film business is slumping. It needs to start dealing directly with consumers</string>
 				<null/>
 				<object class="java.util.Date">
@@ -39,7 +39,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.economist.com/blogs/baobab/2011/03/drug-smuggling</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>The classic car-boot story</string>
 				<string>by J.L.</string>
 				<object class="java.util.Date">
@@ -63,7 +63,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.economist.com/blogs/bagehot/2011/06/david-cameron</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>David Cameron says U-turns are a sign of strength: nobody sniggers</string>
 				<string>by Bagehot</string>
 				<object class="java.util.Date">

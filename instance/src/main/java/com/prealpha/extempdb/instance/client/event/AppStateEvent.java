@@ -4,12 +4,12 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.event;
+package com.prealpha.extempdb.instance.client.event;
 
 import static com.google.common.base.Preconditions.*;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.prealpha.extempdb.client.AppState;
+import com.prealpha.extempdb.instance.client.AppState;
 
 public class AppStateEvent extends GwtEvent<AppStateHandler> {
 	private static final Type<AppStateHandler> TYPE = new Type<AppStateHandler>();

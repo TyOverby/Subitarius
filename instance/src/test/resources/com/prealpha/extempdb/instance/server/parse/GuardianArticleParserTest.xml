@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://www.guardian.co.uk/world/2011/mar/21/french-local-elections-sarkozy-pen</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>French local elections leave Sarkozy party in disarray</string>
 				<string>Angelique Chrisafis</string>
 				<object class="java.util.Date">
@@ -33,7 +33,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.guardian.co.uk/world/feedarticle/9485574</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Canada PM urges US to approve oil pipeline</string>
 				<null/>
 				<object class="java.util.Date">
@@ -111,7 +111,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.guardian.co.uk/business/feedarticle/9686975</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>China's Taomee sees "control" gaps as US IPO prices</string>
 				<null/>
 				<object class="java.util.Date">
@@ -210,7 +210,7 @@
 		</void>
 		<void method="put">
 			<string>http://www.guardian.co.uk/uk/feedarticle/9681597</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Government ousted in Portugal poll</string>
 				<null/>
 				<object class="java.util.Date">

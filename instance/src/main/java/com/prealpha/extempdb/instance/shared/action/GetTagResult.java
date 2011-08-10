@@ -4,10 +4,10 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public class GetTagResult implements Result {
 	private TagDto tag;

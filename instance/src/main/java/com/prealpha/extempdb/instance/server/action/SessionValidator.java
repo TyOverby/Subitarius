@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.server.action;
+package com.prealpha.extempdb.instance.server.action;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,8 +13,8 @@ import org.aopalliance.intercept.MethodInvocation;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.extempdb.shared.action.AuthenticatedAction;
-import com.prealpha.extempdb.shared.action.InvalidSessionException;
+import com.prealpha.extempdb.instance.shared.action.AuthenticatedAction;
+import com.prealpha.extempdb.instance.shared.action.InvalidSessionException;
 
 final class SessionValidator implements MethodInterceptor {
 	@Inject

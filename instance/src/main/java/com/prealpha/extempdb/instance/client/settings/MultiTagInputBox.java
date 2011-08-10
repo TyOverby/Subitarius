@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.settings;
+package com.prealpha.extempdb.instance.client.settings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,8 +21,8 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.extempdb.client.taginput.TagInputWidget;
-import com.prealpha.extempdb.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.client.taginput.TagInputWidget;
+import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public final class MultiTagInputBox extends Composite implements
 		HasValue<Set<TagDto>> {

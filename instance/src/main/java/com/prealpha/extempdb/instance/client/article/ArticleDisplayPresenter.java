@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.article;
+package com.prealpha.extempdb.instance.client.article;
 
 import java.util.List;
 
@@ -15,11 +15,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.shared.action.GetParagraphs;
-import com.prealpha.extempdb.shared.action.GetParagraphsResult;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.shared.action.GetParagraphs;
+import com.prealpha.extempdb.instance.shared.action.GetParagraphsResult;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 public class ArticleDisplayPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.article;
+package com.prealpha.extempdb.instance.client.article;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -15,17 +15,17 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
-import com.prealpha.extempdb.client.Presenter;
-import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.ActiveUserEvent;
-import com.prealpha.extempdb.client.event.ActiveUserHandler;
-import com.prealpha.extempdb.shared.action.AddMappingAction;
-import com.prealpha.extempdb.shared.action.MutationResult;
-import com.prealpha.extempdb.shared.dto.TagMappingActionDto.Type;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
-import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.client.Presenter;
+import com.prealpha.extempdb.instance.client.SessionManager;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.event.ActiveUserEvent;
+import com.prealpha.extempdb.instance.client.event.ActiveUserHandler;
+import com.prealpha.extempdb.instance.shared.action.AddMappingAction;
+import com.prealpha.extempdb.instance.shared.action.MutationResult;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingActionDto.Type;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	public static interface Display extends IsWidget {

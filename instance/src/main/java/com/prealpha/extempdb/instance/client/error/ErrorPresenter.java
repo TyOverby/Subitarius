@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.error;
+package com.prealpha.extempdb.instance.client.error;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -21,11 +21,11 @@ import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.client.HistoryManager;
-import com.prealpha.extempdb.client.PlacePresenter;
-import com.prealpha.extempdb.shared.action.InvalidSessionException;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.client.HistoryManager;
+import com.prealpha.extempdb.instance.client.PlacePresenter;
+import com.prealpha.extempdb.instance.shared.action.InvalidSessionException;
 
 public class ErrorPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {

@@ -3,7 +3,7 @@
 	<object class="java.util.LinkedHashMap">
 		<void method="put">
 			<string>http://www.reuters.com/article/idUSTRE6823Q420100905</string>
-			<object class="com.prealpha.extempdb.server.parse.ProtoArticle">
+			<object class="com.prealpha.extempdb.instance.server.parse.ProtoArticle">
 				<string>Quake-hit New Zealand city remains shut</string>
 				<null/>
 				<object class="java.util.Date">

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.core;
+package com.prealpha.extempdb.instance.client.core;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.inject.client.AsyncProvider;
@@ -12,16 +12,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.client.AppPlace;
-import com.prealpha.extempdb.client.AppState;
-import com.prealpha.extempdb.client.AppStateException;
-import com.prealpha.extempdb.client.CommonResources;
-import com.prealpha.extempdb.client.HistoryManager;
-import com.prealpha.extempdb.client.PlacePresenter;
-import com.prealpha.extempdb.client.SessionManager;
-import com.prealpha.extempdb.client.error.ManagedCallback;
-import com.prealpha.extempdb.client.event.AppStateEvent;
-import com.prealpha.extempdb.client.event.AppStateHandler;
+import com.prealpha.extempdb.instance.client.AppPlace;
+import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.client.AppStateException;
+import com.prealpha.extempdb.instance.client.CommonResources;
+import com.prealpha.extempdb.instance.client.HistoryManager;
+import com.prealpha.extempdb.instance.client.PlacePresenter;
+import com.prealpha.extempdb.instance.client.SessionManager;
+import com.prealpha.extempdb.instance.client.error.ManagedCallback;
+import com.prealpha.extempdb.instance.client.event.AppStateEvent;
+import com.prealpha.extempdb.instance.client.event.AppStateHandler;
 
 public final class CoreManager {
 	private final CoreWidget coreWidget;

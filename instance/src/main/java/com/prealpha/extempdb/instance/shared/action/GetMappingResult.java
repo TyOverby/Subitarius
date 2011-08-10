@@ -4,10 +4,10 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.dto.TagMappingDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class GetMappingResult implements Result {
 	private TagMappingDto mapping;

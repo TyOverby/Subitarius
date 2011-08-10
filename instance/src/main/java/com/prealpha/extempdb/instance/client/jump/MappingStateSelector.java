@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.shared.dto.TagMappingDto.State;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class MappingStateSelector extends Composite implements
 		HasValue<Set<State>> {

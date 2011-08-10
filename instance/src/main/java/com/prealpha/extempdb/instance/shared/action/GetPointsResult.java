@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class GetPointsResult implements Result {
 	private HashMap<UserDto, Integer> points;

@@ -4,10 +4,10 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.shared.action;
+package com.prealpha.extempdb.instance.shared.action;
 
 import com.prealpha.dispatch.shared.Result;
-import com.prealpha.extempdb.shared.dto.UserDto;
+import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class GetUserResult implements Result {
 	private UserDto user;

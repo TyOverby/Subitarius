@@ -4,14 +4,14 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.client.jump;
+package com.prealpha.extempdb.instance.client.jump;
 
 import static com.google.common.base.Preconditions.*;
 
 import java.util.Comparator;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.prealpha.extempdb.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 class ArticleSort implements Comparator<ArticleDto>, IsSerializable {
 	public static final ArticleSort DEFAULT_SORT = new ArticleSort(
