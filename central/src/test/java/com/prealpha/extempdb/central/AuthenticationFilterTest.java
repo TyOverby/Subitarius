@@ -28,7 +28,6 @@ import com.mycila.testing.plugin.easymock.Mock;
 import com.mycila.testing.plugin.guice.GuiceContext;
 import com.mycila.testing.plugin.guice.ModuleProvider;
 import com.prealpha.extempdb.domain.Team;
-import com.prealpha.extempdb.domain.User;
 import com.prealpha.extempdb.util.logging.TestLoggingModule;
 
 @RunWith(MycilaJunitRunner.class)
@@ -40,7 +39,7 @@ public final class AuthenticationFilterTest {
 		return new AbstractModule() {
 			@Override
 			protected void configure() {
-				bind(User.class).toProvider(userProvider);
+				bind(Team.class).toProvider(teamProvider);
 			}
 		};
 	}
@@ -48,10 +47,7 @@ public final class AuthenticationFilterTest {
 	@Inject
 	private AuthenticationFilter filter;
 
-	private final UserProvider userProvider = new UserProvider();
-
-	@Mock(Mock.Type.NICE)
-	private User user;
+	private final TeamProvider teamProvider = new TeamProvider();
 
 	@Mock(Mock.Type.NICE)
 	private Team team;
@@ -68,7 +64,7 @@ public final class AuthenticationFilterTest {
 	@Test
 	public void testDoFilterNotAuthenticated() throws IOException,
 			ServletException {
-		userProvider.init(true);
+		teamProvider.init(true);
 		res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		expectLastCall();
 
@@ -79,33 +75,31 @@ public final class AuthenticationFilterTest {
 
 	@Test
 	public void testDoFilterExpired() throws IOException, ServletException {
-		userProvider.init(false);
-		expect(user.getTeam()).andReturn(team).anyTimes();
+		teamProvider.init(false);
 		expect(team.isExpired()).andReturn(true).anyTimes();
 		res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		expectLastCall();
 
-		replay(user, team, req, res, chain);
+		replay(team, req, res, chain);
 		filter.doFilter(req, res, chain);
-		verify(user, team, req, res, chain);
+		verify(team, req, res, chain);
 	}
 
 	@Test
 	public void testDoFilter() throws IOException, ServletException {
-		userProvider.init(false);
-		expect(user.getTeam()).andReturn(team).anyTimes();
+		teamProvider.init(false);
 		expect(team.isExpired()).andReturn(false).anyTimes();
 		chain.doFilter(req, res);
 		expectLastCall();
 		res.setStatus(HttpServletResponse.SC_OK);
 		expectLastCall().anyTimes();
 
-		replay(user, team, req, res, chain);
+		replay(team, req, res, chain);
 		filter.doFilter(req, res, chain);
-		verify(user, team, req, res, chain);
+		verify(team, req, res, chain);
 	}
 
-	private class UserProvider implements Provider<User> {
+	private class TeamProvider implements Provider<Team> {
 		private boolean initialized;
 
 		private boolean isNull;
@@ -117,9 +111,9 @@ public final class AuthenticationFilterTest {
 		}
 
 		@Override
-		public User get() {
+		public Team get() {
 			checkState(initialized);
-			return (isNull ? null : user);
+			return (isNull ? null : team);
 		}
 	}
 }

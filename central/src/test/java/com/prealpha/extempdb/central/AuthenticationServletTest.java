@@ -44,7 +44,6 @@ import com.mycila.testing.plugin.guice.Bind;
 import com.mycila.testing.plugin.guice.GuiceContext;
 import com.mycila.testing.plugin.guice.ModuleProvider;
 import com.prealpha.extempdb.domain.Team;
-import com.prealpha.extempdb.domain.User;
 import com.prealpha.extempdb.util.logging.TestLoggingModule;
 
 @RunWith(MycilaJunitRunner.class)
@@ -58,7 +57,6 @@ public final class AuthenticationServletTest {
 					@Override
 					protected void configure() {
 						requestStaticInjection(Team.class);
-						requestStaticInjection(User.class);
 					}
 				});
 	}
@@ -98,11 +96,9 @@ public final class AuthenticationServletTest {
 		persistService.start();
 		EntityManager entityManager = entityManagerProvider.get();
 		entityManager.getTransaction().begin();
-		Team team = new Team("test team", new Date(Long.MAX_VALUE), 1,
-				privateKey);
-		User user = new User("testuser", "password", team, privateKey);
+		Team team = new Team("testteam", "password", new Date(Long.MAX_VALUE),
+				1, privateKey);
 		entityManager.persist(team);
-		entityManager.persist(user);
 		entityManager.getTransaction().commit();
 		verify(algorithm);
 	}
@@ -114,7 +110,7 @@ public final class AuthenticationServletTest {
 
 	@Test
 	public void testDoPostNoVersion() throws IOException, ServletException {
-		initRequestMock(ImmutableMap.of("name", "testuser", "password",
+		initRequestMock(ImmutableMap.of("name", "testteam", "password",
 				"password"));
 		res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		expectLastCall();
@@ -139,7 +135,7 @@ public final class AuthenticationServletTest {
 	@Test
 	public void testDoPostNoPassword() throws IOException, ServletException {
 		initRequestMock(ImmutableMap.of("version", "0.2-alpha", "name",
-				"testuser"));
+				"testteam"));
 		res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		expectLastCall();
 
@@ -151,7 +147,7 @@ public final class AuthenticationServletTest {
 	@Test
 	public void testDoPostVersion() throws IOException, ServletException {
 		initRequestMock(ImmutableMap.of("version", "0.1-alpha", "name",
-				"testuser", "password", "password"));
+				"testteam", "password", "password"));
 		res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		expectLastCall();
 
@@ -163,7 +159,7 @@ public final class AuthenticationServletTest {
 	@Test
 	public void testDoPostFakeUser() throws IOException, ServletException {
 		initRequestMock(ImmutableMap.of("version", "0.2-alpha", "name",
-				"fakeuser", "password", "password"));
+				"faketeam", "password", "password"));
 		res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		expectLastCall();
 
@@ -175,7 +171,7 @@ public final class AuthenticationServletTest {
 	@Test
 	public void testDoPostBadPassword() throws IOException, ServletException {
 		initRequestMock(ImmutableMap.of("version", "0.2-alpha", "name",
-				"testuser", "password", "foobar"));
+				"testteam", "password", "foobar"));
 		res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		expectLastCall();
 
@@ -187,7 +183,7 @@ public final class AuthenticationServletTest {
 	@Test
 	public void testDoPost() throws IOException, ServletException {
 		initRequestMock(ImmutableMap.of("version", "0.2-alpha", "name",
-				"testuser", "password", "password"));
+				"testteam", "password", "password"));
 		expect(req.getSession(true)).andReturn(session).anyTimes();
 		res.setStatus(HttpServletResponse.SC_OK);
 		expectLastCall().anyTimes();

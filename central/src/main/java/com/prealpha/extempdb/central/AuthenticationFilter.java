@@ -21,15 +21,14 @@ import org.slf4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.extempdb.domain.Team;
-import com.prealpha.extempdb.domain.User;
 import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /**
  * A simple filter to check that a requester has authenticated through
  * {@link AuthenticationServlet} before accessing secure resources. The filter
- * simply checks that a logged in user exists and that the team license for that
- * user has not expired. If either of these tests fails, status code 401
- * (unauthorized) is sent as a response instead of passing the request on.
+ * simply checks that a logged in team exists and that the team license has not
+ * expired. If either of these tests fails, status code 401 (unauthorized) is
+ * sent as a response instead of passing the request on.
  * 
  * @author Meyer Kizner
  * 
@@ -38,11 +37,11 @@ final class AuthenticationFilter implements Filter {
 	@InjectLogger
 	private Logger log;
 
-	private final Provider<User> userProvider;
+	private final Provider<Team> teamProvider;
 
 	@Inject
-	private AuthenticationFilter(Provider<User> userProvider) {
-		this.userProvider = userProvider;
+	private AuthenticationFilter(Provider<Team> teamProvider) {
+		this.teamProvider = teamProvider;
 	}
 
 	@Override
@@ -52,22 +51,15 @@ final class AuthenticationFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		User user = userProvider.get();
-		if (user != null) {
-			Team team = user.getTeam();
-			if (!team.isExpired()) {
-				log.debug("access granted to user {}", user);
-				chain.doFilter(request, response);
-				return;
-			} else {
-				log.info("access denied to user {}; subscription expired", user);
-			}
+		Team team = teamProvider.get();
+		if (team != null && !team.isExpired()) {
+			log.debug("access granted to team {}", team);
+			chain.doFilter(request, response);
 		} else {
-			log.info("access denied; not authenticated");
+			log.info("access denied to team {}", team);
+			((HttpServletResponse) response)
+					.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		}
-
-		((HttpServletResponse) response)
-				.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 
 	@Override

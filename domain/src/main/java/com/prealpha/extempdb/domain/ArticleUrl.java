@@ -42,7 +42,7 @@ public class ArticleUrl extends DistributedEntity {
 		this(null, url, source);
 	}
 
-	public ArticleUrl(User creator, String url, Source source) {
+	public ArticleUrl(Team creator, String url, Source source) {
 		super(creator);
 		checkNotNull(url);
 		checkNotNull(source);

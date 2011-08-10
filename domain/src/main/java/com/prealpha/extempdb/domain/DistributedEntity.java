@@ -59,7 +59,7 @@ import com.google.inject.Inject;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DistributedEntity implements HasBytes, Serializable {
-	private static final long serialVersionUID = 7547760315320101572L;
+	private static final long serialVersionUID = -5279070062492987285L;
 
 	private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
 
@@ -129,7 +129,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	private transient Date persistDate;
 
-	private User creator;
+	private Team creator;
 
 	private DistributedEntity parent;
 
@@ -141,7 +141,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this(null, null);
 	}
 
-	protected DistributedEntity(User creator) {
+	protected DistributedEntity(Team creator) {
 		this(creator, null);
 	}
 
@@ -149,7 +149,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this(null, parent);
 	}
 
-	protected DistributedEntity(User creator, DistributedEntity parent) {
+	protected DistributedEntity(Team creator, DistributedEntity parent) {
 		createDate = new Date();
 		this.creator = creator;
 		this.parent = parent;
@@ -210,11 +210,11 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	@ManyToOne
 	@JoinColumn(updatable = false)
-	public User getCreator() {
+	public Team getCreator() {
 		return creator;
 	}
 
-	protected void setCreator(User creator) {
+	protected void setCreator(Team creator) {
 		this.creator = creator;
 	}
 

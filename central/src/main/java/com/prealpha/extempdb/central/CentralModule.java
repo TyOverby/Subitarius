@@ -17,11 +17,11 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
-import com.prealpha.extempdb.domain.User;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.logging.Slf4jTypeListener;
 
 public final class CentralModule extends ServletModule {
-	static final String USER_ATTR = "user";
+	static final String TEAM_ATTR = "team";
 
 	public CentralModule() {
 	}
@@ -56,7 +56,7 @@ public final class CentralModule extends ServletModule {
 	@Provides
 	@RequestScoped
 	@Inject
-	User getUser(HttpSession session) {
-		return (User) session.getAttribute(USER_ATTR);
+	Team getUser(HttpSession session) {
+		return (Team) session.getAttribute(TEAM_ATTR);
 	}
 }

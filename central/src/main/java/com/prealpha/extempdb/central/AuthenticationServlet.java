@@ -24,8 +24,8 @@ import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.extempdb.domain.User;
-import com.prealpha.extempdb.domain.User_;
+import com.prealpha.extempdb.domain.Team;
+import com.prealpha.extempdb.domain.Team_;
 import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /**
@@ -72,11 +72,11 @@ final class AuthenticationServlet extends HttpServlet {
 	 * implemented).
 	 * <p>
 	 * 
-	 * {@code name} should be a valid username, and {@code password} should be
-	 * the valid cleartext password corresponding to that username. If either is
-	 * invalid, status code 403 (forbidden) is sent in response. An invalid
-	 * username and an incorrect password are intentionally made
-	 * indistinguishable to the client.
+	 * {@code name} should be a valid team name, and {@code password} should be
+	 * the valid cleartext password corresponding to that team. If either is
+	 * invalid, status code 403 (forbidden) is sent in response. An invalid name
+	 * and an incorrect password are intentionally made indistinguishable to the
+	 * client.
 	 * <p>
 	 * 
 	 * If all parameters are valid and authentication succeeds, status code 200
@@ -84,7 +84,7 @@ final class AuthenticationServlet extends HttpServlet {
 	 */
 	/*
 	 * TODO: maybe I'm thinking too hard about this, but if someone really
-	 * wanted to know if a username were valid, they could use a timing attack.
+	 * wanted to know if a team name were valid, they could use a timing attack.
 	 */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -105,40 +105,40 @@ final class AuthenticationServlet extends HttpServlet {
 		}
 
 		String name = req.getParameter("name");
-		User user = findUser(name);
-		if (user != null) {
+		Team team = findTeam(name);
+		if (team != null) {
 			String password = req.getParameter("password");
-			if (user.authenticate(password)) {
+			if (team.authenticate(password)) {
 				HttpSession session = req.getSession(true);
 				log.info(
-						"successfully authenticated session ID {} with user: {}",
-						session.getId(), user);
-				session.setAttribute(CentralModule.USER_ATTR, user);
+						"successfully authenticated session ID {} with team {}",
+						session.getId(), team);
+				session.setAttribute(CentralModule.TEAM_ATTR, team);
 				res.setStatus(HttpServletResponse.SC_OK);
 			} else {
-				log.info("bad password provided for user: {}", user);
+				log.info("bad password provided for team {}", team);
 				res.sendError(HttpServletResponse.SC_FORBIDDEN);
 			}
 		} else {
-			log.info("requested user does not exist: \"{}\"", name);
+			log.info("requested team does not exist: \"{}\"", name);
 			res.sendError(HttpServletResponse.SC_FORBIDDEN);
 		}
 	}
 
 	/**
 	 * @param name
-	 *            a user's name
-	 * @return a detached {@link User} with the specified name, or {@code null}
+	 *            a team's name
+	 * @return a detached {@link Team} with the specified name, or {@code null}
 	 *         if none exists
 	 */
-	private User findUser(String name) {
+	private Team findTeam(String name) {
 		EntityManager entityManager = entityManagerProvider.get();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<User> criteria = builder.createQuery(User.class);
-		Root<User> userRoot = criteria.from(User.class);
-		criteria.where(builder.equal(userRoot.get(User_.name), name));
+		CriteriaQuery<Team> criteria = builder.createQuery(Team.class);
+		Root<Team> teamRoot = criteria.from(Team.class);
+		criteria.where(builder.equal(teamRoot.get(Team_.name), name));
 		try {
-			User result = entityManager.createQuery(criteria).getSingleResult();
+			Team result = entityManager.createQuery(criteria).getSingleResult();
 			entityManager.detach(result);
 			return result;
 		} catch (NoResultException nrx) {

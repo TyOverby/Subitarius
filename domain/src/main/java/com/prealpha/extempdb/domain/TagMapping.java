@@ -23,7 +23,7 @@ import com.google.common.base.Charsets;
 
 @Entity
 public class TagMapping extends DistributedEntity {
-	private static final long serialVersionUID = 7203346068545976447L;
+	private static final long serialVersionUID = -7704403842537059080L;
 
 	public static enum State {
 		STICKIED, PATROLLED, UNPATROLLED, REMOVED, ARCHIVED;
@@ -54,7 +54,7 @@ public class TagMapping extends DistributedEntity {
 		this(null, null, tag, articleUrl, State.UNPATROLLED);
 	}
 
-	public TagMapping(User creator, TagMapping parent, Tag tag,
+	public TagMapping(Team creator, TagMapping parent, Tag tag,
 			ArticleUrl articleUrl, State state) {
 		super(creator, parent);
 		setTag(tag);

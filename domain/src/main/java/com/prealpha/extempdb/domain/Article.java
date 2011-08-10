@@ -49,7 +49,7 @@ public class Article extends DistributedEntity {
 	protected Article() {
 	}
 
-	public Article(User creator, DistributedEntity parent, ArticleUrl url,
+	public Article(Team creator, DistributedEntity parent, ArticleUrl url,
 			String title, String byline, Date articleDate,
 			List<String> paragraphs) {
 		super(creator, parent);

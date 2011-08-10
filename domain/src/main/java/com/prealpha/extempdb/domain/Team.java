@@ -15,6 +15,7 @@ import java.security.PrivateKey;
 import java.security.SignatureException;
 import java.util.Date;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,15 +31,20 @@ import com.google.common.primitives.Longs;
 
 @Entity
 public class Team extends SignedEntity {
-	private static final long serialVersionUID = -7875144096585811927L;
+	private static final long serialVersionUID = -5847806816422177475L;
+
+	private static final int BCRYPT_ROUNDS = 12;
+
+	private static final Pattern BCRYPT_REGEX = Pattern.compile("\\$2a\\$"
+			+ BCRYPT_ROUNDS + "\\$[./A-Za-z0-9]{53}");
 
 	private String name;
+
+	private String hash;
 
 	private Date expiry;
 
 	private int licenseCap;
-
-	private transient ImmutableSet<User> users;
 
 	private transient ImmutableSet<License> licenses;
 
@@ -48,13 +54,13 @@ public class Team extends SignedEntity {
 	protected Team() {
 	}
 
-	public Team(String name, Date expiry, int licenseCap, PrivateKey privateKey)
-			throws InvalidKeyException, SignatureException {
+	public Team(String name, String password, Date expiry, int licenseCap,
+			PrivateKey privateKey) throws InvalidKeyException,
+			SignatureException {
 		setName(name);
 		setExpiry(expiry);
 		setLicenseCap(licenseCap);
-		sign(privateKey);
-		users = ImmutableSet.of();
+		setPassword(password, privateKey); // calls sign(PrivateKey)
 		licenses = ImmutableSet.of();
 	}
 
@@ -67,6 +73,28 @@ public class Team extends SignedEntity {
 		checkNotNull(name);
 		checkArgument(!name.isEmpty());
 		this.name = name;
+	}
+
+	@Column(length = 60, nullable = false)
+	protected String getHash() {
+		return hash;
+	}
+
+	protected void setHash(String hash) {
+		checkNotNull(hash);
+		checkArgument(BCRYPT_REGEX.matcher(hash).matches());
+		this.hash = hash;
+	}
+
+	public boolean authenticate(String password) {
+		return BCrypt.checkpw(password, hash);
+	}
+
+	public void setPassword(String password, PrivateKey privateKey)
+			throws InvalidKeyException, SignatureException {
+		String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
+		hash = BCrypt.hashpw(password, salt);
+		sign(privateKey);
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -101,16 +129,6 @@ public class Team extends SignedEntity {
 	protected void setLicenseCap(int licenseCap) {
 		checkArgument(licenseCap > 0);
 		this.licenseCap = licenseCap;
-	}
-
-	@OneToMany(mappedBy = "team")
-	public Set<User> getUsers() {
-		return users;
-	}
-
-	protected void setUsers(Set<User> users) {
-		checkNotNull(users);
-		this.users = ImmutableSet.copyOf(users);
 	}
 
 	@OneToMany(mappedBy = "team")
