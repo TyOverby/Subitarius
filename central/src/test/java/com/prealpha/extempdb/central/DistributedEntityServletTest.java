@@ -39,7 +39,6 @@ import com.mycila.testing.plugin.guice.ModuleProvider;
 import com.prealpha.extempdb.domain.ArticleUrl;
 import com.prealpha.extempdb.domain.DistributedEntity;
 import com.prealpha.extempdb.domain.DomainModule;
-import com.prealpha.extempdb.domain.Source;
 import com.prealpha.extempdb.util.logging.TestLoggingModule;
 
 @RunWith(MycilaJunitRunner.class)
@@ -79,10 +78,9 @@ public final class DistributedEntityServletTest {
 		persistService.start();
 		EntityManager entityManager = entityManagerProvider.get();
 		entityManager.getTransaction().begin();
-		url1 = new ArticleUrl("http://www.nytimes.com", Source.NY_TIMES);
+		url1 = new ArticleUrl("http://www.nytimes.com/");
 		entityManager.persist(url1);
-		url2 = new ArticleUrl("http://www.washingtonpost.com",
-				Source.WASHINGTON_POST);
+		url2 = new ArticleUrl("http://www.washingtonpost.com/");
 		entityManager.persist(url2);
 		entityManager.getTransaction().commit();
 	}
@@ -157,13 +155,13 @@ public final class DistributedEntityServletTest {
 		DistributedEntity deserialized = (DistributedEntity) ois.readObject();
 		assertEquals(entity, deserialized);
 	}
-	
+
 	@Test
 	public void testDoGetNotFound() throws IOException, ServletException {
 		expect(req.getPathInfo()).andReturn("/0").anyTimes();
 		res.sendError(HttpServletResponse.SC_NOT_FOUND);
 		expectLastCall();
-		
+
 		replay(req, res);
 		servlet.doGet(req, res);
 		verify(req, res);

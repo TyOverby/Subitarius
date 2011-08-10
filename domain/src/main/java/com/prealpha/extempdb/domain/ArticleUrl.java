@@ -14,21 +14,24 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 
+/**
+ * A canonical {@link Article} URL. Raw URLs are accepted by the constructors
+ * and converted to canonical form for storage.
+ * 
+ * @author Meyer Kizner
+ * 
+ */
 @Entity
 public class ArticleUrl extends DistributedEntity {
-	private static final long serialVersionUID = 4371586612973910099L;
+	private static final long serialVersionUID = -483193802722327299L;
 
 	private String url;
-
-	private Source source;
 
 	private transient ImmutableSet<TagMapping> mappings;
 
@@ -37,17 +40,19 @@ public class ArticleUrl extends DistributedEntity {
 	 */
 	protected ArticleUrl() {
 	}
-	
-	public ArticleUrl(String url, Source source) {
-		this(null, url, source);
+
+	public ArticleUrl(String rawUrl) {
+		this(null, rawUrl);
 	}
 
-	public ArticleUrl(Team creator, String url, Source source) {
+	public ArticleUrl(Team creator, String rawUrl) {
 		super(creator);
-		checkNotNull(url);
-		checkNotNull(source);
-		this.url = url;
-		this.source = source;
+		checkNotNull(rawUrl);
+		checkArgument(rawUrl.startsWith("http://"));
+		int index = rawUrl.indexOf("/", 7);
+		String domainName = rawUrl.substring(7, index);
+		Source source = Source.fromDomainName(domainName);
+		url = source.canonicalize(rawUrl);
 		mappings = ImmutableSet.of();
 	}
 
@@ -59,17 +64,6 @@ public class ArticleUrl extends DistributedEntity {
 	protected void setUrl(String url) {
 		checkNotNull(url);
 		this.url = url;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, updatable = false)
-	public Source getSource() {
-		return source;
-	}
-
-	protected void setSource(Source source) {
-		checkNotNull(source);
-		this.source = source;
 	}
 
 	@OneToMany(mappedBy = "articleUrl")
@@ -85,16 +79,13 @@ public class ArticleUrl extends DistributedEntity {
 	@Transient
 	@Override
 	public byte[] getBytes() {
-		byte[] urlData = url.getBytes(Charsets.UTF_8);
-		byte[] sourceData = source.name().getBytes(Charsets.UTF_8);
-		return DistributedEntity.merge(urlData, sourceData);
+		return url.getBytes(Charsets.UTF_8);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((source == null) ? 0 : source.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
 	}
@@ -111,9 +102,6 @@ public class ArticleUrl extends DistributedEntity {
 			return false;
 		}
 		ArticleUrl other = (ArticleUrl) obj;
-		if (source != other.source) {
-			return false;
-		}
 		if (url == null) {
 			if (other.url != null) {
 				return false;
@@ -123,7 +111,7 @@ public class ArticleUrl extends DistributedEntity {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return url;
@@ -133,6 +121,5 @@ public class ArticleUrl extends DistributedEntity {
 			ClassNotFoundException {
 		ois.defaultReadObject();
 		setUrl(url);
-		setSource(source);
 	}
 }

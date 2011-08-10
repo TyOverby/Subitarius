@@ -90,7 +90,7 @@ final class BingSearchProvider implements SearchProvider {
 					if (limit < 0 || articleUrls.size() < limit) {
 						// handle Bing's apiclick.aspx
 						String rawUrl = handleApiClick(result.getUrl());
-						ArticleUrl articleUrl = new ArticleUrl(rawUrl, source);
+						ArticleUrl articleUrl = new ArticleUrl(rawUrl);
 						articleUrls.add(articleUrl);
 					}
 				}

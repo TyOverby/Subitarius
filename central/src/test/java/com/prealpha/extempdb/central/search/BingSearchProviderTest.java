@@ -73,8 +73,7 @@ public final class BingSearchProviderTest {
 		expect(mockHttpClient.doGet(searchUrl, parameters)).andReturn(stream);
 
 		ArticleUrl expectedUrl = new ArticleUrl(
-				"http://www.nytimes.com/2010/08/05/technology/05secret.html",
-				source);
+				"http://www.nytimes.com/2010/08/05/technology/05secret.html");
 
 		replay(mockHttpClient);
 
