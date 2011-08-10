@@ -31,7 +31,7 @@ import com.google.common.primitives.Longs;
 
 @Entity
 public class Article extends DistributedEntity {
-	private static final long serialVersionUID = 1511193507021475585L;
+	private static final long serialVersionUID = -2943998260923341509L;
 
 	private ArticleUrl url;
 
@@ -49,10 +49,9 @@ public class Article extends DistributedEntity {
 	protected Article() {
 	}
 
-	public Article(Team creator, DistributedEntity parent, ArticleUrl url,
-			String title, String byline, Date articleDate,
-			List<String> paragraphs) {
-		super(creator, parent);
+	public Article(Team creator, ArticleUrl url, String title, String byline,
+			Date articleDate, List<String> paragraphs) {
+		super(creator, url);
 		setUrl(url);
 		setTitle(title);
 		setByline(byline);
