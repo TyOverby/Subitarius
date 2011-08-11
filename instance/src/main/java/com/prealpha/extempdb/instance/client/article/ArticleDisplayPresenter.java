@@ -50,11 +50,11 @@ public class ArticleDisplayPresenter implements Presenter<ArticleDto> {
 	@Override
 	public void bind(ArticleDto article) {
 		display.getTitleLink().setText(article.getTitle());
-		display.getTitleLink().setHref(article.getUrl());
+		display.getTitleLink().setHref(article.getUrl().getUrl());
 		display.getBylineLabel().setText(article.getByline());
-		display.getSourceLabel().setText(article.getSource().getDisplayName());
+		display.getSourceLabel().setText(article.getUrl().getSource());
 
-		GetParagraphs action = new GetParagraphs(article.getId());
+		GetParagraphs action = new GetParagraphs(article.getHash());
 		dispatcher.execute(action, new ManagedCallback<GetParagraphsResult>() {
 			@Override
 			public void onSuccess(GetParagraphsResult result) {

@@ -23,6 +23,7 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Tag;
+import com.prealpha.extempdb.domain.Tag.Type;
 import com.prealpha.extempdb.instance.shared.action.GetHierarchy;
 import com.prealpha.extempdb.instance.shared.action.GetHierarchyResult;
 import com.prealpha.extempdb.util.logging.InjectLogger;
@@ -53,13 +54,15 @@ class GetHierarchyHandler implements
 		List<Tag> tags = entityManager.createQuery(criteria).getResultList();
 
 		for (Tag tag : tags) {
-			String tagName = tag.getName();
-			if (tag.getParents().isEmpty()) {
-				hierarchy.put(null, tagName);
-			} else {
-				for (Tag parent : tag.getParents()) {
-					String parentName = parent.getName();
-					hierarchy.put(parentName, tagName);
+			if (tag.getType() != Type.ARCHIVED) {
+				String tagName = tag.getName();
+				if (tag.getParents().isEmpty()) {
+					hierarchy.put(null, tagName);
+				} else {
+					for (Tag parent : tag.getParents()) {
+						String parentName = parent.getName();
+						hierarchy.put(parentName, tagName);
+					}
 				}
 			}
 		}

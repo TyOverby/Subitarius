@@ -6,22 +6,27 @@
 
 package com.prealpha.extempdb.instance.server.action;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 
-import com.google.common.collect.Iterables;
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
 import com.prealpha.extempdb.domain.TagMapping;
+import com.prealpha.extempdb.domain.TagMapping_;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
@@ -47,23 +52,32 @@ class GetMappingsByArticleHandler implements
 	@Override
 	public GetMappingsResult execute(GetMappingsByArticle action,
 			Dispatcher dispatcher) throws ActionException {
-		Long articleId = action.getArticleId();
-		Article article = entityManager.find(Article.class, articleId);
-		List<TagMappingDto> dtos = new ArrayList<TagMappingDto>();
+		String articleUrlHash = action.getArticleUrlHash();
+		ArticleUrl articleUrl = entityManager.find(ArticleUrl.class,
+				articleUrlHash);
 
-		for (TagMapping mapping : article.getMappings()) {
-			dtos.add(mapper.map(mapping, TagMappingDto.class));
-		}
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<TagMapping> criteria = builder
+				.createQuery(TagMapping.class);
+		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
+		criteria.where(builder.equal(mappingRoot.get(TagMapping_.articleUrl),
+				articleUrl));
+		criteria.where(builder.isNull(mappingRoot.get(TagMapping_.child)));
+		List<TagMapping> mappings = entityManager.createQuery(criteria)
+				.getResultList();
 
-		List<TagMappingDto.Key> mappingKeys = new ArrayList<TagMappingDto.Key>();
-		for (TagMappingDto dto : Iterables.filter(dtos, action)) {
-			mappingKeys.add(dto.getKey());
-		}
+		Collection<TagMappingDto> dtos = Collections2.transform(mappings,
+				new Function<TagMapping, TagMappingDto>() {
+					@Override
+					public TagMappingDto apply(TagMapping input) {
+						return mapper.map(input, TagMappingDto.class);
+					}
+				});
+		dtos = Collections2.filter(dtos, action);
 
-		log.info(
-				"handled request for mappings to article ID {}, returning {} mapping keys",
-				articleId, mappingKeys.size());
+		log.info("returned {} mappings for article URL: {}", dtos.size(),
+				articleUrl);
 
-		return new GetMappingsResult(mappingKeys);
+		return new GetMappingsResult(dtos);
 	}
 }

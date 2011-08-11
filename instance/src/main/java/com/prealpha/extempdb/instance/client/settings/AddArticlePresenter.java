@@ -76,9 +76,8 @@ public class AddArticlePresenter implements Presenter<Void> {
 			@Override
 			public void onSuccess(AddArticleResult result) {
 				if (result.getType().isSuccess()) {
-					Long articleId = result.getArticleId();
-					List<String> parameters = ImmutableList.of(articleId
-							.toString());
+					String articleHash = result.getArticleHash();
+					List<String> parameters = ImmutableList.of(articleHash);
 					AppState appState = new AppState(AppPlace.ARTICLE,
 							parameters);
 					historyManager.setAppState(appState);

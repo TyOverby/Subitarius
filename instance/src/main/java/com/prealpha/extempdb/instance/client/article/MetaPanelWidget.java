@@ -21,13 +21,16 @@ public class MetaPanelWidget extends Composite implements
 	}
 
 	@UiField
-	HasText idLabel;
+	HasText hashLabel;
 
 	@UiField
 	HasText dateLabel;
 
 	@UiField
-	HasText retrievalDateLabel;
+	HasText searchDateLabel;
+	
+	@UiField
+	HasText parseDateLabel;
 
 	@UiField
 	HasWidgets tagsPanel;
@@ -41,8 +44,8 @@ public class MetaPanelWidget extends Composite implements
 	}
 
 	@Override
-	public HasText getIdLabel() {
-		return idLabel;
+	public HasText getHashLabel() {
+		return hashLabel;
 	}
 
 	@Override
@@ -51,8 +54,13 @@ public class MetaPanelWidget extends Composite implements
 	}
 
 	@Override
-	public HasText getRetrievalDateLabel() {
-		return retrievalDateLabel;
+	public HasText getSearchDateLabel() {
+		return searchDateLabel;
+	}
+	
+	@Override
+	public HasText getParseDateLabel() {
+		return parseDateLabel;
 	}
 
 	@Override

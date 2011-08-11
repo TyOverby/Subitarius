@@ -18,8 +18,8 @@ import com.google.inject.Singleton;
 import com.prealpha.dispatch.server.ActionHandlerModule;
 import com.prealpha.extempdb.instance.shared.action.AddArticle;
 import com.prealpha.extempdb.instance.shared.action.AddMapping;
-import com.prealpha.extempdb.instance.shared.action.AddMappingAction;
-import com.prealpha.extempdb.instance.shared.action.GetArticle;
+import com.prealpha.extempdb.instance.shared.action.GetArticleByHash;
+import com.prealpha.extempdb.instance.shared.action.GetArticleByUrl;
 import com.prealpha.extempdb.instance.shared.action.GetHierarchy;
 import com.prealpha.extempdb.instance.shared.action.GetMapping;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsByArticle;
@@ -36,8 +36,8 @@ public class ActionModule extends ActionHandlerModule {
 	protected void configure() {
 		bindHandler(AddArticle.class, AddArticleHandler.class);
 		bindHandler(AddMapping.class, AddMappingHandler.class);
-		bindHandler(AddMappingAction.class, AddMappingActionHandler.class);
-		bindHandler(GetArticle.class, GetArticleHandler.class);
+		bindHandler(GetArticleByHash.class, GetArticleByHashHandler.class);
+		bindHandler(GetArticleByUrl.class, GetArticleByUrlHandler.class);
 		bindHandler(GetHierarchy.class, GetHierarchyHandler.class);
 		bindHandler(GetMapping.class, GetMappingHandler.class);
 		bindHandler(GetMappingsByArticle.class,

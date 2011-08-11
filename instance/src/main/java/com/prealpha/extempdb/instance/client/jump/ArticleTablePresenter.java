@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.HasData;
@@ -23,13 +24,13 @@ import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.instance.client.Presenter;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
-import com.prealpha.extempdb.instance.shared.action.GetMapping;
-import com.prealpha.extempdb.instance.shared.action.GetMappingResult;
+import com.prealpha.extempdb.instance.shared.action.GetArticleByUrl;
+import com.prealpha.extempdb.instance.shared.action.GetArticleResult;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
+import com.prealpha.extempdb.instance.shared.dto.ArticleUrlDto;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
-public class ArticleTablePresenter implements
-		Presenter<List<TagMappingDto.Key>> {
+public class ArticleTablePresenter implements Presenter<List<TagMappingDto>> {
 	public static interface Display extends IsWidget, HasValue<ArticleSort> {
 		HasData<ArticleDto> getDataDisplay();
 
@@ -42,7 +43,7 @@ public class ArticleTablePresenter implements
 
 	private final DispatcherAsync dispatcher;
 
-	private List<TagMappingDto.Key> mappingKeys = Collections.emptyList();
+	private List<TagMappingDto> mappings = ImmutableList.of();
 
 	@Inject
 	public ArticleTablePresenter(Display display, DispatcherAsync dispatcher) {
@@ -64,10 +65,10 @@ public class ArticleTablePresenter implements
 	}
 
 	@Override
-	public void bind(List<TagMappingDto.Key> mappingKeys) {
-		this.mappingKeys = mappingKeys;
-		display.setVisible(mappingKeys.size() > 0);
-		display.getDataDisplay().setRowCount(mappingKeys.size(), true);
+	public void bind(List<TagMappingDto> mappings) {
+		this.mappings = ImmutableList.copyOf(mappings);
+		display.setVisible(mappings.size() > 0);
+		display.getDataDisplay().setRowCount(mappings.size(), true);
 		updateData();
 	}
 
@@ -75,26 +76,27 @@ public class ArticleTablePresenter implements
 		Range range = display.getDataDisplay().getVisibleRange();
 		int start = range.getStart();
 		int length = range.getLength();
-		List<TagMappingDto.Key> subList;
+		List<TagMappingDto> subList;
 
-		if (start >= mappingKeys.size()) {
+		if (start >= mappings.size()) {
 			subList = Collections.emptyList();
-		} else if (start + length > mappingKeys.size()) {
-			subList = mappingKeys.subList(start, mappingKeys.size());
+		} else if (start + length > mappings.size()) {
+			subList = mappings.subList(start, mappings.size());
 		} else {
-			subList = mappingKeys.subList(start, start + length);
+			subList = mappings.subList(start, start + length);
 		}
 
 		final PendingState pendingState = new PendingState(start,
 				subList.size());
 
-		for (TagMappingDto.Key mappingKey : subList) {
-			final int index = subList.indexOf(mappingKey);
-			GetMapping action = new GetMapping(mappingKey);
-			dispatcher.execute(action, new ManagedCallback<GetMappingResult>() {
+		for (TagMappingDto mapping : subList) {
+			final int index = subList.indexOf(mapping);
+			ArticleUrlDto articleUrl = mapping.getArticleUrl();
+			GetArticleByUrl action = new GetArticleByUrl(articleUrl.getHash());
+			dispatcher.execute(action, new ManagedCallback<GetArticleResult>() {
 				@Override
-				public void onSuccess(GetMappingResult result) {
-					ArticleDto article = result.getMapping().getArticle();
+				public void onSuccess(GetArticleResult result) {
+					ArticleDto article = result.getArticle();
 					pendingState.update(article, index);
 				}
 			});

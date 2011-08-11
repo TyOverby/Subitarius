@@ -11,33 +11,33 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class GetMappingsByArticle extends GetMappings {
-	private Long articleId;
+	private String articleUrlHash;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetMappingsByArticle() {
 	}
 
-	public GetMappingsByArticle(Long articleId) {
-		checkNotNull(articleId);
-		this.articleId = articleId;
+	public GetMappingsByArticle(String articleUrlHash) {
+		checkNotNull(articleUrlHash);
+		this.articleUrlHash = articleUrlHash;
 	}
 
-	public Long getArticleId() {
-		return articleId;
+	public String getArticleUrlHash() {
+		return articleUrlHash;
 	}
 
 	@Override
 	public boolean apply(TagMappingDto mapping) {
-		return (articleId.equals(mapping.getKey().getArticleId()));
+		return (articleUrlHash.equals(mapping.getArticleUrl().getHash()));
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result
-				+ ((articleId == null) ? 0 : articleId.hashCode());
+				+ ((articleUrlHash == null) ? 0 : articleUrlHash.hashCode());
 		return result;
 	}
 
@@ -46,18 +46,18 @@ public class GetMappingsByArticle extends GetMappings {
 		if (this == obj) {
 			return true;
 		}
-		if (!super.equals(obj)) {
+		if (obj == null) {
 			return false;
 		}
 		if (!(obj instanceof GetMappingsByArticle)) {
 			return false;
 		}
 		GetMappingsByArticle other = (GetMappingsByArticle) obj;
-		if (articleId == null) {
-			if (other.articleId != null) {
+		if (articleUrlHash == null) {
+			if (other.articleUrlHash != null) {
 				return false;
 			}
-		} else if (!articleId.equals(other.articleId)) {
+		} else if (!articleUrlHash.equals(other.articleUrlHash)) {
 			return false;
 		}
 		return true;

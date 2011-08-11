@@ -18,6 +18,7 @@ import com.google.inject.Provider;
 import com.prealpha.extempdb.instance.client.AppPlace;
 import com.prealpha.extempdb.instance.client.AppState;
 import com.prealpha.extempdb.instance.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.shared.dto.TagDto.Type;
 
 public class TagTreeViewModel implements TreeViewModel {
 	private final Provider<ChildTagDataProvider> dataSourceProvider;
@@ -44,8 +45,7 @@ public class TagTreeViewModel implements TreeViewModel {
 		@Override
 		public void render(Context context, TagDto value, SafeHtmlBuilder sb) {
 			String name = value.getName();
-
-			if (value.isSearched()) {
+			if (value.getType() == Type.SEARCHED) {
 				List<String> parameters = Collections.singletonList(name);
 				AppState appState = new AppState(AppPlace.JUMP, parameters);
 				Hyperlink hyperlink = new Hyperlink(name, appState.toString());

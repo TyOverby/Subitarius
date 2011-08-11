@@ -23,6 +23,7 @@ import com.prealpha.extempdb.instance.shared.action.AddMapping;
 import com.prealpha.extempdb.instance.shared.action.MutationResult;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 import com.prealpha.extempdb.instance.shared.dto.TagDto;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public final class MappingInputPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
@@ -66,9 +67,10 @@ public final class MappingInputPresenter implements Presenter<ArticleDto> {
 		TagDto tag = tagInput.getValue();
 		if (tag != null) {
 			String tagName = tag.getName();
-			Long articleId = article.getId();
+			String articleHash = article.getHash();
 
-			AddMapping action = new AddMapping(tagName, articleId);
+			AddMapping action = new AddMapping(tagName, articleHash,
+					State.PATROLLED);
 			dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 				@Override
 				public void onSuccess(MutationResult result) {

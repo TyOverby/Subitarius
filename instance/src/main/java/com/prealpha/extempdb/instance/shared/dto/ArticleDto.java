@@ -9,7 +9,11 @@ package com.prealpha.extempdb.instance.shared.dto;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class ArticleDto implements IsSerializable {
-	private Long id;
+	private String hash;
+	
+	private String createDate;
+	
+	private ArticleUrlDto url;
 
 	private String title;
 
@@ -17,21 +21,31 @@ public class ArticleDto implements IsSerializable {
 
 	private String date;
 
-	private String retrievalDate;
-
-	private String url;
-
-	private SourceDto source;
-
 	public ArticleDto() {
 	}
-
-	public Long getId() {
-		return id;
+	
+	public String getHash() {
+		return hash;
+	}
+	
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+	
+	public String getCreateDate() {
+		return createDate;
+	}
+	
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	
+	public ArticleUrlDto getUrl() {
+		return url;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUrl(ArticleUrlDto url) {
+		this.url = url;
 	}
 
 	public String getTitle() {
@@ -56,30 +70,6 @@ public class ArticleDto implements IsSerializable {
 
 	public void setDate(String date) {
 		this.date = date;
-	}
-
-	public String getRetrievalDate() {
-		return retrievalDate;
-	}
-
-	public void setRetrievalDate(String retrievalDate) {
-		this.retrievalDate = retrievalDate;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public SourceDto getSource() {
-		return source;
-	}
-
-	public void setSource(SourceDto source) {
-		this.source = source;
 	}
 
 	@Override

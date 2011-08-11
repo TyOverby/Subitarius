@@ -9,13 +9,15 @@ package com.prealpha.extempdb.instance.client.article;
 import com.google.gwt.i18n.client.Messages;
 
 public interface ArticleMessages extends Messages {
-	String idLabel();
+	String hashLabel();
 
 	String bylineLabel();
 
 	String dateLabel();
 
-	String retrievalDateLabel();
+	String searchDateLabel();
+	
+	String parseDateLabel();
 
 	String sourceLabel();
 

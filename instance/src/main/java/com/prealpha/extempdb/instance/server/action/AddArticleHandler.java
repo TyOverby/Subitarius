@@ -6,19 +6,21 @@
 
 package com.prealpha.extempdb.instance.server.action;
 
-import java.net.URISyntaxException;
+import javax.persistence.EntityManager;
 
-import javax.servlet.http.HttpSession;
-
-import org.apache.catalina.User;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.instance.server.parse.ArticleParseException;
+import com.prealpha.extempdb.instance.server.parse.ArticleParser;
+import com.prealpha.extempdb.instance.server.parse.ParserNotFoundException;
 import com.prealpha.extempdb.instance.shared.action.AddArticle;
 import com.prealpha.extempdb.instance.shared.action.AddArticleResult;
 import com.prealpha.extempdb.instance.shared.action.AddArticleResult.Type;
@@ -28,47 +30,42 @@ class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	@InjectLogger
 	private Logger log;
 
-	private final HttpSession httpSession;
+	private final EntityManager entityManager;
 
-	private final ArticleProcessor articleProcessor;
+	private final ArticleParser articleParser;
+
+	private final Provider<Team> teamProvider;
 
 	@Inject
-	public AddArticleHandler(HttpSession httpSession,
-			ArticleProcessor articleProcessor) {
-		this.httpSession = httpSession;
-		this.articleProcessor = articleProcessor;
+	public AddArticleHandler(EntityManager entityManager,
+			ArticleParser articleParser, Provider<Team> teamProvider) {
+		this.entityManager = entityManager;
+		this.articleParser = articleParser;
+		this.teamProvider = teamProvider;
 	}
 
 	@Override
 	public AddArticleResult execute(AddArticle action, Dispatcher dispatcher)
 			throws ActionException {
 		String url = action.getUrl();
-		User user = (User) httpSession.getAttribute("user");
-		if (user == null) {
-			log.info("rejected attempt to add article, URL {} (not logged in)",
-					url);
-			return new AddArticleResult(Type.PERMISSION_DENIED);
-		}
-
+		ArticleUrl articleUrl = new ArticleUrl(teamProvider.get(), url);
 		try {
-			Article article = articleProcessor.process(url);
+			Article article = articleParser.parse(articleUrl);
 			if (article == null) {
-				log.info("article parser rejected page at URL {}", url);
+				log.info("no valid article found at URL: {}", url);
 				return new AddArticleResult(Type.NO_ARTICLE);
 			} else {
-				log.info("user {} successfully requested parsing for URL {}",
-						user.getName(), article.getUrl());
-				return new AddArticleResult(Type.SUCCESS, article.getId());
+				log.info("created and persisted article with hash: {}",
+						article.getHash());
+				entityManager.persist(article);
+				return new AddArticleResult(Type.SUCCESS, article.getHash());
 			}
-		} catch (ArticleParseException apx) {
-			log.warn("article parse failed for URL {}", url);
-			return new AddArticleResult(Type.PARSE_FAILED);
-		} catch (UnsupportedSiteException usx) {
-			log.info("unsupported site on URL {}", url);
+		} catch (ParserNotFoundException pnfx) {
+			log.info("no parser found for URL: {}", url);
 			return new AddArticleResult(Type.NO_PARSER);
-		} catch (URISyntaxException usx) {
-			log.info("URL was invalid: {}", url);
-			return new AddArticleResult(Type.INVALID_URL);
+		} catch (ArticleParseException apx) {
+			log.warn("parse failed for URL: {}", url);
+			return new AddArticleResult(Type.PARSE_FAILED);
 		}
 	}
 }

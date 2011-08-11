@@ -9,29 +9,38 @@ package com.prealpha.extempdb.instance.shared.action;
 import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.Action;
+import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class AddMapping implements Action<MutationResult> {
 	private String tagName;
+	
+	private String articleUrlHash;
 
-	private Long articleId;
+	private State state;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private AddMapping() {
 	}
 
-	public AddMapping(String tagName, Long articleId) {
+	public AddMapping(String tagName, String articleUrlHash, State state) {
 		checkNotNull(tagName);
-		checkNotNull(articleId);
+		checkNotNull(articleUrlHash);
+		checkNotNull(state);
 		this.tagName = tagName;
-		this.articleId = articleId;
+		this.articleUrlHash = articleUrlHash;
+		this.state = state;
 	}
-
+	
 	public String getTagName() {
 		return tagName;
 	}
-
-	public Long getArticleId() {
-		return articleId;
+	
+	public String getArticleUrlHash() {
+		return articleUrlHash;
+	}
+	
+	public State getState() {
+		return state;
 	}
 }

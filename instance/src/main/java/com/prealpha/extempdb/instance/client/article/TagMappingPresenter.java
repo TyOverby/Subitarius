@@ -17,9 +17,8 @@ import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.instance.client.Presenter;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
-import com.prealpha.extempdb.instance.shared.action.AddMappingAction;
+import com.prealpha.extempdb.instance.shared.action.AddMapping;
 import com.prealpha.extempdb.instance.shared.action.MutationResult;
-import com.prealpha.extempdb.instance.shared.dto.TagMappingActionDto.Type;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
@@ -49,14 +48,14 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 		display.getPatrolLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				updateMapping(Type.PATROL);
+				updateMapping(State.PATROLLED);
 			}
 		});
 
 		display.getRemoveLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				updateMapping(Type.REMOVE);
+				updateMapping(State.REMOVED);
 			}
 		});
 	}
@@ -73,10 +72,9 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 		display.getMappingLabel().setText(tagName);
 	}
 
-	private void updateMapping(Type type) {
-		TagMappingDto.Key mappingKey = mapping.getKey();
-
-		AddMappingAction action = new AddMappingAction(mappingKey, type);
+	private void updateMapping(State state) {
+		AddMapping action = new AddMapping(mapping.getTag().getName(), mapping
+				.getArticleUrl().getHash(), state);
 		dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 			@Override
 			public void onSuccess(MutationResult result) {

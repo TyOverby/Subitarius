@@ -7,7 +7,6 @@
 package com.prealpha.extempdb.instance.server.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,6 +15,7 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
@@ -56,18 +56,18 @@ class GetMappingsByTagHandler implements
 		}
 
 		if (action.getComparator() != null) {
-			Collections.sort(dtos, action.getComparator());
+			// XXX: use the comparator!
 		}
 
-		List<TagMappingDto.Key> mappingKeys = new ArrayList<TagMappingDto.Key>();
+		List<TagMappingDto> mappings = Lists.newArrayList();
 		for (TagMappingDto dto : Iterables.filter(dtos, action)) {
-			mappingKeys.add(dto.getKey());
+			mappings.add(dto);
 		}
 
 		log.info(
 				"handled request for mappings to tag \"{}\", returning {} mapping keys",
-				tagName, mappingKeys.size());
+				tagName, mappings);
 
-		return new GetMappingsResult(mappingKeys);
+		return new GetMappingsResult(mappings);
 	}
 }

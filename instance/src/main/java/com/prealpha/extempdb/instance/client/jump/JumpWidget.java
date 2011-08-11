@@ -6,7 +6,6 @@
 
 package com.prealpha.extempdb.instance.client.jump;
 
-import java.util.Comparator;
 import java.util.Set;
 
 import com.google.gwt.event.logical.shared.ShowRangeEvent;
@@ -16,7 +15,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -27,9 +25,7 @@ import com.prealpha.extempdb.instance.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.instance.shared.action.GetTag;
 import com.prealpha.extempdb.instance.shared.action.GetTagResult;
-import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 import com.prealpha.extempdb.instance.shared.dto.TagDto;
-import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class JumpWidget extends Composite implements JumpPresenter.Display {
@@ -141,15 +137,14 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 					TagDto tag = result.getTag();
 					tagInput.setValue(tag);
 
-					Comparator<TagMappingDto> comparator = new ComparatorAdapter(
-							jumpState.getSort());
 					GetMappingsByTag mappingsAction = new GetMappingsByTag(tag
-							.getName(), jumpState.getStates(), comparator);
+							.getName(), jumpState.getStates(), jumpState
+							.getSort());
 					dispatcher.execute(mappingsAction,
 							new ManagedCallback<GetMappingsResult>() {
 								@Override
 								public void onSuccess(GetMappingsResult result) {
-									tablePresenter.bind(result.getMappingKeys());
+									tablePresenter.bind(result.getMappings());
 								}
 							});
 				}
@@ -169,57 +164,5 @@ public class JumpWidget extends Composite implements JumpPresenter.Display {
 	public HandlerRegistration addValueChangeHandler(
 			ValueChangeHandler<JumpState> handler) {
 		return addHandler(handler, ValueChangeEvent.getType());
-	}
-
-	// package visibility for serialization support
-	static class ComparatorAdapter implements Comparator<TagMappingDto>,
-			IsSerializable {
-		private Comparator<? super ArticleDto> delegate;
-
-		// serialization support
-		@SuppressWarnings("unused")
-		private ComparatorAdapter() {
-		}
-
-		public ComparatorAdapter(Comparator<? super ArticleDto> delegate) {
-			assert (delegate != null);
-			this.delegate = delegate;
-		}
-
-		@Override
-		public int compare(TagMappingDto m1, TagMappingDto m2) {
-			return delegate.compare(m1.getArticle(), m2.getArticle());
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result
-					+ ((delegate == null) ? 0 : delegate.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (!(obj instanceof ComparatorAdapter)) {
-				return false;
-			}
-			ComparatorAdapter other = (ComparatorAdapter) obj;
-			if (delegate == null) {
-				if (other.delegate != null) {
-					return false;
-				}
-			} else if (!delegate.equals(other.delegate)) {
-				return false;
-			}
-			return true;
-		}
 	}
 }

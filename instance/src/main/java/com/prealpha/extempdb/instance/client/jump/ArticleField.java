@@ -11,23 +11,6 @@ import java.util.Comparator;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
 enum ArticleField implements Comparator<ArticleDto> {
-	ID {
-		@Override
-		public String getField(ArticleDto article) {
-			return article.getId().toString();
-		}
-
-		@Override
-		public int compare(ArticleDto a1, ArticleDto a2) {
-			return a1.getId().compareTo(a2.getId());
-		}
-
-		@Override
-		public String toString() {
-			return name();
-		}
-	},
-
 	TITLE {
 		@Override
 		public String getField(ArticleDto article) {
@@ -45,7 +28,7 @@ enum ArticleField implements Comparator<ArticleDto> {
 	SOURCE {
 		@Override
 		public String getField(ArticleDto article) {
-			return article.getSource().getDisplayName();
+			return article.getUrl().getSource();
 		}
 	};
 

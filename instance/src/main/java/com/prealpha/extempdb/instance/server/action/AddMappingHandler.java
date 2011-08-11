@@ -6,22 +6,28 @@
 
 package com.prealpha.extempdb.instance.server.action;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-import org.apache.catalina.User;
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.extempdb.domain.Article;
+import com.prealpha.extempdb.domain.ArticleUrl;
+import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.TagMapping;
+import com.prealpha.extempdb.domain.TagMapping.State;
+import com.prealpha.extempdb.domain.TagMapping_;
+import com.prealpha.extempdb.domain.Tag_;
+import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.instance.shared.action.AddMapping;
 import com.prealpha.extempdb.instance.shared.action.MutationResult;
 import com.prealpha.extempdb.util.logging.InjectLogger;
@@ -32,64 +38,71 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 
 	private final EntityManager entityManager;
 
-	private final HttpSession httpSession;
+	private final Mapper mapper;
+
+	private final Provider<Team> teamProvider;
 
 	@Inject
-	public AddMappingHandler(EntityManager entityManager,
-			HttpSession httpSession) {
+	public AddMappingHandler(EntityManager entityManager, Mapper mapper,
+			Provider<Team> teamProvider) {
 		this.entityManager = entityManager;
-		this.httpSession = httpSession;
+		this.mapper = mapper;
+		this.teamProvider = teamProvider;
 	}
 
 	@Transactional
 	@Override
 	public MutationResult execute(AddMapping action, Dispatcher dispatcher)
 			throws ActionException {
-		User user = (User) httpSession.getAttribute("user");
 		String tagName = action.getTagName();
-		Long articleId = action.getArticleId();
+		String articleUrlHash = action.getArticleUrlHash();
+		State state = mapper.map(action.getState(), State.class);
 
-		if (user == null) {
-			log.info(
-					"denied permission to map tag \"{}\" to article ID {} (not logged in)",
-					tagName, articleId);
-			return MutationResult.PERMISSION_DENIED;
-		}
-
-		TagMapping.Key key = new TagMapping.Key(tagName, articleId);
-		TagMapping mapping = entityManager.find(TagMapping.class, key);
-
-		if (mapping == null) {
-			Tag tag = entityManager.find(Tag.class, tagName);
-			Article article = entityManager.find(Article.class, articleId);
-
-			if (tag == null || article == null) {
-				log.info(
-						"rejected mapping attempt; invalid tag (\"{}\") or article ({})",
-						tagName, articleId);
-				return MutationResult.INVALID_REQUEST;
-			}
-
-			mapping = new TagMapping();
-			mapping.setKey(key);
-			mapping.setTag(tag);
-			mapping.setArticleUrl(article);
-			mapping.setAdded(new Date());
-			mapping.setActions(new ArrayList<TagMappingAction>());
+		Tag tag = getTag(tagName);
+		ArticleUrl articleUrl = entityManager.find(ArticleUrl.class,
+				articleUrlHash);
+		if (tag == null) {
+			log.info("rejected request to map invalid tag: {}", tagName);
+			return MutationResult.INVALID_REQUEST;
+		} else if (articleUrl == null) {
+			log.info("rejected request to map invalid URL hash: {}",
+					articleUrlHash);
+			return MutationResult.INVALID_REQUEST;
+		} else {
+			TagMapping parent = getMapping(tag, articleUrl);
+			TagMapping mapping = new TagMapping(teamProvider.get(), parent,
+					tag, articleUrl, state);
 			entityManager.persist(mapping);
+			log.info("created or updated tag mapping: {}", mapping);
+			return MutationResult.SUCCESS;
 		}
+	}
 
-		if (!mapping.getState().equals(State.PATROLLED)) {
-			TagMappingAction mappingAction = new TagMappingAction();
-			mappingAction.setMapping(mapping);
-			mappingAction.setType(TagMappingAction.Type.PATROL);
-			mappingAction.setUser(user);
-			mappingAction.setTimestamp(new Date());
-			entityManager.persist(mappingAction);
+	private Tag getTag(String tagName) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteria = builder.createQuery(Tag.class);
+		Root<Tag> tagRoot = criteria.from(Tag.class);
+		criteria.where(builder.equal(builder.upper(tagRoot.get(Tag_.name)),
+				tagName.toUpperCase()));
+		try {
+			return entityManager.createQuery(criteria).getSingleResult();
+		} catch (NoResultException nrx) {
+			return null;
 		}
+	}
 
-		log.info("user \"{}\" mapped tag \"{}\" to article ID {}",
-				new Object[] { user.getName(), tagName, articleId });
-		return MutationResult.SUCCESS;
+	private TagMapping getMapping(Tag tag, ArticleUrl articleUrl) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<TagMapping> criteria = builder
+				.createQuery(TagMapping.class);
+		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
+		criteria.where(builder.equal(mappingRoot.get(TagMapping_.tag), tag));
+		criteria.where(builder.equal(mappingRoot.get(TagMapping_.articleUrl),
+				articleUrl));
+		try {
+			return entityManager.createQuery(criteria).getSingleResult();
+		} catch (NoResultException nrx) {
+			return null;
+		}
 	}
 }

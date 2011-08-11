@@ -14,8 +14,6 @@ import com.google.inject.Provider;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.instance.client.Presenter;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
-import com.prealpha.extempdb.instance.shared.action.GetMapping;
-import com.prealpha.extempdb.instance.shared.action.GetMappingResult;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsByArticle;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
@@ -24,11 +22,13 @@ import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
-		HasText getIdLabel();
+		HasText getHashLabel();
 
 		HasText getDateLabel();
 
-		HasText getRetrievalDateLabel();
+		HasText getSearchDateLabel();
+
+		HasText getParseDateLabel();
 
 		HasWidgets getTagsPanel();
 
@@ -63,38 +63,29 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 
 	@Override
 	public void bind(ArticleDto article) {
-		display.getIdLabel().setText(article.getId().toString());
+		display.getHashLabel().setText(article.getHash());
 		display.getDateLabel().setText(article.getDate());
-		display.getRetrievalDateLabel().setText(article.getRetrievalDate());
+		display.getSearchDateLabel().setText(article.getUrl().getCreateDate());
+		display.getParseDateLabel().setText(article.getCreateDate());
 		display.getTagsPanel().clear();
 
 		mappingInputPresenter.bind(article);
 
-		GetMappingsByArticle action = new GetMappingsByArticle(article.getId());
+		GetMappingsByArticle action = new GetMappingsByArticle(article.getHash());
 		dispatcher.execute(action, new MappingsCallback());
 	}
 
 	private class MappingsCallback extends ManagedCallback<GetMappingsResult> {
 		@Override
 		public void onSuccess(GetMappingsResult result) {
-			for (TagMappingDto.Key mappingKey : result.getMappingKeys()) {
-				GetMapping action = new GetMapping(mappingKey);
-				dispatcher.execute(action, new MappingCallback());
-			}
-		}
-	}
-
-	private class MappingCallback extends ManagedCallback<GetMappingResult> {
-		@Override
-		public void onSuccess(GetMappingResult result) {
-			TagMappingDto mapping = result.getMapping();
-
-			if (!mapping.getState().equals(State.REMOVED)) {
-				TagMappingPresenter mappingPresenter = mappingPresenterProvider
-						.get();
-				mappingPresenter.bind(mapping);
-				display.getTagsPanel().add(
-						mappingPresenter.getDisplay().asWidget());
+			for (TagMappingDto mapping : result.getMappings()) {
+				if (!mapping.getState().equals(State.REMOVED)) {
+					TagMappingPresenter mappingPresenter = mappingPresenterProvider
+							.get();
+					mappingPresenter.bind(mapping);
+					display.getTagsPanel().add(
+							mappingPresenter.getDisplay().asWidget());
+				}
 			}
 		}
 	}
