@@ -41,11 +41,6 @@ class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 		this.mapper = mapper;
 	}
 
-	/*
-	 * A bug in Hibernate prevents us from using entityManager.find() to get the
-	 * tag directly. Instead, we have to convert everything to upper case and to
-	 * a criteria query to make a real comparison.
-	 */
 	@Transactional
 	@Override
 	public GetTagResult execute(GetTag action, Dispatcher dispatcher)
