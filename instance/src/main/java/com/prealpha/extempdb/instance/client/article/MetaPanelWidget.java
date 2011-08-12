@@ -9,6 +9,7 @@ package com.prealpha.extempdb.instance.client.article;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
@@ -21,7 +22,7 @@ public class MetaPanelWidget extends Composite implements
 	}
 
 	@UiField
-	HasText hashLabel;
+	HasHTML hashLabel;
 
 	@UiField
 	HasText dateLabel;
@@ -44,7 +45,7 @@ public class MetaPanelWidget extends Composite implements
 	}
 
 	@Override
-	public HasText getHashLabel() {
+	public HasHTML getHashLabel() {
 		return hashLabel;
 	}
 
