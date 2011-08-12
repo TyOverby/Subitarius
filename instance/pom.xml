@@ -61,7 +61,7 @@
 			<artifactId>gwt-dispatch</artifactId>
 			<version>v2011062900</version>
 			<classifier>sources</classifier>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.prealpha.extempdb</groupId>
