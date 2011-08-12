@@ -22,6 +22,9 @@
 			</span>
 			<g:Label text="{msg.usageText}" />
 		</g:HTMLPanel>
+
+		<g:Widget addStyleNames="{res.style.contentSection}"
+			ui:field="addArticleWidget" />
 	</g:VerticalPanel>
 
 </ui:UiBinder>
