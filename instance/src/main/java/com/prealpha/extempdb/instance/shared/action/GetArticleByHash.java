@@ -1,5 +1,5 @@
 /*
- * GetParagraphs.java
+ * GetArticle.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
@@ -8,31 +8,21 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.filter.CacheableAction;
-import com.prealpha.dispatch.shared.filter.MergeableAction;
-
-public class GetParagraphs implements CacheableAction<GetParagraphsResult>,
-		MergeableAction<GetParagraphsResult> {
+public class GetArticleByHash extends GetArticle {
 	private String articleHash;
 
 	// serialization support
 	@SuppressWarnings("unused")
-	private GetParagraphs() {
+	private GetArticleByHash() {
 	}
 
-	public GetParagraphs(String articleHash) {
+	public GetArticleByHash(String articleHash) {
 		checkNotNull(articleHash);
 		this.articleHash = articleHash;
 	}
 
 	public String getArticleHash() {
 		return articleHash;
-	}
-
-	@Override
-	public long getCacheExpiry(GetParagraphsResult result) {
-		// cache indefinitely, paragraphs will never change
-		return Long.MAX_VALUE;
 	}
 
 	@Override
@@ -52,10 +42,10 @@ public class GetParagraphs implements CacheableAction<GetParagraphsResult>,
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof GetParagraphs)) {
+		if (!(obj instanceof GetArticleByHash)) {
 			return false;
 		}
-		GetParagraphs other = (GetParagraphs) obj;
+		GetArticleByHash other = (GetArticleByHash) obj;
 		if (articleHash == null) {
 			if (other.articleHash != null) {
 				return false;

@@ -8,27 +8,26 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class GetMappingsResult implements Result {
-	private ArrayList<TagMappingDto.Key> mappingKeys;
+	private ImmutableList<TagMappingDto> mappings;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetMappingsResult() {
 	}
 
-	public GetMappingsResult(List<TagMappingDto.Key> mappingKeys) {
-		checkNotNull(mappingKeys);
-		this.mappingKeys = new ArrayList<TagMappingDto.Key>(mappingKeys);
+	public GetMappingsResult(Iterable<TagMappingDto> mappings) {
+		checkNotNull(mappings);
+		this.mappings = ImmutableList.copyOf(mappings);
 	}
 
-	public List<TagMappingDto.Key> getMappingKeys() {
-		return Collections.unmodifiableList(mappingKeys);
+	public List<TagMappingDto> getMappings() {
+		return mappings;
 	}
 }

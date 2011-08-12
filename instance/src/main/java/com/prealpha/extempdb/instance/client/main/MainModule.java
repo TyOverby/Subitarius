@@ -15,7 +15,5 @@ public class MainModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
 		bind(MainPresenter.Display.class).to(MainWidget.class);
-		bind(LoginPresenter.Display.class).to(LoginWidget.class);
-		bind(PointsPresenter.Display.class).to(PointsWidget.class);
 	}
 }

@@ -20,9 +20,7 @@ public class AddArticleResult implements Result {
 
 		NO_ARTICLE(false),
 
-		PARSE_FAILED(false),
-
-		PERMISSION_DENIED(false);
+		PARSE_FAILED(false);
 
 		private boolean success;
 
@@ -37,7 +35,7 @@ public class AddArticleResult implements Result {
 
 	private Type type;
 
-	private Long articleId;
+	private String articleHash;
 
 	// serialization support
 	@SuppressWarnings("unused")
@@ -48,22 +46,22 @@ public class AddArticleResult implements Result {
 		checkNotNull(type);
 		checkArgument(!type.isSuccess());
 		this.type = type;
-		articleId = null;
+		articleHash = null;
 	}
 
-	public AddArticleResult(Type type, Long articleId) {
+	public AddArticleResult(Type type, String articleHash) {
 		checkNotNull(type);
-		checkNotNull(articleId);
+		checkNotNull(articleHash);
 		checkArgument(type.isSuccess());
 		this.type = type;
-		this.articleId = articleId;
+		this.articleHash = articleHash;
 	}
 
 	public Type getType() {
 		return type;
 	}
 
-	public Long getArticleId() {
-		return articleId;
+	public String getArticleHash() {
+		return articleHash;
 	}
 }

@@ -23,6 +23,10 @@
 			font-weight: bold;
 		}
 		
+		.hashLabel {
+			font-family: monospace;
+		}
+		
 		.tagsPanel {
 			width: 100%;
 		}
@@ -30,8 +34,9 @@
 
 	<g:VerticalPanel>
 		<g:HTMLPanel addStyleNames="{style.metaSectionEven}">
-			<g:Label addStyleNames="{style.metaLabel}" text="{msg.idLabel}" />
-			<g:Label ui:field="idLabel" />
+			<g:Label addStyleNames="{style.metaLabel} {style.hashLabel}"
+				text="{msg.hashLabel}" />
+			<g:Label ui:field="hashLabel" />
 		</g:HTMLPanel>
 
 		<g:HTMLPanel addStyleNames="{style.metaSectionOdd}">
@@ -40,8 +45,13 @@
 		</g:HTMLPanel>
 
 		<g:HTMLPanel addStyleNames="{style.metaSectionEven}">
-			<g:Label addStyleNames="{style.metaLabel}" text="{msg.retrievalDateLabel}" />
-			<g:Label ui:field="retrievalDateLabel" />
+			<g:Label addStyleNames="{style.metaLabel}" text="{msg.searchDateLabel}" />
+			<g:Label ui:field="searchDateLabel" />
+		</g:HTMLPanel>
+
+		<g:HTMLPanel addStyleNames="{style.metaSectionOdd}">
+			<g:Label addStyleNames="{style.metaLabel}" text="{msg.parseDateLabel}" />
+			<g:Label ui:field="parseDateLabel" />
 		</g:HTMLPanel>
 
 		<g:HTMLPanel addStyleNames="{style.metaSectionOdd}">

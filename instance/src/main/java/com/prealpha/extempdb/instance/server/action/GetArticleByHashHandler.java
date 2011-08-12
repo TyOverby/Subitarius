@@ -1,5 +1,5 @@
 /*
- * GetArticleHandler.java
+ * GetArticleByHashHandler.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
@@ -17,12 +17,13 @@ import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
-import com.prealpha.extempdb.instance.shared.action.GetArticle;
+import com.prealpha.extempdb.instance.shared.action.GetArticleByHash;
 import com.prealpha.extempdb.instance.shared.action.GetArticleResult;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 import com.prealpha.extempdb.util.logging.InjectLogger;
 
-class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
+class GetArticleByHashHandler implements
+		ActionHandler<GetArticleByHash, GetArticleResult> {
 	@InjectLogger
 	private Logger log;
 
@@ -31,24 +32,24 @@ class GetArticleHandler implements ActionHandler<GetArticle, GetArticleResult> {
 	private final Mapper mapper;
 
 	@Inject
-	public GetArticleHandler(EntityManager entityManager, Mapper mapper) {
+	public GetArticleByHashHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
 	@Transactional
 	@Override
-	public GetArticleResult execute(GetArticle action, Dispatcher dispatcher)
-			throws ActionException {
-		Long articleId = action.getArticleId();
-		Article article = entityManager.find(Article.class, articleId);
+	public GetArticleResult execute(GetArticleByHash action,
+			Dispatcher dispatcher) throws ActionException {
+		String articleHash = action.getArticleHash();
+		Article article = entityManager.find(Article.class, articleHash);
 
 		if (article == null) {
-			log.info("handled request for non-existent article, ID {}",
-					articleId);
+			log.info("handled request for non-existent article, hash: {}",
+					articleHash);
 			return new GetArticleResult(null);
 		} else {
-			log.info("handled request for article, ID {}", articleId);
+			log.info("handled request for article, hash: {}", articleHash);
 			ArticleDto dto = mapper.map(article, ArticleDto.class);
 			return new GetArticleResult(dto);
 		}

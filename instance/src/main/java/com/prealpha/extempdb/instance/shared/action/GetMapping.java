@@ -10,13 +10,14 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
-import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
 public class GetMapping implements CacheableAction<GetMappingResult>,
 		MergeableAction<GetMappingResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 
-	private TagMappingDto.Key mappingKey;
+	private String tagName;
+	
+	private String articleUrlHash;
 
 	private long cacheExpiry;
 
@@ -25,14 +26,20 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 	private GetMapping() {
 	}
 
-	public GetMapping(TagMappingDto.Key mappingKey) {
-		checkNotNull(mappingKey);
-		this.mappingKey = mappingKey;
+	public GetMapping(String tagName, String articleUrlHash) {
+		checkNotNull(tagName);
+		checkNotNull(articleUrlHash);
+		this.tagName = tagName;
+		this.articleUrlHash = articleUrlHash;
 		cacheExpiry = System.currentTimeMillis() + EXPIRY_TIME;
 	}
 
-	public TagMappingDto.Key getMappingKey() {
-		return mappingKey;
+	public String getTagName() {
+		return tagName;
+	}
+	
+	public String getArticleUrlHash() {
+		return articleUrlHash;
 	}
 
 	@Override
@@ -45,7 +52,8 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((mappingKey == null) ? 0 : mappingKey.hashCode());
+				+ ((articleUrlHash == null) ? 0 : articleUrlHash.hashCode());
+		result = prime * result + ((tagName == null) ? 0 : tagName.hashCode());
 		return result;
 	}
 
@@ -61,11 +69,18 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 			return false;
 		}
 		GetMapping other = (GetMapping) obj;
-		if (mappingKey == null) {
-			if (other.mappingKey != null) {
+		if (articleUrlHash == null) {
+			if (other.articleUrlHash != null) {
 				return false;
 			}
-		} else if (!mappingKey.equals(other.mappingKey)) {
+		} else if (!articleUrlHash.equals(other.articleUrlHash)) {
+			return false;
+		}
+		if (tagName == null) {
+			if (other.tagName != null) {
+				return false;
+			}
+		} else if (!tagName.equals(other.tagName)) {
 			return false;
 		}
 		return true;

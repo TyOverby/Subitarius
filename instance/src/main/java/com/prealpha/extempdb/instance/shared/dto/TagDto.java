@@ -15,13 +15,27 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * Note that hashCode() and equals() ignore the tag name's case.
  */
 public class TagDto implements IsSerializable {
+	public static enum Type {
+		PLACEHOLDER, SEARCHED, ARCHIVED;
+	}
+	
+	private String hash;
+	
 	private String name;
 
-	private boolean searched;
+	private Type type;
 
 	private HashSet<TagDto> parents;
 
 	public TagDto() {
+	}
+	
+	public String getHash() {
+		return hash;
+	}
+	
+	public void setHash(String hash) {
+		this.hash = hash;
 	}
 
 	public String getName() {
@@ -32,12 +46,12 @@ public class TagDto implements IsSerializable {
 		this.name = name;
 	}
 
-	public boolean isSearched() {
-		return searched;
+	public Type getType() {
+		return type;
 	}
-
-	public void setSearched(boolean searched) {
-		this.searched = searched;
+	
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public Set<TagDto> getParents() {
@@ -77,17 +91,5 @@ public class TagDto implements IsSerializable {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		String parentString = "";
-		for (TagDto parent : parents) {
-			parentString += parent.getName() + ',';
-		}
-		parentString = parentString.substring(0, parentString.length() - 1);
-
-		return "TagDto [name=" + name + ", searched=" + searched + ", parents="
-				+ parentString + "]";
 	}
 }

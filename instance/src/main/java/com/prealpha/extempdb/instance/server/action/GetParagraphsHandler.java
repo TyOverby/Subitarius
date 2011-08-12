@@ -6,7 +6,6 @@
 
 package com.prealpha.extempdb.instance.server.action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -39,14 +38,11 @@ class GetParagraphsHandler implements
 	@Override
 	public GetParagraphsResult execute(GetParagraphs action,
 			Dispatcher dispatcher) throws ActionException {
-		Long articleId = action.getArticleId();
-		Article article = entityManager.find(Article.class, articleId);
-		List<String> paragraphs = new ArrayList<String>(article.getParagraphs());
-
-		log.info(
-				"handled request for article paragraphs, article ID {}, returning {} paragraphs",
-				article.getId(), paragraphs.size());
-
+		String articleHash = action.getArticleHash();
+		Article article = entityManager.find(Article.class, articleHash);
+		List<String> paragraphs = article.getParagraphs();
+		log.info("returned {} paragraphs for article hash: {}",
+				paragraphs.size(), articleHash);
 		return new GetParagraphsResult(paragraphs);
 	}
 }

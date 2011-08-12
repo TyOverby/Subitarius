@@ -17,7 +17,7 @@ import com.prealpha.extempdb.instance.client.HistoryManager;
 import com.prealpha.extempdb.instance.client.PlacePresenter;
 import com.prealpha.extempdb.instance.client.Presenter;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
-import com.prealpha.extempdb.instance.shared.action.GetArticle;
+import com.prealpha.extempdb.instance.shared.action.GetArticleByHash;
 import com.prealpha.extempdb.instance.shared.action.GetArticleResult;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 
@@ -51,10 +51,9 @@ public class ArticlePresenter implements PlacePresenter {
 	@Override
 	public void bind(List<String> parameters) {
 		checkArgument(parameters.size() == 1);
-
 		try {
-			Long articleId = Long.parseLong(parameters.get(0));
-			GetArticle action = new GetArticle(articleId);
+			String articleHash = parameters.get(0);
+			GetArticleByHash action = new GetArticleByHash(articleHash);
 			dispatcher.execute(action, new ManagedCallback<GetArticleResult>() {
 				@Override
 				public void onSuccess(GetArticleResult result) {

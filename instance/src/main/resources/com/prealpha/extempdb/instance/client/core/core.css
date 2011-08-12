@@ -51,20 +51,6 @@
 	padding: 3px;
 }
 
-.loginStatus {
-	background-color: black;
-	height: 80%;
-	padding: 5px;
-	position: absolute;
-	right: 0;
-	opacity: 0.5;
-	top: 0;
-}
-
-.loginStatus a {
-	text-decoration: underline;
-}
-
 .contentPanel {
 	margin-bottom: 20px;
 	margin-right: 20px;

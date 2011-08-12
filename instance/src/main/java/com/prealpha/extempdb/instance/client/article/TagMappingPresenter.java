@@ -16,16 +16,11 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
 import com.prealpha.extempdb.instance.client.Presenter;
-import com.prealpha.extempdb.instance.client.SessionManager;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
-import com.prealpha.extempdb.instance.client.event.ActiveUserEvent;
-import com.prealpha.extempdb.instance.client.event.ActiveUserHandler;
-import com.prealpha.extempdb.instance.shared.action.AddMappingAction;
+import com.prealpha.extempdb.instance.shared.action.AddMapping;
 import com.prealpha.extempdb.instance.shared.action.MutationResult;
-import com.prealpha.extempdb.instance.shared.dto.TagMappingActionDto.Type;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
-import com.prealpha.extempdb.instance.shared.dto.UserDto;
 
 public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	public static interface Display extends IsWidget {
@@ -42,35 +37,25 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 
 	private final DispatcherAsync dispatcher;
 
-	private final SessionManager sessionManager;
-
 	private TagMappingDto mapping;
 
 	@Inject
 	public TagMappingPresenter(Display display, DispatcherAsync dispatcher,
-			SessionManager sessionManager, EventBus eventBus) {
+			EventBus eventBus) {
 		this.display = display;
 		this.dispatcher = dispatcher;
-		this.sessionManager = sessionManager;
-
-		eventBus.addHandler(ActiveUserEvent.getType(), new ActiveUserHandler() {
-			@Override
-			public void activeUserChanged(ActiveUserEvent event) {
-				updateState(event.getUser());
-			}
-		});
 
 		display.getPatrolLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				updateMapping(Type.PATROL);
+				updateMapping(State.PATROLLED);
 			}
 		});
 
 		display.getRemoveLink().addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				updateMapping(Type.REMOVE);
+				updateMapping(State.REMOVED);
 			}
 		});
 	}
@@ -85,29 +70,11 @@ public class TagMappingPresenter implements Presenter<TagMappingDto> {
 		this.mapping = mapping;
 		String tagName = mapping.getTag().getName();
 		display.getMappingLabel().setText(tagName);
-
-		sessionManager.getActiveUser(new ManagedCallback<UserDto>() {
-			@Override
-			public void onSuccess(UserDto user) {
-				updateState(user);
-			}
-		});
 	}
 
-	private void updateState(UserDto user) {
-		if (user == null) {
-			display.setMappingState(null);
-		} else {
-			display.setMappingState(mapping.getState());
-		}
-	}
-
-	private void updateMapping(Type type) {
-		String sessionId = sessionManager.getSessionId();
-		TagMappingDto.Key mappingKey = mapping.getKey();
-
-		AddMappingAction action = new AddMappingAction(sessionId, mappingKey,
-				type);
+	private void updateMapping(State state) {
+		AddMapping action = new AddMapping(mapping.getTag().getName(), mapping
+				.getArticleUrl().getHash(), state);
 		dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 			@Override
 			public void onSuccess(MutationResult result) {

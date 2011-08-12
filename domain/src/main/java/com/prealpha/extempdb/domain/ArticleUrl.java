@@ -18,7 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 /**
  * A canonical {@link Article} URL. Raw URLs are accepted by the constructors
@@ -29,9 +31,11 @@ import com.google.common.collect.ImmutableSet;
  */
 @Entity
 public class ArticleUrl extends DistributedEntity {
-	private static final long serialVersionUID = -483193802722327299L;
+	private static final long serialVersionUID = 5189190963722135652L;
 
 	private String url;
+
+	private transient ImmutableSet<Article> articles;
 
 	private transient ImmutableSet<TagMapping> mappings;
 
@@ -64,6 +68,29 @@ public class ArticleUrl extends DistributedEntity {
 	protected void setUrl(String url) {
 		checkNotNull(url);
 		this.url = url;
+	}
+
+	@OneToMany(mappedBy = "url")
+	protected Set<Article> getArticles() {
+		return articles;
+	}
+
+	protected void setArticles(Set<Article> articles) {
+		checkNotNull(articles);
+		this.articles = ImmutableSet.copyOf(articles);
+	}
+
+	@Transient
+	public Article getArticle() {
+		Set<Article> headArticles = Sets.filter(articles,
+				new Predicate<Article>() {
+					@Override
+					public boolean apply(Article input) {
+						return (input.getChild() == null);
+					}
+				});
+		checkState(headArticles.size() == 1);
+		return headArticles.iterator().next();
 	}
 
 	@OneToMany(mappedBy = "articleUrl")

@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
+import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
@@ -28,7 +29,7 @@ public class GetMappingsByTag extends GetMappings {
 
 	private HashSet<State> states;
 
-	private Comparator<? super TagMappingDto> comparator;
+	private Comparator<? super ArticleDto> comparator;
 
 	// serialization support
 	@SuppressWarnings("unused")
@@ -44,12 +45,12 @@ public class GetMappingsByTag extends GetMappings {
 	}
 
 	public GetMappingsByTag(String tagName,
-			Comparator<? super TagMappingDto> comparator) {
+			Comparator<? super ArticleDto> comparator) {
 		this(tagName, ALL_STATES, comparator);
 	}
 
 	public GetMappingsByTag(String tagName, Set<State> states,
-			Comparator<? super TagMappingDto> comparator) {
+			Comparator<? super ArticleDto> comparator) {
 		checkNotNull(tagName);
 		checkNotNull(states);
 		checkArgument(!states.contains(null));
@@ -66,13 +67,13 @@ public class GetMappingsByTag extends GetMappings {
 		return Collections.unmodifiableSet(states);
 	}
 
-	public Comparator<? super TagMappingDto> getComparator() {
+	public Comparator<? super ArticleDto> getComparator() {
 		return comparator;
 	}
 
 	@Override
 	public boolean apply(TagMappingDto mapping) {
-		if (!tagName.equals(mapping.getKey().getTagName())) {
+		if (!tagName.equals(mapping.getTag().getName())) {
 			return false;
 		} else if (!states.contains(mapping.getState())) {
 			return false;

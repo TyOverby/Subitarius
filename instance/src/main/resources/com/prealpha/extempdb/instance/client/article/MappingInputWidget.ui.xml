@@ -6,14 +6,9 @@
 	<ui:with field="msg"
 		type="com.prealpha.extempdb.instance.client.article.ArticleMessages" />
 
-	<g:VerticalPanel visible="false">
+	<g:VerticalPanel>
 		<taginput:TagInputWidget ui:field="tagInput" />
-		<g:HorizontalPanel>
-			<g:Button text="{msg.addMappingButton}" enabled="false"
-				ui:field="addButton" />
-			<g:Button text="{msg.submitMappingButton}" enabled="false"
-				ui:field="submitButton" />
-		</g:HorizontalPanel>
+		<g:Button text="{msg.submitMappingButton}" ui:field="submitButton" />
 	</g:VerticalPanel>
 
 </ui:UiBinder>

@@ -20,6 +20,7 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.Tag_;
 import com.prealpha.extempdb.instance.shared.action.GetTag;
 import com.prealpha.extempdb.instance.shared.action.GetTagResult;
@@ -40,11 +41,6 @@ class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 		this.mapper = mapper;
 	}
 
-	/*
-	 * A bug in Hibernate prevents us from using entityManager.find() to get the
-	 * tag directly. Instead, we have to convert everything to upper case and to
-	 * a criteria query to make a real comparison.
-	 */
 	@Transactional
 	@Override
 	public GetTagResult execute(GetTag action, Dispatcher dispatcher)

@@ -26,7 +26,7 @@ public class JumpModule extends AbstractGinModule {
 		return new CellTable<ArticleDto>(new ProvidesKey<ArticleDto>() {
 			@Override
 			public Object getKey(ArticleDto article) {
-				return (article == null ? null : article.getId());
+				return (article == null ? null : article.getHash());
 			}
 		});
 	}
