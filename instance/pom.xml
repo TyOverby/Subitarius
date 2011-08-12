@@ -66,13 +66,13 @@
 		<dependency>
 			<groupId>com.prealpha.extempdb</groupId>
 			<artifactId>domain</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.prealpha.extempdb</groupId>
 			<artifactId>util</artifactId>
-			<version>${pom.version}</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
