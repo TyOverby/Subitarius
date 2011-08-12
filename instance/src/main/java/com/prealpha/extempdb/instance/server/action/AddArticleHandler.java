@@ -51,6 +51,7 @@ class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 			throws ActionException {
 		String url = action.getUrl();
 		ArticleUrl articleUrl = new ArticleUrl(teamProvider.get(), url);
+		entityManager.persist(articleUrl);
 		try {
 			Article article = articleParser.parse(articleUrl);
 			if (article == null) {
