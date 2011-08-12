@@ -44,13 +44,6 @@ public enum AppPlace {
 		public AsyncProvider<? extends PlacePresenter> getPresenter() {
 			return INJECTOR.getMainPresenter();
 		}
-	},
-
-	SETTINGS {
-		@Override
-		public AsyncProvider<? extends PlacePresenter> getPresenter() {
-			return INJECTOR.getSettingsPresenter();
-		}
 	};
 
 	private static ExtempDbInjector INJECTOR = GWT

@@ -24,8 +24,6 @@ public interface CoreResources extends ClientBundle {
 
 		String navButton();
 
-		String loginStatus();
-
 		String contentPanel();
 	}
 }

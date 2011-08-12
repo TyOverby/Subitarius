@@ -51,12 +51,9 @@ public class ArticleUrl extends DistributedEntity {
 
 	public ArticleUrl(Team creator, String rawUrl) {
 		super(creator);
-		checkNotNull(rawUrl);
-		checkArgument(rawUrl.startsWith("http://"));
-		int index = rawUrl.indexOf("/", 7);
-		String domainName = rawUrl.substring(7, index);
-		Source source = Source.fromDomainName(domainName);
+		Source source = Source.fromUrl(rawUrl);
 		url = source.canonicalize(rawUrl);
+		articles = ImmutableSet.of();
 		mappings = ImmutableSet.of();
 	}
 
@@ -89,8 +86,12 @@ public class ArticleUrl extends DistributedEntity {
 						return (input.getChild() == null);
 					}
 				});
-		checkState(headArticles.size() == 1);
-		return headArticles.iterator().next();
+		if (headArticles.isEmpty()) {
+			return null;
+		} else {
+			checkState(headArticles.size() == 1);
+			return headArticles.iterator().next();
+		}
 	}
 
 	@OneToMany(mappedBy = "articleUrl")

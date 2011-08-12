@@ -27,6 +27,11 @@
 			font-family: monospace;
 		}
 		
+		.tagsSection {
+			border-radius: 0 0 5px 0;
+			-moz-border-radius: 0 0 5px 0;
+		}
+		
 		.tagsPanel {
 			width: 100%;
 		}
@@ -34,9 +39,8 @@
 
 	<g:VerticalPanel>
 		<g:HTMLPanel addStyleNames="{style.metaSectionEven}">
-			<g:Label addStyleNames="{style.metaLabel} {style.hashLabel}"
-				text="{msg.hashLabel}" />
-			<g:Label ui:field="hashLabel" />
+			<g:Label addStyleNames="{style.metaLabel}" text="{msg.hashLabel}" />
+			<g:HTML addStyleNames="{style.hashLabel}" ui:field="hashLabel" />
 		</g:HTMLPanel>
 
 		<g:HTMLPanel addStyleNames="{style.metaSectionOdd}">
@@ -54,7 +58,7 @@
 			<g:Label ui:field="parseDateLabel" />
 		</g:HTMLPanel>
 
-		<g:HTMLPanel addStyleNames="{style.metaSectionOdd}">
+		<g:HTMLPanel addStyleNames="{style.metaSectionEven} {style.tagsSection}">
 			<g:Label addStyleNames="{style.metaLabel}" text="{msg.tagsLabel}" />
 			<g:VerticalPanel addStyleNames="{style.tagsPanel}"
 				ui:field="tagsPanel" />

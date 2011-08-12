@@ -62,6 +62,21 @@ public enum Source {
 	ECONOMIST("www.economist.com", "The Economist") {
 	};
 
+	public static Source fromUrl(String url) {
+		int baseIndex;
+		if (url.startsWith("http://")) {
+			baseIndex = 7;
+		} else if (url.startsWith("https://")) {
+			baseIndex = 8;
+		} else {
+			throw new IllegalArgumentException();
+		}
+
+		int index = url.indexOf('/', baseIndex);
+		String domainName = url.substring(baseIndex, index);
+		return fromDomainName(domainName);
+	}
+
 	public static Source fromDomainName(String domainName) {
 		checkNotNull(domainName);
 		for (Source source : values()) {

@@ -11,26 +11,26 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.extempdb.domain.Source;
 
 public class ParserNotFoundException extends RuntimeException {
-	private final String domainName;
+	private final String url;
 	
 	private final Source source;
 	
-	public ParserNotFoundException(String domainName) {
-		super("parser not found for domain name: " + domainName);
-		checkNotNull(domainName);
-		this.domainName = domainName;
+	public ParserNotFoundException(String url) {
+		super("parser not found for URL: " + url);
+		checkNotNull(url);
+		this.url = url;
 		source = null;
 	}
 
 	public ParserNotFoundException(Source source) {
 		super("parser not found for source: " + source);
 		checkNotNull(source);
-		domainName = null;
+		url = null;
 		this.source = source;
 	}
 	
-	public String getDomainName() {
-		return domainName;
+	public String getUrl() {
+		return url;
 	}
 
 	public Source getSource() {

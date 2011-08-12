@@ -6,6 +6,7 @@
 
 package com.prealpha.extempdb.instance.client.article;
 
+import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -22,7 +23,7 @@ import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
 public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {
-		HasText getHashLabel();
+		HasHTML getHashLabel();
 
 		HasText getDateLabel();
 
@@ -63,7 +64,13 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 
 	@Override
 	public void bind(ArticleDto article) {
-		display.getHashLabel().setText(article.getHash());
+		String hash = article.getHash();
+		String hashHtml = "";
+		hashHtml += hash.substring(0, 24) + "<br />";
+		hashHtml += hash.substring(24, 48) + "<br />";
+		hashHtml += hash.substring(48, 64) + "<br />";
+		
+		display.getHashLabel().setHTML(hashHtml);
 		display.getDateLabel().setText(article.getDate());
 		display.getSearchDateLabel().setText(article.getUrl().getCreateDate());
 		display.getParseDateLabel().setText(article.getCreateDate());

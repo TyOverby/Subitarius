@@ -12,7 +12,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
@@ -38,15 +37,12 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 
 	private final EntityManager entityManager;
 
-	private final Mapper mapper;
-
 	private final Provider<Team> teamProvider;
 
 	@Inject
-	public AddMappingHandler(EntityManager entityManager, Mapper mapper,
+	public AddMappingHandler(EntityManager entityManager,
 			Provider<Team> teamProvider) {
 		this.entityManager = entityManager;
-		this.mapper = mapper;
 		this.teamProvider = teamProvider;
 	}
 
@@ -56,7 +52,7 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 			throws ActionException {
 		String tagName = action.getTagName();
 		String articleUrlHash = action.getArticleUrlHash();
-		State state = mapper.map(action.getState(), State.class);
+		State state = State.valueOf(action.getState().name());
 
 		Tag tag = getTag(tagName);
 		ArticleUrl articleUrl = entityManager.find(ArticleUrl.class,

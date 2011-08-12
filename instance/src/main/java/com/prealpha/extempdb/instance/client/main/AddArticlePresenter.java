@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.instance.client.settings;
+package com.prealpha.extempdb.instance.client.main;
 
 import java.util.List;
 
@@ -42,11 +42,11 @@ public class AddArticlePresenter implements Presenter<Void> {
 
 	private final HistoryManager historyManager;
 
-	private final SettingsMessages messages;
+	private final MainMessages messages;
 
 	@Inject
 	public AddArticlePresenter(Display display, DispatcherAsync dispatcher,
-			HistoryManager historyManager, SettingsMessages messages) {
+			HistoryManager historyManager, MainMessages messages) {
 		this.display = display;
 		this.dispatcher = dispatcher;
 		this.historyManager = historyManager;

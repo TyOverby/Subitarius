@@ -15,5 +15,6 @@ public class MainModule extends AbstractGinModule {
 	@Override
 	protected void configure() {
 		bind(MainPresenter.Display.class).to(MainWidget.class);
+		bind(AddArticlePresenter.Display.class).to(AddArticleWidget.class);
 	}
 }

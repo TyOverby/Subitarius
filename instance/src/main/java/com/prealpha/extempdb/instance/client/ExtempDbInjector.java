@@ -20,13 +20,11 @@ import com.prealpha.extempdb.instance.client.jump.JumpModule;
 import com.prealpha.extempdb.instance.client.jump.JumpPresenter;
 import com.prealpha.extempdb.instance.client.main.MainModule;
 import com.prealpha.extempdb.instance.client.main.MainPresenter;
-import com.prealpha.extempdb.instance.client.settings.SettingsModule;
-import com.prealpha.extempdb.instance.client.settings.SettingsPresenter;
 import com.prealpha.extempdb.instance.client.taginput.TagInputModule;
 
 @GinModules({ ClientModule.class, TagInputModule.class, ArticleModule.class,
 		ErrorModule.class, HierarchyModule.class, JumpModule.class,
-		MainModule.class, SettingsModule.class })
+		MainModule.class })
 interface ExtempDbInjector extends Ginjector {
 	CoreManager getCoreManager();
 
@@ -39,6 +37,4 @@ interface ExtempDbInjector extends Ginjector {
 	AsyncProvider<JumpPresenter> getJumpPresenter();
 
 	AsyncProvider<MainPresenter> getMainPresenter();
-
-	AsyncProvider<SettingsPresenter> getSettingsPresenter();
 }
