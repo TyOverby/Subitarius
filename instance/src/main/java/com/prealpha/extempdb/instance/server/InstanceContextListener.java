@@ -1,5 +1,5 @@
 /*
- * ExtempDbContextListener.java
+ * InstanceContextListener.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
@@ -17,17 +17,15 @@ import com.prealpha.extempdb.instance.server.action.ActionModule;
 import com.prealpha.extempdb.instance.server.parse.ParseModule;
 import com.prealpha.extempdb.util.http.HttpModule;
 
-public class ExtempDbContextListener extends GuiceServletContextListener {
-	public ExtempDbContextListener() {
+public class InstanceContextListener extends GuiceServletContextListener {
+	public InstanceContextListener() {
 	}
 
 	@Override
 	protected Injector getInjector() {
-		return Guice
-				.createInjector(new JpaPersistModule("instance"),
-						new DispatchServerModule(), new BatchActionModule(),
-						new ActionModule(), new DomainModule(),
-						new ExtempDbServerModule(), new HttpModule(),
-						new ParseModule());
+		return Guice.createInjector(new JpaPersistModule("instance"),
+				new DispatchServerModule(), new BatchActionModule(),
+				new ActionModule(), new DomainModule(), new HttpModule(),
+				new InstanceServerModule(), new ParseModule());
 	}
 }

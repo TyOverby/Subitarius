@@ -1,5 +1,5 @@
 /*
- * ExtempDbServerModule.java
+ * InstanceServerModule.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
@@ -21,8 +21,8 @@ import com.google.inject.servlet.ServletModule;
 import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.logging.Slf4jTypeListener;
 
-public class ExtempDbServerModule extends ServletModule {
-	public ExtempDbServerModule() {
+public class InstanceServerModule extends ServletModule {
+	public InstanceServerModule() {
 	}
 
 	@Override
