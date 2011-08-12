@@ -7,7 +7,7 @@
 		<class-a>com.prealpha.extempdb.domain.Article</class-a>
 		<class-b>com.prealpha.extempdb.instance.shared.dto.ArticleDto</class-b>
 	</mapping>
-	
+
 	<mapping date-format="yyyy-MM-dd">
 		<class-a>com.prealpha.extempdb.domain.ArticleUrl</class-a>
 		<class-b>com.prealpha.extempdb.instance.shared.dto.ArticleUrlDto</class-b>
