@@ -1,4 +1,4 @@
-package com.prealpha.extempdb.instance.ui;
+package com.prealpha.extempdb.instance.launcher.ui;
 
 import java.awt.EventQueue;
 

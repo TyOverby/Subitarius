@@ -1,35 +1,49 @@
-package com.prealpha.extempdb.instance.ui;
+package com.prealpha.extempdb.instance.launcher.ui;
 
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
-public class SimpleMessage extends Message {
+public class ProgressMessage extends Message {
 	private static final long serialVersionUID = 1L;
 	
+	
 	private String title; 
+	private int progress;
 	private int status;
 	
 	private JLabel titleLabel;
-
-	public SimpleMessage(String title){
+	private JProgressBar bar;
+	
+	public ProgressMessage(String title){
 		this.status=Message.STATUS_OK;
 		this.setLayout(null);
 		
 		this.titleLabel=new JLabel(title);
 		this.titleLabel.setBounds(9, 0, 300, 40);
 		this.add(titleLabel);
+		
+		this.bar=new JProgressBar();
+		this.bar.setBounds(9, 43, 400, 30);
+		this.add(this.bar);
 	}
-	public SimpleMessage(String smallMessage,int status){
+	public ProgressMessage(String smallMessage,int status){
 		this(smallMessage);
 		this.status=status;
 	}
-	
+
 	@Override
 	public int getHeight() {
-		return 40;
+		return 100;
 	}
+
 	@Override
 	public int getStatus() {
 		return this.status;
+	}
+	
+	public void setPercent(int amount){
+		this.progress=amount;
+		this.bar.setValue(this.progress);
 	}
 	
 	public void setTitle(String newTitle){
@@ -44,4 +58,5 @@ public class SimpleMessage extends Message {
 		
 		this.repaint();
 	}
+
 }
