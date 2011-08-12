@@ -24,12 +24,9 @@ final class MasterArticleParser implements ArticleParser {
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
-		assert (url.startsWith("http://"));
-		int index = url.indexOf('/', 7);
-		String domainName = url.substring(7, index);
-		Source source = Source.fromDomainName(domainName);
+		Source source = Source.fromUrl(url);
 		if (source == null) {
-			throw new ParserNotFoundException(domainName);
+			throw new ParserNotFoundException(url);
 		}
 
 		Class<? extends ArticleParser> parserClass;
