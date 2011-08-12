@@ -10,7 +10,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class ArticleModule extends AbstractGinModule {
 	public ArticleModule() {
-	}
+	} 
 
 	@Override
 	protected void configure() {
