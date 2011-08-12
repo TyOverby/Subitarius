@@ -66,6 +66,14 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>prealpha</id>
+			<name>Pre-Alpha repository</name>
+			<url>http://meyer.pre-alpha.com/maven2</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
