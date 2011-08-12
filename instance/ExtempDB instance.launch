@@ -10,7 +10,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="com.google.gwt.eclipse.core.moduleClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.DevMode"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-startupUrl / -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -logLevel INFO -codeServerPort 9997 -port 8888 com.prealpha.extempdb.instance.ExtempDb"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-startupUrl / -war &quot;${resource_loc:/ExtempDB instance/target/webapp}&quot; -remoteUI &quot;${gwt_remote_ui_server_port}:${unique_id}&quot; -logLevel INFO -codeServerPort 9997 -port 8888 com.prealpha.extempdb.instance.ExtempDb"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ExtempDB instance"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m -Duser.timezone=UTC &quot;-Dlog4j.configuration=file:///${resource_loc:/ExtempDB client/src/test/config/META-INF/log4j.properties}&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m -Duser.timezone=UTC &quot;-Dlog4j.configuration=file:///${resource_loc:/ExtempDB instance/src/test/config/META-INF/log4j.properties}&quot;"/>
 </launchConfiguration>

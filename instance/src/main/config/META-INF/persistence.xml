@@ -16,8 +16,7 @@
 		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-			<property name="javax.persistence.jdbc.url"
-				value="jdbc:h2:extempdb?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:extempdb" />
 			<property name="javax.persistence.jdbc.user" value="extempdb" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.connection.provider_class"
