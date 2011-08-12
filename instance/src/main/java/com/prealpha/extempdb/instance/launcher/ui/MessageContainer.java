@@ -15,7 +15,7 @@ public class MessageContainer extends JPanel {
 	private List<Message> messages = new ArrayList<Message>(50);
 	private final JPanel messageStaging;
 	private int shouldHeight=0;
-	private int shouldWidth=500;
+	private int shouldWidth=0;
 	/**
 	 * Create the panel.
 	 */
@@ -53,5 +53,12 @@ public class MessageContainer extends JPanel {
 	public void clear(){
 		messages.clear();
 		messageStaging.removeAll();
+	}
+	
+	public void onResize(int width){
+		for(Message m:this.messages){
+			m.setSize(width, m.getHeight());
+			m.onResize(width);
+		}
 	}
 }

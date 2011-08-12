@@ -31,6 +31,11 @@ public class SimpleMessage extends Message {
 	public int getStatus() {
 		return this.status;
 	}
+	@Override
+	public void onResize(int width) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public void setTitle(String newTitle){
 		this.title=newTitle;
@@ -44,4 +49,5 @@ public class SimpleMessage extends Message {
 		
 		this.repaint();
 	}
+	
 }

@@ -9,8 +9,10 @@ public abstract class Message extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public abstract int getHeight();
 	public abstract int getStatus();
+	public abstract void onResize(int width);
 	
-	@Override public void paintComponent(Graphics g) {
+	@Override 
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		if(this.getStatus() == Message.STATUS_OK){

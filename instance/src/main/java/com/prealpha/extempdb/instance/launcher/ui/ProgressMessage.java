@@ -41,6 +41,10 @@ public class ProgressMessage extends Message {
 		return this.status;
 	}
 	
+	public void onResize(int width){
+		this.bar.setSize(width-20, this.bar.getHeight());
+	}
+	
 	public void setPercent(int amount){
 		this.progress=amount;
 		this.bar.setValue(this.progress);

@@ -39,6 +39,10 @@ public class PanelMessage extends Message {
 		return this.status;
 	}
 	
+	public void onResize(int width){
+		
+	}
+	
 	public void setTitle(String newTitle){
 		this.title=newTitle;
 		this.titleLabel=new JLabel(this.title);
