@@ -8,7 +8,6 @@ import javax.swing.JMenu;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import java.awt.BorderLayout;
-import javax.swing.JProgressBar;
 
 public class MainWindow {
 
