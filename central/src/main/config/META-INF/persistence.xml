@@ -5,6 +5,7 @@
 	version="2.0">
 	<persistence-unit name="central" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>com.prealpha.extempdb.domain.Article</class>
 		<class>com.prealpha.extempdb.domain.ArticleUrl</class>
 		<class>com.prealpha.extempdb.domain.DistributedEntity</class>
 		<class>com.prealpha.extempdb.domain.License</class>
