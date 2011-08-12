@@ -14,14 +14,4 @@ public interface CoreMessages extends Messages {
 	String jump();
 
 	String hierarchy();
-
-	String loading();
-
-	String settings();
-
-	String logOut();
-
-	String notLoggedIn();
-
-	String loggedIn(String name);
 }
