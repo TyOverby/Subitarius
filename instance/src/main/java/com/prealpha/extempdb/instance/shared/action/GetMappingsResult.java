@@ -8,7 +8,6 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -23,7 +22,7 @@ public class GetMappingsResult implements Result {
 	private GetMappingsResult() {
 	}
 
-	public GetMappingsResult(Collection<TagMappingDto> mappings) {
+	public GetMappingsResult(Iterable<TagMappingDto> mappings) {
 		checkNotNull(mappings);
 		this.mappings = ImmutableList.copyOf(mappings);
 	}
