@@ -14,13 +14,13 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.instance.client.AppPlace;
 import com.prealpha.extempdb.instance.client.AppState;
+import com.prealpha.extempdb.instance.client.AppStateEvent;
 import com.prealpha.extempdb.instance.client.AppStateException;
+import com.prealpha.extempdb.instance.client.AppStateHandler;
 import com.prealpha.extempdb.instance.client.CommonResources;
 import com.prealpha.extempdb.instance.client.HistoryManager;
 import com.prealpha.extempdb.instance.client.PlacePresenter;
 import com.prealpha.extempdb.instance.client.error.ManagedCallback;
-import com.prealpha.extempdb.instance.client.event.AppStateEvent;
-import com.prealpha.extempdb.instance.client.event.AppStateHandler;
 
 public final class CoreManager {
 	private final CoreWidget coreWidget;

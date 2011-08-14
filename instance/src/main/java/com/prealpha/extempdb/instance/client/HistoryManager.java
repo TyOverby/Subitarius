@@ -1,6 +1,6 @@
 /*
  * HistoryManager.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,7 +13,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.History;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.instance.client.event.AppStateEvent;
 
 public final class HistoryManager {
 	@Inject
