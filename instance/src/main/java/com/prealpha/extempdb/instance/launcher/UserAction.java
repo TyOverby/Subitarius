@@ -11,7 +11,5 @@ import com.prealpha.extempdb.domain.DistributedEntity;
 
 public interface UserAction extends Action, Iterable<Runnable>,
 		Predicate<DistributedEntity> {
-	int getCompleted();
-
-	int getTotal();
+	int size();
 }
