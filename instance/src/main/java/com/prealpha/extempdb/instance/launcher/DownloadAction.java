@@ -98,7 +98,7 @@ public final class DownloadAction implements UserAction {
 				new Function<String, Runnable>() {
 					@Override
 					public Runnable apply(String input) {
-						return new EntityTask(input);
+						return new DownloadTask(input);
 					}
 				});
 	}
@@ -113,10 +113,10 @@ public final class DownloadAction implements UserAction {
 		return hashes.size();
 	}
 
-	private final class EntityTask implements Runnable {
+	private final class DownloadTask implements Runnable {
 		private final String hash;
 
-		private EntityTask(String hash) {
+		private DownloadTask(String hash) {
 			checkNotNull(hash);
 			this.hash = hash;
 		}
