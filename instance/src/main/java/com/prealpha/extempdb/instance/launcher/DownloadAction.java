@@ -64,7 +64,7 @@ public final class DownloadAction implements UserAction {
 
 		// make a copy of the filtered set
 		// if it's just a view, the iterator has to go to DB every element
-		entityManager.getTransaction().begin();
+		this.entityManager.getTransaction().begin();
 		hashes = ImmutableSet.copyOf(Sets.filter(allHashes,
 				new Predicate<String>() {
 					@Override
@@ -74,7 +74,7 @@ public final class DownloadAction implements UserAction {
 						return (entity != null);
 					}
 				}));
-		entityManager.getTransaction().commit();
+		this.entityManager.getTransaction().commit();
 	}
 
 	@Override
