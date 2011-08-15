@@ -15,13 +15,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -49,14 +47,13 @@ final class CsmArticleParser implements ArticleParser {
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
-		Map<String, String> params = ImmutableMap.of();
 		try {
 			List<Document> documents = Lists.newArrayList();
 			Document document;
 			int page = 1;
 			String pageUrl = url;
 			do {
-				InputStream stream = httpClient.doGet(pageUrl, params);
+				InputStream stream = httpClient.doGet(pageUrl);
 				document = Jsoup.parse(stream, null, pageUrl);
 				if (isParseable(document)) {
 					documents.add(document);

@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +29,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
-import com.prealpha.extempdb.util.logging.InjectLogger;
 import com.prealpha.extempdb.util.http.robots.RobotsTxt;
+import com.prealpha.extempdb.util.logging.InjectLogger;
 
 /*
  * NOTE: this class is not thread-safe
@@ -54,6 +54,11 @@ public class SimpleHttpClient {
 		robotsExclusion = new HashMap<String, RobotsTxt>();
 	}
 
+	public InputStream doGet(String url) throws IOException,
+			RobotsExclusionException {
+		return doGet(url, ImmutableMap.<String, String> of());
+	}
+
 	public InputStream doGet(String url, Map<String, String> parameters)
 			throws IOException, RobotsExclusionException {
 		// Washington Post gives us 400 if we request robots.txt with the ?
@@ -67,6 +72,11 @@ public class SimpleHttpClient {
 		}
 		HttpGet get = new HttpGet(uri);
 		return execute(get);
+	}
+
+	public InputStream doPost(String url) throws IOException,
+			RobotsExclusionException {
+		return doPost(url, ImmutableMap.<String, String> of());
 	}
 
 	public InputStream doPost(String url, Map<String, String> parameters)
@@ -88,10 +98,8 @@ public class SimpleHttpClient {
 		if (!robotsExclusion.containsKey(authority)) {
 			robotsExclusion.put(authority, null); // to allow this request
 			String url = uri.getScheme() + "://" + authority + "/robots.txt";
-			Map<String, String> parameters = Collections.emptyMap();
-
 			try {
-				InputStream stream = doGet(url, parameters);
+				InputStream stream = doGet(url);
 				InputStreamReader isr = new InputStreamReader(stream);
 				RobotsTxt robotsTxt = new RobotsTxt(CharStreams.toString(isr));
 				robotsExclusion.put(authority, robotsTxt);

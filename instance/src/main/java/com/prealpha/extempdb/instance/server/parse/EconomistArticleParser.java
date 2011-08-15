@@ -11,10 +11,8 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -104,8 +102,7 @@ final class EconomistArticleParser implements ArticleParser {
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
 			String url = articleUrl.getUrl();
-			Map<String, String> params = Collections.emptyMap();
-			InputStream stream = httpClient.doGet(url, params);
+			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
 			ArticleType type;

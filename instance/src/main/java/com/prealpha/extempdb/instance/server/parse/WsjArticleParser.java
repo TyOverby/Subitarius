@@ -11,10 +11,8 @@ import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
@@ -75,8 +73,7 @@ final class WsjArticleParser implements ArticleParser {
 		}
 
 		try {
-			Map<String, String> params = Collections.emptyMap();
-			InputStream stream = httpClient.doGet(url, params);
+			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
 			// verify that we have a parseable article

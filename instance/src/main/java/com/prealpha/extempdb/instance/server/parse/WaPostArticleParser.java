@@ -15,13 +15,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -67,8 +65,6 @@ final class WaPostArticleParser implements ArticleParser {
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
-		Map<String, String> params = ImmutableMap.of();
-
 		try {
 			if (url.endsWith("_story.html")) {
 				/*
@@ -81,7 +77,7 @@ final class WaPostArticleParser implements ArticleParser {
 				Document document;
 				int page = 0;
 				do {
-					InputStream stream = httpClient.doGet(url, params);
+					InputStream stream = httpClient.doGet(url);
 					document = Jsoup.parse(stream, null, url);
 					documents.add(document);
 
@@ -102,7 +98,7 @@ final class WaPostArticleParser implements ArticleParser {
 				}
 				return combine(articles);
 			} else if (url.endsWith("_blog.html")) {
-				InputStream stream = httpClient.doGet(url, params);
+				InputStream stream = httpClient.doGet(url);
 				Document document = Jsoup.parse(stream, null, url);
 				return parsePage(articleUrl, document, ArticleType.BLOG);
 			} else {

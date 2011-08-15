@@ -13,13 +13,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -90,8 +88,7 @@ final class GuardianArticleParser implements ArticleParser {
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
 			String url = articleUrl.getUrl();
-			Map<String, String> params = ImmutableMap.of();
-			InputStream stream = httpClient.doGet(url, params);
+			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
 			if (document.body().className().contains("has-badge")) {
