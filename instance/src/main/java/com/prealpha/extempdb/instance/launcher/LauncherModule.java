@@ -19,8 +19,7 @@ import com.prealpha.extempdb.domain.DistributedEntity;
 public final class LauncherModule extends AbstractModule {
 	@Override
 	protected void configure() {
-		bind(UserAction.class).toProvider(UserActionContext.class).in(
-				Singleton.class);
+		bind(UserActionContext.class).in(Singleton.class);
 		bind(new TypeLiteral<Iterator<DistributedEntity>>() {
 		}).to(EntityIterator.class);
 		bind(new TypeLiteral<Iterator<Action>>() {

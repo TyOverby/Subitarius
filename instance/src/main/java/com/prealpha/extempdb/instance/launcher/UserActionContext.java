@@ -21,7 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.extempdb.util.logging.InjectLogger;
 
-public final class UserActionContext implements Provider<UserAction> {
+public final class UserActionContext {
 	@InjectLogger
 	private Logger log;
 
@@ -43,8 +43,7 @@ public final class UserActionContext implements Provider<UserAction> {
 		listenerLock = new ReentrantReadWriteLock();
 	}
 
-	@Override
-	public UserAction get() {
+	public UserAction getActiveAction() {
 		return action;
 	}
 
@@ -58,6 +57,7 @@ public final class UserActionContext implements Provider<UserAction> {
 
 	private void runAction(final ExecutorService threadPool, UserAction action) {
 		this.action = action;
+		fireStart();
 		final int total = action.size();
 		final CountDownLatch latch = new CountDownLatch(total);
 		for (final Runnable task : action) {
@@ -89,6 +89,14 @@ public final class UserActionContext implements Provider<UserAction> {
 				}
 			}
 		});
+	}
+
+	private void fireStart() {
+		listenerLock.readLock().lock();
+		for (UserActionListener listener : listeners) {
+			listener.onActionStart(action);
+		}
+		listenerLock.readLock().unlock();
 	}
 
 	private void fireProgress(int complete, int total) {
