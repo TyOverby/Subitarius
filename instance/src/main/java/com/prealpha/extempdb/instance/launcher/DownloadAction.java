@@ -23,10 +23,13 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Sets;
 import com.google.common.io.ByteStreams;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.domain.DistributedEntity;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
@@ -54,10 +57,24 @@ public final class DownloadAction implements UserAction {
 		this.httpClient = httpClient;
 		timestamp = new Date();
 
-		InputStream stream = httpClient.doGet(BASE_URL);
+		InputStream stream = this.httpClient.doGet(BASE_URL);
 		byte[] bytes = ByteStreams.toByteArray(stream);
 		String[] hashArray = new String(bytes).split("\n");
-		hashes = ImmutableSet.copyOf(Arrays.asList(hashArray));
+		Set<String> allHashes = ImmutableSet.copyOf(Arrays.asList(hashArray));
+
+		// make a copy of the filtered set
+		// if it's just a view, the iterator has to go to DB every element
+		entityManager.getTransaction().begin();
+		hashes = ImmutableSet.copyOf(Sets.filter(allHashes,
+				new Predicate<String>() {
+					@Override
+					public boolean apply(String input) {
+						DistributedEntity entity = DownloadAction.this.entityManager
+								.find(DistributedEntity.class, input);
+						return (entity != null);
+					}
+				}));
+		entityManager.getTransaction().commit();
 	}
 
 	@Override
@@ -104,6 +121,7 @@ public final class DownloadAction implements UserAction {
 			this.hash = hash;
 		}
 
+		@Transactional
 		@Override
 		public void run() {
 			try {
