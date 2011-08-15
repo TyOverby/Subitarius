@@ -11,11 +11,11 @@ import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.UnmodifiableIterator;
 import com.google.inject.Inject;
 import com.prealpha.extempdb.domain.DistributedEntity;
 
-final class ActionIterator extends AbstractIterator<Action> {
+final class ActionIterator extends UnmodifiableIterator<Action> {
 	private final Iterator<DistributedEntity> entityIterator;
 
 	private final UserActionContext context;
@@ -52,7 +52,7 @@ final class ActionIterator extends AbstractIterator<Action> {
 	}
 
 	@Override
-	protected Action computeNext() {
+	public boolean hasNext() {
 		UserAction userAction = context.getActiveAction();
 		while (entityIterator.hasNext()) {
 			DistributedEntity entity = entityIterator.next();
@@ -60,6 +60,11 @@ final class ActionIterator extends AbstractIterator<Action> {
 				actions.add(new EntityAction(entity));
 			}
 		}
-		return (!actions.isEmpty() ? actions.remove() : endOfData());
+		return !actions.isEmpty();
+	}
+	
+	@Override
+	public Action next() {
+		return actions.remove();
 	}
 }

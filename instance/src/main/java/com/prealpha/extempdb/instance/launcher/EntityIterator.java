@@ -47,7 +47,6 @@ final class EntityIterator extends UnmodifiableIterator<DistributedEntity> {
 
 	@Override
 	public DistributedEntity next() {
-		updateCache();
 		if (cache.isEmpty()) {
 			throw new NoSuchElementException();
 		}
