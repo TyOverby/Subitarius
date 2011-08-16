@@ -67,9 +67,9 @@ public final class MappingInputPresenter implements Presenter<ArticleDto> {
 		TagDto tag = tagInput.getValue();
 		if (tag != null) {
 			String tagName = tag.getName();
-			String articleHash = article.getHash();
+			String articleUrlHash = article.getUrl().getHash();
 
-			AddMapping action = new AddMapping(tagName, articleHash,
+			AddMapping action = new AddMapping(tagName, articleUrlHash,
 					State.PATROLLED);
 			dispatcher.execute(action, new ManagedCallback<MutationResult>() {
 				@Override
