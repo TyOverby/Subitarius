@@ -135,8 +135,6 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	private transient DistributedEntity child;
 
-	private transient String storedHash;
-
 	protected DistributedEntity() {
 		this(null, null);
 	}
@@ -178,7 +176,6 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	protected void setHash(String hash) {
 		checkArgument(HEX_REGEX.matcher(hash).matches());
-		storedHash = hash;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -297,10 +294,6 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 	private void validate() {
 		if (persistDate != null) {
 			checkState(createDate.compareTo(persistDate) <= 0);
-		}
-		if (storedHash != null) {
-			checkState(getHash().equals(storedHash));
-			storedHash = null;
 		}
 	}
 
