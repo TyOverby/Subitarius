@@ -60,6 +60,7 @@ final class ActionIterator extends UnmodifiableIterator<Action> {
 				actions.add(new EntityAction(entity));
 			}
 		}
+		actions.addAll(ActionAppender.getActions());
 		return !actions.isEmpty();
 	}
 	

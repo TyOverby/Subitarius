@@ -76,6 +76,11 @@ public final class DownloadAction implements UserAction {
 				}));
 		this.entityManager.getTransaction().commit();
 	}
+	
+	@Override
+	public Type getType() {
+		return Type.INFO;
+	}
 
 	@Override
 	public Date getTimestamp() {

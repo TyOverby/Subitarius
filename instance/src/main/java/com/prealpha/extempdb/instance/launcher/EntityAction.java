@@ -23,6 +23,11 @@ final class EntityAction implements Action {
 		checkNotNull(entity);
 		this.entity = entity;
 	}
+	
+	@Override
+	public Type getType() {
+		return Type.INFO;
+	}
 
 	@Override
 	public Date getTimestamp() {

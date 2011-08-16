@@ -64,6 +64,11 @@ public final class ParseAction implements UserAction {
 		urls = ImmutableSet.copyOf(resultList);
 		this.entityManager.getTransaction().commit();
 	}
+	
+	@Override
+	public Type getType() {
+		return Type.INFO;
+	}
 
 	@Override
 	public Date getTimestamp() {
