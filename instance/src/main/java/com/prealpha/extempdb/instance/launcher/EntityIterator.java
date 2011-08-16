@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.UnmodifiableIterator;
 import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
 import com.prealpha.extempdb.domain.DistributedEntity;
 import com.prealpha.extempdb.domain.DistributedEntity_;
 
@@ -56,6 +57,7 @@ final class EntityIterator extends UnmodifiableIterator<DistributedEntity> {
 		return next;
 	}
 
+	@Transactional
 	private void updateCache() {
 		if (cache.isEmpty()) {
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
