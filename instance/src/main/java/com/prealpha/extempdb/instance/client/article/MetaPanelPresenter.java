@@ -69,7 +69,7 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 		hashHtml += hash.substring(0, 24) + "<br />";
 		hashHtml += hash.substring(24, 48) + "<br />";
 		hashHtml += hash.substring(48, 64) + "<br />";
-		
+
 		display.getHashLabel().setHTML(hashHtml);
 		display.getDateLabel().setText(article.getDate());
 		display.getSearchDateLabel().setText(article.getUrl().getCreateDate());
@@ -78,7 +78,8 @@ public class MetaPanelPresenter implements Presenter<ArticleDto> {
 
 		mappingInputPresenter.bind(article);
 
-		GetMappingsByArticle action = new GetMappingsByArticle(article.getHash());
+		GetMappingsByArticle action = new GetMappingsByArticle(article.getUrl()
+				.getHash());
 		dispatcher.execute(action, new MappingsCallback());
 	}
 
