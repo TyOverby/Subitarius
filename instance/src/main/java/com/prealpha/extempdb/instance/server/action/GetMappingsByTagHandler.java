@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -28,6 +31,7 @@ import com.prealpha.dispatch.shared.Dispatcher;
 import com.prealpha.extempdb.domain.Article;
 import com.prealpha.extempdb.domain.Tag;
 import com.prealpha.extempdb.domain.TagMapping;
+import com.prealpha.extempdb.domain.Tag_;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsByTag;
 import com.prealpha.extempdb.instance.shared.action.GetMappingsResult;
 import com.prealpha.extempdb.instance.shared.dto.ArticleDto;
@@ -54,7 +58,11 @@ class GetMappingsByTagHandler implements
 	public GetMappingsResult execute(final GetMappingsByTag action,
 			Dispatcher dispatcher) throws ActionException {
 		String tagName = action.getTagName();
-		Tag tag = entityManager.find(Tag.class, tagName);
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteria = builder.createQuery(Tag.class);
+		Root<Tag> root = criteria.from(Tag.class);
+		criteria.where(builder.equal(root.get(Tag_.name), tagName));
+		Tag tag = entityManager.createQuery(criteria).getSingleResult();
 
 		final Map<String, TagMapping> mappings = Maps.newHashMap();
 		for (TagMapping mapping : tag.getMappings()) {
