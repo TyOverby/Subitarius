@@ -78,6 +78,7 @@ class GetMappingsByTagHandler implements
 					}
 				});
 		if (action.getComparator() != null) {
+			dtos = Lists.newArrayList(dtos);
 			Collections.sort(dtos, new Comparator<TagMappingDto>() {
 				@Override
 				public int compare(TagMappingDto m1, TagMappingDto m2) {
