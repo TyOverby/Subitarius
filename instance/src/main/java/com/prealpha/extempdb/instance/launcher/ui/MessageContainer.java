@@ -1,16 +1,25 @@
 package com.prealpha.extempdb.instance.launcher.ui;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.prealpha.extempdb.instance.launcher.Action;
 
 public class MessageContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	private final Provider<Iterator<Action>> iteratorProvider;
 
 	private List<Message> messages = new ArrayList<Message>(50);
 	private final JPanel messageStaging;
@@ -19,7 +28,9 @@ public class MessageContainer extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public MessageContainer() {
+	@Inject
+	private MessageContainer(Provider<Iterator<Action>> iteratorProvider) {
+		this.iteratorProvider = iteratorProvider;
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -33,9 +44,24 @@ public class MessageContainer extends JPanel {
 		messageStaging.setLayout(null);
 		
 		this.add(scrollPane);
+		this.addMessage(new SimpleMessage("test"));
+		
+		new Timer().scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				Iterator<Action> iterator = MessageContainer.this.iteratorProvider.get();
+				while (iterator.hasNext()) {
+					addMessage(getMessage(iterator.next()));
+				}
+			}
+		}, 0, 5000);
+	}
+	
+	private Message getMessage(Action action) {
+		return new SimpleMessage(action.toString());
 	}
 
-	public void addMessage(Message message){
+	private void addMessage(Message message){
 		this.shouldHeight+=message.getHeight();
 		this.messageStaging.setPreferredSize(new Dimension(this.getWidth(),shouldHeight));
 		
