@@ -16,73 +16,80 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.extempdb.instance.launcher.Action;
 
-public class MessageContainer extends JPanel {
+public final class MessageContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final Provider<Iterator<Action>> iteratorProvider;
 
 	private List<Message> messages = new ArrayList<Message>(50);
 	private final JPanel messageStaging;
-	private int shouldHeight=0;
-	private int shouldWidth=0;
+	private int shouldHeight = 0;
+	private int shouldWidth = 0;
+
 	/**
 	 * Create the panel.
 	 */
 	@Inject
-	private MessageContainer(Provider<Iterator<Action>> iteratorProvider) {
+	private MessageContainer(Timer timer,
+			Provider<Iterator<Action>> iteratorProvider) {
 		this.iteratorProvider = iteratorProvider;
-		
+
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		
 
 		this.messageStaging = new JPanel();
-		this.messageStaging.setPreferredSize(new Dimension(this.getWidth(),200)); 
-		
+		this.messageStaging
+				.setPreferredSize(new Dimension(this.getWidth(), 200));
+
 		JScrollPane scrollPane = new JScrollPane(messageStaging);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		messageStaging.setLayout(null);
-		
+
 		this.add(scrollPane);
 		this.addMessage(new SimpleMessage("test"));
-		
-		new Timer().scheduleAtFixedRate(new TimerTask() {
+
+		timer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				Iterator<Action> iterator = MessageContainer.this.iteratorProvider.get();
+				Iterator<Action> iterator = MessageContainer.this.iteratorProvider
+						.get();
 				while (iterator.hasNext()) {
 					addMessage(getMessage(iterator.next()));
 				}
 			}
 		}, 0, 5000);
 	}
-	
+
 	private Message getMessage(Action action) {
 		return new SimpleMessage(action.toString());
 	}
 
-	private void addMessage(Message message){
-		this.shouldHeight+=message.getHeight();
-		this.messageStaging.setPreferredSize(new Dimension(this.getWidth(),shouldHeight));
-		
+	private void addMessage(Message message) {
+		this.shouldHeight += message.getHeight();
+		this.messageStaging.setPreferredSize(new Dimension(this.getWidth(),
+				shouldHeight));
+
 		messages.add(message);
 		messageStaging.add(message);
 		message.setBounds(0, 0, this.shouldWidth, message.getHeight());
-	
-		for(Message m:this.messages){
-			if(!m.equals(message)){
-				m.setBounds(m.getX(), m.getY()+message.getHeight(),this.shouldWidth, m.getHeight());
+
+		for (Message m : this.messages) {
+			if (!m.equals(message)) {
+				m.setBounds(m.getX(), m.getY() + message.getHeight(),
+						this.shouldWidth, m.getHeight());
 			}
 		}
 	}
 
-	public void clear(){
+	public void clear() {
 		messages.clear();
 		messageStaging.removeAll();
 	}
-	
-	public void onResize(int width){
-		for(Message m:this.messages){
+
+	public void onResize(int width) {
+		for (Message m : this.messages) {
 			m.setSize(width, m.getHeight());
 			m.onResize(width);
 		}

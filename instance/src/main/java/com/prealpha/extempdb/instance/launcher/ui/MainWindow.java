@@ -1,5 +1,7 @@
 package com.prealpha.extempdb.instance.launcher.ui;
 
+import static com.google.common.base.Preconditions.*;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -17,9 +19,10 @@ import javax.swing.JSplitPane;
 
 import com.google.inject.Inject;
 
-public class MainWindow {
-	private MessageContainer messageContainer;
+public final class MainWindow {
+	private final MessageContainer messageContainer;
 
+	private boolean initialized;
 	private JFrame frame;
 	private JSplitPane splitPane;
 	private ControlPanel controlPanel;
@@ -30,13 +33,15 @@ public class MainWindow {
 	@Inject
 	private MainWindow(MessageContainer messageContainer) {
 		this.messageContainer = messageContainer;
-		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
+		checkState(!initialized);
+		initialized = true;
+
 		frame = new JFrame();
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -45,7 +50,7 @@ public class MainWindow {
 			}
 		});
 		frame.setBounds(100, 100, 644, 449);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -127,23 +132,25 @@ public class MainWindow {
 		splitPane.setRightComponent(controlPanel);
 
 	}
-	
+
 	public void enable() {
+		checkState(initialized);
 		frame.setVisible(true);
 		onResize();
 	}
 
 	private void onResize() {
+		checkState(initialized);
 		this.splitPane.setDividerLocation(this.splitPane.getWidth()
 				- this.controlPanel.getWidth());
 		this.messageContainer.onResize(this.splitPane.getWidth()
 				- this.controlPanel.getWidth() - 23);
 	}
-	
+
 	public void addWindowListener(WindowListener listener) {
 		frame.addWindowListener(listener);
 	}
-	
+
 	public void removeWindowListener(WindowListener listener) {
 		frame.removeWindowListener(listener);
 	}

@@ -7,6 +7,7 @@
 package com.prealpha.extempdb.instance.launcher;
 
 import java.util.Iterator;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,6 +25,7 @@ public final class LauncherModule extends AbstractModule {
 		}).to(EntityIterator.class);
 		bind(new TypeLiteral<Iterator<Action>>() {
 		}).to(ActionIterator.class);
+		bind(Timer.class).in(Singleton.class);
 	}
 
 	@Provides
