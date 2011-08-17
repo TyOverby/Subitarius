@@ -48,8 +48,7 @@ final class Launcher {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				mainWindow.initialize();
-				mainWindow.enable();
+				mainWindow.realize();
 				mainWindow.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosed(WindowEvent event) {

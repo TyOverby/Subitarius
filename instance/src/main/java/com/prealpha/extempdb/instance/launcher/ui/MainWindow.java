@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 public final class MainWindow {
 	private final MessageContainer messageContainer;
 
-	private boolean initialized;
+	private boolean realized;
 	private JFrame frame;
 	private JSplitPane splitPane;
 	private ControlPanel controlPanel;
@@ -33,20 +33,20 @@ public final class MainWindow {
 	@Inject
 	private MainWindow(MessageContainer messageContainer) {
 		this.messageContainer = messageContainer;
+		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	public void initialize() {
-		checkState(!initialized);
-		initialized = true;
-
+	private void initialize() {
 		frame = new JFrame();
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				onResize();
+				if (realized) {
+					onResize();
+				}
 			}
 		});
 		frame.setBounds(100, 100, 644, 449);
@@ -130,17 +130,17 @@ public final class MainWindow {
 		controlPanel = new ControlPanel();
 		controlPanel.setForeground(Color.BLUE);
 		splitPane.setRightComponent(controlPanel);
-
 	}
 
-	public void enable() {
-		checkState(initialized);
+	public void realize() {
+		checkState(!realized);
+		realized = true;
 		frame.setVisible(true);
 		onResize();
 	}
 
 	private void onResize() {
-		checkState(initialized);
+		checkState(realized);
 		this.splitPane.setDividerLocation(this.splitPane.getWidth()
 				- this.controlPanel.getWidth());
 		this.messageContainer.onResize(this.splitPane.getWidth()
