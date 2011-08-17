@@ -2,11 +2,11 @@ package com.prealpha.extempdb.instance.launcher.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -15,12 +15,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.persist.PersistService;
-import com.google.inject.persist.jpa.JpaPersistModule;
-import com.prealpha.extempdb.instance.launcher.LauncherModule;
 
 public class MainWindow {
 	private MessageContainer messageContainer;
@@ -28,25 +23,6 @@ public class MainWindow {
 	private JFrame frame;
 	private JSplitPane splitPane;
 	private ControlPanel controlPanel;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		final Injector injector = Guice.createInjector(new JpaPersistModule(
-				"instance"), new LauncherModule());
-		PersistService persistService = injector
-				.getInstance(PersistService.class);
-		persistService.start();
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				MainWindow window = injector.getInstance(MainWindow.class);
-				window.frame.setVisible(true);
-				window.onResize();
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -151,6 +127,11 @@ public class MainWindow {
 		splitPane.setRightComponent(controlPanel);
 
 	}
+	
+	public void enable() {
+		frame.setVisible(true);
+		onResize();
+	}
 
 	private void onResize() {
 		this.splitPane.setDividerLocation(this.splitPane.getWidth()
@@ -158,5 +139,12 @@ public class MainWindow {
 		this.messageContainer.onResize(this.splitPane.getWidth()
 				- this.controlPanel.getWidth() - 23);
 	}
-
+	
+	public void addWindowListener(WindowListener listener) {
+		frame.addWindowListener(listener);
+	}
+	
+	public void removeWindowListener(WindowListener listener) {
+		frame.removeWindowListener(listener);
+	}
 }
