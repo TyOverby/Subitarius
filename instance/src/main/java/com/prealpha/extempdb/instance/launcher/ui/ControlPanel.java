@@ -1,24 +1,29 @@
 package com.prealpha.extempdb.instance.launcher.ui;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
-import java.awt.Color;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URI;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.net.URL;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ControlPanel extends JPanel {
+import com.google.inject.Inject;
+import com.prealpha.extempdb.instance.launcher.InstanceServer;
+
+final class ControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private boolean serverRunning = false; //TODO: make this dependant.
-	private URI uri;
+	private final InstanceServer instanceServer;
+
+	private boolean serverRunning = false;
+	private URL url;
 	private JLabel lbllink;
 	private JLabel lblRunning;
 	private JTextField passField;
@@ -27,7 +32,10 @@ public class ControlPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ControlPanel() {
+	@Inject
+	private ControlPanel(InstanceServer instanceServer) {
+		this.instanceServer = instanceServer;
+
 		setLayout(null);
 
 		JLabel lblStatus = new JLabel("Status:");
@@ -43,13 +51,10 @@ public class ControlPanel extends JPanel {
 		btnStartStop = new JButton("Start");
 		btnStartStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(serverRunning){
+				if (serverRunning) {
 					stopServer();
-					serverRunning=false;
-				}
-				else{
+				} else {
 					startServer();
-					serverRunning=true;
 				}
 			}
 		});
@@ -60,13 +65,14 @@ public class ControlPanel extends JPanel {
 		lblUrl.setBounds(12, 68, 31, 15);
 		add(lblUrl);
 
-		lbllink = new JLabel("<html><a href='#'><u style='color:blue;'>null</u></a></html>");
+		lbllink = new JLabel(
+				"<html><a href='#'><u style='color:blue;'>null</u></a></html>");
 		lbllink.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if(serverRunning){
+				if (serverRunning) {
 					try {
-						Desktop.getDesktop().browse(uri);
+						Desktop.getDesktop().browse(url.toURI());
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -85,44 +91,45 @@ public class ControlPanel extends JPanel {
 		passField.setEnabled(false);
 		passField.setColumns(10);
 		add(passField);
-		
 
 	}
 
-	public void setUrl(URI uri){
-		this.uri=uri;
-		this.lbllink.setText(uri.toASCIIString());
+	public void setUrl(URL url) {
+		this.url = url;
+		this.lbllink.setText(url.toString());
 	}
 
-	public void startServer(){
+	public void startServer() {
 		this.lblRunning.setForeground(Color.green);
 		this.lblRunning.setText("ON");
 		this.passField.setEnabled(false);
 		this.btnStartStop.setText("Stop");
-		
-		//TODO: actually start the server
+
+		serverRunning = true;
+		setUrl(instanceServer.start());
 	}
 
-	public void stopServer(){
+	public void stopServer() {
 		this.lblRunning.setForeground(Color.red);
 		this.lblRunning.setText("OFF");
 		this.passField.setEnabled(true);
 		this.btnStartStop.setText("Start");
-		
-		//TODO: actually stop the server
+
+		instanceServer.stop();
+		serverRunning = false;
 	}
 
 	/**
 	 * Gets the password that the user has entered into the password box.
 	 */
-	public String getPassword(){
-		if(this.passField.getText().length()>0){
+	public String getPassword() {
+		if (this.passField.getText().length() > 0) {
 			return this.passField.getText();
 		}
 		return null;
 	}
 
-	public int getWidth(){
+	public int getWidth() {
 		return 180;
 	}
 }

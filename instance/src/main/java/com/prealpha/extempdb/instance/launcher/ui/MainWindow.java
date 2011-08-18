@@ -22,17 +22,20 @@ import com.google.inject.Inject;
 public final class MainWindow {
 	private final MessageContainer messageContainer;
 
+	private final ControlPanel controlPanel;
+
 	private boolean realized;
 	private JFrame frame;
 	private JSplitPane splitPane;
-	private ControlPanel controlPanel;
 
 	/**
 	 * Create the application.
 	 */
 	@Inject
-	private MainWindow(MessageContainer messageContainer) {
+	private MainWindow(MessageContainer messageContainer,
+			ControlPanel controlPanel) {
 		this.messageContainer = messageContainer;
+		this.controlPanel = controlPanel;
 		initialize();
 	}
 
@@ -127,7 +130,6 @@ public final class MainWindow {
 
 		splitPane.setLeftComponent(messageContainer);
 
-		controlPanel = new ControlPanel();
 		controlPanel.setForeground(Color.BLUE);
 		splitPane.setRightComponent(controlPanel);
 	}
