@@ -13,7 +13,8 @@ import com.google.inject.persist.jpa.JpaPersistModule;
 final class TestLauncher {
 	public static void main(String[] args) {
 		Injector injector = Guice.createInjector(new JpaPersistModule(
-				"instance-test"), new LauncherModule());
+				"instance-test"), new LauncherModule(),
+				new TestingLauncherModule());
 		Launcher launcher = injector.getInstance(Launcher.class);
 		launcher.launch();
 	}

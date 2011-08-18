@@ -27,18 +27,22 @@ public final class Launcher {
 		launcher.launch();
 	}
 
+	private final Provider<MainWindow> mainWindowProvider;
+
 	private final PersistService persistService;
 
-	private final Provider<MainWindow> mainWindowProvider;
-	
 	private final Timer timer;
 
+	private final InstanceServer instanceServer;
+
 	@Inject
-	private Launcher(PersistService persistService,
-			Provider<MainWindow> mainWindowProvider, Timer timer) {
-		this.persistService = persistService;
+	private Launcher(Provider<MainWindow> mainWindowProvider,
+			PersistService persistService, Timer timer,
+			InstanceServer instanceServer) {
 		this.mainWindowProvider = mainWindowProvider;
+		this.persistService = persistService;
 		this.timer = timer;
+		this.instanceServer = instanceServer;
 	}
 
 	void launch() {
@@ -52,6 +56,7 @@ public final class Launcher {
 				mainWindow.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosed(WindowEvent event) {
+						instanceServer.stop();
 						timer.cancel();
 						persistService.stop();
 					}
