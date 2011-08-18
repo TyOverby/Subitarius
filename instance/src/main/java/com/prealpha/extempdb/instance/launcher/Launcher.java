@@ -19,7 +19,7 @@ import com.google.inject.persist.PersistService;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.prealpha.extempdb.instance.launcher.ui.MainWindow;
 
-final class Launcher {
+public final class Launcher {
 	public static void main(String[] args) {
 		Injector injector = Guice.createInjector(new JpaPersistModule(
 				"instance"), new LauncherModule());
@@ -41,7 +41,7 @@ final class Launcher {
 		this.timer = timer;
 	}
 
-	private void launch() {
+	void launch() {
 		persistService.start();
 
 		final MainWindow mainWindow = mainWindowProvider.get();
