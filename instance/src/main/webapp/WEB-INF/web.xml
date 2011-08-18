@@ -20,7 +20,7 @@
 	</listener>
 
 	<listener>
-		<listener-class>com.prealpha.extempdb.instance.server.ExtempDbContextListener</listener-class>
+		<listener-class>com.prealpha.extempdb.instance.server.InstanceContextListener</listener-class>
 	</listener>
 
 	<!-- Default page to serve -->
