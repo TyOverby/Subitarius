@@ -9,7 +9,9 @@ package com.prealpha.extempdb.domain;
 import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -60,5 +62,13 @@ abstract class CentralEntity implements Serializable {
 			ClassNotFoundException {
 		ois.defaultReadObject();
 		checkNotNull(uuid);
+	}
+	
+	/*
+	 * See Effective Java, second edition, item 74.
+	 */
+	@SuppressWarnings("unused")
+	private void readObjectNoData() throws ObjectStreamException {
+		throw new InvalidObjectException("stream data required");
 	}
 }
