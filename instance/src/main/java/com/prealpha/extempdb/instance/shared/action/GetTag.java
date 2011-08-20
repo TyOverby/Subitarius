@@ -14,7 +14,7 @@ import com.prealpha.dispatch.shared.filter.MergeableAction;
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
  */
-public class GetTag implements CacheableAction<GetTagResult>,
+public final class GetTag implements CacheableAction<GetTagResult>,
 		MergeableAction<GetTagResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 

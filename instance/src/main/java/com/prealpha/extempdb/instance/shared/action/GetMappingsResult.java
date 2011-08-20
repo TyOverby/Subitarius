@@ -14,7 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
-public class GetMappingsResult implements Result {
+public final class GetMappingsResult implements Result {
 	private ImmutableList<TagMappingDto> mappings;
 
 	// serialization support

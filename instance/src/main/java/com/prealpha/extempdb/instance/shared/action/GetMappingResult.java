@@ -1,6 +1,6 @@
 /*
  * GetMappingResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -9,7 +9,7 @@ package com.prealpha.extempdb.instance.shared.action;
 import com.prealpha.dispatch.shared.Result;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
-public class GetMappingResult implements Result {
+public final class GetMappingResult implements Result {
 	private TagMappingDto mapping;
 
 	// serialization support

@@ -8,7 +8,7 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-public class GetArticleByHash extends GetArticle {
+public final class GetArticleByHash extends GetArticle {
 	private String articleHash;
 
 	// serialization support

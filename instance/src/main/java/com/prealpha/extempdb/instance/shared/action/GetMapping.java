@@ -11,12 +11,12 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
 
-public class GetMapping implements CacheableAction<GetMappingResult>,
+public final class GetMapping implements CacheableAction<GetMappingResult>,
 		MergeableAction<GetMappingResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 
 	private String tagName;
-	
+
 	private String articleUrlHash;
 
 	private long cacheExpiry;
@@ -37,7 +37,7 @@ public class GetMapping implements CacheableAction<GetMappingResult>,
 	public String getTagName() {
 		return tagName;
 	}
-	
+
 	public String getArticleUrlHash() {
 		return articleUrlHash;
 	}

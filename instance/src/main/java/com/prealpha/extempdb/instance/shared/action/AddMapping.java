@@ -11,9 +11,9 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.dispatch.shared.Action;
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 
-public class AddMapping implements Action<MutationResult> {
+public final class AddMapping implements Action<MutationResult> {
 	private String tagName;
-	
+
 	private String articleUrlHash;
 
 	private State state;
@@ -31,15 +31,15 @@ public class AddMapping implements Action<MutationResult> {
 		this.articleUrlHash = articleUrlHash;
 		this.state = state;
 	}
-	
+
 	public String getTagName() {
 		return tagName;
 	}
-	
+
 	public String getArticleUrlHash() {
 		return articleUrlHash;
 	}
-	
+
 	public State getState() {
 		return state;
 	}
