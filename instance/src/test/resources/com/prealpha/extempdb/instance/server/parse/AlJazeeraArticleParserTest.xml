@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.prealpha.extempdb.instance.server.parse.TestVector">
+				<string>http://english.aljazeera.net/programmes/aljazeeracorrespondent/2011/08/2011814134117264232.html</string>
+				<string>Chilean Miners: Still Trapped?</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1313539200000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>One year ago the world watched as 33 Chilean miners were stranded hundreds of metres underground for more than two months.</string>
+					</void>
+					<void method="add">
+						<string>Television channels from around the world focused on every move and statement the miners made as technology allowed pictures from 700 metres under the ground to be beamed into living rooms everywhere.</string>
+					</void>
+					<void method="add">
+						<string>After their dramatic rescue they all became immediate celebrities. But since then most of the 33 miners have been unemployed and have found it hard to cope with life once the spotlights have faded.</string>
+					</void>
+					<void method="add">
+						<string>Al Jazeera's Lucia Newman covered the mining crisis and the dramatic rescue and takes us back to meet some of the same characters she met at the time to see how the tragedy and the subsequent adulation that followed the rescue have impacted the lives of many of the miners and their families. She also asks if the Chilean government has kept its promise to improve mining safety standards in the country. In an exclusive interview, Chile's minister of mining acknowledges that much more needs to be done to improve safety conditions in the country's copper mines.</string>
+					</void>		
+				</object>
+			</object>
+		</void>
+	</object>
+</java>

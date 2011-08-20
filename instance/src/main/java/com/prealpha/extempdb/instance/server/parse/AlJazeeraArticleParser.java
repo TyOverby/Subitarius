@@ -1,5 +1,5 @@
 /*
- * BbcArticleParser.java
+ * AlJazeeraArticleParser.java
  * Copyright (C) 2011 Ty Overby
  * All rights reserved.
  */
@@ -27,15 +27,15 @@ import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class BbcArticleParser implements ArticleParser {
+public class AlJazeeraArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"dd MMMM yyyy");
+			"dd MMM yyyy");
 
 	private final Provider<Team> teamProvider;
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private BbcArticleParser(Provider<Team> teamProvider,
+	private AlJazeeraArticleParser(Provider<Team> teamProvider,
 			SimpleHttpClient httpClient) {
 		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
@@ -46,23 +46,19 @@ final class BbcArticleParser implements ArticleParser {
 		try {
 			String title;
 			Date date;
+			String author = null;
 			List<String> paragraphs = Lists.newArrayList();
 
 			// setup
-			// canonical URL will never contain parameters
 			String url = articleUrl.getUrl();
 			InputStream stream = httpClient.doGet(url + "?print=true");
 			Document document = Jsoup.parse(stream, null, url);
 
-			// drop some content that can mess up our text
-			document.select(".videoInStoryA, .videoInStoryB, .videoInStoryC")
-					.remove();
-
 			// title
-			title = document.select("h1.story-header").first().text();
+			title = document.select("#DetailedTitle").text();
 
 			// date
-			String dateStr = document.select("span.date").first().text();
+			String dateStr = document.select("#cphBody_lblDate").text();
 			try {
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
@@ -70,8 +66,8 @@ final class BbcArticleParser implements ArticleParser {
 			}
 
 			// paragraphs
-			for (Element elem : document.select("div.story-body p")) {
-				paragraphs.add(elem.text());
+			for (Element e : document.select("#tdTextContent>p")) {
+				paragraphs.add(e.text().replace('\u00a0', ' '));
 			}
 
 			return new Article(teamProvider.get(), articleUrl, title, null,
@@ -82,4 +78,5 @@ final class BbcArticleParser implements ArticleParser {
 			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
+
 }

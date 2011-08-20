@@ -6,7 +6,8 @@
 
 package com.prealpha.extempdb.instance.server.parse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.beans.XMLDecoder;
 import java.io.InputStream;
