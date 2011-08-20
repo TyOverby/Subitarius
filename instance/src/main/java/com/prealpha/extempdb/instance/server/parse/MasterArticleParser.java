@@ -53,7 +53,8 @@ final class MasterArticleParser implements ArticleParser {
 			parserClass = EconomistArticleParser.class;
 			break;
 		case BBC:
-			parserClass= BBCArticleParser.class;
+			parserClass = BBCArticleParser.class;
+			break;
 		default:
 			throw new ParserNotFoundException(source);
 		}
