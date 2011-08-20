@@ -60,6 +60,9 @@ public enum Source {
 	},
 
 	ECONOMIST("www.economist.com", "The Economist") {
+	},
+	
+	BBC("www.bbc.co.uk","BBC"){
 	};
 
 	public static Source fromUrl(String url) {
