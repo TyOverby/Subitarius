@@ -41,14 +41,14 @@ Sources
 -------
 
 ### Tier 1
-1. New York Times
-2. Washington Post
-3. Christian Science Monitor
-4. Wall Street Journal
-5. Reuters
+1. ~~New York Times~~
+2. ~~Washington Post~~
+3. ~~Christian Science Monitor~~
+4. ~~Wall Street Journal~~
+5. ~~Reuters~~
 6. BBC 
-7. The Guardian
-8. The Economist
+7. ~~The Guardian~~
+8. ~~The Economist~~
 9. Al Jazeera
 10. LA Times
 11. Boston Globe
