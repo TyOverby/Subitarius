@@ -21,7 +21,7 @@ import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class BBCArticleParser implements ArticleParser {
+final class BbcArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"dd MMMM yyyy");
 
@@ -30,7 +30,7 @@ final class BBCArticleParser implements ArticleParser {
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private BBCArticleParser(Provider<Team> teamProvider,
+	private BbcArticleParser(Provider<Team> teamProvider,
 			SimpleHttpClient httpClient) {
 		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;

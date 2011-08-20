@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import com.google.inject.Inject;
 
-public final class BBCArticleParserTest extends ArticleParserTestBase {
+public final class BbcArticleParserTest extends ArticleParserTestBase {
 	@Inject
-	private BBCArticleParser parser;
+	private BbcArticleParser parser;
 
 	@Override
 	protected ArticleParser getParser() {
