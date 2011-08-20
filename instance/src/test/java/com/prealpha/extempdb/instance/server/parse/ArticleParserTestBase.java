@@ -55,7 +55,7 @@ public abstract class ArticleParserTestBase {
 		// check each paragraph individually as well
 		List<String> expectedText = expected.getParagraphs();
 		List<String> actualText = actual.getParagraphs();
-		//assertEquals("paragraph count", expectedText.size(), actualText.size());
+		assertEquals("paragraph count", expectedText.size(), actualText.size());
 		for (int i = 0; i < expectedText.size(); i++) {
 			assertEquals("paragraph " + i, expectedText.get(i),
 					actualText.get(i));
