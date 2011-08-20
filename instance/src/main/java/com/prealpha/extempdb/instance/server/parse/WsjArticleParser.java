@@ -76,6 +76,9 @@ final class WsjArticleParser implements ArticleParser {
 			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
+			// these idiots hide a complete copy of the article text sometimes
+			document.select(".hidden").remove();
+
 			// verify that we have a parseable article
 			String pageType = document.select("meta[name=displayName]").attr(
 					"content");
