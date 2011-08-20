@@ -58,8 +58,6 @@ public class BBCArticleParser implements ArticleParser {
 			for(Element e:document.select("div.story-body p")){
 				if(e.tag().getName().equals("p")){
 					paragraphs.add(e.text());
-//					System.out.println(e.text());
-//					System.out.println();
 				}
 			}
 			
