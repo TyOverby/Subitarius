@@ -1,3 +1,9 @@
+/*
+ * BbcArticleParserTest.java
+ * Copyright (C) 2011 Ty Overby
+ * All rights reserved.
+ */
+
 package com.prealpha.extempdb.instance.server.parse;
 
 import org.junit.Test;
@@ -10,11 +16,11 @@ public final class BbcArticleParserTest extends ArticleParserTestBase {
 
 	@Override
 	protected ArticleParser getParser() {
-		return parser;
+		return this.parser;
 	}
 
 	@Test
 	public void testParse() throws ArticleParseException {
-		testVector(0);
+		this.testVector(0);
 	}
 }
