@@ -1,5 +1,5 @@
 /*
- * BbcArticleParserTest.java
+ * AlJazeeraArticleParserTest.java
  * Copyright (C) 2011 Ty Overby
  * All rights reserved.
  */
@@ -10,9 +10,9 @@ import org.junit.Test;
 
 import com.google.inject.Inject;
 
-public final class BbcArticleParserTest extends ArticleParserTestBase {
+public class AlJazeeraArticleParserTest extends ArticleParserTestBase {
 	@Inject
-	private BbcArticleParser parser;
+	private AlJazeeraArticleParser parser;
 
 	@Override
 	protected ArticleParser getParser() {

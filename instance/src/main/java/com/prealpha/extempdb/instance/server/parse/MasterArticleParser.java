@@ -55,6 +55,9 @@ final class MasterArticleParser implements ArticleParser {
 		case BBC:
 			parserClass = BbcArticleParser.class;
 			break;
+		case ALJAZEERA:
+			parserClass = AlJazeeraArticleParser.class;
+			break;
 		default:
 			throw new ParserNotFoundException(source);
 		}

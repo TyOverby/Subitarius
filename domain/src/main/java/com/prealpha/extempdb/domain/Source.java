@@ -6,7 +6,7 @@
 
 package com.prealpha.extempdb.domain;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /*
  * TODO: using an enum means that adding new sources breaks interoperability
@@ -60,6 +60,9 @@ public enum Source {
 	},
 
 	ECONOMIST("www.economist.com", "The Economist") {
+	},
+
+	ALJAZEERA("english.aljazeera.net", "Al Jazeera") {
 	},
 
 	BBC("www.bbc.co.uk", "BBC") {

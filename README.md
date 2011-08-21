@@ -46,7 +46,7 @@ Sources
 3. ~~Christian Science Monitor~~
 4. ~~Wall Street Journal~~
 5. ~~Reuters~~
-6. BBC 
+6. ~~BBC~~ 
 7. ~~The Guardian~~
 8. ~~The Economist~~
 9. Al Jazeera
