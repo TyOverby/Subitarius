@@ -18,18 +18,6 @@ TODO (features)
     * HTML
         * No Images
     * Similarly to custom articles, it will be stickied at the top of the tag page.
-* User levels
-    * Basic User
-        * Search
-        * Browse
-    * Moderator extends BasicUser
-        * Patrol
-        * Can create basic users
-        * Search can use SQL queries
-            * Uses a sql user that only has SELECT
-    * Admin extends Moderator
-        * Modifies user priveleges
-        * Modify home page text
 
 TODO (dev)
 ==========
@@ -63,4 +51,3 @@ Sources
 ### Skip
 1. Associated Press
 2. International Herald Tribune
-
