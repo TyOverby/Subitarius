@@ -55,7 +55,7 @@ final class MasterArticleParser implements ArticleParser {
 		case BBC:
 			parserClass = BbcArticleParser.class;
 			break;
-		case ALJAZEERA:
+		case AL_JAZEERA:
 			parserClass = AlJazeeraArticleParser.class;
 			break;
 		default:

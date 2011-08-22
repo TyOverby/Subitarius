@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.Action;
 
-public class AddArticle implements Action<AddArticleResult> {
+public final class AddArticle implements Action<AddArticleResult> {
 	private String url;
 
 	// serialization support

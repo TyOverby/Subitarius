@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.extempdb.instance.shared.dto.TagMappingDto;
 
-public class GetMappingsByArticle extends GetMappings {
+public final class GetMappingsByArticle extends GetMappings {
 	private String articleUrlHash;
 
 	// serialization support

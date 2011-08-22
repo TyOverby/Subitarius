@@ -1,6 +1,6 @@
 /*
  * GetParagraphsResult.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -8,14 +8,13 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
 import com.prealpha.dispatch.shared.Result;
 
-public class GetParagraphsResult implements Result {
-	private ArrayList<String> paragraphs;
+public final class GetParagraphsResult implements Result {
+	private ImmutableList<String> paragraphs;
 
 	// serialization support
 	@SuppressWarnings("unused")
@@ -24,10 +23,10 @@ public class GetParagraphsResult implements Result {
 
 	public GetParagraphsResult(List<String> paragraphs) {
 		checkNotNull(paragraphs);
-		this.paragraphs = new ArrayList<String>(paragraphs);
+		this.paragraphs = ImmutableList.copyOf(paragraphs);
 	}
 
 	public List<String> getParagraphs() {
-		return Collections.unmodifiableList(paragraphs);
+		return paragraphs;
 	}
 }

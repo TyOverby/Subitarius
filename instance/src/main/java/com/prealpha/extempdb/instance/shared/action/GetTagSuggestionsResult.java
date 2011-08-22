@@ -8,14 +8,13 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.prealpha.dispatch.shared.Result;
 
-public class GetTagSuggestionsResult implements Result {
-	private HashSet<String> suggestions;
+public final class GetTagSuggestionsResult implements Result {
+	private ImmutableSet<String> suggestions;
 
 	// serialization support
 	@SuppressWarnings("unused")
@@ -24,10 +23,10 @@ public class GetTagSuggestionsResult implements Result {
 
 	public GetTagSuggestionsResult(Set<String> suggestions) {
 		checkNotNull(suggestions);
-		this.suggestions = new HashSet<String>(suggestions);
+		this.suggestions = ImmutableSet.copyOf(suggestions);
 	}
 
 	public Set<String> getSuggestions() {
-		return Collections.unmodifiableSet(suggestions);
+		return suggestions;
 	}
 }

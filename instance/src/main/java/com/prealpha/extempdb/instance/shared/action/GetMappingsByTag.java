@@ -8,9 +8,7 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
@@ -21,13 +19,13 @@ import com.prealpha.extempdb.instance.shared.dto.TagMappingDto.State;
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
  */
-public class GetMappingsByTag extends GetMappings {
+public final class GetMappingsByTag extends GetMappings {
 	private static final Set<State> ALL_STATES = ImmutableSet.copyOf(State
 			.values());
 
 	private String tagName;
 
-	private HashSet<State> states;
+	private ImmutableSet<State> states;
 
 	private Comparator<? super ArticleDto> comparator;
 
@@ -55,7 +53,7 @@ public class GetMappingsByTag extends GetMappings {
 		checkNotNull(states);
 		checkArgument(!states.contains(null));
 		this.tagName = tagName;
-		this.states = new HashSet<State>(states);
+		this.states = ImmutableSet.copyOf(states);
 		this.comparator = comparator;
 	}
 
@@ -64,7 +62,7 @@ public class GetMappingsByTag extends GetMappings {
 	}
 
 	public Set<State> getStates() {
-		return Collections.unmodifiableSet(states);
+		return states;
 	}
 
 	public Comparator<? super ArticleDto> getComparator() {

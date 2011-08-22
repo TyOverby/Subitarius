@@ -1,6 +1,6 @@
 /*
  * GetHierarchy.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -9,7 +9,7 @@ package com.prealpha.extempdb.instance.shared.action;
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
 
-public class GetHierarchy implements CacheableAction<GetHierarchyResult>,
+public final class GetHierarchy implements CacheableAction<GetHierarchyResult>,
 		MergeableAction<GetHierarchyResult> {
 	private static final long EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 1 week
 

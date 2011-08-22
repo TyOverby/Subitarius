@@ -8,18 +8,19 @@ package com.prealpha.extempdb.instance.shared.action;
 
 import static com.google.common.base.Preconditions.*;
 
-public class GetArticleByUrl extends GetArticle {
+public final class GetArticleByUrl extends GetArticle {
 	private String articleUrlHash;
-	
+
 	// serialization support
 	@SuppressWarnings("unused")
-	private GetArticleByUrl() {}
-	
+	private GetArticleByUrl() {
+	}
+
 	public GetArticleByUrl(String articleUrlHash) {
 		checkNotNull(articleUrlHash);
 		this.articleUrlHash = articleUrlHash;
 	}
-	
+
 	public String getArticleUrlHash() {
 		return articleUrlHash;
 	}

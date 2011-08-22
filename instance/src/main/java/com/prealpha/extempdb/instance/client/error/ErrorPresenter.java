@@ -25,7 +25,6 @@ import com.prealpha.extempdb.instance.client.AppPlace;
 import com.prealpha.extempdb.instance.client.AppState;
 import com.prealpha.extempdb.instance.client.HistoryManager;
 import com.prealpha.extempdb.instance.client.PlacePresenter;
-import com.prealpha.extempdb.instance.shared.action.InvalidSessionException;
 
 public class ErrorPresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {
@@ -72,8 +71,6 @@ public class ErrorPresenter implements PlacePresenter {
 					historyManager.setAppState(new AppState(AppPlace.MAIN));
 				}
 			});
-		} else if (caught instanceof InvalidSessionException) {
-			display.getMessageLabel().setText(messages.invalidSession());
 		} else if (caught instanceof IncompatibleRemoteServiceException) {
 			display.getMessageLabel().setText(messages.incompatibleService());
 		} else {

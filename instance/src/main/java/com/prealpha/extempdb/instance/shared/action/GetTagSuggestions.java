@@ -1,6 +1,6 @@
 /*
  * GetTagSuggestions.java
- * Copyright (C) 2010 Meyer Kizner
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,7 +13,7 @@ import com.prealpha.dispatch.shared.filter.MergeableAction;
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
  */
-public class GetTagSuggestions implements
+public final class GetTagSuggestions implements
 		MergeableAction<GetTagSuggestionsResult> {
 	private String namePrefix;
 

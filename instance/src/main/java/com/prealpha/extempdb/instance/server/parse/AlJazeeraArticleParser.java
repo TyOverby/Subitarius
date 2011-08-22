@@ -27,11 +27,12 @@ import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-public class AlJazeeraArticleParser implements ArticleParser {
+final class AlJazeeraArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"dd MMM yyyy");
 
 	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject
@@ -46,7 +47,6 @@ public class AlJazeeraArticleParser implements ArticleParser {
 		try {
 			String title;
 			Date date;
-			String author = null;
 			List<String> paragraphs = Lists.newArrayList();
 
 			// setup
@@ -78,5 +78,4 @@ public class AlJazeeraArticleParser implements ArticleParser {
 			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
-
 }

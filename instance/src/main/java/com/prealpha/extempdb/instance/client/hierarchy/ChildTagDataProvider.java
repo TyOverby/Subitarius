@@ -7,12 +7,12 @@
 package com.prealpha.extempdb.instance.client.hierarchy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
-import com.google.common.collect.SetMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
@@ -26,7 +26,7 @@ import com.prealpha.extempdb.instance.shared.action.GetTagResult;
 import com.prealpha.extempdb.instance.shared.dto.TagDto;
 
 public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
-	private static SetMultimap<String, String> hierarchy;
+	private static Multimap<String, String> hierarchy;
 
 	public static boolean isKnownLeaf(String tagName) {
 		if (hierarchy == null) {
@@ -79,7 +79,7 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 					@Override
 					public void onSuccess(GetHierarchyResult result) {
 						hierarchy = result.getHierarchy();
-						Set<String> children;
+						Collection<String> children;
 
 						if (parent == null) {
 							children = hierarchy.get(null);

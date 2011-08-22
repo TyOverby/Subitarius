@@ -11,7 +11,8 @@ import static com.google.common.base.Preconditions.*;
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
 
-public class GetParagraphs implements CacheableAction<GetParagraphsResult>,
+public final class GetParagraphs implements
+		CacheableAction<GetParagraphsResult>,
 		MergeableAction<GetParagraphsResult> {
 	private String articleHash;
 

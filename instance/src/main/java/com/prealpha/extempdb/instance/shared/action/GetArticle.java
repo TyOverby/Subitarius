@@ -9,7 +9,7 @@ package com.prealpha.extempdb.instance.shared.action;
 import com.prealpha.dispatch.shared.filter.CacheableAction;
 import com.prealpha.dispatch.shared.filter.MergeableAction;
 
-public abstract class GetArticle implements CacheableAction<GetArticleResult>,
+abstract class GetArticle implements CacheableAction<GetArticleResult>,
 		MergeableAction<GetArticleResult> {
 	protected GetArticle() {
 	}

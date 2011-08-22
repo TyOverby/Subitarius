@@ -32,6 +32,7 @@ final class BbcArticleParser implements ArticleParser {
 			"dd MMMM yyyy");
 
 	private final Provider<Team> teamProvider;
+
 	private final SimpleHttpClient httpClient;
 
 	@Inject

@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.*;
 
 import com.prealpha.dispatch.shared.Result;
 
-public class AddArticleResult implements Result {
+public final class AddArticleResult implements Result {
 	public static enum Type {
 		SUCCESS(true),
 

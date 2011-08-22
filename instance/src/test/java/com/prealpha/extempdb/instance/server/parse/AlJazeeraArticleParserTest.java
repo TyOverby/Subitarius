@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.google.inject.Inject;
 
-public class AlJazeeraArticleParserTest extends ArticleParserTestBase {
+public final class AlJazeeraArticleParserTest extends ArticleParserTestBase {
 	@Inject
 	private AlJazeeraArticleParser parser;
 

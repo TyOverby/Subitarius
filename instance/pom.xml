@@ -71,13 +71,13 @@
 		<dependency>
 			<groupId>com.prealpha</groupId>
 			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011062900</version>
+			<version>v2011082008</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.prealpha</groupId>
 			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011062900</version>
+			<version>v2011082008</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
