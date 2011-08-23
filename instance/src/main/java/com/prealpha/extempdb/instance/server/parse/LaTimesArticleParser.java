@@ -1,5 +1,5 @@
 /*
- * BbcArticleParser.java
+ * LaTimesArticleParser.java
  * Copyright (C) 2011 Ty Overby
  * All rights reserved.
  */
@@ -27,16 +27,14 @@ import com.prealpha.extempdb.domain.Team;
 import com.prealpha.extempdb.util.http.RobotsExclusionException;
 import com.prealpha.extempdb.util.http.SimpleHttpClient;
 
-final class BbcArticleParser implements ArticleParser {
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"dd MMMM yyyy");
-
+public class LaTimesArticleParser implements ArticleParser {
+	private static final DateFormat DATE_FORMAT_BLOG = new SimpleDateFormat(
+			"MMMMM dd, yyyy");
 	private final Provider<Team> teamProvider;
-
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private BbcArticleParser(Provider<Team> teamProvider,
+	private LaTimesArticleParser(Provider<Team> teamProvider,
 			SimpleHttpClient httpClient) {
 		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
@@ -44,6 +42,15 @@ final class BbcArticleParser implements ArticleParser {
 
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
+		if (articleUrl.getUrl().contains("latimesblogs")) {
+			return parseBlog(articleUrl);
+		} else {
+			return parseArticle(articleUrl);
+		}
+	}
+
+	private Article parseArticle(ArticleUrl articleUrl)
+			throws ArticleParseException {
 		try {
 			String title;
 			Date date;
@@ -51,29 +58,56 @@ final class BbcArticleParser implements ArticleParser {
 			List<String> paragraphs = Lists.newArrayList();
 
 			// setup
-			// canonical URL will never contain parameters
 			String url = articleUrl.getUrl();
-			InputStream stream = httpClient.doGet(url + "?print=true");
+			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
-			// drop some content that can mess up our text
-			document.select(".videoInStoryA, .videoInStoryB, .videoInStoryC")
-					.remove();
+			return null;
+		} catch (IOException iox) {
+			throw new ArticleParseException(articleUrl, iox);
+		} catch (RobotsExclusionException rex) {
+			throw new ArticleParseException(articleUrl, rex);
+		}
+	}
+
+	private Article parseBlog(ArticleUrl articleUrl)
+			throws ArticleParseException {
+		try {
+			String title;
+			Date date;
+			String author = null;
+			List<String> paragraphs = Lists.newArrayList();
+
+			// setup
+			String url = articleUrl.getUrl();
+			InputStream stream = httpClient.doGet(url);
+			Document document = Jsoup.parse(stream, null, url);
 
 			// title
-			title = document.select("h1.story-header").first().text();
+			title = document.select("h1.entry-header").text();
 
 			// date
 			String dateStr = document.select("span.date").first().text();
 			try {
-				date = DATE_FORMAT.parse(dateStr);
+				date = DATE_FORMAT_BLOG.parse(dateStr);
 			} catch (ParseException px) {
 				throw new ArticleParseException(articleUrl, px);
 			}
 
 			// paragraphs
-			for (Element elem : document.select("div.story-body p")) {
-				paragraphs.add(elem.text());
+			for (Element elem : document.select("div.entry-body p")) {
+				boolean contentOn = true;
+
+				if (elem.text().contains("RELATED")) {
+					contentOn = false;
+				}
+				if (contentOn) {
+					paragraphs.add(elem.text());
+				}
+
+				if (elem.text().startsWith("--")) {
+					author = elem.text().replace("-- ", "");
+				}
 			}
 
 			return new Article(teamProvider.get(), articleUrl, title, author,

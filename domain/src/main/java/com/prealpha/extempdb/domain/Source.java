@@ -65,7 +65,7 @@ public enum Source {
 	AL_JAZEERA("Al Jazeera", "english.aljazeera.net") {
 	},
 
-	LA_TIMES("La Times", "www.latimes.com") {
+	LA_TIMES("La Times", "www.latimes.com", "latimesblogs.latimes.com") {
 	},
 
 	BBC("BBC", "www.bbc.co.uk") {
@@ -104,6 +104,7 @@ public enum Source {
 		this.domainNames = domainNames;
 	}
 
+	// I basically made this to be overriden
 	public boolean isSource(String domainName) {
 		for (String s : getDomainNames()) {
 			if (s.equals(domainName)) {
