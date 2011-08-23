@@ -6,7 +6,7 @@
 
 package com.prealpha.extempdb.central.search;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -87,7 +87,7 @@ final class BingSearchProvider implements SearchProvider {
 				}
 
 				for (BingNewsResult result : results) {
-					if (limit < 0 || articleUrls.size() < limit) {
+					if ((limit < 0) || (articleUrls.size() < limit)) {
 						// handle Bing's apiclick.aspx
 						String rawUrl = handleApiClick(result.getUrl());
 						ArticleUrl articleUrl = new ArticleUrl(rawUrl);
@@ -102,7 +102,7 @@ final class BingSearchProvider implements SearchProvider {
 				throw new SearchUnavailableException(rex);
 			}
 		} while (!isComplete(search)
-				&& (limit < 0 || articleUrls.size() < limit));
+				&& ((limit < 0) || (articleUrls.size() < limit)));
 
 		return articleUrls;
 	}
@@ -126,7 +126,7 @@ final class BingSearchProvider implements SearchProvider {
 
 	private static String getQuery(Tag tag, Source source) {
 		String query = "site:";
-		query += source.getDomainName();
+		query += source.getDomainNames()[0];
 		query += " " + tag.getName();
 		return query;
 	}

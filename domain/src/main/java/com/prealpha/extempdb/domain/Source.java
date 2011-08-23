@@ -6,16 +6,16 @@
 
 package com.prealpha.extempdb.domain;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /*
  * TODO: using an enum means that adding new sources breaks interoperability
  */
 public enum Source {
-	NY_TIMES("www.nytimes.com", "New York Times") {
+	NY_TIMES("New York Times", "www.nytimes.com") {
 	},
 
-	WASHINGTON_POST("www.washingtonpost.com", "Washington Post") {
+	WASHINGTON_POST("Washington Post", "www.washingtonpost.com") {
 		@Override
 		String canonicalize(String rawUrl) {
 			rawUrl = super.canonicalize(rawUrl);
@@ -37,7 +37,7 @@ public enum Source {
 		}
 	},
 
-	CS_MONITOR("www.csmonitor.com", "Christian Science Monitor") {
+	CS_MONITOR("Christian Science Monitor", "www.csmonitor.com") {
 		@Override
 		String canonicalize(String rawUrl) {
 			rawUrl = super.canonicalize(rawUrl);
@@ -50,22 +50,25 @@ public enum Source {
 		}
 	},
 
-	WS_JOURNAL("online.wsj.com", "Wall Street Journal") {
+	WS_JOURNAL("Wall Street Journal", "online.wsj.com") {
 	},
 
-	REUTERS("www.reuters.com", "Reuters") {
+	REUTERS("Reuters", "www.reuters.com") {
 	},
 
-	GUARDIAN("www.guardian.co.uk", "The Guardian") {
+	GUARDIAN("The Guardian", "www.guardian.co.uk") {
 	},
 
-	ECONOMIST("www.economist.com", "The Economist") {
+	ECONOMIST("The Economist", "www.economist.com") {
 	},
 
-	AL_JAZEERA("english.aljazeera.net", "Al Jazeera") {
+	AL_JAZEERA("Al Jazeera", "english.aljazeera.net") {
 	},
 
-	BBC("www.bbc.co.uk", "BBC") {
+	LA_TIMES("La Times", "www.latimes.com") {
+	},
+
+	BBC("BBC", "www.bbc.co.uk") {
 	};
 
 	public static Source fromUrl(String url) {
@@ -86,20 +89,28 @@ public enum Source {
 	public static Source fromDomainName(String domainName) {
 		checkNotNull(domainName);
 		for (Source source : values()) {
-			if (source.getDomainName().equals(domainName)) {
+			if (source.isSource(domainName)) {
 				return source;
 			}
 		}
 		return null;
 	}
 
-	private final String domainName;
-
+	private final String[] domainNames;
 	private final String displayName;
 
-	private Source(String domainName, String displayName) {
-		this.domainName = domainName;
+	private Source(String displayName, String... domainNames) {
 		this.displayName = displayName;
+		this.domainNames = domainNames;
+	}
+
+	public boolean isSource(String domainName) {
+		for (String s : getDomainNames()) {
+			if (s.equals(domainName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	String canonicalize(String rawUrl) {
@@ -111,8 +122,8 @@ public enum Source {
 		}
 	}
 
-	public String getDomainName() {
-		return domainName;
+	public String[] getDomainNames() {
+		return domainNames;
 	}
 
 	@Override
