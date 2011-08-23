@@ -47,6 +47,8 @@ import com.prealpha.extempdb.util.logging.InjectLogger;
  * 
  */
 final class AuthenticationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	@InjectLogger
 	private Logger log;
 

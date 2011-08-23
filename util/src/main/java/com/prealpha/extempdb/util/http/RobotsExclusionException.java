@@ -9,6 +9,8 @@ package com.prealpha.extempdb.util.http;
 import com.prealpha.extempdb.util.http.robots.RobotsTxt;
 
 public class RobotsExclusionException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	private final RobotsTxt robotsTxt;
 
 	public RobotsExclusionException() {

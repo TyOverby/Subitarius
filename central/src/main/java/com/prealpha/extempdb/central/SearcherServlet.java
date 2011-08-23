@@ -36,6 +36,8 @@ import com.prealpha.extempdb.util.logging.InjectLogger;
  * 
  */
 final class SearcherServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	@InjectLogger
 	private Logger log;
 
@@ -126,7 +128,7 @@ final class SearcherServlet extends HttpServlet {
 			for (String token : tokens) {
 				try {
 					int ordinal = Integer.parseInt(token);
-					if (ordinal < 0 || ordinal >= Source.values().length) {
+					if ((ordinal < 0) || (ordinal >= Source.values().length)) {
 						throw new IllegalArgumentException(
 								"ordinal out of bounds: " + ordinal);
 					}

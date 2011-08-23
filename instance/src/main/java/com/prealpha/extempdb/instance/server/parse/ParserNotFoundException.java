@@ -6,15 +6,17 @@
 
 package com.prealpha.extempdb.instance.server.parse;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.prealpha.extempdb.domain.Source;
 
 public class ParserNotFoundException extends RuntimeException {
+	private static final long serialVersionUID = 1L;
+
 	private final String url;
-	
+
 	private final Source source;
-	
+
 	public ParserNotFoundException(String url) {
 		super("parser not found for URL: " + url);
 		checkNotNull(url);
@@ -28,7 +30,7 @@ public class ParserNotFoundException extends RuntimeException {
 		url = null;
 		this.source = source;
 	}
-	
+
 	public String getUrl() {
 		return url;
 	}

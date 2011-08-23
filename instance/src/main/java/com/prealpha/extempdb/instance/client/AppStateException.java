@@ -6,7 +6,7 @@
 
 package com.prealpha.extempdb.instance.client;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Thrown to indicate that the current {@link AppState} is invalid in some way.
@@ -17,6 +17,8 @@ import static com.google.common.base.Preconditions.*;
  * 
  */
 public class AppStateException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	private final AppState appState;
 
 	public AppStateException() {

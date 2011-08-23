@@ -7,6 +7,8 @@
 package com.prealpha.extempdb.central.search;
 
 public class SearchUnavailableException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	public SearchUnavailableException() {
 		super();
 	}

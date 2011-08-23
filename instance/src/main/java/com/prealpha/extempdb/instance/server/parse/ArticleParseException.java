@@ -6,11 +6,13 @@
 
 package com.prealpha.extempdb.instance.server.parse;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.prealpha.extempdb.domain.ArticleUrl;
 
 public class ArticleParseException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	private final ArticleUrl articleUrl;
 
 	public ArticleParseException(ArticleUrl articleUrl) {

@@ -39,6 +39,8 @@ import com.prealpha.extempdb.util.logging.InjectLogger;
  * 
  */
 final class DistributedEntityServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	@InjectLogger
 	private Logger log;
 

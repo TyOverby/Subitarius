@@ -6,7 +6,7 @@
 
 package com.prealpha.extempdb.instance.server;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,6 +20,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 class GuiceServiceServlet extends RemoteServiceServlet {
+	private static final long serialVersionUID = 1L;
+
 	@Inject
 	private Injector injector;
 
