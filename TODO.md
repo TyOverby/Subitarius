@@ -16,6 +16,10 @@ Each item is ordered by importance.
     1. Update articles from central server
     2. Import/Export diffs
 3. "Quick Lists"
+4. Special articles
+    * Wikipedia
+    * CIA world fact book
+    * User-made
 
 0.4 Alpha 
 ---------
