@@ -11,7 +11,7 @@
 		<version>0.2-alpha</version>
 	</parent>
 	<artifactId>instance</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
@@ -151,6 +151,40 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/windows.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.prealpha.extempdb.instance.launcher.Launcher</mainClass>
+						</manifest>
+						<manifestEntries>
+							<Class-Path>./lib</Class-Path>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
