@@ -6,15 +6,17 @@
 
 package com.prealpha.extempdb.instance.launcher;
 
+import java.io.IOException;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.persist.jpa.JpaPersistModule;
+import com.google.inject.util.Modules;
 
 final class TestLauncher {
-	public static void main(String[] args) {
-		Injector injector = Guice.createInjector(new JpaPersistModule(
-				"instance-test"), new LauncherModule(),
-				new TestingLauncherModule());
+	public static void main(String[] args) throws InstanceServerException,
+			IOException {
+		Injector injector = Guice.createInjector(Modules.override(
+				new LauncherModule()).with(new TestingLauncherModule()));
 		Launcher launcher = injector.getInstance(Launcher.class);
 		launcher.launch();
 	}

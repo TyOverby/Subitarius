@@ -7,18 +7,14 @@
 package com.prealpha.extempdb.instance.launcher;
 
 import java.io.File;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 import com.google.gwt.core.ext.ServletContainerLauncher;
 import com.google.gwt.dev.DevMode;
 import com.google.gwt.dev.shell.jetty.JettyLauncher;
 import com.google.inject.AbstractModule;
-import com.google.inject.BindingAnnotation;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.prealpha.extempdb.instance.launcher.Launcher.ServerUri;
 
 public final class TestingLauncherModule extends AbstractModule {
 	public TestingLauncherModule() {
@@ -30,14 +26,8 @@ public final class TestingLauncherModule extends AbstractModule {
 				Singleton.class);
 		bind(DevMode.class).to(TestingDevMode.class);
 		bind(ServletContainerLauncher.class).to(JettyLauncher.class);
-		bindConstant().annotatedWith(ServerUrl.class).to(
+		bindConstant().annotatedWith(ServerUri.class).to(
 				"http://127.0.0.1:8888/?gwt.codesvr=127.0.0.1:9997");
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ ElementType.FIELD, ElementType.PARAMETER })
-	@BindingAnnotation
-	public static @interface ServerUrl {
 	}
 
 	private static final class TestingDevMode extends DevMode {

@@ -6,10 +6,8 @@
 
 package com.prealpha.extempdb.instance.launcher;
 
-import java.net.URL;
-
 public interface InstanceServer {
-	URL start();
-	
-	void stop();
+	void start() throws InstanceServerException;
+
+	void stop() throws InstanceServerException;
 }
