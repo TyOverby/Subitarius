@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with field="res"
+		type="com.subitarius.instance.client.core.CoreResources" />
+	<ui:with field="msg"
+		type="com.subitarius.instance.client.core.CoreMessages" />
+
+	<g:HTMLPanel addStyleNames="{res.style.container}">
+		<div class="{res.style.titleBar}">
+			<span class="{res.style.title}">
+				<g:Hyperlink targetHistoryToken="MAIN" text="{msg.title}" />
+			</span>
+
+			<span class="{res.style.buttonContainer}">
+				<span class="{res.style.navButton}">
+					<g:Hyperlink targetHistoryToken="JUMP" text="{msg.jump}" />
+				</span>
+				<span class="{res.style.navButton}">
+					<g:Hyperlink targetHistoryToken="HIERARCHY" text="{msg.hierarchy}" />
+				</span>
+			</span>
+		</div>
+
+		<g:SimplePanel addStyleNames="{res.style.contentPanel}"
+			ui:field="contentPanel" />
+	</g:HTMLPanel>
+
+</ui:UiBinder>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>ExtempDB</name>
+	<name>Subitarius</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -16,12 +16,48 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1309826498209</id>
+			<id>1314541944351</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
 				<id>org.eclipse.ui.ide.multiFilter</id>
-				<arguments>1.0-name-matches-false-false-client</arguments>
+				<arguments>1.0-name-matches-false-false-central</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1314541944356</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-domain</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1314541944360</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-instance</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1314541944365</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-launcher</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1314541944370</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-name-matches-false-false-util</arguments>
 			</matcher>
 		</filter>
 	</filteredResources>

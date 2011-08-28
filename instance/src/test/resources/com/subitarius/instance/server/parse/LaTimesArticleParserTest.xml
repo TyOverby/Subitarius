@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://latimesblogs.latimes.com/technology/2011/08/windows-8-will-have-an-app-store-but-will-it-be-called-app-store.html</string>
+				<string>Windows 8 will have an app store, but will it be called App Store?</string>
+				<string>Nathan Olivarez-Giles</string>
+				<object class="java.util.Date">
+					<long>1313625600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Microsoft has offered up a few more details on what to expect in Windows 8, its highly anticipated operating system that will run on both PCs and tablet computers.</string>
+					</void>
+					<void method="add">
+						<string>But one addition, if Microsoft can do it right, could be hugely important for Windows 8 -- its app store.</string>
+					</void>
+					<void method="add">
+						<string>Steve Sinofsky, who is in charge of Windows 8 development for Microsoft, broke down in a blog post the different teams working on specific aspects of the new OS and an "App Store" team was on the list.</string>
+					</void>
+					<void method="add">
+						<string>An app store is, obviously, a store that sells applications, software to run on Windows 8 machines.</string>
+					</void>
+					<void method="add">
+						<string>The inclusion of an app store in Windows 8 is a natural one, and not much of a surprise given Apple's huge success with selling mobile apps through iTunes and desktop apps through the Mac App Store.</string>
+					</void>
+					<void method="add">
+						<string>Apple's iTunes has seen more than 15 billion apps downloaded and purchased -- a huge boon for Apple and huge attraction for developers.</string>
+					</void>
+					<void method="add">
+						<string>A June screen shot of Windows 8 also featured, prominently, a "shop" icon with a Windows-logo adorned bag sitting beside it, too. And Microsoft has embraced the app store idea with Windows Phone 7's app Marketplace.</string>
+					</void>
+					<void method="add">
+						<string>Even the much-maligned Windows Vista had an app store called the Windows Marketplace, though it (or Windows Vista) never found much popularity.</string>
+					</void>		
+					<void method="add">
+						<string>Among the questions, however, that remain is just what Microsoft will call its app store.</string>
+					</void>	
+					<void method="add">
+						<string>If the ongoing lawsuit between Apple and Amazon is any indication, Apple would be terribly unhappy if Microsoft just stuck with that App Store team name for the name of its new store. That's because Apple says the term App Store is a label it owns and that nobody else can use.</string>
+					</void>	
+					<void method="add">
+						<string>Apple sued Amazon in March after the online retail giant revealed its Amazon Appstore for Android, arguing that the similarity in names would confuse consumers looking for Apple's iTunes or Mac App Stores.</string>
+					</void>	
+					<void method="add">
+						<string>Amazon has disputed Apple's claims, arguing itself that "app store" and "appstore" are generic terms that shouldn't be owned by any one person or company.</string>
+					</void>	
+					<void method="add">
+						<string>What do you think? What will it take for Microsoft's Windows 8 app store to take off? If Microsoft doesn't call their store for apps an app store, what should they call it?</string>
+					</void>	
+					<void method="add">
+						<string>Feel free to sound off in the comments.</string>
+					</void>	
+				</object>
+			</object>
+		</void>
+	</object>
+</java>

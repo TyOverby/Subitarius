@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/2010/08/05/technology/05secret.html</string>
+				<string>Google and Verizon Near Deal on Pay Tiers for Web</string>
+				<string>By EDWARD WYATT</string>
+				<object class="java.util.Date">
+					<long>1280880000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>WASHINGTON — Google and Verizon, two leading players in Internet service and content, are nearing an agreement that could allow Verizon to speed some online content to Internet users more quickly if the content’s creators are willing to pay for the privilege.</string>
+					</void>
+					<void method="add">
+						<string>The charges could be paid by companies, like YouTube, owned by Google, for example, to Verizon, one of the nation’s leading Internet service providers, to ensure that its content received priority as it made its way to consumers. The agreement could eventually lead to higher charges for Internet users.</string>
+					</void>
+					<void method="add">
+						<string>Such an agreement could overthrow a once-sacred tenet of Internet policy known as net neutrality, in which no form of content is favored over another. In its place, consumers could soon see a new, tiered system, which, like cable television, imposes higher costs for premium levels of service.</string>
+					</void>
+					<void method="add">
+						<string>Any agreement between Verizon and Google could also upend the efforts of the Federal Communications Commission to assert its authority over broadband service, which was severely restricted by a federal appeals court decision in April.</string>
+					</void>
+					<void method="add">
+						<string>People close to the negotiations who were not authorized to speak publicly about them said an agreement could be reached as soon as next week. If completed, Google, whose Android operating system powers many Verizon wireless phones, would agree not to challenge Verizon’s ability to manage its broadband Internet network as it pleased.</string>
+					</void>
+					<void method="add">
+						<string>Since the court decision, involving Comcast, in April, the F.C.C. has been trying to find a way to regulate broadband delivery, and that effort has been the subject of a series of private meetings at the agency’s headquarters in recent weeks. At the meetings, officials from the nation’s biggest Internet service and content providers, including Google and Verizon, have tried to reach a consensus on how broadband Internet service should be regulated in light of the decision. Those meetings continued this week, apart from the talks between Google and Verizon.</string>
+					</void>
+					<void method="add">
+						<string>The court decision said the F.C.C. lacked the authority to require that an Internet service provider refrain from blocking or slowing down some content or applications, or giving favor to others. The F.C.C. has since sought another way in which to enforce the concept of net neutrality. But its proposals have been greeted with much objection in Congress and among Internet service providers, cable companies and some Internet content producers.</string>
+					</void>
+					<void method="add">
+						<string>A spokesman for Verizon said that the company was still engaged in the larger talks to reach a consensus at the F.C.C. and declined to comment on other negotiations. A spokeswoman for Google also declined to comment. While a deal between Google and Verizon would affect only those two companies, it could sway the opinions of lawmakers, many of whom have questioned the wisdom of the F.C.C.’s plans to oversee broadband service.</string>
+					</void>
+					<void method="add">
+						<string>At issue for consumers is how the companies that provide the pipeline to the Internet will ultimately direct traffic on their system, and how quickly consumers are able to gain access to certain Web content. Consumers could also see continually rising bills for Internet service, much as they have for cable television.</string>
+					</void>
+					<void method="add">
+						<string>The prospect of a Google-Verizon agreement infuriates many consumer advocates, who feel that it would concentrate in a few corporations control of what to date has been a free and open Internet system in which consumers decide which companies are successful.</string>
+					</void>
+					<void method="add">
+						<string>“The point of a network neutrality rule is to prevent big companies from dividing the Internet between them,” said Gigi B. Sohn, president and a founder of Public Knowledge, a consumer advocacy group. “The fate of the Internet is too large a matter to be decided by negotiations involving two companies, even companies as big as Verizon and Google.”</string>
+					</void>
+					<void method="add">
+						<string>It is not clear that the Google-Verizon talks will result in a deal, or that any agreement would extend beyond those companies. David M. Fish, a spokesman for Verizon, acknowledged the talks, saying, “We’ve been working with Google for 10 months to reach an agreement on broadband policy.”</string>
+					</void>
+					<void method="add">
+						<string>But, Mr. Fish added, “We are currently engaged in and committed to the negotiation process led by the F.C.C. We are optimistic this process will reach a consensus that can maintain an open Internet, and the investment and innovation required to sustain it.”</string>
+					</void>
+					<void method="add">
+						<string>The F.C.C. process he referred to is what is jokingly called at the agency headquarters “the secret meeting.” At least nine times in the last seven weeks — including Wednesday, with another meeting scheduled for Thursday — a group that includes Google, Verizon, AT&amp;T, Skype, cable system operators and a group called the Open Internet Coalition has met with top F.C.C. officials to discuss net neutrality and the agency’s legal basis for regulating Internet service.</string>
+					</void>
+					<void method="add">
+						<string>Cable and telephone companies want free rein to sell specialized services like “paid prioritization,” which would speed some content to users more quickly for a fee. Wireless companies, meanwhile, want no restrictions on wireless broadband, which they see as a different technology than Internet service over wires.</string>
+					</void>
+					<void method="add">
+						<string>Many content providers — like Amazon, eBay and Skype — prefer no favoritism on the Internet or they want to be sure that if a pay system exists, all content providers have the opportunity to pay for faster service.</string>
+					</void>
+					<void method="add">
+						<string>The F.C.C., meanwhile, favors a level playing field, but it cannot impose one as long as its authority over broadband is in legal doubt. It has proposed a solution that would reclassify broadband Internet service under the Communications Act from its current designation as an “information service,” a lightly regulated designation, to a “telecommunications service,” a category that, like telephone service, is subject to stricter regulation.</string>
+					</void>
+					<void method="add">
+						<string>The F.C.C. has said that it does not want to impose strict regulation on Internet service and rates, but seeks only the authority to enforce broadband privacy and guarantee equal access. It also wants to use federal money to subsidize broadband service for rural areas.</string>
+					</void>
+					<void method="add">
+						<string>While the F.C.C. is gathering public comment on its reclassification proposal, it has convened the private talks, which are overseen by Edward Lazarus, the chief of staff to Julius Genachowski, the F.C.C.’s chairman.</string>
+					</void>
+					<void method="add">
+						<string>The talks have produced some common ground among the participants on smaller matters. But one participant, who spoke on the condition of anonymity because the group members agreed not to discuss their deliberations publicly, said there had been little movement “on the few big issues that are the most important.”</string>
+					</void>
+					<void method="add">
+						<string>Frustrated with that lack of progress in the last two months, direct talks between Google and Verizon have accelerated, according to people close to the discussions who were not authorized to comment publicly.</string>
+					</void>
+					<void method="add">
+						<string>Google and Verizon have their own interests at stake in negotiating separately. The Android operating system from Google is used on many Verizon phones, including the Droid, a competitor to the iPhone from Apple.</string>
+					</void>
+					<void method="add">
+						<string>Consumer groups have objected to the private meetings, saying that too many stakeholders are being left out of discussions over the future of the Internet.</string>
+					</void>
+					<void method="add">
+						<string>Mr. Lazarus said the meetings “are part of our efforts to identify the best way forward in the wake of the Comcast case to preserve the openness and vibrancy of the Internet.”</string>
+					</void>
+				</object>
+			</object>
+		</void>
+	</object>
+</java>

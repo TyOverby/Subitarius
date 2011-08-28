@@ -5,17 +5,22 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.prealpha.extempdb</groupId>
+	<groupId>com.subitarius</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.1-alpha</version>
+	<version>0.2-alpha</version>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>client</module>
+		<module>central</module>
+		<module>domain</module>
+		<module>instance</module>
+		<module>launcher</module>
+		<module>util</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.webappDirectory>${project.build.directory}/webapp</project.build.webappDirectory>
 	</properties>
 
 	<dependencies>
@@ -62,6 +67,14 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>prealpha</id>
+			<name>Pre-Alpha repository</name>
+			<url>http://meyer.pre-alpha.com/maven2</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>

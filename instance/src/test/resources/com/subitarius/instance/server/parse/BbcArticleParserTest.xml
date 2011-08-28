@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/news/world-middle-east-14577593</string>
+				<string>Israel pounds Gaza after deadly attacks near Eilat</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1313625600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>The Israeli military has carried out air strikes over the Gaza Strip, targeting those it blamed for a series of deadly attacks in southern Israel.</string>
+					</void>
+					<void method="add">
+						<string>At least six people, including a senior militant, were killed in the air strikes, Palestinian sources said.</string>
+					</void>
+					<void method="add">
+						<string>Earlier, Israeli officials promised a strong response after attacks on vehicles near Eilat left seven dead.</string>
+					</void>
+					<void method="add">
+						<string>Israeli officials said Gazan militants were responsible, although Gaza's Hamas government denied involvement.</string>
+					</void>
+					<void method="add">
+						<string>The Israeli air strike hit a house in the town of Rafah.</string>
+					</void>
+					<void method="add">
+						<string>Palestinian sources told the BBC that four members of the Popular Resistance Committees (PRC), a faction in Gaza that is loyal to Hamas but sometimes operates separately, had been killed in the air strikes, including the group's head, Kamal al-Nairab.</string>
+					</void>
+					<void method="add">
+						<string>PRC military chief Immad Hammad and the son of the owner of the house were also among those killed, Palestinian sources and residents said.</string>
+					</void>
+					<void method="add">
+						<string>Israeli Prime Minister Benjamin Netanyahu said those killed were responsible for the attacks earlier in the day near Eilat.</string>
+					</void>
+					<void method="add">
+						<string>"The people who gave the order to murder our people and hid in Gaza are no longer among the living," he said in a televised address.</string>
+					</void>
+					<void method="add">
+						<string>"If anyone thinks the state of Israel will resign itself to this, they are wrong."</string>
+					</void>
+					<void method="add">
+						<string>The PRC denied involvement in the attacks in Israel, Reuters reported.</string>
+					</void>
+					<void method="add">
+						<string>Further air strikes took place in the early hours of Friday morning.</string>
+					</void>
+					<void method="add">
+						<string>A spokesman for Israel's domestic security agency, Shin Bet, said several of those who died in the air strikes had been involved in the 2006 kidnapping of Israeli soldier Gilad Shalit.</string>
+					</void>
+					<void method="add">
+						<string>Hamas-run Al-Aqsa television reported that security forces in Gaza had evacuated their headquarters in anticipation of Israeli military action.</string>
+					</void>
+					<void method="add">
+						<string>The attacks near Eilat, a southern resort city, began when gunmen opened fire on a bus.</string>
+					</void>
+					<void method="add">
+						<string>Israeli officials said at least two other vehicles were then hit nearby - one by a rocket and one by an explosive device.</string>
+					</void>
+					<void method="add">
+						<string>They said that the attacks left seven Israelis dead and that a number of gunmen were killed in an ensuing firefight.</string>
+					</void>
+					<void method="add">
+						<string>In response, Israeli Defence Minister Ehud Barak said: "The real source of the terror is in Gaza and we will act against them with full force and determination."</string>
+					</void>
+					<void method="add">
+						<string>Hamas, which governs Gaza, denied responsibility, and said it would retaliate if Israel attacked.</string>
+					</void>
+					<void method="add">
+						<string>"We will not stand handcuffed and we will spearhead resistance to the occupation," Hamas official Salah Al-Bardaweel was quoted as saying.</string>
+					</void>
+					<void method="add">
+						<string>The US, the EU and the UN condemned the attacks in Israel.</string>
+					</void>
+					<void method="add">
+						<string>"We condemn the brutal terrorist attacks in southern Israel today in the strongest terms," the White House said in a statement.</string>
+					</void>
+					<void method="add">
+						<string>A UN spokesman said Secretary-General Ban Ki-moon was "concerned at the risk of escalation and calls for all to act with restraint".</string>
+					</void>
+					<void method="add">
+						<string>Israeli officials said the men who attacked the vehicles near Eilat came from the Gaza Strip and had entered Israel through Egypt's Sinai desert.</string>
+					</void>
+					<void method="add">
+						<string>There has been growing concern about a decline in security in Sinai since Egyptian President Hosni Mubarak was toppled in February.</string>
+					</void>
+					<void method="add">
+						<string>"This violence only underscores our strong concerns about the security situation in the Sinai Peninsula," said US Secretary of State Hillary Clinton.</string>
+					</void>
+					<void method="add">
+						<string>"Recent commitments by the Egyptian government to address the security situation in the Sinai are important and we urge the Egyptian government to find a lasting resolution."</string>
+					</void>
+					<void method="add">
+						<string>An Israeli official said gunfire on either side of the border was continuing into the evening.</string>
+					</void>		
+					<void method="add">
+						<string>Late on Thursday, Egyptian officials said at least two Egyptians were killed near the border in northern Sinai.</string>
+					</void>	
+					<void method="add">
+						<string>Details of the deaths were unclear, though there were reports that gunmen had attacked a police post.</string>
+					</void>			
+				</object>
+			</object>
+		</void>
+	</object>
+</java>
