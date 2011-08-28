@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.launcher;
+package com.subitarius.launcher;
 
 import java.awt.Desktop;
 import java.awt.SplashScreen;
@@ -16,7 +16,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.prealpha.extempdb.launcher.Launcher.ServerUri;
+import com.subitarius.launcher.Launcher.ServerUri;
 
 public final class LauncherModule extends AbstractModule {
 	@Override

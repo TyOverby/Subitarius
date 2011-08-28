@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.launcher;
+package com.subitarius.launcher;
 
 import com.google.gwt.dev.DevMode;
 import com.google.inject.Inject;

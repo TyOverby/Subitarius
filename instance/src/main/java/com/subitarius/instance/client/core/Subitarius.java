@@ -1,6 +1,6 @@
 /*
- * ExtempDb.java
- * Copyright (C) 2010 Meyer Kizner
+ * Subitarius.java
+ * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
 
@@ -11,7 +11,7 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.subitarius.instance.client.AppPlace;
 import com.subitarius.instance.client.error.ManagedCallback;
 
-class ExtempDb {
+final class Subitarius {
 	public static void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
@@ -28,6 +28,6 @@ class ExtempDb {
 		AppPlace.getCoreManager().init();
 	}
 
-	private ExtempDb() {
+	private Subitarius() {
 	}
 }

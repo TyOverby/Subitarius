@@ -1,5 +1,5 @@
 /*
- * ExtempDbInjector.java
+ * SubitariusInjector.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
@@ -25,7 +25,7 @@ import com.subitarius.instance.client.taginput.TagInputModule;
 @GinModules({ ClientModule.class, TagInputModule.class, ArticleModule.class,
 		ErrorModule.class, HierarchyModule.class, JumpModule.class,
 		MainModule.class })
-interface ExtempDbInjector extends Ginjector {
+interface SubitariusInjector extends Ginjector {
 	CoreManager getCoreManager();
 
 	AsyncProvider<ArticlePresenter> getArticlePresenter();

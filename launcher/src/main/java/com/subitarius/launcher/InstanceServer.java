@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.launcher;
+package com.subitarius.launcher;
 
 interface InstanceServer {
 	void start() throws InstanceServerException;

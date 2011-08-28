@@ -68,7 +68,7 @@
 							<mainClass>com.subitarius.launcher.Launcher</mainClass>
 						</manifest>
 						<manifestEntries>
-							<SplashScreen-Image>com/prealpha/extempdb/launcher/splash.png</SplashScreen-Image>
+							<SplashScreen-Image>com/subitarius/launcher/splash.png</SplashScreen-Image>
 						</manifestEntries>
 					</archive>
 				</configuration>

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.launcher;
+package com.subitarius.launcher;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ import com.google.gwt.dev.shell.jetty.JettyLauncher;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.prealpha.extempdb.launcher.Launcher.ServerUri;
+import com.subitarius.launcher.Launcher.ServerUri;
 
 public final class TestingLauncherModule extends AbstractModule {
 	public TestingLauncherModule() {
@@ -40,7 +40,7 @@ public final class TestingLauncherModule extends AbstractModule {
 			options.setPort(8888);
 			options.setCodeServerPort(9997);
 			options.addStartupURL("/");
-			options.addModuleName("com.prealpha.extempdb.instance.ExtempDb");
+			options.addModuleName("com.subitarius.instance.Subitarius");
 		}
 	}
 }

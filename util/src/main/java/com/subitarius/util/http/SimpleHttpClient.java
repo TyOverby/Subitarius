@@ -39,7 +39,7 @@ import com.subitarius.util.logging.InjectLogger;
  * NOTE: this class is not thread-safe
  */
 public class SimpleHttpClient {
-	private static final String USER_AGENT = "ExtempDB";
+	private static final String USER_AGENT = "Subitarius";
 
 	@InjectLogger
 	private Logger log;

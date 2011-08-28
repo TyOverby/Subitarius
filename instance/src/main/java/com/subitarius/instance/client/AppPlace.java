@@ -46,8 +46,8 @@ public enum AppPlace {
 		}
 	};
 
-	private static ExtempDbInjector INJECTOR = GWT
-			.create(ExtempDbInjector.class);
+	private static SubitariusInjector INJECTOR = GWT
+			.create(SubitariusInjector.class);
 
 	public static CoreManager getCoreManager() {
 		return INJECTOR.getCoreManager();

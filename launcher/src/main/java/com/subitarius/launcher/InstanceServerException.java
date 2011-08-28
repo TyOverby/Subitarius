@@ -4,9 +4,11 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.launcher;
+package com.subitarius.launcher;
 
 final class InstanceServerException extends Exception {
+	private static final long serialVersionUID = 1L;
+
 	InstanceServerException(Throwable cause) {
 		super("exception while starting instance server", cause);
 	}
