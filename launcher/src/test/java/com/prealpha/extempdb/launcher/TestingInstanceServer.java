@@ -21,7 +21,7 @@ final class TestingInstanceServer implements InstanceServer {
 	}
 
 	@Override
-	public synchronized void start() throws InstanceServerException {
+	public synchronized void start() {
 		devMode = devModeProvider.get();
 		devMode.run();
 	}

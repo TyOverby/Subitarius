@@ -16,6 +16,9 @@ import java.lang.annotation.Target;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import com.google.inject.BindingAnnotation;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -28,9 +31,11 @@ final class Launcher {
 	static @interface ServerUri {
 	}
 
-	public static void main(String[] args) throws InstanceServerException,
-			IOException {
+	public static void main(String[] args) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException,
+			UnsupportedLookAndFeelException {
 		System.setProperty("user.timezone", "UTC");
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		Injector injector = Guice.createInjector(new LauncherModule());
 		Launcher launcher = injector.getInstance(Launcher.class);
 		launcher.launch();
@@ -44,24 +49,31 @@ final class Launcher {
 
 	private final URI serverUri;
 
+	private final LauncherUi ui;
+
 	@Inject
 	private Launcher(InstanceServer instanceServer, SplashScreen splashScreen,
-			Desktop desktop, @ServerUri String serverUri)
+			Desktop desktop, @ServerUri String serverUri, LauncherUi ui)
 			throws URISyntaxException {
 		this.instanceServer = instanceServer;
 		this.splashScreen = splashScreen;
 		this.desktop = desktop;
 		this.serverUri = new URI(serverUri);
+		this.ui = ui;
 	}
 
-	/*
-	 * TODO: this really shouldn't throw anything
-	 */
-	void launch() throws InstanceServerException, IOException {
-		instanceServer.start();
-		if (splashScreen.isVisible()) { // false in dev mode
-			splashScreen.close();
-			desktop.browse(serverUri);
+	void launch() {
+		try {
+			instanceServer.start(); // blocks in dev mode
+			if (splashScreen.isVisible()) { // false in dev mode
+				splashScreen.close();
+				desktop.browse(serverUri);
+				ui.show();
+			}
+		} catch (InstanceServerException isx) {
+			ui.handleException(isx);
+		} catch (IOException iox) {
+			ui.handleException(iox);
 		}
 	}
 }

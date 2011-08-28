@@ -48,8 +48,9 @@
 					</execution>
 				</executions>
 				<configuration>
+					<finalName>subitarius-${project.version}</finalName>
 					<descriptors>
-						<descriptor>src/main/assembly/windows.xml</descriptor>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
 				</configuration>
 			</plugin>

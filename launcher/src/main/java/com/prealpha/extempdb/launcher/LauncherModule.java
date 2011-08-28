@@ -8,6 +8,7 @@ package com.prealpha.extempdb.launcher;
 
 import java.awt.Desktop;
 import java.awt.SplashScreen;
+import java.util.ResourceBundle;
 
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
@@ -34,6 +35,11 @@ public final class LauncherModule extends AbstractModule {
 	@Provides
 	Desktop getDesktop() {
 		return Desktop.getDesktop();
+	}
+	
+	@Provides
+	ResourceBundle getResourceBundle() {
+		return ResourceBundle.getBundle(getClass().getCanonicalName());
 	}
 
 	@Provides
