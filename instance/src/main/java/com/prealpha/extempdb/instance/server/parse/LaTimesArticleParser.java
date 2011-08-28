@@ -82,12 +82,13 @@ public class LaTimesArticleParser implements ArticleParser {
 			String url = articleUrl.getUrl();
 			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
+			document.outputSettings().charset("ASCII");
 
 			// title
 			title = document.select("h1.entry-header").text();
 
 			// date
-			String dateStr = document.select("span.date").first().text();
+			String dateStr = document.select("div.time").first().text();
 			try {
 				date = DATE_FORMAT_BLOG.parse(dateStr);
 			} catch (ParseException px) {
@@ -95,14 +96,17 @@ public class LaTimesArticleParser implements ArticleParser {
 			}
 
 			// paragraphs
+			boolean contentOn = true;
 			for (Element elem : document.select("div.entry-body p")) {
-				boolean contentOn = true;
 
 				if (elem.text().contains("RELATED")) {
 					contentOn = false;
+					System.out.println("OFF");
 				}
 				if (contentOn) {
-					paragraphs.add(elem.text());
+					if (elem.text().trim().length() > 0) {
+						paragraphs.add(elem.text());
+					}
 				}
 
 				if (elem.text().startsWith("--")) {

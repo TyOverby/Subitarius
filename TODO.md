@@ -18,7 +18,12 @@ Each item is ordered by importance.
 3. "Quick Lists"
 4. Special articles
     * Wikipedia
+        * At least one page/tag.
+    	* HTML
+        * No Images
+    	* Stickied at the top of the tag page.
     * CIA world fact book
+        * Stickied at the top of the tag page.
     * User-made
 
 0.4 Alpha 
