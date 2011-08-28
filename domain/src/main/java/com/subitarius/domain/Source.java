@@ -65,7 +65,7 @@ public enum Source {
 	AL_JAZEERA("Al Jazeera", "english.aljazeera.net") {
 	},
 
-	LA_TIMES("La Times", "www.latimes.com", "latimesblogs.latimes.com") {
+	LA_TIMES("Los Angeles Times", "latimes.com") {
 	},
 
 	BBC("BBC", "www.bbc.co.uk") {
@@ -89,29 +89,20 @@ public enum Source {
 	public static Source fromDomainName(String domainName) {
 		checkNotNull(domainName);
 		for (Source source : values()) {
-			if (source.isSource(domainName)) {
+			if (domainName.endsWith(source.domainName)) {
 				return source;
 			}
 		}
 		return null;
 	}
 
-	private final String[] domainNames;
 	private final String displayName;
 
-	private Source(String displayName, String... domainNames) {
-		this.displayName = displayName;
-		this.domainNames = domainNames;
-	}
+	private final String domainName;
 
-	// I basically made this to be overriden
-	public boolean isSource(String domainName) {
-		for (String s : getDomainNames()) {
-			if (s.equals(domainName)) {
-				return true;
-			}
-		}
-		return false;
+	private Source(String displayName, String domainName) {
+		this.displayName = displayName;
+		this.domainName = domainName;
 	}
 
 	String canonicalize(String rawUrl) {
@@ -123,8 +114,8 @@ public enum Source {
 		}
 	}
 
-	public String[] getDomainNames() {
-		return domainNames;
+	public String getDomainName() {
+		return domainName;
 	}
 
 	@Override

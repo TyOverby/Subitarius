@@ -126,7 +126,7 @@ final class BingSearchProvider implements SearchProvider {
 
 	private static String getQuery(Tag tag, Source source) {
 		String query = "site:";
-		query += source.getDomainNames()[0];
+		query += source.getDomainName();
 		query += " " + tag.getName();
 		return query;
 	}
