@@ -6,6 +6,7 @@
 
 package com.prealpha.extempdb.launcher;
 
+import java.awt.Desktop;
 import java.awt.SplashScreen;
 
 import org.mortbay.jetty.Server;
@@ -28,6 +29,11 @@ public final class LauncherModule extends AbstractModule {
 	@Provides
 	SplashScreen getSplashScreen() {
 		return SplashScreen.getSplashScreen();
+	}
+
+	@Provides
+	Desktop getDesktop() {
+		return Desktop.getDesktop();
 	}
 
 	@Provides
