@@ -7,7 +7,7 @@ Each item is ordered by importance.
 0.2-alpha
 ---------
 1. Move to self-contained servlet container
-2. Refactor to "Subitarius"
+2. Refactor to "com.subitarius"
 
 0.3-alpha
 ---------

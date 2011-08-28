@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="module">
+
+	<inherits name="com.google.common.base.Base" />
+	<inherits name="com.google.common.collect.Collect" />
+	<inherits name="com.google.gwt.inject.Inject" />
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.prealpha.dispatch.Dispatch" />
+
+	<entry-point class="com.subitarius.instance.client.core.ExtempDb" />
+
+	<source path="client" />
+	<source path="shared" />
+
+	<public path="public" />
+
+</module>

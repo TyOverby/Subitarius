@@ -5,13 +5,13 @@
 	version="2.0">
 	<persistence-unit name="instance" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>com.prealpha.extempdb.domain.Article</class>
-		<class>com.prealpha.extempdb.domain.ArticleUrl</class>
-		<class>com.prealpha.extempdb.domain.DistributedEntity</class>
-		<class>com.prealpha.extempdb.domain.License</class>
-		<class>com.prealpha.extempdb.domain.Tag</class>
-		<class>com.prealpha.extempdb.domain.TagMapping</class>
-		<class>com.prealpha.extempdb.domain.Team</class>
+		<class>com.subitarius.domain.Article</class>
+		<class>com.subitarius.domain.ArticleUrl</class>
+		<class>com.subitarius.domain.DistributedEntity</class>
+		<class>com.subitarius.domain.License</class>
+		<class>com.subitarius.domain.Tag</class>
+		<class>com.subitarius.domain.TagMapping</class>
+		<class>com.subitarius.domain.Team</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<validation-mode>NONE</validation-mode>
 		<properties>

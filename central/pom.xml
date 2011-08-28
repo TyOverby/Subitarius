@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.prealpha.extempdb</groupId>
+		<groupId>com.subitarius</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.2-alpha</version>
 	</parent>
@@ -49,13 +49,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.prealpha.extempdb</groupId>
+			<groupId>com.subitarius</groupId>
 			<artifactId>domain</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.prealpha.extempdb</groupId>
+			<groupId>com.subitarius</groupId>
 			<artifactId>util</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>

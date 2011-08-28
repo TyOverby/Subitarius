@@ -4,13 +4,13 @@
 
 	<!-- NOTE: the client depends on lexicographical ordering to sort dates -->
 	<mapping date-format="yyyy-MM-dd">
-		<class-a>com.prealpha.extempdb.domain.Article</class-a>
-		<class-b>com.prealpha.extempdb.instance.shared.dto.ArticleDto</class-b>
+		<class-a>com.subitarius.domain.Article</class-a>
+		<class-b>com.subitarius.instance.shared.dto.ArticleDto</class-b>
 	</mapping>
 
 	<mapping date-format="yyyy-MM-dd">
-		<class-a>com.prealpha.extempdb.domain.ArticleUrl</class-a>
-		<class-b>com.prealpha.extempdb.instance.shared.dto.ArticleUrlDto</class-b>
+		<class-a>com.subitarius.domain.ArticleUrl</class-a>
+		<class-b>com.subitarius.instance.shared.dto.ArticleUrlDto</class-b>
 	</mapping>
 
 </mappings>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://online.wsj.com/article/SB10001424052748704281204575002852055561406.html</string>
+				<string>11 Minutes of Action</string>
+				<string>By DAVID BIDERMAN</string>
+				<object class="java.util.Date">
+					<long>1263513600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Football fans everywhere are preparing to settle in for the NFL's biggest and most electric weekend of the season—a four-game playoff marathon that will swallow up at least 12 hours of broadcast time over two days.</string>
+					</void>
+					<void method="add">
+						<string>But here's something even dedicated students of the game may not fully appreciate: There's very little actual football in a football game.</string>
+					</void>
+					<void method="add">
+						<string>According to a Wall Street Journal study of four recent broadcasts, and similar estimates by researchers, the average amount of time the ball is in play on the field during an NFL game is about 11 minutes.</string>
+					</void>
+					<void method="add">
+						<string>In other words, if you tally up everything that happens between the time the ball is snapped and the play is whistled dead by the officials, there's barely enough time to prepare a hard-boiled egg. In fact, the average telecast devotes 56% more time to showing replays.</string>
+					</void>
+					<void method="add">
+						<string>So what do the networks do with the other 174 minutes in a typical broadcast? Not surprisingly, commercials take up about an hour. As many as 75 minutes, or about 60% of the total air time, excluding commercials, is spent on shots of players huddling, standing at the line of scrimmage or just generally milling about between snaps. In the four broadcasts The Journal studied, injured players got six more seconds of camera time than celebrating players. While the network announcers showed up on screen for just 30 seconds, shots of the head coaches and referees took up about 7% of the average show.</string>
+					</void>
+					<void method="add">
+						<string>If you think the networks are a little too fond of cheerleaders, you may be mistaken: In these broadcasts, only two networks showed cheerleaders at all. And when they did, they were only on camera for an average of three seconds. "We make it a point to get Dallas cheerleaders on, but otherwise, it's not really important," says Fred Gaudelli, NBC's Sunday Night Football producer. "If we're doing the Jets, I couldn't care less."</string>
+					</void>
+					<void method="add">
+						<string>Football—at least the American version—is the rare sport where it's common for the clock to run for long periods of time while nothing is happening. After a routine play is whistled dead, the clock will continue to run, even as the players are peeling themselves off the turf and limping back to their huddles. The team on offense has a maximum of 40 seconds after one play ends to snap the ball again. A regulation NFL game consists of four quarters of 15 minutes each, but because the typical play only lasts about four seconds, the ratio of inaction to action is approximately 10 to 1. (At the end of a game, if one team has a lead and wants to prevent the other team from scoring again, standing around and letting the clock run down becomes a bona fide strategy).</string>
+					</void>
+					<void method="add">
+						<string>For broadcasters, filling these idle moments is always a unique challenge. Ken Crippen, the executive director of the Professional Football Researchers Association, who has a collection of broadcasts that date back to the 1930s, says most early telecasts showed a constant feed of the field with a few shots of the scoreboard for variety. "It was basically just constant, live action," he says.</string>
+					</void>
+					<void method="add">
+						<string>Things began to change in the mid-1960s, when instant replay became commonplace. By the 1970s, broadcast crews had expanded to an average of eight cameras and three production trucks, a number that has only continued to grow. Mr. Gaudelli says that by the 1990s, some football broadcasts showed about 100 replays per game.</string>
+					</void>
+					<void method="add">
+						<string>In the past decade, regular-season football telecasts have evolved into major productions that can cost between $150,000 and $250,000. Networks say they have anywhere from 80 to 200 people on hand per game with dozens of cameras. (NBC says its broadcasts require seven production trucks.) Producers say all this technology has made it easier to show shots of wacky fans, demonstrative coaches on the sidelines and video segments prepared before the game.</string>
+					</void>
+					<void method="add">
+						<string>The result is that broadcasters have so many options that they have to spend a lot more time planning what to show—and what not to. Lance Barrow, CBS's lead football-game producer, says his crew meets for several hours with players and coaches from the home and road teams in the two days before kickoff just to prepare material to present during dead time. In August, Bill Brown, a senior football producer for Fox, says he met with about 100 colleagues at a conference center in New York to prepare the network's game plan for the season.</string>
+					</void>
+					<void method="add">
+						<string>According to Mr. Brown, there are often so many graphics and fillers at his crew's disposal that they've had to take pains to make sure they don't commit what he describes as the "mortal sin" of football broadcasting: missing a snap. "That's absolutely a jarring thought," Mr. Brown says.</string>
+					</void>
+					<void method="add">
+						<string>For this study, The Journal broke down every frame of the broadcasts for four games on four networks on one weekend in late December. These included games between the Buffalo Bills and Atlanta Falcons on CBS, the Green Bay Packers and Seattle Seahawks on Fox, the Dallas Cowboys and Washington Redskins on NBC and the Chicago Bears and Minnesota Vikings on ESPN. Each shot in every broadcast was timed and logged in one of 22 categories.</string>
+					</void>
+					<void method="add">
+						<string>In this sample of games, the networks showed some significant differences. ESPN showed 24 minutes worth of replays in its game, which was 41% more than the average of the other three networks. Jay Rothman, ESPN's senior coordinating producer for Monday Night Football, attributes this to the presence of Minnesota's star quarterback, Brett Favre. Mr. Favre, he says, is a "move-the-meter guy," who warrants a lot of extra attention.</string>
+					</void>
+					<void method="add">
+						<string>In its game, NBC devoted more than twice as much time to nongame video packages as its competitors (decades-old pictures of John Madden with his wife, anyone?). CBS devoted 40 seconds to showing Atlanta's kicker, Matt Bryant, warming up to make a kick, which was more time than the other three networks devoted to kickers combined. (The kick was blocked).</string>
+					</void>
+					<void method="add">
+						<string>In its game, Fox showed about 37% fewer replays than the other networks. Fox also showed about 16% more shots than the other networks of players on the sidelines.</string>
+					</void>
+					<void method="add">
+						<string>When it comes to showing the cheerleaders, CBS won the day with about seven seconds. NBC had just over four seconds, and Fox and ESPN had no cheerleaders whatsoever. "Cheerleaders are bigger in college," says Mr. Brown of Fox, who notes that NFL cheerleaders from the visiting teams don't travel to road games and aren't as ingrained in the game as they are in college. "It's not that we don't like them," adds ESPN's Mr. Rothman. "They're just not our motivation."</string>
+					</void>
+					<void method="add">
+						<string>The real test for any football-broadcast crew is what they do in a blowout. In cases like these, producers say they have no choice but to stray from on-field action. In the second quarter of the CBS game, for instance, the Bills and Falcons only managed to score three points. In that time, there were 88 shots of off-field elements, including 31 shots (186 seconds) where the cameras were trained on the two teams' coaches. That was 54% more than the average amount in any other quarter in that game.</string>
+					</void>
+					<void method="add">
+						<string>When the Cowboys-Redskins game flagged in the second half, NBC turned to the activities of Cowboys owner Jerry Jones and Redskins owner Daniel Snyder—both of whom were sitting in their luxury boxes. Together, they got about eight seconds of air time in the first and second quarters when the game was close and more than 55 seconds in the third and fourth when the Cowboys had things firmly in hand.</string>
+					</void>
+					<void method="add">
+						<string>The most surprising finding of The Journal's study—that the average game has just 10 minutes and 43 seconds of actual playing time—has been corroborated by other researchers. In November 1912, Indiana University's C.P. Hutchins, the school's director of physical training, observed a game, stopwatch in hand, between two independent teams. He counted 13 minutes, 16 seconds of play. During last week's Wild Card games, Mr. Crippen, the football researcher, dissected the broadcasts and found about 13 minutes, 30 seconds of action.</string>
+					</void>
+					<void method="add">
+						<string>But while the game itself hasn't changed much, there's no question the broadcasts have evolved quickly.</string>
+					</void>
+					<void method="add">
+						<string>Mr. Gaudelli of NBC, who has broadcast football games since 1990, says the good old days weren't always so good. "I tell our production assistants who are in their 20s that they should have to learn how to edit like we did when men were men," he says.</string>
+					</void>
+					<void method="add">
+						<string>Write to David Biderman at David.Biderman@wsj.com</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://online.wsj.com/article/SB10001424052748703384204575509630629800258.html</string>
+				<string>China Extends Africa Push With Loans, Deal in Ghana</string>
+				<string>BY WILL CONNORS</string>
+				<object class="java.util.Date">
+					<long>1285286400000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>LAGOS, Nigeria—Ghana and China signed project loans and another deal together totaling $15 billion, the latest in a string of Chinese investments on the continent.</string>
+					</void>
+					<void method="add">
+						<string>The loans, coinciding with a six-day Beijing visit by the West African nation's president, John Atta Mills, highlight China's strong interest in resource-rich African countries such as Ghana. Ghana is preparing to tap massive oil fields that are expected to turn it into one of Africa's biggest energy producers.</string>
+					</void>
+					<void method="add">
+						<string>On Wednesday, the China Export Import Bank and the government of Ghana signed a $10.4 billion concessionary-loan agreement for various infrastructure projects, payable over 20 years, ...</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://online.wsj.com/article/SB10001424052748703848204575608741347636192.html</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://online.wsj.com/article/SB10001424052702304915104575572663472793840.html</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://online.wsj.com/article/SB10001424052702303823104576392120484473038.html</string>
+			</object>
+		</void>
+	</object>
+</java>

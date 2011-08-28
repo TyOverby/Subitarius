@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.prealpha.extempdb</groupId>
+	<groupId>com.subitarius</groupId>
 	<artifactId>parent</artifactId>
 	<version>0.2-alpha</version>
 	<packaging>pom</packaging>

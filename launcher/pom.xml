@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.prealpha.extempdb</groupId>
+		<groupId>com.subitarius</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.2-alpha</version>
 	</parent>
@@ -48,7 +48,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<finalName>subitarius-${project.version}</finalName>
+					<finalName>com.subitarius-${project.version}</finalName>
 					<descriptors>
 						<descriptor>src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
@@ -65,7 +65,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib</classpathPrefix>
-							<mainClass>com.prealpha.extempdb.launcher.Launcher</mainClass>
+							<mainClass>com.subitarius.launcher.Launcher</mainClass>
 						</manifest>
 						<manifestEntries>
 							<SplashScreen-Image>com/prealpha/extempdb/launcher/splash.png</SplashScreen-Image>

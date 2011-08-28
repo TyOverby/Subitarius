@@ -8,7 +8,7 @@
 
 <jsp:directive.page import="java.util.ResourceBundle" />
 <jsp:declaration>
-	private static final String PACKAGE_NAME = "com.prealpha.extempdb.instance.client.core";
+	private static final String PACKAGE_NAME = "com.subitarius.instance.client.core";
 
 	private static final String BUNDLE_NAME = PACKAGE_NAME
 			+ ".CoreMessages";

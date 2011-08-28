@@ -1,6 +1,6 @@
 0.2-alpha
 =========
-* Rename to Subitarius
+* Rename to com.subitarius
 * Renamed client module to instance
     * The instance runs a short launcher UI before running an embedded Jetty server
     * Article URLs and tag mappings are fetched from the central server

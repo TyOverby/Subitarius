@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:taginput="urn:import:com.subitarius.instance.client.taginput">
+
+	<ui:with field="msg"
+		type="com.subitarius.instance.client.article.ArticleMessages" />
+
+	<g:VerticalPanel>
+		<taginput:TagInputWidget ui:field="tagInput" />
+		<g:Button text="{msg.submitMappingButton}" ui:field="submitButton" />
+	</g:VerticalPanel>
+
+</ui:UiBinder>
