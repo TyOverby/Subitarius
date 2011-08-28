@@ -27,7 +27,6 @@ TODO (dev)
 
 Sources
 -------
-
 ### Tier 1
 1. ~~New York Times~~
 2. ~~Washington Post~~
@@ -41,13 +40,11 @@ Sources
 10. LA Times
 11. Boston Globe
 12. Seattle Times
-
 ### Tier 2
 1. American Foreign Press
 2. NPR
 3. Jerusalem Post
 4. Globe and Mail
-
 ### Skip
 1. Associated Press
 2. International Herald Tribune

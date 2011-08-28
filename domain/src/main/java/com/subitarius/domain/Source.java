@@ -62,13 +62,13 @@ public enum Source {
 	ECONOMIST("The Economist", "www.economist.com") {
 	},
 
+	BBC("BBC", "www.bbc.co.uk") {
+	},
+
 	AL_JAZEERA("Al Jazeera", "english.aljazeera.net") {
 	},
 
 	LA_TIMES("Los Angeles Times", "latimes.com") {
-	},
-
-	BBC("BBC", "www.bbc.co.uk") {
 	};
 
 	public static Source fromUrl(String url) {
