@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.instance.launcher;
+package com.prealpha.extempdb.launcher;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -30,6 +30,7 @@ final class Launcher {
 
 	public static void main(String[] args) throws InstanceServerException,
 			IOException {
+		System.setProperty("user.timezone", "UTC");
 		Injector injector = Guice.createInjector(new LauncherModule());
 		Launcher launcher = injector.getInstance(Launcher.class);
 		launcher.launch();

@@ -4,9 +4,9 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.instance.launcher;
+package com.prealpha.extempdb.launcher;
 
-public interface InstanceServer {
+interface InstanceServer {
 	void start() throws InstanceServerException;
 
 	void stop() throws InstanceServerException;

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.instance.launcher;
+package com.prealpha.extempdb.launcher;
 
 import org.mortbay.jetty.Server;
 
@@ -22,7 +22,6 @@ final class InstanceServerImpl implements InstanceServer {
 	public void start() throws InstanceServerException {
 		try {
 			server.start();
-			server.join();
 		} catch (Error e) {
 			throw e;
 		} catch (RuntimeException rx) {

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.instance.launcher;
+package com.prealpha.extempdb.launcher;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ import com.google.gwt.dev.shell.jetty.JettyLauncher;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.prealpha.extempdb.instance.launcher.Launcher.ServerUri;
+import com.prealpha.extempdb.launcher.Launcher.ServerUri;
 
 public final class TestingLauncherModule extends AbstractModule {
 	public TestingLauncherModule() {
@@ -36,7 +36,7 @@ public final class TestingLauncherModule extends AbstractModule {
 			options.setServletContainerLauncher(scl);
 			options.setConnectAddress("127.0.0.1");
 			options.setBindAddress("127.0.0.1");
-			options.setWarDir(new File("./target/webapp"));
+			options.setWarDir(new File("../instance/target/webapp"));
 			options.setPort(8888);
 			options.setCodeServerPort(9997);
 			options.addStartupURL("/");

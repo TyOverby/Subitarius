@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-package com.prealpha.extempdb.instance.launcher;
+package com.prealpha.extempdb.launcher;
 
 final class InstanceServerException extends Exception {
 	InstanceServerException(Throwable cause) {
