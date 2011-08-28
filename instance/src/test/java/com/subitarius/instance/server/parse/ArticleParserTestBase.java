@@ -6,8 +6,7 @@
 
 package com.subitarius.instance.server.parse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.beans.XMLDecoder;
 import java.io.InputStream;
@@ -56,29 +55,13 @@ public abstract class ArticleParserTestBase {
 		// check each paragraph individually as well
 		List<String> expectedText = expected.getParagraphs();
 		List<String> actualText = actual.getParagraphs();
-
-		int in = (expectedText.size() > actualText.size()) ? expectedText
-				.size() : actualText.size();
-
-		// for (int i = 0; i < in; i++) {
-		// System.out.println(i);
-		// try {
-		// System.out.println(expectedText.get(i));
-		// } catch (Exception e) {
-		// }
-		// try {
-		// System.out.println(actualText.get(i));
-		// } catch (Exception e) {
-		// }
-		// }
-
 		assertEquals("paragraph count", expectedText.size(), actualText.size());
-
 		for (int i = 0; i < expectedText.size(); i++) {
 			assertEquals("paragraph " + i, expectedText.get(i),
 					actualText.get(i));
-			assertEquals("paragraphs", expectedText, actualText);
 		}
+		assertEquals("paragraphs", expectedText, actualText);
+
 		// just in case
 		assertEquals("all", expected, actual);
 	}
