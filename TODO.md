@@ -11,20 +11,19 @@ Each item is ordered by importance.
 
 0.3-alpha
 ---------
-1. Full-text search.  
-2. Admin control (either web or swing)
+1. Admin control (either web or swing)
     1. Update articles from central server
     2. Import/Export diffs
-3. "Quick Lists"
-4. Special articles
-    * Wikipedia
-    * CIA world fact book
-    * User-made
-5. License checking
 
 0.4-alpha
 ---------
-1. Extensive testing
+1. Full-text search.  
+2. "Quick Lists"
+2. Special articles
+    * Wikipedia
+    * CIA world fact book
+    * User-made
+3. License checking
 
 1.0-beta
 --------
