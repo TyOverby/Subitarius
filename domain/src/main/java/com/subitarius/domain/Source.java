@@ -6,7 +6,7 @@
 
 package com.subitarius.domain;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 /*
  * TODO: using an enum means that adding new sources breaks interoperability

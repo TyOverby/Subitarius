@@ -6,7 +6,7 @@
 
 package com.subitarius.util.http;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 

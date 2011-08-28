@@ -9,7 +9,6 @@ package com.subitarius.instance.client;
 import static com.google.common.base.Preconditions.*;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.subitarius.instance.client.AppState;
 
 public class AppStateEvent extends GwtEvent<AppStateHandler> {
 	private static final Type<AppStateHandler> TYPE = new Type<AppStateHandler>();

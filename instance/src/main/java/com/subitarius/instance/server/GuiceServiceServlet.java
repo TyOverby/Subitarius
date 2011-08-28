@@ -6,7 +6,7 @@
 
 package com.subitarius.instance.server;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

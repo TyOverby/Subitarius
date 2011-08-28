@@ -6,7 +6,7 @@
 
 package com.subitarius.instance.server.parse;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import com.subitarius.domain.Source;
 

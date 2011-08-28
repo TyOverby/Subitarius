@@ -6,7 +6,7 @@
 
 package com.subitarius.instance.client;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * Thrown to indicate that the current {@link AppState} is invalid in some way.

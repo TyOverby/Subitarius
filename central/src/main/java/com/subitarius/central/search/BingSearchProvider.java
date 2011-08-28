@@ -6,7 +6,7 @@
 
 package com.subitarius.central.search;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.InputStream;

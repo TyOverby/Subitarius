@@ -10,7 +10,6 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
-import com.subitarius.util.logging.Slf4jTypeListener;
 
 public final class TestLoggingModule extends AbstractModule {
 	public TestLoggingModule() {
