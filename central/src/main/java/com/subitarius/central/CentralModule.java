@@ -36,9 +36,10 @@ public final class CentralModule extends ServletModule {
 		bind(AuthenticationServlet.class).in(Singleton.class);
 		serve("/auth").with(AuthenticationServlet.class);
 
+		bind(AuthenticationFilter.class).in(Singleton.class);
+
 		bind(DistributedEntityServlet.class).in(Singleton.class);
-		filter("/DistributedEntity").through(AuthenticationFilter.class);
-		serve("/DistributedEntity").with(DistributedEntityServlet.class);
+		serve("/DistributedEntity/*").with(DistributedEntityServlet.class);
 
 		bindListener(Matchers.any(), new Slf4jTypeListener());
 	}

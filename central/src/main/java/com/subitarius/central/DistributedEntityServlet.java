@@ -80,7 +80,7 @@ final class DistributedEntityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		String pathInfo = req.getPathInfo();
-		if (pathInfo.isEmpty() || pathInfo.equals("/")) {
+		if (pathInfo == null || pathInfo.isEmpty() || pathInfo.equals("/")) {
 			PrintWriter writer = res.getWriter();
 			int count = 0;
 			for (String hash : fetchHashes()) {

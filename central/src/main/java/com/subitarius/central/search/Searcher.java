@@ -36,7 +36,7 @@ public class Searcher {
 	private final SearchProvider searchProvider;
 
 	@Inject
-	private Searcher(EntityManager entityManager, SearchProvider searchProvider) {
+	Searcher(EntityManager entityManager, SearchProvider searchProvider) {
 		this.entityManager = entityManager;
 		this.searchProvider = searchProvider;
 	}

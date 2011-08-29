@@ -16,10 +16,9 @@
 		<validation-mode>NONE</validation-mode>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url"
-				value="jdbc:postgresql://meyer.pre-alpha.com/subitarius" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost/subitarius" />
 			<property name="javax.persistence.jdbc.user" value="subitarius" />
-			<property name="javax.persistence.jdbc.password" value="" />
+			<property name="javax.persistence.jdbc.password" value="ip768bn" />
 			<property name="hibernate.connection.provider_class"
 				value="org.hibernate.connection.C3P0ConnectionProvider" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
