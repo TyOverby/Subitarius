@@ -14,5 +14,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Subitarius instance"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.timezone=UTC -Dlog4j.configuration=file:///${resource_loc:/Subitarius instance/src/test/config/META-INF/log4j.properties}"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Duser.timezone=UTC -Dlog4j.configuration=file:///${resource_loc:/Subitarius instance/src/test/config/log4j.properties}"/>
 </launchConfiguration>

@@ -52,8 +52,7 @@ public class ActionModule extends ActionHandlerModule {
 	@Singleton
 	@Inject
 	Mapper getMapper(DozerBeanMapper mapper) {
-		List<String> mappingFiles = ImmutableList
-				.of("META-INF/bean-mapping.xml");
+		List<String> mappingFiles = ImmutableList.of("bean-mapping.xml");
 		mapper.setMappingFiles(mappingFiles);
 		return mapper;
 	}
