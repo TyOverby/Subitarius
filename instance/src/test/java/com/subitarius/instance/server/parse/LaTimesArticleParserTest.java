@@ -20,7 +20,17 @@ public class LaTimesArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testBlogPostParse() throws ArticleParseException {
+	public void testParseBlog() throws ArticleParseException {
 		testVector(0);
+	}
+	
+	@Test
+	public void testParseFeatured() throws ArticleParseException {
+		testVector(1);
+	}
+	
+	@Test
+	public void testParseStandard() throws ArticleParseException {
+		testVector(2);
 	}
 }
