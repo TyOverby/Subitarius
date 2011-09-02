@@ -25,6 +25,7 @@ import com.google.common.collect.ImmutableSet;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
+ * TODO: figure out how Hibernate handles ImmutableSet
  */
 @Entity
 public class Tag extends CentralEntity {
@@ -38,9 +39,9 @@ public class Tag extends CentralEntity {
 
 	private Type type;
 
-	private ImmutableSet<Tag> parents;
+	private Set<Tag> parents;
 
-	private transient ImmutableSet<Tag> children;
+	private transient Set<Tag> children;
 
 	private transient ImmutableSet<TagMapping> mappings;
 
@@ -79,7 +80,7 @@ public class Tag extends CentralEntity {
 	}
 
 	@ManyToMany
-	@JoinTable(joinColumns = { @JoinColumn(nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(nullable = false, updatable = false) })
+	@JoinTable(joinColumns = { @JoinColumn(nullable = false) }, inverseJoinColumns = { @JoinColumn(nullable = false) })
 	public Set<Tag> getParents() {
 		return parents;
 	}
@@ -87,7 +88,7 @@ public class Tag extends CentralEntity {
 	protected void setParents(Set<Tag> parents) {
 		checkNotNull(parents);
 		checkArgument(!parents.contains(this));
-		this.parents = ImmutableSet.copyOf(parents);
+		this.parents = parents;
 	}
 
 	@ManyToMany(mappedBy = "parents")
@@ -97,7 +98,7 @@ public class Tag extends CentralEntity {
 
 	protected void setChildren(Set<Tag> children) {
 		checkNotNull(children);
-		this.children = ImmutableSet.copyOf(children);
+		this.children = children;
 	}
 
 	@OneToMany(mappedBy = "tag")
@@ -152,7 +153,7 @@ public class Tag extends CentralEntity {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
