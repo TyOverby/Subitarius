@@ -6,6 +6,7 @@
 
 package com.subitarius.central.search;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -69,6 +70,8 @@ public class Searcher {
 
 	@Transactional
 	void search(Tag tag, Source source) throws SearchUnavailableException {
+		log.trace("entering search(Tag, Source) with args ({}, {})", tag,
+				source);
 		int resultCount = 0;
 		List<ArticleUrl> articleUrls = searchProvider.search(tag, source, 1);
 		for (ArticleUrl articleUrl : articleUrls) {
@@ -96,6 +99,9 @@ public class Searcher {
 		Root<Tag> root = criteria.from(Tag.class);
 		criteria.select(root);
 		criteria.distinct(true);
-		return entityManager.createQuery(criteria).getResultList();
+		Collection<Tag> allTags = entityManager.createQuery(criteria)
+				.getResultList();
+		log.trace("exiting getAllTags() with result of size {}", allTags.size());
+		return allTags;
 	}
 }

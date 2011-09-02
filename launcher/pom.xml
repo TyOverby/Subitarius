@@ -48,7 +48,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<finalName>com.subitarius-${project.version}</finalName>
+					<finalName>subitarius-${project.version}</finalName>
 					<descriptors>
 						<descriptor>src/main/assembly/assembly.xml</descriptor>
 					</descriptors>
