@@ -75,16 +75,17 @@ public class Searcher {
 		int resultCount = 0;
 		List<ArticleUrl> articleUrls = searchProvider.search(tag, source, 1);
 		for (ArticleUrl articleUrl : articleUrls) {
-			entityManager.persist(articleUrl);
+			persistIfNew(articleUrl);
 			log.debug("persisted article URL: {}", articleUrl);
 
 			TagMapping mapping = new TagMapping(tag, articleUrl);
 			TagMapping existing = entityManager.find(TagMapping.class,
 					mapping.getHash());
 			if (existing != null) {
-				log.debug("mapping already exists: {}", mapping);
+				log.trace("mapping already exists: {}", mapping);
 			} else {
 				entityManager.persist(mapping);
+				resultCount++;
 				log.debug("persisted mapping: {}", mapping);
 			}
 		}
@@ -103,5 +104,16 @@ public class Searcher {
 				.getResultList();
 		log.trace("exiting getAllTags() with result of size {}", allTags.size());
 		return allTags;
+	}
+
+	private void persistIfNew(ArticleUrl articleUrl) {
+		ArticleUrl existing = entityManager.find(ArticleUrl.class,
+				articleUrl.getHash());
+		if (existing == null) {
+			entityManager.persist(articleUrl);
+			log.debug("persisted article URL: {}", articleUrl);
+		} else {
+			log.trace("article URL already exists: {}", articleUrl);
+		}
 	}
 }

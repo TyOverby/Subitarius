@@ -11,6 +11,7 @@ import com.google.inject.Injector;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.subitarius.central.search.SearchModule;
+import com.subitarius.domain.DomainModule;
 import com.subitarius.util.http.HttpModule;
 
 public final class CentralContextListener extends GuiceServletContextListener {
@@ -20,6 +21,7 @@ public final class CentralContextListener extends GuiceServletContextListener {
 	@Override
 	protected Injector getInjector() {
 		return Guice.createInjector(new JpaPersistModule("central"),
-				new CentralModule(), new SearchModule(), new HttpModule());
+				new DomainModule(), new CentralModule(), new SearchModule(),
+				new HttpModule());
 	}
 }
