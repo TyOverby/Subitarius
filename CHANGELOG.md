@@ -2,8 +2,10 @@
 =========
 * Rename to com.subitarius
 * Renamed client module to instance
-    * The instance runs a short launcher UI before running an embedded Jetty server
-    * Article URLs and tag mappings are fetched from the central server
+    * The instance is the WAR for the client, containing the GWT app
+    * Instance is responsible for running the local database
+    * No communication with central server, yet
+* Added launcher module, which just launches instances in an embedded Jetty server
 * Added central module
     * Searcher only stores URLs and is now in the central module
 * Added domain module

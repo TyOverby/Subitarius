@@ -38,7 +38,7 @@ Sources
 7. ~~The Guardian~~
 8. ~~The Economist~~
 9. ~~Al Jazeera~~
-10. LA Times
+10. ~~LA Times~~
 11. Boston Globe
 12. Seattle Times
 ### Tier 2

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_24" class="java.beans.XMLDecoder">
+	<object class="java.util.ArrayList">
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://latimesblogs.latimes.com/technology/2011/08/windows-8-will-have-an-app-store-but-will-it-be-called-app-store.html</string>
+				<string>Windows 8 will have an app store, but will it be called App Store?</string>
+				<string>Nathan Olivarez-Giles</string>
+				<object class="java.util.Date">
+					<long>1313625600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Microsoft has offered up a few more details on what to expect in Windows 8, its highly anticipated operating system that will run on both PCs and tablet computers.</string>
+					</void>
+					<void method="add">
+						<string>But one addition, if Microsoft can do it right, could be hugely important for Windows 8 -- its app store.</string>
+					</void>
+					<void method="add">
+						<string>Steve Sinofsky, who is in charge of Windows 8 development for Microsoft, broke down in a blog post the different teams working on specific aspects of the new OS and an "App Store" team was on the list.</string>
+					</void>
+					<void method="add">
+						<string>An app store is, obviously, a store that sells applications, software to run on Windows 8 machines.</string>
+					</void>
+					<void method="add">
+						<string>The inclusion of an app store in Windows 8 is a natural one, and not much of a surprise given Apple's huge success with selling mobile apps through iTunes and desktop apps through the Mac App Store.</string>
+					</void>
+					<void method="add">
+						<string>Apple's iTunes has seen more than 15 billion apps downloaded and purchased -- a huge boon for Apple and huge attraction for developers.</string>
+					</void>
+					<void method="add">
+						<string>A June screen shot of Windows 8 also featured, prominently, a "shop" icon with a Windows-logo adorned bag sitting beside it, too. And Microsoft has embraced the app store idea with Windows Phone 7's app Marketplace.</string>
+					</void>
+					<void method="add">
+						<string>Even the much-maligned Windows Vista had an app store called the Windows Marketplace, though it (or Windows Vista) never found much popularity.</string>
+					</void>
+					<void method="add">
+						<string>Among the questions, however, that remain is just what Microsoft will call its app store.</string>
+					</void>
+					<void method="add">
+						<string>If the ongoing lawsuit between Apple and Amazon is any indication, Apple would be terribly unhappy if Microsoft just stuck with that App Store team name for the name of its new store. That's because Apple says the term App Store is a label it owns and that nobody else can use.</string>
+					</void>
+					<void method="add">
+						<string>Apple sued Amazon in March after the online retail giant revealed its Amazon Appstore for Android, arguing that the similarity in names would confuse consumers looking for Apple's iTunes or Mac App Stores.</string>
+					</void>
+					<void method="add">
+						<string>Amazon has disputed Apple's claims, arguing itself that "app store" and "appstore" are generic terms that shouldn't be owned by any one person or company.</string>
+					</void>
+					<void method="add">
+						<string>What do you think? What will it take for Microsoft's Windows 8 app store to take off? If Microsoft doesn't call their store for apps an app store, what should they call it?</string>
+					</void>
+					<void method="add">
+						<string>Feel free to sound off in the comments.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://articles.latimes.com/2011/may/03/world/la-fg-canada-election-20110504</string>
+				<string>Canada's election proves surprisingly interesting</string>
+				<string>By Bruce Wallace</string>
+				<object class="java.util.Date">
+					<long>1304380800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>The words "dramatic" and "Canadian election" seldom go together.</string>
+					</void>
+					<void method="add">
+						<string>Even Canadians are mostly bored by their politics, other than spikes of interest when Quebeckers vote on whether to separate from the rest of Canada (the last time: 16 years ago. Answer: a close "no") or the occasional election fought over more than just the spoils of power (probably not since 1988, when they voted, essentially, on whether to sign a free-trade agreement with the United States. Answer: a grudging "yes").</string>
+					</void>
+					<void method="add">
+						<string>But the just-concluded campaign that on Monday gave Prime Minister Stephen Harper's Conservative Party its long-sought majority government qualifies as suspenseful, at least. Going into election day, the rising fortunes of the socialist New Democrats had not only put that Conservative victory in doubt, but raised the eye-rubbing specter of the left-wing wing party actually winning enough seats to take power in a coalition government.</string>
+					</void>
+					<void method="add">
+						<string>The New Democrat surge came almost out of nowhere, the union-based party emerging as a force only in mid-campaign. Voters, especially in Quebec, suddenly embraced its leader, Jack Layton, who had never generated much enthusiasm in three previous elections. This time, he was seen as the sunniest leader in a campaign defined by attack ads and accusations of ethical lapses.</string>
+					</void>
+					<void method="add">
+						<string>Layton and the NDP fell short in the end, but you wouldn't have known from their huge smiles on election night. The perennially third-place party pulled in a record 30% of the votes, winning enough seats to return to Parliament as the official opposition for the first time.</string>
+					</void>
+					<void method="add">
+						<string>Canadians now find themselves, after almost a decade of tepid minority governments, with a two-party system, a right-left divide between a conservative government and a socialist opposition. Harper can at last govern without looking over his shoulder or cutting deals with other parties, secure he has the votes in Parliament to govern as he pleases.</string>
+					</void>
+					<void method="add">
+						<string>Since he became prime minister in 2006, his opponents had warned against just that, contending that Harper harbors a secret, extreme right-wing agenda held in check only by his minority status. Give him an unrestrained majority, they warned, and the dark side of Harper — a politician known as a tactical wizard but with an aversion to charm — will be unleashed.</string>
+					</void>
+					<void method="add">
+						<string>Harper tried to show a bit of uncharacteristic warmth after his win, joking that his staff had cajoled him into swilling champagne from a bottle though he hardly drinks. But he vowed there would be no veering from his carefully chosen political middle ground: hard on crime, low on taxes and a defender of Canada's public healthcare system.</string>
+					</void>
+					<void method="add">
+						<string>The wind Americans felt blowing down from Canada on Monday was the collective exhale of the Canadian business class. Canadian pride used to derive from a self-satisfied sense that they were the "gentle" North Americans, in contrast to those who embraced a rawer capitalism to the south. Canada had free, universal healthcare. Less gun crime. It took a pass on George W. Bush's war in Iraq.</string>
+					</void>
+					<void method="add">
+						<string>But since 2008, Canadian bragging rights have been based on how their economy survived the worst ravages of the global recession. Sure, there was need for a bit of a spending stimulus (everybody was doing it). But the tightly regulated Canadian banks emerged largely unscathed, held up by many as a model of financial sanity. There was no wide-scale housing bust. And an economy once criticized for being overly reliant on commodities started to look pretty good in an era of scarcity and high demand from China.</string>
+					</void>
+					<void method="add">
+						<string>All that seemed threatened by the prospect of a New Democrat-led coalition. Layton started the campaign with little thought of winning, scattering promises to spend more public money with little worry of being called to account. Then came his inexplicable rise in the polls.</string>
+					</void>
+					<void method="add">
+						<string>Why, a perplexed business community asked, with the economy doing so well, would we shoot ourselves in the foot by voting for a party rooted in organized labor?</string>
+					</void>
+					<void method="add">
+						<string>The Conservative majority has now squelched that boardroom panic. Harper has four years to govern, while Layton will have to wrestle a party of rookies into a viable opposition. More than half of the New Democrats' 102 members of Parliament come from Quebec, the second-largest province, where many of its candidates were mere place-holders for a party that never expected to seriously compete. Layton's new team includes such unlikely members as Ruth Ellen Brosseau, 21, an assistant manager at a university pub who speaks little French and took time off during the campaign to vacation in Las Vegas.</string>
+					</void>
+					<void method="add">
+						<string>The New Democrats benefited from Quebec's habit of swinging massively behind a single party. For the last seven elections, that party had been the Bloc Quebecois, which was dedicated to making the case for Quebec independence from a platform in the federal government.</string>
+					</void>
+					<void method="add">
+						<string>But the Bloc was the big loser in Monday's vote, discovering that even Quebeckers who want their own country were fed up with a party that could talk of nothing else. The Bloc was reduced to a rump of four seats, not enough to qualify for official party status.</string>
+					</void>
+					<void method="add">
+						<string>The other losers were the Liberals, who once saw themselves as Canada's Natural Governing Party but who have failed to find their voice in recent years. Leader Michael Ignatieff, a former journalist and Harvard University academic, resigned Tuesday after seeing the party's support collapse to a historic low.</string>
+					</void>
+					<void method="add">
+						<string>Some strategists on the left argue that only a merger of the Liberals and New Democrats can ever expect to supplant the Conservatives, a move that may gain momentum after the Liberals' crushing defeat. But even as he left politics, Ignatieff warned that such an alignment would ill-serve a country where most voters still see themselves in the middle.</string>
+					</void>
+					<void method="add">
+						<string>"I think the surest guarantee of a future for the Liberal Party of Canada is four years of Conservative right-wing government and four years of NDP left-wing opposition," he said. "I think after that experience Canadians will, I hope, again discover why you have a Liberal Party in the center."</string>
+					</void>
+					<void method="add">
+						<string>bruce.wallace@latimes.com</string>
+					</void>
+					<void method="add">
+						<string>Wallace is the Foreign Editor of the Los Angeles Times.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.latimes.com/business/la-fi-obama-economy-20110902,0,7026111.story</string>
+				<string>White House forecasts high unemployment through 2012</string>
+				<string>By Don Lee</string>
+				<object class="java.util.Date">
+					<long>1314835200000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<!-- Some of the whitespace is slightly off, due to the messed up HTML for these paragraphs -->
+					<void method="add">
+						<string>Reporting from Washington— In a move underscoring the urgency of the nation's economic problems, the White House issued a new assessment that predicted continued high unemployment through 2012.</string>
+					</void>
+					<void method="add">
+						<string>The grim outlook, part of the summer report on the nation's budget and the economy, was released Thursday as President Obama prepared to announce new stimulus proposals next week.</string>
+					</void>
+					<void method="add">
+						<string>The administration said that based on the latest economic data, it now expects the unemployment rate to end the year at 9.1%, which is where it stood in July. The jobless figure for August will be released Friday with accompanying statistics on job creation.</string>
+					</void>
+					<void method="add">
+						<string>The report shows the bind policymakers are caught in: A stagnating economy reduces tax revenue and increases the deficit, but government measures that economists say are needed to stimulate the economy also cost money and also add to the deficit — at least in the near term.</string>
+					</void>
+					<void method="add">
+						<string>And that policy dilemma is magnified by the current political stalemate in Washington.</string>
+					</void>
+					<void method="add">
+						<string>Many private analysts are expecting last month's unemployment to be unchanged at 9.1%, with sluggish job growth of 70,000 to 80,000, about the same as the average of the previous three months when the recovery was stalling.</string>
+					</void>
+					<void method="add">
+						<string>Under normal conditions, experts said, the U.S. economy would need to generate about 125,000 additional jobs every month to absorb new entrants to the job market and keep the unemployment rate steady.</string>
+					</void>
+					<void method="add">
+						<string>But persistent weakness in hiring has prompted many of the unemployed to quit looking for jobs. In the government's methodology, these people are not counted as part of the official unemployment rate, thus understating the jobless problem.</string>
+					</void>
+					<void method="add">
+						<string>"If there are any signs of jobs being created, some large unknown proportion of the population will flood back into the labor market," said Ron Blackwell, chief economist at the AFL-CIO .</string>
+					</void>
+					<void method="add">
+						<string>And unless hiring rises dramatically, he said, the unemployment rate is sure to climb because some of those returning job seekers won't be able to find work.</string>
+					</void>
+					<void method="add">
+						<string>The White House forecast also sees hardly any change in the unemployment rate next year in the run-up to the presidential and congressional elections, with the jobless rate projected to drop a notch to 9% on average. Only modest improvement was forecast for 2013, when unemployment is projected to dip to 8.5%.</string>
+					</void>
+					<void method="add">
+						<string>Despite the unusually bleak outlook, Katharine Abraham, a member of the White House Council of Economic Advisors, said the forecast doesn't see a double-dip recession.</string>
+					</void>
+					<void method="add">
+						<string>But in a conference call, she said the report from the Office of Management and Budget revealed economic numbers that were "not what we're going to be happy with" and highlighted the importance of Obama's new job-creation effort that he plans to unveil Thursday night.</string>
+					</void>
+					<void method="add">
+						<string>Obama is expected to outline proposals such as increased job training, tax credits and investment in infrastructure as ways to get people back to work.</string>
+					</void>
+					<void method="add">
+						<string>Many in the Democratic Party are pushing the president to announce an ambitious jobs package to juice up the waning recovery, but it's unclear how much he will propose given stiff Republican opposition to increased spending that could increase the nation's deficit.</string>
+					</void>
+					<void method="add">
+						<string>In the so-called mid-session review released Thursday, the administration projected that the budget deficit would hit $1.32 trillion this year. The figure is about 20% lower than the $1.65-trillion deficit estimated in February because of more tax revenue and less spending than anticipated. The Congressional Budget Office issued a similar deficit projection last week.</string>
+					</void>
+					<void method="add">
+						<string>Nonetheless, a federal deficit of $1.3 trillion would represent about 9% of the gross domestic product — triple the percentage that economists consider a sustainable rate over the long term.</string>
+					</void>
+					<void method="add">
+						<string>The economic outlook component of the report contained two forecasts: an original projection using economic data through June and a special "alternative forecast" based on more recent information.</string>
+					</void>
+					<void method="add">
+						<string>That information reflected the problems stemming from the debt-ceiling turmoil and subsequent downgrading of U.S. debt as well as the deepening debt crisis in Europe.</string>
+					</void>
+					<void method="add">
+						<string>The difference between the two highlighted just how much confidence has withered in the last two months, sharply raising the risks of recession in the short term and downgrading prospects over the long range.</string>
+					</void>
+					<void method="add">
+						<string>The White House report now sees the unemployment rate not returning to a normal range of just over 5% until 2018.</string>
+					</void>
+					<void method="add">
+						<string>Economic growth also was sharply downgraded, to an anemic 1.7% rate this year and a moderate expansion of 2.6% next year.</string>
+					</void>
+					<void method="add">
+						<string>Economists said the White House's latest forecast was far more realistic than its earlier projections. But even the new one may be overstating growth and understating unemployment, some said.</string>
+					</void>
+					<void method="add">
+						<string> don.lee@latimes.com  </string>
+					</void>
+				</object>
+			</object>
+		</void>
+	</object>
+</java>

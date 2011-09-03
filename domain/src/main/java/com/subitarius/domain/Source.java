@@ -66,6 +66,9 @@ public enum Source {
 	},
 
 	AL_JAZEERA("Al Jazeera", "english.aljazeera.net") {
+	},
+
+	LA_TIMES("Los Angeles Times", "latimes.com") {
 	};
 
 	public static Source fromUrl(String url) {
