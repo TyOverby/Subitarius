@@ -35,9 +35,9 @@ public class ArticleUrl extends DistributedEntity {
 
 	private String url;
 
-	private transient ImmutableSet<Article> articles;
+	private transient Set<Article> articles;
 
-	private transient ImmutableSet<TagMapping> mappings;
+	private transient Set<TagMapping> mappings;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -74,7 +74,7 @@ public class ArticleUrl extends DistributedEntity {
 
 	protected void setArticles(Set<Article> articles) {
 		checkNotNull(articles);
-		this.articles = ImmutableSet.copyOf(articles);
+		this.articles = articles;
 	}
 
 	@Transient
@@ -101,7 +101,7 @@ public class ArticleUrl extends DistributedEntity {
 
 	protected void setMappings(Set<TagMapping> mappings) {
 		checkNotNull(mappings);
-		this.mappings = ImmutableSet.copyOf(mappings);
+		this.mappings = mappings;
 	}
 
 	@Transient

@@ -25,7 +25,6 @@ import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 
@@ -41,7 +40,7 @@ public class Article extends DistributedEntity {
 
 	private Date date;
 
-	private ImmutableList<String> paragraphs;
+	private List<String> paragraphs;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -114,7 +113,7 @@ public class Article extends DistributedEntity {
 	protected void setParagraphs(List<String> paragraphs) {
 		checkNotNull(paragraphs);
 		checkArgument(!paragraphs.isEmpty());
-		this.paragraphs = ImmutableList.copyOf(paragraphs);
+		this.paragraphs = paragraphs;
 	}
 
 	@Transient

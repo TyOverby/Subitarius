@@ -25,7 +25,6 @@ import com.google.common.collect.ImmutableSet;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
- * TODO: figure out how Hibernate handles ImmutableSet
  */
 @Entity
 public class Tag extends CentralEntity {
@@ -43,7 +42,7 @@ public class Tag extends CentralEntity {
 
 	private transient Set<Tag> children;
 
-	private transient ImmutableSet<TagMapping> mappings;
+	private transient Set<TagMapping> mappings;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -55,6 +54,8 @@ public class Tag extends CentralEntity {
 		setName(name);
 		setType(type);
 		setParents(parents);
+		children = ImmutableSet.of();
+		mappings = ImmutableSet.of();
 	}
 
 	@Column(length = 50, nullable = false, updatable = false)
@@ -108,7 +109,7 @@ public class Tag extends CentralEntity {
 
 	protected void setMappings(Set<TagMapping> mappings) {
 		checkNotNull(mappings);
-		this.mappings = ImmutableSet.copyOf(mappings);
+		this.mappings = mappings;
 	}
 
 	@Override

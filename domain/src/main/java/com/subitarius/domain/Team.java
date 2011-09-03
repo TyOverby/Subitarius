@@ -46,7 +46,7 @@ public class Team extends SignedEntity {
 
 	private int licenseCap;
 
-	private transient ImmutableSet<License> licenses;
+	private transient Set<License> licenses;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -138,7 +138,7 @@ public class Team extends SignedEntity {
 
 	protected void setLicenses(Set<License> licenses) {
 		checkNotNull(licenses);
-		this.licenses = ImmutableSet.copyOf(licenses);
+		this.licenses = licenses;
 	}
 
 	@Transient

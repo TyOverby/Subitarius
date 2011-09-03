@@ -24,7 +24,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterators;
 import com.google.common.primitives.Longs;
 
@@ -34,7 +33,7 @@ public class License extends SignedEntity {
 
 	private Team team;
 
-	private ImmutableSet<Long> macAddresses;
+	private Set<Long> macAddresses;
 
 	/**
 	 * This constructor should only be invoked by the JPA provider.
@@ -74,7 +73,7 @@ public class License extends SignedEntity {
 			checkArgument(mac >= 0);
 			checkArgument(mac < 0x0001000000000000L);
 		}
-		this.macAddresses = ImmutableSet.copyOf(macAddresses);
+		this.macAddresses = macAddresses;
 	}
 
 	public boolean validate() throws IOException {
