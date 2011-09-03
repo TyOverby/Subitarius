@@ -4,7 +4,7 @@ This list will be used to monitor progress as well as helping with version numbe
 Once everything under each build is completed, the program compiles, and is otherwise considered usable, work can begin on the next version.
 Each item is ordered by importance.
 
-0.2-alpha
+~~0.2-alpha~~
 ---------
 1. ~~Move to self-contained servlet container~~
 2. ~~Refactor to "com.subitarius"~~
