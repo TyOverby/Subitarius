@@ -32,6 +32,9 @@ public class InstanceServerModule extends ServletModule {
 		bind(GuiceServiceServlet.class).in(Singleton.class);
 		serve("/GWT.rpc").with(GuiceServiceServlet.class);
 
+		bind(ActionServlet.class).in(Singleton.class);
+		serve("/java.io").with(ActionServlet.class);
+
 		bindListener(Matchers.any(), new Slf4jTypeListener());
 	}
 
