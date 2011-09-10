@@ -63,10 +63,30 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.prealpha</groupId>
+			<artifactId>gwt-dispatch</artifactId>
+			<version>v2011091017</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.prealpha</groupId>
+			<artifactId>gwt-dispatch</artifactId>
+			<version>v2011091017</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.subitarius</groupId>
 			<artifactId>action</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.subitarius</groupId>
+			<artifactId>action</artifactId>
+			<version>${project.version}</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.subitarius</groupId>
