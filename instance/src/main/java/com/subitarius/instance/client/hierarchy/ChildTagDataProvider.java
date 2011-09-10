@@ -18,12 +18,12 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetHierarchy;
+import com.subitarius.action.GetHierarchyResult;
+import com.subitarius.action.GetTag;
+import com.subitarius.action.GetTagResult;
+import com.subitarius.action.dto.TagDto;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetHierarchy;
-import com.subitarius.instance.shared.action.GetHierarchyResult;
-import com.subitarius.instance.shared.action.GetTag;
-import com.subitarius.instance.shared.action.GetTagResult;
-import com.subitarius.instance.shared.dto.TagDto;
 
 public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 	private static Multimap<String, String> hierarchy;

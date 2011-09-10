@@ -40,7 +40,7 @@ public final class TestingLauncherModule extends AbstractModule {
 			options.setPort(8888);
 			options.setCodeServerPort(9997);
 			options.addStartupURL("/");
-			options.addModuleName("com.subitarius.instance.Subitarius");
+			options.addModuleName("com.subitarius.instance.Instance");
 		}
 	}
 }

@@ -22,10 +22,10 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetHierarchy;
+import com.subitarius.action.GetHierarchyResult;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag.Type;
-import com.subitarius.instance.shared.action.GetHierarchy;
-import com.subitarius.instance.shared.action.GetHierarchyResult;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetHierarchyHandler implements

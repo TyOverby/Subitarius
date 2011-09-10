@@ -16,15 +16,15 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.AddArticle;
+import com.subitarius.action.AddArticleResult;
+import com.subitarius.action.AddArticleResult.Type;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Team;
 import com.subitarius.instance.server.parse.ArticleParseException;
 import com.subitarius.instance.server.parse.ArticleParser;
 import com.subitarius.instance.server.parse.ParserNotFoundException;
-import com.subitarius.instance.shared.action.AddArticle;
-import com.subitarius.instance.shared.action.AddArticleResult;
-import com.subitarius.instance.shared.action.AddArticleResult.Type;
 import com.subitarius.util.logging.InjectLogger;
 
 class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {

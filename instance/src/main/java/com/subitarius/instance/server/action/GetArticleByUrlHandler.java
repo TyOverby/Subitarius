@@ -20,12 +20,12 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetArticleByUrl;
+import com.subitarius.action.GetArticleResult;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Article_;
-import com.subitarius.instance.shared.action.GetArticleByUrl;
-import com.subitarius.instance.shared.action.GetArticleResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetArticleByUrlHandler implements

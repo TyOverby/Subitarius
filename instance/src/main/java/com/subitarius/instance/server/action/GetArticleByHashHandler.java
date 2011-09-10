@@ -16,10 +16,10 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetArticleByHash;
+import com.subitarius.action.GetArticleResult;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.domain.Article;
-import com.subitarius.instance.shared.action.GetArticleByHash;
-import com.subitarius.instance.shared.action.GetArticleResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetArticleByHashHandler implements

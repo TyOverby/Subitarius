@@ -11,8 +11,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.instance.client.Presenter;
-import com.subitarius.instance.shared.dto.ArticleDto;
 
 public class ArticleWidget extends Composite implements
 		ArticlePresenter.Display {

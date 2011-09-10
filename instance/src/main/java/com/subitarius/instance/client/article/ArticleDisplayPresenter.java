@@ -15,11 +15,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetParagraphs;
+import com.subitarius.action.GetParagraphsResult;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetParagraphs;
-import com.subitarius.instance.shared.action.GetParagraphsResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
 
 public class ArticleDisplayPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {

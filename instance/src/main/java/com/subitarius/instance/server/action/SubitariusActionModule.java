@@ -16,17 +16,17 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.prealpha.dispatch.server.ActionModule;
-import com.subitarius.instance.shared.action.AddArticle;
-import com.subitarius.instance.shared.action.AddMapping;
-import com.subitarius.instance.shared.action.GetArticleByHash;
-import com.subitarius.instance.shared.action.GetArticleByUrl;
-import com.subitarius.instance.shared.action.GetHierarchy;
-import com.subitarius.instance.shared.action.GetMapping;
-import com.subitarius.instance.shared.action.GetMappingsByArticle;
-import com.subitarius.instance.shared.action.GetMappingsByTag;
-import com.subitarius.instance.shared.action.GetParagraphs;
-import com.subitarius.instance.shared.action.GetTag;
-import com.subitarius.instance.shared.action.GetTagSuggestions;
+import com.subitarius.action.AddArticle;
+import com.subitarius.action.AddMapping;
+import com.subitarius.action.GetArticleByHash;
+import com.subitarius.action.GetArticleByUrl;
+import com.subitarius.action.GetHierarchy;
+import com.subitarius.action.GetMapping;
+import com.subitarius.action.GetMappingsByArticle;
+import com.subitarius.action.GetMappingsByTag;
+import com.subitarius.action.GetParagraphs;
+import com.subitarius.action.GetTag;
+import com.subitarius.action.GetTagSuggestions;
 
 public final class SubitariusActionModule extends ActionModule {
 	public SubitariusActionModule() {

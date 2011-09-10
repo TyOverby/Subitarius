@@ -20,11 +20,11 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetTag;
+import com.subitarius.action.GetTagResult;
+import com.subitarius.action.dto.TagDto;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag_;
-import com.subitarius.instance.shared.action.GetTag;
-import com.subitarius.instance.shared.action.GetTagResult;
-import com.subitarius.instance.shared.dto.TagDto;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {

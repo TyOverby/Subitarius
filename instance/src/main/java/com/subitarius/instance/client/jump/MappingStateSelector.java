@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
+import com.subitarius.action.dto.TagMappingDto.State;
 
 public class MappingStateSelector extends Composite implements
 		HasValue<Set<State>> {

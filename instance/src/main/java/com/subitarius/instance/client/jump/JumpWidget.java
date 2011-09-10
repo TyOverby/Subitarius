@@ -19,14 +19,14 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetMappingsByTag;
+import com.subitarius.action.GetMappingsResult;
+import com.subitarius.action.GetTag;
+import com.subitarius.action.GetTagResult;
+import com.subitarius.action.dto.TagDto;
+import com.subitarius.action.dto.TagMappingDto.State;
 import com.subitarius.instance.client.error.ManagedCallback;
 import com.subitarius.instance.client.taginput.TagInputWidget;
-import com.subitarius.instance.shared.action.GetMappingsByTag;
-import com.subitarius.instance.shared.action.GetMappingsResult;
-import com.subitarius.instance.shared.action.GetTag;
-import com.subitarius.instance.shared.action.GetTagResult;
-import com.subitarius.instance.shared.dto.TagDto;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
 
 public class JumpWidget extends Composite implements JumpPresenter.Display {
 	public static interface JumpUiBinder extends UiBinder<Widget, JumpWidget> {

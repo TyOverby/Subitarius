@@ -17,9 +17,9 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetParagraphs;
+import com.subitarius.action.GetParagraphsResult;
 import com.subitarius.domain.Article;
-import com.subitarius.instance.shared.action.GetParagraphs;
-import com.subitarius.instance.shared.action.GetParagraphsResult;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetParagraphsHandler implements

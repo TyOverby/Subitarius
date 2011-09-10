@@ -10,7 +10,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Provides;
-import com.subitarius.instance.shared.dto.ArticleDto;
+import com.subitarius.action.dto.ArticleDto;
 
 public class JumpModule extends AbstractGinModule {
 	public JumpModule() {

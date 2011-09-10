@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetMappingsByArticle;
+import com.subitarius.action.GetMappingsResult;
+import com.subitarius.action.dto.ArticleDto;
+import com.subitarius.action.dto.TagMappingDto;
+import com.subitarius.action.dto.TagMappingDto.State;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetMappingsByArticle;
-import com.subitarius.instance.shared.action.GetMappingsResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
-import com.subitarius.instance.shared.dto.TagMappingDto;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
 
 public class MetaPanelPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {

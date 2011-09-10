@@ -13,13 +13,13 @@ import java.util.List;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetArticleByHash;
+import com.subitarius.action.GetArticleResult;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.instance.client.HistoryManager;
 import com.subitarius.instance.client.PlacePresenter;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetArticleByHash;
-import com.subitarius.instance.shared.action.GetArticleResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
 
 public class ArticlePresenter implements PlacePresenter {
 	public static interface Display extends IsWidget {

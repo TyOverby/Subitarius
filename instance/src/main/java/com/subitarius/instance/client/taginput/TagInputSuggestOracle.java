@@ -14,9 +14,9 @@ import java.util.Set;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetTagSuggestions;
+import com.subitarius.action.GetTagSuggestionsResult;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetTagSuggestions;
-import com.subitarius.instance.shared.action.GetTagSuggestionsResult;
 
 public final class TagInputSuggestOracle extends SuggestOracle {
 	private final DispatcherAsync dispatcher;

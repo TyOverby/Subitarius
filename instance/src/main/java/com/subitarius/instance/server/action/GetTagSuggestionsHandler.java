@@ -24,10 +24,10 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetTagSuggestions;
+import com.subitarius.action.GetTagSuggestionsResult;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag_;
-import com.subitarius.instance.shared.action.GetTagSuggestions;
-import com.subitarius.instance.shared.action.GetTagSuggestionsResult;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetTagSuggestionsHandler implements

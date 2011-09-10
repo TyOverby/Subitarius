@@ -17,13 +17,13 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.AddMapping;
+import com.subitarius.action.MutationResult;
+import com.subitarius.action.dto.ArticleDto;
+import com.subitarius.action.dto.TagDto;
+import com.subitarius.action.dto.TagMappingDto.State;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.AddMapping;
-import com.subitarius.instance.shared.action.MutationResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
-import com.subitarius.instance.shared.dto.TagDto;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
 
 public final class MappingInputPresenter implements Presenter<ArticleDto> {
 	public static interface Display extends IsWidget {

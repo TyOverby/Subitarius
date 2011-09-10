@@ -8,7 +8,7 @@ package com.subitarius.instance.client.jump;
 
 import java.util.Comparator;
 
-import com.subitarius.instance.shared.dto.ArticleDto;
+import com.subitarius.action.dto.ArticleDto;
 
 enum ArticleField implements Comparator<ArticleDto> {
 	TITLE {

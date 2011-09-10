@@ -28,14 +28,14 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetMappingsByTag;
+import com.subitarius.action.GetMappingsResult;
+import com.subitarius.action.dto.ArticleDto;
+import com.subitarius.action.dto.TagMappingDto;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.TagMapping;
 import com.subitarius.domain.Tag_;
-import com.subitarius.instance.shared.action.GetMappingsByTag;
-import com.subitarius.instance.shared.action.GetMappingsResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
-import com.subitarius.instance.shared.dto.TagMappingDto;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetMappingsByTagHandler implements

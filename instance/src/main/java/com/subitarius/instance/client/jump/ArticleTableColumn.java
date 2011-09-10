@@ -16,9 +16,9 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.instance.client.AppPlace;
 import com.subitarius.instance.client.AppState;
-import com.subitarius.instance.shared.dto.ArticleDto;
 
 class ArticleTableColumn extends Column<ArticleDto, String> {
 	private final ArticleField field;
