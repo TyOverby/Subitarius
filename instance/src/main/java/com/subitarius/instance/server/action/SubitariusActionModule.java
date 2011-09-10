@@ -1,5 +1,5 @@
 /*
- * ActionModule.java
+ * SubitariusActionModule.java
  * Copyright (C) 2011 Meyer Kizner
  * All rights reserved.
  */
@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.prealpha.dispatch.server.ActionHandlerModule;
+import com.prealpha.dispatch.server.ActionModule;
 import com.subitarius.instance.shared.action.AddArticle;
 import com.subitarius.instance.shared.action.AddMapping;
 import com.subitarius.instance.shared.action.GetArticleByHash;
@@ -28,24 +28,24 @@ import com.subitarius.instance.shared.action.GetParagraphs;
 import com.subitarius.instance.shared.action.GetTag;
 import com.subitarius.instance.shared.action.GetTagSuggestions;
 
-public class ActionModule extends ActionHandlerModule {
-	public ActionModule() {
+public class SubitariusActionModule extends ActionModule {
+	public SubitariusActionModule() {
 	}
 
 	@Override
-	protected void configure() {
-		bindHandler(AddArticle.class, AddArticleHandler.class);
-		bindHandler(AddMapping.class, AddMappingHandler.class);
-		bindHandler(GetArticleByHash.class, GetArticleByHashHandler.class);
-		bindHandler(GetArticleByUrl.class, GetArticleByUrlHandler.class);
-		bindHandler(GetHierarchy.class, GetHierarchyHandler.class);
-		bindHandler(GetMapping.class, GetMappingHandler.class);
-		bindHandler(GetMappingsByArticle.class,
+	protected void configureActions() {
+		bindAction(AddArticle.class).to(AddArticleHandler.class);
+		bindAction(AddMapping.class).to(AddMappingHandler.class);
+		bindAction(GetArticleByHash.class).to(GetArticleByHashHandler.class);
+		bindAction(GetArticleByUrl.class).to(GetArticleByUrlHandler.class);
+		bindAction(GetHierarchy.class).to(GetHierarchyHandler.class);
+		bindAction(GetMapping.class).to(GetMappingHandler.class);
+		bindAction(GetMappingsByArticle.class).to(
 				GetMappingsByArticleHandler.class);
-		bindHandler(GetMappingsByTag.class, GetMappingsByTagHandler.class);
-		bindHandler(GetParagraphs.class, GetParagraphsHandler.class);
-		bindHandler(GetTag.class, GetTagHandler.class);
-		bindHandler(GetTagSuggestions.class, GetTagSuggestionsHandler.class);
+		bindAction(GetMappingsByTag.class).to(GetMappingsByTagHandler.class);
+		bindAction(GetParagraphs.class).to(GetParagraphsHandler.class);
+		bindAction(GetTag.class).to(GetTagHandler.class);
+		bindAction(GetTagSuggestions.class).to(GetTagSuggestionsHandler.class);
 	}
 
 	@Provides
