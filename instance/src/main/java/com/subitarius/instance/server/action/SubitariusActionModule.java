@@ -28,7 +28,7 @@ import com.subitarius.instance.shared.action.GetParagraphs;
 import com.subitarius.instance.shared.action.GetTag;
 import com.subitarius.instance.shared.action.GetTagSuggestions;
 
-public class SubitariusActionModule extends ActionModule {
+public final class SubitariusActionModule extends ActionModule {
 	public SubitariusActionModule() {
 	}
 
