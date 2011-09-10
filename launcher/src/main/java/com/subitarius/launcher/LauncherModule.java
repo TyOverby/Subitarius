@@ -10,8 +10,8 @@ import java.awt.Desktop;
 import java.awt.SplashScreen;
 import java.util.ResourceBundle;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -36,7 +36,7 @@ public final class LauncherModule extends AbstractModule {
 	Desktop getDesktop() {
 		return Desktop.getDesktop();
 	}
-	
+
 	@Provides
 	ResourceBundle getResourceBundle() {
 		return ResourceBundle.getBundle(getClass().getCanonicalName());
