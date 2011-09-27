@@ -8,8 +8,8 @@ package com.subitarius.central;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,23 +22,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.persist.Transactional;
 import com.subitarius.domain.DistributedEntity;
+import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.util.logging.InjectLogger;
 
 /**
  * Provides access to {@link DistributedEntity} objects stored on the server.
- * The {@code GET} method is used both to retrieve both the entity list and
- * specific entities; it is the only supported method.
+ * The only supported method is {@code GET}.
  * 
  * @author Meyer Kizner
  * @see #doGet(HttpServletRequest, HttpServletResponse)
  * 
  */
-final class DistributedEntityServlet extends HttpServlet {
+class DistributedEntityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@InjectLogger
@@ -53,84 +52,96 @@ final class DistributedEntityServlet extends HttpServlet {
 	}
 
 	/**
-	 * Returns either a list of available entities (with hashes) or the
-	 * serialized form of a specified entity. For this method, the
-	 * {@linkplain HttpServletRequest#getPathInfo() path info} part of the
-	 * request URI is used to request specific entities.
+	 * Fetches and returns the serialized forms of any distributed entities
+	 * matching the criteria specified in the request parameters. Two optional
+	 * parameters are supported to limit results: {@code timestamp} and
+	 * {@code prefix}. {@code timestamp} is interpreted as a {@code long}
+	 * representing some number of milliseconds past the epoch; if this
+	 * parameter is used, results will be limited to entities created at or
+	 * after this time. {@code prefix} is a string which designates the hash
+	 * prefix which entities must match to be included.
 	 * <p>
 	 * 
-	 * If the path info is empty or simply a single slash character, the
-	 * response will consist of a list of entity hashes available to the client.
-	 * The list consists of each hash, as a hexadecimal string, on its own line;
-	 * the lines are separated by newline characters only.
+	 * Additionally, there is a single required parameter, {@code version},
+	 * which is intended to allow for future support of multiple protocol
+	 * versions. At present, only a single {@code version} value is allowed,
+	 * {@code 0.2-alpha}. Any other value will result in status code 501 (not
+	 * implemented).
 	 * <p>
 	 * 
-	 * If the path info starts with a slash but is followed by a character
-	 * string, that string is interpreted as the hash of a requested specific
-	 * entity. No validation is attempted on the entity hash. If an entity is
-	 * found with the hash, its serialized form is written as the response body
-	 * along with status code 200 (OK). Otherwise, status code 404 (not found)
-	 * is returned to the client.
-	 * <p>
-	 * 
-	 * In any other case (if there is one!), status code 400 (bad request) is
-	 * sent.
+	 * If {@code timestamp} is present and cannot be parsed as a {@code long},
+	 * status code 400 (bad request) will be returned. Otherwise, the result
+	 * will consist of a byte stream readable by
+	 * {@link java.io.ObjectInputStream}. First in the stream will be an
+	 * {@code int} indicating the number of serialized entities. This will be
+	 * followed by the serialized forms of the entities in arbitrary order.
 	 */
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
-		String pathInfo = req.getPathInfo();
-		if (pathInfo == null || pathInfo.isEmpty() || pathInfo.equals("/")) {
-			PrintWriter writer = res.getWriter();
-			int count = 0;
-			for (String hash : fetchHashes()) {
-				writer.println(hash);
-				count++;
-			}
-			writer.flush();
-			log.info("returned {} entity hashes", count);
-		} else if (pathInfo.startsWith("/")) {
-			String hash = pathInfo.substring(1);
-			EntityManager entityManager = entityManagerProvider.get();
-			DistributedEntity entity = entityManager.find(
-					DistributedEntity.class, hash);
-			if (entity == null) {
-				log.info("entity hash not found: {}", hash);
-				res.sendError(HttpServletResponse.SC_NOT_FOUND);
-			} else {
-				OutputStream stream = res.getOutputStream();
-				ObjectOutputStream oos = new ObjectOutputStream(stream);
-				oos.writeObject(entity);
-				stream.flush();
-				log.info("entity found and returned: {}", hash);
+		String version = req.getParameter("version");
+		if (!version.equals("0.2-alpha")) {
+			log.info("rejected request with unknown version: {}", version);
+			res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+			return;
+		}
+
+		String timestampStr = req.getParameter("timestamp");
+		Date timestamp;
+		if (timestampStr != null) {
+			try {
+				timestamp = new Date(Long.parseLong(timestampStr));
+			} catch (NumberFormatException nfx) {
+				log.info("rejected request with invalid timestamp: {}",
+						timestampStr);
+				res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
 			}
 		} else {
-			log.info("bad request; path info: {}", pathInfo);
-			res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			timestamp = null;
 		}
+
+		String prefix = req.getParameter("prefix");
+
+		List<DistributedEntity> entities = getEntities(timestamp, prefix);
+		log.debug("sending {} entities in response to query", entities.size());
+		ObjectOutputStream oos = new ObjectOutputStream(res.getOutputStream());
+		oos.writeInt(entities.size());
+		for (DistributedEntity entity : entities) {
+			oos.writeObject(entity);
+		}
+		oos.flush();
+		oos.close();
 	}
 
 	/**
-	 * @return an {@code Iterable} of all entity hashes from the
-	 *         {@link DistributedEntity} table
+	 * Returns entities persisted at or before the specified timestamp and with
+	 * the specified hash prefix. Both parameters are optional and may be
+	 * {@code null} to indicate that no restriction should apply.
+	 * 
+	 * @param timestamp
+	 *            the earliest timestamp for which entities should be returned
+	 * @param prefix
+	 *            an optional limiting prefix for entity hashes
+	 * @return a list of entities persisted at or after the timestamp and with
+	 *         the specified hash prefix
 	 */
-	private Iterable<String> fetchHashes() {
+	@Transactional
+	private List<DistributedEntity> getEntities(Date timestamp, String prefix) {
 		EntityManager entityManager = entityManagerProvider.get();
-
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<DistributedEntity> criteria = builder
 				.createQuery(DistributedEntity.class);
 		Root<DistributedEntity> root = criteria.from(DistributedEntity.class);
 		criteria.select(root);
-		Iterable<DistributedEntity> entities = entityManager.createQuery(
-				criteria).getResultList();
-
-		return Iterables.transform(entities,
-				new Function<DistributedEntity, String>() {
-					@Override
-					public String apply(DistributedEntity input) {
-						return input.getHash();
-					}
-				});
+		if (timestamp != null) {
+			criteria.where(builder.greaterThanOrEqualTo(
+					root.get(DistributedEntity_.persistDate), timestamp));
+		}
+		if (prefix != null) {
+			criteria.where(builder.like(root.get(DistributedEntity_.hash),
+					prefix + '%'));
+		}
+		return entityManager.createQuery(criteria).getResultList();
 	}
 }

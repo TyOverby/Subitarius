@@ -13,7 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintWriter;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Sets;
 import com.google.inject.Module;
 import com.google.inject.Provider;
 import com.google.inject.persist.PersistService;
@@ -66,9 +67,6 @@ public final class DistributedEntityServletTest {
 	@Mock(Mock.Type.STANDARD)
 	private HttpServletResponse res;
 
-	@Mock(Mock.Type.NICE)
-	private PrintWriter writer;
-
 	private ArticleUrl url1;
 
 	private ArticleUrl url2;
@@ -91,51 +89,56 @@ public final class DistributedEntityServletTest {
 	}
 
 	@Test
-	public void testDoGetEmptyPath() throws IOException, ServletException {
-		expect(req.getPathInfo()).andReturn("").anyTimes();
-		expect(res.getWriter()).andReturn(writer).anyTimes();
-		writer.println(url1.getHash());
-		expectLastCall();
-		writer.println(url2.getHash());
-		expectLastCall();
-
-		replay(req, res, writer);
-		servlet.doGet(req, res);
-		verify(req, res, writer);
-	}
-
-	@Test
-	public void testDoGetSlashPath() throws IOException, ServletException {
-		expect(req.getPathInfo()).andReturn("").anyTimes();
-		expect(res.getWriter()).andReturn(writer).anyTimes();
-		writer.println(url1.getHash());
-		expectLastCall();
-		writer.println(url2.getHash());
-		expectLastCall();
-		res.setStatus(HttpServletResponse.SC_OK);
-		expectLastCall().anyTimes();
-
-		replay(req, res, writer);
-		servlet.doGet(req, res);
-		verify(req, res, writer);
-	}
-
-	@Test
-	public void testDoGetUrl1() throws IOException, ServletException,
+	public void testDoGetAll() throws IOException, ServletException,
 			ClassNotFoundException {
-		testDoGetEntity(url1);
+		expect(req.getParameter("version")).andReturn("0.2-alpha");
+		expect(req.getParameter("timestamp")).andReturn(null);
+		expect(req.getParameter("prefix")).andReturn(null);
+		testDoGetEntities(url1, url2);
 	}
 
 	@Test
-	public void testDoGetUrl2() throws IOException, ServletException,
+	public void testDoGetTimestamp() throws IOException, ServletException,
 			ClassNotFoundException {
-		testDoGetEntity(url2);
+		expect(req.getParameter("version")).andReturn("0.2-alpha");
+		expect(req.getParameter("timestamp")).andReturn(
+				Long.toString(Long.MAX_VALUE));
+		expect(req.getParameter("prefix")).andReturn(null);
+		testDoGetEntities();
 	}
 
-	private void testDoGetEntity(DistributedEntity entity) throws IOException,
-			ServletException, ClassNotFoundException {
+	@Test
+	public void testDoGetPrefix() throws IOException, ServletException,
+			ClassNotFoundException {
+		expect(req.getParameter("version")).andReturn("0.2-alpha");
+		expect(req.getParameter("timestamp")).andReturn(null);
+		expect(req.getParameter("prefix")).andReturn(
+				url1.getHash().substring(0, 2));
+		if (url1.getHash().startsWith(url2.getHash().substring(0, 2))) {
+			testDoGetEntities(url1, url2);
+		} else {
+			testDoGetEntities(url1);
+		}
+	}
+
+	@Test
+	public void testDoGetBoth() throws IOException, ServletException,
+			ClassNotFoundException {
+		expect(req.getParameter("version")).andReturn("0.2-alpha");
+		expect(req.getParameter("timestamp")).andReturn(
+				Long.toString(url1.getPersistDate().getTime()));
+		expect(req.getParameter("prefix")).andReturn(
+				url2.getHash().substring(0, 2));
+		if (url1.getHash().startsWith(url2.getHash().substring(0, 2))) {
+			testDoGetEntities(url1, url2);
+		} else {
+			testDoGetEntities(url2);
+		}
+	}
+
+	private void testDoGetEntities(DistributedEntity... entities)
+			throws IOException, ServletException, ClassNotFoundException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		expect(req.getPathInfo()).andReturn('/' + entity.getHash()).anyTimes();
 		expect(res.getOutputStream()).andReturn(new ServletOutputStream() {
 			@Override
 			public void write(int b) throws IOException {
@@ -152,14 +155,37 @@ public final class DistributedEntityServletTest {
 		byte[] bytes = baos.toByteArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 		ObjectInputStream ois = new ObjectInputStream(bais);
-		DistributedEntity deserialized = (DistributedEntity) ois.readObject();
-		assertEquals(entity, deserialized);
+		assertEquals(entities.length, ois.readInt());
+		Set<DistributedEntity> deserialized = Sets
+				.newHashSetWithExpectedSize(entities.length);
+		for (int i = 0; i < entities.length; i++) {
+			deserialized.add((DistributedEntity) ois.readObject());
+		}
+		assertEquals(entities.length, deserialized.size());
+		for (DistributedEntity entity : entities) {
+			assertTrue(deserialized.contains(entity));
+		}
 	}
 
 	@Test
-	public void testDoGetNotFound() throws IOException, ServletException {
-		expect(req.getPathInfo()).andReturn("/0").anyTimes();
-		res.sendError(HttpServletResponse.SC_NOT_FOUND);
+	public void testDoGetBadVersion() throws IOException, ServletException {
+		expect(req.getParameter("version")).andReturn("0.1-alpha");
+		expect(req.getParameter("timestamp")).andReturn(null).anyTimes();
+		expect(req.getParameter("prefix")).andReturn(null).anyTimes();
+		res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
+		expectLastCall();
+
+		replay(req, res);
+		servlet.doGet(req, res);
+		verify(req, res);
+	}
+
+	@Test
+	public void testDoGetBadTimestamp() throws IOException, ServletException {
+		expect(req.getParameter("version")).andReturn("0.2-alpha");
+		expect(req.getParameter("timestamp")).andReturn("foo bar");
+		expect(req.getParameter("prefix")).andReturn(null).anyTimes();
+		res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		expectLastCall();
 
 		replay(req, res);
