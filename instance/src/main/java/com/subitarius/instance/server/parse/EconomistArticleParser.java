@@ -34,7 +34,7 @@ final class EconomistArticleParser implements ArticleParser {
 		BLOG("p.ec-blog-info", "div.ec-blog-body p") {
 			@Override
 			String getTitle(Document document) {
-				return document.select("h1.ec-blog-headline").first().text();
+				return document.select("h3.ec-blog-headline").first().text();
 			}
 
 			@Override
@@ -53,7 +53,7 @@ final class EconomistArticleParser implements ArticleParser {
 		PRINT("p.ec-article-info", "div.ec-article-content p") {
 			@Override
 			String getTitle(Document document) {
-				String title = document.select("div.headline").first().text();
+				String title = document.select("h3.headline").first().text();
 				Element subtitle = document.select("h1.rubric").first();
 				if (subtitle != null) {
 					title += ": " + subtitle.text();
