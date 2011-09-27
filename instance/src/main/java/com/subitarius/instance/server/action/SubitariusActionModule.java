@@ -18,6 +18,7 @@ import com.google.inject.Singleton;
 import com.prealpha.dispatch.server.ActionModule;
 import com.subitarius.action.AddArticle;
 import com.subitarius.action.AddMapping;
+import com.subitarius.action.FetchEntities;
 import com.subitarius.action.GetArticleByHash;
 import com.subitarius.action.GetArticleByUrl;
 import com.subitarius.action.GetHierarchy;
@@ -36,6 +37,7 @@ public final class SubitariusActionModule extends ActionModule {
 	protected void configureActions() {
 		bindAction(AddArticle.class).to(AddArticleHandler.class);
 		bindAction(AddMapping.class).to(AddMappingHandler.class);
+		bindAction(FetchEntities.class).to(FetchEntitiesHandler.class);
 		bindAction(GetArticleByHash.class).to(GetArticleByHashHandler.class);
 		bindAction(GetArticleByUrl.class).to(GetArticleByUrlHandler.class);
 		bindAction(GetHierarchy.class).to(GetHierarchyHandler.class);
