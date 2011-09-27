@@ -53,7 +53,7 @@ public enum Source {
 	WS_JOURNAL("Wall Street Journal", "online.wsj.com") {
 	},
 
-	REUTERS("Reuters", "www.reuters.com") {
+	REUTERS("Reuters", "reuters.com") {
 	},
 
 	GUARDIAN("The Guardian", "www.guardian.co.uk") {
