@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -91,8 +92,10 @@ final class GuardianArticleParser implements ArticleParser {
 			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
-			if (document.body().className().contains("has-badge")) {
-				// blog posts, contests, etc. all seem to contain this
+			Set<String> classNames = document.body().classNames();
+			if (classNames.contains("has-badge")
+					|| classNames.contains("competition")) {
+				// markers for unparseable types (blog posts, contests)
 				return null;
 			}
 
