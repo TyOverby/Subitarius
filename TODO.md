@@ -9,6 +9,10 @@ Each item is ordered by importance.
 1. ~~Move to self-contained servlet container~~
 2. ~~Refactor to "com.subitarius"~~
 
+0.2.1-alpha
+-----------
+1. Some way of downloading and parsing articles in the short-term, so that the program is usable
+
 0.3-alpha
 ---------
 1. Admin control (either web or swing)
