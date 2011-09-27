@@ -36,6 +36,9 @@ public class InstanceServerModule extends ServletModule {
 		serve("/java.io").with(ActionServlet.class);
 
 		bindListener(Matchers.any(), new Slf4jTypeListener());
+
+		// this is for breaking changes only, so 0.2.1 doesn't count
+		bindConstant().annotatedWith(InstanceVersion.class).to("0.2-alpha");
 	}
 
 	@Provides
