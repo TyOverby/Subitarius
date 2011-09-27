@@ -115,7 +115,7 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
-				<string>http://online.wsj.com/article/SB10001424052702303823104576392120484473038.html</string>
+				<string>http://online.wsj.com/article/SB10001424053111904060604576575104196183200.html</string>
 			</object>
 		</void>
 	</object>
