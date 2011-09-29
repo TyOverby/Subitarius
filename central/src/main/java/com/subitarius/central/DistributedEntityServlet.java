@@ -80,7 +80,7 @@ class DistributedEntityServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		String version = req.getParameter("version");
-		if (!version.equals("0.2-alpha")) {
+		if (!"0.2-alpha".equals(version)) {
 			log.info("rejected request with unknown version: {}", version);
 			res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 			return;
