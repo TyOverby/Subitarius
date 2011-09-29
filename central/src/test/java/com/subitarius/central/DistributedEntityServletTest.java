@@ -13,6 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -27,7 +29,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.inject.Module;
 import com.google.inject.Provider;
@@ -67,19 +72,20 @@ public final class DistributedEntityServletTest {
 	@Mock(Mock.Type.STANDARD)
 	private HttpServletResponse res;
 
-	private ArticleUrl url1;
-
-	private ArticleUrl url2;
+	private List<ArticleUrl> urls;
 
 	@Before
 	public void setUp() {
 		persistService.start();
 		EntityManager entityManager = entityManagerProvider.get();
 		entityManager.getTransaction().begin();
-		url1 = new ArticleUrl("http://www.nytimes.com/");
-		entityManager.persist(url1);
-		url2 = new ArticleUrl("http://www.washingtonpost.com/");
-		entityManager.persist(url2);
+		urls = Lists.newArrayListWithCapacity(50);
+		for (int i = 0; i < 50; i++) {
+			ArticleUrl url = new ArticleUrl("http://www.nytimes.com/article"
+					+ i);
+			entityManager.persist(url);
+			urls.add(url);
+		}
 		entityManager.getTransaction().commit();
 	}
 
@@ -94,7 +100,7 @@ public final class DistributedEntityServletTest {
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn(null);
 		expect(req.getParameter("prefix")).andReturn(null);
-		testDoGetEntities(url1, url2);
+		testDoGetEntities(urls);
 	}
 
 	@Test
@@ -104,39 +110,49 @@ public final class DistributedEntityServletTest {
 		expect(req.getParameter("timestamp")).andReturn(
 				Long.toString(Long.MAX_VALUE));
 		expect(req.getParameter("prefix")).andReturn(null);
-		testDoGetEntities();
+		testDoGetEntities(ImmutableList.<DistributedEntity> of());
 	}
 
 	@Test
 	public void testDoGetPrefix() throws IOException, ServletException,
 			ClassNotFoundException {
+		final String prefix = urls.get(0).getHash().substring(0, 1);
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn(null);
-		expect(req.getParameter("prefix")).andReturn(
-				url1.getHash().substring(0, 2));
-		if (url1.getHash().startsWith(url2.getHash().substring(0, 2))) {
-			testDoGetEntities(url1, url2);
-		} else {
-			testDoGetEntities(url1);
-		}
+		expect(req.getParameter("prefix")).andReturn(prefix);
+		testDoGetEntities(Collections2.filter(urls,
+				new Predicate<ArticleUrl>() {
+					@Override
+					public boolean apply(ArticleUrl url) {
+						return (url.getHash().startsWith(prefix));
+					}
+				}));
 	}
 
 	@Test
 	public void testDoGetBoth() throws IOException, ServletException,
 			ClassNotFoundException {
+		final long timestamp = urls.get(25).getPersistDate().getTime();
+		final String prefix = urls.get(25).getHash().substring(0, 1);
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn(
-				Long.toString(url1.getPersistDate().getTime()));
-		expect(req.getParameter("prefix")).andReturn(
-				url2.getHash().substring(0, 2));
-		if (url1.getHash().startsWith(url2.getHash().substring(0, 2))) {
-			testDoGetEntities(url1, url2);
-		} else {
-			testDoGetEntities(url2);
-		}
+				Long.toString(timestamp));
+		expect(req.getParameter("prefix")).andReturn(prefix);
+		testDoGetEntities(Collections2.filter(urls,
+				new Predicate<ArticleUrl>() {
+					@Override
+					public boolean apply(ArticleUrl url) {
+						boolean timestampApplies = (url.getPersistDate()
+								.getTime() >= timestamp);
+						boolean prefixApplies = (url.getHash()
+								.startsWith(prefix));
+						return (timestampApplies && prefixApplies);
+					}
+				}));
 	}
 
-	private void testDoGetEntities(DistributedEntity... entities)
+	private void testDoGetEntities(
+			Collection<? extends DistributedEntity> entities)
 			throws IOException, ServletException, ClassNotFoundException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		expect(res.getOutputStream()).andReturn(new ServletOutputStream() {
@@ -155,13 +171,13 @@ public final class DistributedEntityServletTest {
 		byte[] bytes = baos.toByteArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 		ObjectInputStream ois = new ObjectInputStream(bais);
-		assertEquals(entities.length, ois.readInt());
+		assertEquals(entities.size(), ois.readInt());
 		Set<DistributedEntity> deserialized = Sets
-				.newHashSetWithExpectedSize(entities.length);
-		for (int i = 0; i < entities.length; i++) {
+				.newHashSetWithExpectedSize(entities.size());
+		for (int i = 0; i < entities.size(); i++) {
 			deserialized.add((DistributedEntity) ois.readObject());
 		}
-		assertEquals(entities.length, deserialized.size());
+		assertEquals(entities.size(), deserialized.size());
 		for (DistributedEntity entity : entities) {
 			assertTrue(deserialized.contains(entity));
 		}

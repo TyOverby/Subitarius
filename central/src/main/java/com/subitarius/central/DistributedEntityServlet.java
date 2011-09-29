@@ -14,6 +14,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -134,13 +135,16 @@ class DistributedEntityServlet extends HttpServlet {
 				.createQuery(DistributedEntity.class);
 		Root<DistributedEntity> root = criteria.from(DistributedEntity.class);
 		criteria.select(root);
-		if (timestamp != null) {
-			criteria.where(builder.greaterThanOrEqualTo(
-					root.get(DistributedEntity_.persistDate), timestamp));
-		}
-		if (prefix != null) {
-			criteria.where(builder.like(root.get(DistributedEntity_.hash),
-					prefix + '%'));
+		Expression<Boolean> timestampExpr = builder.greaterThanOrEqualTo(
+				root.get(DistributedEntity_.persistDate), timestamp);
+		Expression<Boolean> prefixExpr = builder.like(
+				root.get(DistributedEntity_.hash), prefix + '%');
+		if (timestamp != null && prefix != null) {
+			criteria.where(builder.and(timestampExpr, prefixExpr));
+		} else if (timestamp != null) {
+			criteria.where(timestampExpr);
+		} else if (prefix != null) {
+			criteria.where(prefixExpr);
 		}
 		return entityManager.createQuery(criteria).getResultList();
 	}
