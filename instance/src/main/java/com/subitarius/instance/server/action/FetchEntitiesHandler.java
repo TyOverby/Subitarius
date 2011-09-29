@@ -95,7 +95,7 @@ class FetchEntitiesHandler implements
 					.setMaxResults(1).getSingleResult();
 			return entity.getPersistDate();
 		} catch (NoResultException nrx) {
-			return new Date(Long.MIN_VALUE);
+			return new Date(0L);
 		}
 	}
 
