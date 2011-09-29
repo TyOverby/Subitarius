@@ -106,6 +106,7 @@ class DistributedEntityServlet extends HttpServlet {
 
 		List<DistributedEntity> entities = getEntities(timestamp, prefix);
 		log.debug("sending {} entities in response to query", entities.size());
+		res.setContentType("application/x-java-serialized-object");
 		ObjectOutputStream oos = new ObjectOutputStream(res.getOutputStream());
 		oos.writeInt(entities.size());
 		for (DistributedEntity entity : entities) {

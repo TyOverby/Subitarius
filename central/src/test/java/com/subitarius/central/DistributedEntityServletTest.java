@@ -171,6 +171,8 @@ public final class DistributedEntityServletTest {
 			Collection<? extends DistributedEntity> entities)
 			throws IOException, ServletException, ClassNotFoundException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		res.setContentType("application/x-java-serialized-object");
+		expectLastCall();
 		expect(res.getOutputStream()).andReturn(new ServletOutputStream() {
 			@Override
 			public void write(int b) throws IOException {
