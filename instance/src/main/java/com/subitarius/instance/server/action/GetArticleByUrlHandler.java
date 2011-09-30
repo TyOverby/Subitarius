@@ -26,6 +26,8 @@ import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Article_;
+import com.subitarius.domain.DistributedEntity;
+import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.util.logging.InjectLogger;
 
 class GetArticleByUrlHandler implements
@@ -56,9 +58,12 @@ class GetArticleByUrlHandler implements
 			CriteriaQuery<Article> criteria = builder
 					.createQuery(Article.class);
 			Root<Article> articleRoot = criteria.from(Article.class);
+			Root<DistributedEntity> entityRoot = criteria
+					.from(DistributedEntity.class);
 			criteria.where(builder.equal(articleRoot.get(Article_.url),
 					articleUrl));
-			criteria.where(builder.isNull(articleRoot.get(Article_.child)));
+			criteria.where(builder.isEmpty(entityRoot
+					.get(DistributedEntity_.children)));
 			Article article = entityManager.createQuery(criteria)
 					.getSingleResult();
 

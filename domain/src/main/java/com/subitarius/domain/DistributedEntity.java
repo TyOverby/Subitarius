@@ -15,6 +15,7 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.Date;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
@@ -133,7 +134,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	private DistributedEntity parent;
 
-	private transient DistributedEntity child;
+	private transient Set<DistributedEntity> children;
 
 	protected DistributedEntity() {
 		this(null, null);
@@ -215,8 +216,8 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this.creator = creator;
 	}
 
-	@OneToOne
-	@JoinColumn(updatable = false)
+	@ManyToOne
+	@JoinColumn(unique = true, updatable = false)
 	public DistributedEntity getParent() {
 		return parent;
 	}
@@ -225,13 +226,22 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this.parent = parent;
 	}
 
-	@OneToOne(mappedBy = "parent")
-	public DistributedEntity getChild() {
-		return child;
+	@OneToMany(mappedBy = "parent")
+	protected Set<DistributedEntity> getChildren() {
+		return children;
 	}
 
-	protected void setChild(DistributedEntity child) {
-		this.child = child;
+	protected void setChildren(Set<DistributedEntity> children) {
+		this.children = children;
+	}
+
+	@Transient
+	public DistributedEntity getChild() {
+		if (children == null || children.isEmpty()) {
+			return null;
+		} else {
+			return children.iterator().next();
+		}
 	}
 
 	@Transient

@@ -28,6 +28,8 @@ import com.subitarius.action.GetMappingsByArticle;
 import com.subitarius.action.GetMappingsResult;
 import com.subitarius.action.dto.TagMappingDto;
 import com.subitarius.domain.ArticleUrl;
+import com.subitarius.domain.DistributedEntity;
+import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.domain.TagMapping;
 import com.subitarius.domain.TagMapping_;
 import com.subitarius.util.logging.InjectLogger;
@@ -60,9 +62,12 @@ class GetMappingsByArticleHandler implements
 		CriteriaQuery<TagMapping> criteria = builder
 				.createQuery(TagMapping.class);
 		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
+		Root<DistributedEntity> entityRoot = criteria
+				.from(DistributedEntity.class);
 		criteria.where(builder.equal(mappingRoot.get(TagMapping_.articleUrl),
 				articleUrl));
-		criteria.where(builder.isNull(mappingRoot.get(TagMapping_.child)));
+		criteria.where(builder.isEmpty(entityRoot
+				.get(DistributedEntity_.children)));
 		List<TagMapping> mappings = entityManager.createQuery(criteria)
 				.getResultList();
 
