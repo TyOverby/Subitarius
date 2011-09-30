@@ -311,7 +311,6 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 			ClassNotFoundException {
 		ois.defaultReadObject();
 		setCreateDate(createDate);
-		setPersistDate(persistDate);
 		validate();
 	}
 
