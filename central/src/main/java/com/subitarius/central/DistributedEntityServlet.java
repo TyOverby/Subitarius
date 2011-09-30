@@ -14,7 +14,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -54,13 +53,11 @@ class DistributedEntityServlet extends HttpServlet {
 
 	/**
 	 * Fetches and returns the serialized forms of any distributed entities
-	 * matching the criteria specified in the request parameters. Two optional
-	 * parameters are supported to limit results: {@code timestamp} and
-	 * {@code prefix}. {@code timestamp} is interpreted as a {@code long}
-	 * representing some number of milliseconds past the epoch; if this
-	 * parameter is used, results will be limited to entities created at or
-	 * after this time. {@code prefix} is a string which designates the hash
-	 * prefix which entities must match to be included.
+	 * matching the criteria specified in the request parameters. One optional
+	 * parameter is supported to limit results: {@code timestamp} is interpreted
+	 * as a {@code long} representing some number of milliseconds past the
+	 * epoch; if this parameter is used, results will be limited to entities
+	 * created at or after this time.
 	 * <p>
 	 * 
 	 * Additionally, there is a single required parameter, {@code version},
@@ -102,9 +99,7 @@ class DistributedEntityServlet extends HttpServlet {
 			timestamp = null;
 		}
 
-		String prefix = req.getParameter("prefix");
-
-		List<DistributedEntity> entities = getEntities(timestamp, prefix);
+		List<DistributedEntity> entities = getEntities(timestamp);
 		log.debug("sending {} entities in response to query", entities.size());
 		res.setContentType("application/x-java-serialized-object");
 		ObjectOutputStream oos = new ObjectOutputStream(res.getOutputStream());
@@ -117,35 +112,25 @@ class DistributedEntityServlet extends HttpServlet {
 	}
 
 	/**
-	 * Returns entities persisted at or before the specified timestamp and with
-	 * the specified hash prefix. Both parameters are optional and may be
-	 * {@code null} to indicate that no restriction should apply.
+	 * Returns entities persisted at or before the specified timestamp. The
+	 * parameter is optional and may be {@code null} to indicate that no
+	 * restriction should apply.
 	 * 
 	 * @param timestamp
 	 *            the earliest timestamp for which entities should be returned
-	 * @param prefix
-	 *            an optional limiting prefix for entity hashes
-	 * @return a list of entities persisted at or after the timestamp and with
-	 *         the specified hash prefix
+	 * @return a list of entities persisted at or after the timestamp
 	 */
 	@Transactional
-	private List<DistributedEntity> getEntities(Date timestamp, String prefix) {
+	private List<DistributedEntity> getEntities(Date timestamp) {
 		EntityManager entityManager = entityManagerProvider.get();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<DistributedEntity> criteria = builder
 				.createQuery(DistributedEntity.class);
 		Root<DistributedEntity> root = criteria.from(DistributedEntity.class);
 		criteria.select(root);
-		Expression<Boolean> timestampExpr = builder.greaterThanOrEqualTo(
-				root.get(DistributedEntity_.persistDate), timestamp);
-		Expression<Boolean> prefixExpr = builder.like(
-				root.get(DistributedEntity_.hash), prefix + '%');
-		if (timestamp != null && prefix != null) {
-			criteria.where(builder.and(timestampExpr, prefixExpr));
-		} else if (timestamp != null) {
-			criteria.where(timestampExpr);
-		} else if (prefix != null) {
-			criteria.where(prefixExpr);
+		if (timestamp != null) {
+			criteria.where(builder.greaterThanOrEqualTo(
+					root.get(DistributedEntity_.persistDate), timestamp));
 		}
 		return entityManager.createQuery(criteria).getResultList();
 	}

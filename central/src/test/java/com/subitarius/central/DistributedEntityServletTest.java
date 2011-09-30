@@ -114,55 +114,31 @@ public final class DistributedEntityServletTest {
 			ClassNotFoundException {
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn(null);
-		expect(req.getParameter("prefix")).andReturn(null);
 		testDoGetEntities(entities);
 	}
 
 	@Test
-	public void testDoGetTimestamp() throws IOException, ServletException,
+	public void testDoGetNone() throws IOException, ServletException,
 			ClassNotFoundException {
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn(
 				Long.toString(Long.MAX_VALUE));
-		expect(req.getParameter("prefix")).andReturn(null);
 		testDoGetEntities(ImmutableList.<DistributedEntity> of());
 	}
 
 	@Test
-	public void testDoGetPrefix() throws IOException, ServletException,
-			ClassNotFoundException {
-		final String prefix = entities.get(0).getHash().substring(0, 1);
-		expect(req.getParameter("version")).andReturn("0.2-alpha");
-		expect(req.getParameter("timestamp")).andReturn(null);
-		expect(req.getParameter("prefix")).andReturn(prefix);
-		testDoGetEntities(Collections2.filter(entities,
-				new Predicate<DistributedEntity>() {
-					@Override
-					public boolean apply(DistributedEntity entity) {
-						return (entity.getHash().startsWith(prefix));
-					}
-				}));
-	}
-
-	@Test
-	public void testDoGetBoth() throws IOException, ServletException,
+	public void testDoGetSome() throws IOException, ServletException,
 			ClassNotFoundException {
 		final long timestamp = entities.get(URL_COUNT).getPersistDate()
 				.getTime();
-		final String prefix = entities.get(URL_COUNT).getHash().substring(0, 1);
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn(
 				Long.toString(timestamp));
-		expect(req.getParameter("prefix")).andReturn(prefix);
 		testDoGetEntities(Collections2.filter(entities,
 				new Predicate<DistributedEntity>() {
 					@Override
-					public boolean apply(DistributedEntity entity) {
-						boolean timestampApplies = (entity.getPersistDate()
-								.getTime() >= timestamp);
-						boolean prefixApplies = (entity.getHash()
-								.startsWith(prefix));
-						return (timestampApplies && prefixApplies);
+					public boolean apply(DistributedEntity input) {
+						return (input.getPersistDate().getTime() >= timestamp);
 					}
 				}));
 	}
@@ -205,7 +181,6 @@ public final class DistributedEntityServletTest {
 	public void testDoGetBadVersion() throws IOException, ServletException {
 		expect(req.getParameter("version")).andReturn("0.1-alpha");
 		expect(req.getParameter("timestamp")).andReturn(null).anyTimes();
-		expect(req.getParameter("prefix")).andReturn(null).anyTimes();
 		res.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED);
 		expectLastCall();
 
@@ -218,7 +193,6 @@ public final class DistributedEntityServletTest {
 	public void testDoGetBadTimestamp() throws IOException, ServletException {
 		expect(req.getParameter("version")).andReturn("0.2-alpha");
 		expect(req.getParameter("timestamp")).andReturn("foo bar");
-		expect(req.getParameter("prefix")).andReturn(null).anyTimes();
 		res.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		expectLastCall();
 

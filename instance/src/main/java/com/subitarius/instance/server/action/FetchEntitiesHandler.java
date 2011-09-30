@@ -36,10 +36,6 @@ class FetchEntitiesHandler implements
 		ActionHandler<FetchEntities, MutationResult> {
 	private static final String URL = "http://meyer.pre-alpha.com/DistributedEntity";
 
-	private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
-
-	private static final long THRESHOLD = 5 * 24 * 60 * 60 * 1000; // 5 days
-
 	private final EntityManager entityManager;
 
 	private final SimpleHttpClient httpClient;
@@ -54,57 +50,13 @@ class FetchEntitiesHandler implements
 		this.instanceVersion = instanceVersion;
 	}
 
+	@Transactional
 	@Override
 	public MutationResult execute(FetchEntities action, Dispatcher dispatcher)
 			throws ActionException {
-		long now = System.currentTimeMillis();
 		long timestamp = getTimestamp().getTime();
-		if (now - timestamp > THRESHOLD) {
-			executeOverThreshold(timestamp);
-		} else {
-			executeUnderThreshold(timestamp);
-		}
-		return MutationResult.SUCCESS;
-	}
-
-	private void executeOverThreshold(long timestamp) throws ActionException {
-		for (char a : HEX_CHARS) {
-			for (char b : HEX_CHARS) {
-				String prefix = new String(new char[] { a, b });
-				doRequest(timestamp, prefix);
-			}
-		}
-	}
-
-	private void executeUnderThreshold(long timestamp) throws ActionException {
-		for (char a : HEX_CHARS) {
-			String prefix = new String(new char[] { a });
-			doRequest(timestamp, prefix);
-		}
-	}
-
-	@Transactional
-	private Date getTimestamp() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<DistributedEntity> criteria = builder
-				.createQuery(DistributedEntity.class);
-		Root<DistributedEntity> root = criteria.from(DistributedEntity.class);
-		criteria.orderBy(builder.desc(root.get(DistributedEntity_.persistDate)));
-		try {
-			DistributedEntity entity = entityManager.createQuery(criteria)
-					.setMaxResults(1).getSingleResult();
-			return entity.getPersistDate();
-		} catch (NoResultException nrx) {
-			return new Date(0L);
-		}
-	}
-
-	@Transactional
-	private void doRequest(long timestamp, String prefix)
-			throws ActionException {
 		ImmutableMap<String, String> params = ImmutableMap.of("version",
-				instanceVersion, "timestamp", Long.toString(timestamp),
-				"prefix", prefix);
+				instanceVersion, "timestamp", Long.toString(timestamp));
 		try {
 			InputStream stream = httpClient.doGet(URL, params);
 			ObjectInputStream ois = new ObjectInputStream(stream);
@@ -128,6 +80,35 @@ class FetchEntitiesHandler implements
 			throw new ActionException(iox);
 		} catch (RobotsExclusionException rex) {
 			throw new ActionException(rex);
+		}
+		return MutationResult.SUCCESS;
+	}
+
+	/**
+	 * Returns the timestamp which should be used to limit returned entities.
+	 * This is the persist date of the most recent entity in the database.
+	 * <p>
+	 * 
+	 * This method should only be called within a database transaction.
+	 * 
+	 * @return the limiting timestamp
+	 */
+	/*
+	 * TODO: what if a user creates an entity at some point and we miss
+	 * something? We're going to need to store this value somehow.
+	 */
+	private Date getTimestamp() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<DistributedEntity> criteria = builder
+				.createQuery(DistributedEntity.class);
+		Root<DistributedEntity> root = criteria.from(DistributedEntity.class);
+		criteria.orderBy(builder.desc(root.get(DistributedEntity_.persistDate)));
+		try {
+			DistributedEntity entity = entityManager.createQuery(criteria)
+					.setMaxResults(1).getSingleResult();
+			return entity.getPersistDate();
+		} catch (NoResultException nrx) {
+			return new Date(0L);
 		}
 	}
 }
