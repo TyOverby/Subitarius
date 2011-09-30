@@ -43,7 +43,7 @@ class FetchEntitiesHandler implements
 	private final String instanceVersion;
 
 	@Inject
-	private FetchEntitiesHandler(EntityManager entityManager,
+	FetchEntitiesHandler(EntityManager entityManager,
 			SimpleHttpClient httpClient, @InstanceVersion String instanceVersion) {
 		this.entityManager = entityManager;
 		this.httpClient = httpClient;
