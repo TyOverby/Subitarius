@@ -16,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -80,7 +81,7 @@ public class Tag extends CentralEntity {
 		this.type = type;
 	}
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(joinColumns = { @JoinColumn(nullable = false) }, inverseJoinColumns = { @JoinColumn(nullable = false) })
 	public Set<Tag> getParents() {
 		return parents;
@@ -88,7 +89,6 @@ public class Tag extends CentralEntity {
 
 	protected void setParents(Set<Tag> parents) {
 		if (parents != null) {
-			checkArgument(!parents.contains(this));
 			this.parents = parents;
 		} else {
 			this.parents = ImmutableSet.of();
