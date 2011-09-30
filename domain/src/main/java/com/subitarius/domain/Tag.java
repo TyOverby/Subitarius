@@ -87,9 +87,12 @@ public class Tag extends CentralEntity {
 	}
 
 	protected void setParents(Set<Tag> parents) {
-		checkNotNull(parents);
-		checkArgument(!parents.contains(this));
-		this.parents = parents;
+		if (parents != null) {
+			checkArgument(!parents.contains(this));
+			this.parents = parents;
+		} else {
+			this.parents = ImmutableSet.of();
+		}
 	}
 
 	@ManyToMany(mappedBy = "parents")
@@ -98,8 +101,11 @@ public class Tag extends CentralEntity {
 	}
 
 	protected void setChildren(Set<Tag> children) {
-		checkNotNull(children);
-		this.children = children;
+		if (children != null) {
+			this.children = children;
+		} else {
+			this.children = ImmutableSet.of();
+		}
 	}
 
 	@OneToMany(mappedBy = "tag")
@@ -108,8 +114,11 @@ public class Tag extends CentralEntity {
 	}
 
 	protected void setMappings(Set<TagMapping> mappings) {
-		checkNotNull(mappings);
-		this.mappings = mappings;
+		if (mappings != null) {
+			this.mappings = mappings;
+		} else {
+			this.mappings = ImmutableSet.of();
+		}
 	}
 
 	@Override

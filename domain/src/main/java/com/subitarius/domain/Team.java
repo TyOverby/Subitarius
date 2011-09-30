@@ -137,8 +137,11 @@ public class Team extends SignedEntity {
 	}
 
 	protected void setLicenses(Set<License> licenses) {
-		checkNotNull(licenses);
-		this.licenses = licenses;
+		if (licenses != null) {
+			this.licenses = licenses;
+		} else {
+			this.licenses = ImmutableSet.of();
+		}
 	}
 
 	@Transient

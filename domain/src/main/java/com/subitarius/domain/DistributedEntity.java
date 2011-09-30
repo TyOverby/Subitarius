@@ -33,6 +33,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 
 /**
@@ -152,6 +153,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		createDate = new Date();
 		this.creator = creator;
 		this.parent = parent;
+		children = ImmutableSet.of();
 	}
 
 	@Id
@@ -232,7 +234,11 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 	}
 
 	protected void setChildren(Set<DistributedEntity> children) {
-		this.children = children;
+		if (children != null) {
+			this.children = children;
+		} else {
+			this.children = ImmutableSet.of();
+		}
 	}
 
 	@Transient

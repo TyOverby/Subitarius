@@ -73,8 +73,11 @@ public class ArticleUrl extends DistributedEntity {
 	}
 
 	protected void setArticles(Set<Article> articles) {
-		checkNotNull(articles);
-		this.articles = articles;
+		if (articles != null) {
+			this.articles = articles;
+		} else {
+			this.articles = ImmutableSet.of();
+		}
 	}
 
 	@Transient
@@ -100,8 +103,11 @@ public class ArticleUrl extends DistributedEntity {
 	}
 
 	protected void setMappings(Set<TagMapping> mappings) {
-		checkNotNull(mappings);
-		this.mappings = mappings;
+		if (mappings != null) {
+			this.mappings = mappings;
+		} else {
+			this.mappings = ImmutableSet.of();
+		}
 	}
 
 	@Transient
