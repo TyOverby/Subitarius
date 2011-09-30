@@ -26,6 +26,7 @@
 			<span class="{res.style.heading}">
 				<g:Label text="{msg.controlsHeading}" />
 			</span>
+			<g:Label text="{msg.controlsText}" />
 			<g:Button text="{msg.fetchButton}" ui:field="fetchButton" />
 		</g:HTMLPanel>
 

@@ -19,6 +19,8 @@ public interface MainMessages extends Messages {
 
 	String controlsHeading();
 
+	String controlsText();
+
 	String fetchButton();
 
 	String addArticleHeading();
