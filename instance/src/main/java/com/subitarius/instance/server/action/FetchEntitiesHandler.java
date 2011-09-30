@@ -28,6 +28,8 @@ import com.subitarius.action.FetchEntities;
 import com.subitarius.action.MutationResult;
 import com.subitarius.domain.DistributedEntity;
 import com.subitarius.domain.DistributedEntity_;
+import com.subitarius.domain.Tag;
+import com.subitarius.domain.TagMapping;
 import com.subitarius.instance.server.InstanceVersion;
 import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
@@ -66,6 +68,15 @@ class FetchEntitiesHandler implements
 					DistributedEntity entity = (DistributedEntity) ois
 							.readObject();
 					entityManager.persist(entity);
+
+					if (entity instanceof TagMapping) {
+						Tag tag = ((TagMapping) entity).getTag();
+						if (entityManager.find(Tag.class, tag.getId()) != null) {
+							entityManager.merge(tag);
+						} else {
+							entityManager.persist(tag);
+						}
+					}
 				} catch (ClassCastException ccx) {
 					throw new ActionException(ccx);
 				} catch (ClassNotFoundException cnfx) {
