@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamException;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -19,6 +20,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
@@ -44,15 +46,17 @@ class FetchEntitiesHandler implements
 
 	private final String instanceVersion;
 
+	private final Set<DistributedEntity> entities;
+
 	@Inject
 	FetchEntitiesHandler(EntityManager entityManager,
 			SimpleHttpClient httpClient, @InstanceVersion String instanceVersion) {
 		this.entityManager = entityManager;
 		this.httpClient = httpClient;
 		this.instanceVersion = instanceVersion;
+		entities = Sets.newHashSet();
 	}
 
-	@Transactional
 	@Override
 	public MutationResult execute(FetchEntities action, Dispatcher dispatcher)
 			throws ActionException {
@@ -67,16 +71,7 @@ class FetchEntitiesHandler implements
 				try {
 					DistributedEntity entity = (DistributedEntity) ois
 							.readObject();
-					entityManager.persist(entity);
-
-					if (entity instanceof TagMapping) {
-						Tag tag = ((TagMapping) entity).getTag();
-						if (entityManager.find(Tag.class, tag.getId()) != null) {
-							entityManager.merge(tag);
-						} else {
-							entityManager.persist(tag);
-						}
-					}
+					entities.add(entity);
 				} catch (ClassCastException ccx) {
 					throw new ActionException(ccx);
 				} catch (ClassNotFoundException cnfx) {
@@ -92,20 +87,18 @@ class FetchEntitiesHandler implements
 		} catch (RobotsExclusionException rex) {
 			throw new ActionException(rex);
 		}
+		flushEntities();
 		return MutationResult.SUCCESS;
 	}
 
 	/**
 	 * Returns the timestamp which should be used to limit returned entities.
 	 * This is the persist date of the most recent entity in the database.
-	 * <p>
-	 * 
-	 * This method should only be called within a database transaction.
 	 * 
 	 * @return the limiting timestamp
 	 */
 	/*
-	 * TODO: what if a user creates an entity at some point and we miss
+	 * XXX: what if a user creates an entity at some point and we miss
 	 * something? We're going to need to store this value somehow.
 	 */
 	private Date getTimestamp() {
@@ -121,5 +114,24 @@ class FetchEntitiesHandler implements
 		} catch (NoResultException nrx) {
 			return new Date(0L);
 		}
+	}
+
+	@Transactional
+	void flushEntities() {
+		// perform two passes so that all references between entities are made
+		// in the first pass, we get URLs and tags only
+		for (DistributedEntity entity : entities) {
+			if (entity instanceof TagMapping) {
+				Tag tag = ((TagMapping) entity).getTag();
+				entityManager.persist(tag);
+			} else {
+				entityManager.persist(entity);
+			}
+		}
+		for (DistributedEntity entity : entities) {
+			entityManager.persist(entity);
+		}
+		entityManager.flush();
+		entities.clear();
 	}
 }
