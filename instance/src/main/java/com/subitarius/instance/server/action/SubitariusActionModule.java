@@ -7,6 +7,9 @@
 package com.subitarius.instance.server.action;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -28,6 +31,7 @@ import com.subitarius.action.GetMappingsByTag;
 import com.subitarius.action.GetParagraphs;
 import com.subitarius.action.GetTag;
 import com.subitarius.action.GetTagSuggestions;
+import com.subitarius.action.ParseArticles;
 
 public final class SubitariusActionModule extends ActionModule {
 	public SubitariusActionModule() {
@@ -48,6 +52,7 @@ public final class SubitariusActionModule extends ActionModule {
 		bindAction(GetParagraphs.class).to(GetParagraphsHandler.class);
 		bindAction(GetTag.class).to(GetTagHandler.class);
 		bindAction(GetTagSuggestions.class).to(GetTagSuggestionsHandler.class);
+		bindAction(ParseArticles.class).to(ParseArticlesHandler.class);
 	}
 
 	@Provides
@@ -57,5 +62,24 @@ public final class SubitariusActionModule extends ActionModule {
 		List<String> mappingFiles = ImmutableList.of("bean-mapping.xml");
 		mapper.setMappingFiles(mappingFiles);
 		return mapper;
+	}
+
+	@Provides
+	@Inject
+	ExecutorService getThreadPool(ThreadFactory threadFactory) {
+		return Executors.newCachedThreadPool(threadFactory);
+	}
+
+	@Provides
+	ThreadFactory getThreadFactory() {
+		return new ThreadFactory() {
+			private int count = 0;
+
+			@Override
+			public Thread newThread(Runnable task) {
+				String name = String.format("parse/%i", count++);
+				return new Thread(task, name);
+			}
+		};
 	}
 }
