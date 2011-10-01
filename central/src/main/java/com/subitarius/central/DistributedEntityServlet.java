@@ -99,12 +99,14 @@ class DistributedEntityServlet extends HttpServlet {
 			timestamp = null;
 		}
 
+		EntityManager entityManager = entityManagerProvider.get();
 		List<DistributedEntity> entities = getEntities(timestamp);
 		log.debug("sending {} entities in response to query", entities.size());
 		res.setContentType("application/x-java-serialized-object");
 		ObjectOutputStream oos = new ObjectOutputStream(res.getOutputStream());
 		oos.writeInt(entities.size());
 		for (DistributedEntity entity : entities) {
+			entityManager.detach(entity);
 			oos.writeObject(entity);
 		}
 		oos.flush();

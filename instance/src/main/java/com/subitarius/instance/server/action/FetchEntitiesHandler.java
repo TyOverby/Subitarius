@@ -19,6 +19,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.slf4j.Logger;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -35,10 +37,14 @@ import com.subitarius.domain.TagMapping;
 import com.subitarius.instance.server.InstanceVersion;
 import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
+import com.subitarius.util.logging.InjectLogger;
 
 class FetchEntitiesHandler implements
 		ActionHandler<FetchEntities, MutationResult> {
 	private static final String URL = "http://meyer.pre-alpha.com/DistributedEntity";
+
+	@InjectLogger
+	private Logger log;
 
 	private final EntityManager entityManager;
 
@@ -48,6 +54,8 @@ class FetchEntitiesHandler implements
 
 	private final Set<DistributedEntity> entities;
 
+	private final Set<Tag> tags;
+
 	@Inject
 	FetchEntitiesHandler(EntityManager entityManager,
 			SimpleHttpClient httpClient, @InstanceVersion String instanceVersion) {
@@ -55,6 +63,7 @@ class FetchEntitiesHandler implements
 		this.httpClient = httpClient;
 		this.instanceVersion = instanceVersion;
 		entities = Sets.newHashSet();
+		tags = Sets.newHashSet();
 	}
 
 	@Override
@@ -72,6 +81,10 @@ class FetchEntitiesHandler implements
 					DistributedEntity entity = (DistributedEntity) ois
 							.readObject();
 					entities.add(entity);
+					if (entity instanceof TagMapping) {
+						Tag child = ((TagMapping) entity).getTag();
+						tags.addAll(getAllAncestors(child));
+					}
 				} catch (ClassCastException ccx) {
 					throw new ActionException(ccx);
 				} catch (ClassNotFoundException cnfx) {
@@ -87,7 +100,12 @@ class FetchEntitiesHandler implements
 		} catch (RobotsExclusionException rex) {
 			throw new ActionException(rex);
 		}
-		flushEntities();
+		try {
+			flushTags();
+			flushEntities();
+		} catch (Exception x) {
+			log.error("unexpected exception", x);
+		}
 		return MutationResult.SUCCESS;
 	}
 
@@ -116,15 +134,52 @@ class FetchEntitiesHandler implements
 		}
 	}
 
+	private static Set<Tag> getAllAncestors(Tag tag) {
+		Set<Tag> ancestors = Sets.newHashSet();
+		ancestors.add(tag);
+		for (Tag parent : tag.getParents()) {
+			ancestors.addAll(getAllAncestors(parent));
+		}
+		return ancestors;
+	}
+
+	@Transactional
+	void flushTags() {
+		// find the set of roots, which we persist first
+		Set<Tag> ancestors = Sets.newHashSet();
+		for (Tag tag : tags) {
+			if (tag.getParents().isEmpty()) {
+				entityManager.persist(tag);
+				ancestors.add(tag);
+			}
+		}
+		entityManager.flush();
+
+		// persist all other tags such that the parents are persisted first
+		int nodeCount;
+		do {
+			nodeCount = 0;
+			for (Tag tag : tags) {
+				Set<Tag> parents = tag.getParents();
+				if (!ancestors.contains(tag) && ancestors.containsAll(parents)) {
+					entityManager.merge(tag);
+					ancestors.add(tag);
+				} else {
+					nodeCount++;
+				}
+			}
+			entityManager.flush();
+		} while (nodeCount > 0);
+
+		tags.clear();
+	}
+
 	@Transactional
 	void flushEntities() {
 		// perform two passes so that all references between entities are made
-		// in the first pass, we get URLs and tags only
+		// in the first pass, we get URLs only; in the second, we get all
 		for (DistributedEntity entity : entities) {
-			if (entity instanceof TagMapping) {
-				Tag tag = ((TagMapping) entity).getTag();
-				entityManager.persist(tag);
-			} else {
+			if (!(entity instanceof TagMapping)) {
 				entityManager.persist(entity);
 			}
 		}
