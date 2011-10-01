@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -60,6 +61,7 @@ import com.google.inject.Inject;
  * 
  */
 @Entity
+@Cacheable
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DistributedEntity implements HasBytes, Serializable {
 	private static final long serialVersionUID = -5279070062492987285L;
