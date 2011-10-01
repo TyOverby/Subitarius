@@ -116,14 +116,14 @@ public final class RobotsTxt implements Predicate<HttpUriRequest> {
 				assert directive.getType().equals(Type.USER_AGENT);
 
 				if (directive.apply(userAgent)) {
-					if (entry.getValue().apply(path)) {
-						return true;
+					if (!entry.getValue().apply(path)) {
+						return false;
 					}
 				}
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	@Override
