@@ -126,11 +126,13 @@ final class ParseArticlesHandler implements
 					log.debug("parse failed due to status code {}: {}",
 							statusCode, url);
 				} else {
-					log.warn("exception while parsing article", apx);
+					log.warn("exception while parsing article at URL {}", url,
+							apx);
 				}
 			} catch (RuntimeException rx) {
-				log.warn("unexpected runtime exception while parsing article",
-						rx);
+				log.warn(
+						"unexpected runtime exception while parsing article at URL {}",
+						url, rx);
 			} finally {
 				if (entityManager.getTransaction().isActive()) {
 					entityManager.getTransaction().rollback();
