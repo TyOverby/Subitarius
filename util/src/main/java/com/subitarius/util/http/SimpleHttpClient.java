@@ -36,8 +36,9 @@ import com.subitarius.util.logging.InjectLogger;
 
 /*
  * TODO: it should probably be possible to set the user agent
+ * This class is non-final so that it can be mocked out.
  */
-public final class SimpleHttpClient {
+public class SimpleHttpClient {
 	private static final String USER_AGENT = "Subitarius";
 
 	@InjectLogger
