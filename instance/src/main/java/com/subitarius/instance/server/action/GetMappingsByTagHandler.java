@@ -66,7 +66,9 @@ class GetMappingsByTagHandler implements
 
 		final Map<String, TagMapping> mappings = Maps.newHashMap();
 		for (TagMapping mapping : tag.getMappings()) {
-			mappings.put(mapping.getHash(), mapping);
+			if (mapping.getArticleUrl().getArticle() != null) {
+				mappings.put(mapping.getHash(), mapping);
+			}
 		}
 
 		List<TagMappingDto> dtos = Lists.transform(
