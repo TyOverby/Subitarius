@@ -199,7 +199,11 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, updatable = false)
 	public Date getPersistDate() {
-		return new Date(persistDate.getTime());
+		if (persistDate != null) {
+			return new Date(persistDate.getTime());
+		} else {
+			return null; // hasn't been persisted yet
+		}
 	}
 
 	protected void setPersistDate(Date persistDate) {

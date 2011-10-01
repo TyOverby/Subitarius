@@ -19,6 +19,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.slf4j.Logger;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -35,10 +37,14 @@ import com.subitarius.domain.TagMapping;
 import com.subitarius.instance.server.InstanceVersion;
 import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
+import com.subitarius.util.logging.InjectLogger;
 
 class FetchEntitiesHandler implements
 		ActionHandler<FetchEntities, MutationResult> {
 	private static final String URL = "http://meyer.pre-alpha.com/DistributedEntity";
+
+	@InjectLogger
+	private Logger log;
 
 	private final EntityManager entityManager;
 
@@ -46,18 +52,12 @@ class FetchEntitiesHandler implements
 
 	private final String instanceVersion;
 
-	private final Set<DistributedEntity> entities;
-
-	private final Set<Tag> tags;
-
 	@Inject
 	FetchEntitiesHandler(EntityManager entityManager,
 			SimpleHttpClient httpClient, @InstanceVersion String instanceVersion) {
 		this.entityManager = entityManager;
 		this.httpClient = httpClient;
 		this.instanceVersion = instanceVersion;
-		entities = Sets.newHashSet();
-		tags = Sets.newHashSet();
 	}
 
 	@Override
@@ -66,18 +66,23 @@ class FetchEntitiesHandler implements
 		long timestamp = getTimestamp().getTime();
 		ImmutableMap<String, String> params = ImmutableMap.of("version",
 				instanceVersion, "timestamp", Long.toString(timestamp));
+		Set<Tag> tags = Sets.newHashSet();
+		Set<DistributedEntity> entities = Sets.newHashSet();
 		try {
 			InputStream stream = httpClient.doGet(URL, params);
 			ObjectInputStream ois = new ObjectInputStream(stream);
 			int entityCount = ois.readInt();
+			log.debug("received {} entities from server", entityCount);
 			for (int i = 0; i < entityCount; i++) {
 				try {
 					DistributedEntity entity = (DistributedEntity) ois
 							.readObject();
 					entities.add(entity);
+					log.trace("received entity: {}", entity);
 					if (entity instanceof TagMapping) {
 						Tag child = ((TagMapping) entity).getTag();
 						tags.addAll(getAllAncestors(child));
+						log.trace("received tag: {}", child);
 					}
 				} catch (ClassCastException ccx) {
 					throw new ActionException(ccx);
@@ -94,8 +99,9 @@ class FetchEntitiesHandler implements
 		} catch (RobotsExclusionException rex) {
 			throw new ActionException(rex);
 		}
-		flushTags();
-		flushEntities();
+		flushTags(tags);
+		flushEntities(entities);
+		log.debug("fetch complete");
 		return MutationResult.SUCCESS;
 	}
 
@@ -134,7 +140,9 @@ class FetchEntitiesHandler implements
 	}
 
 	@Transactional
-	void flushTags() {
+	void flushTags(Set<Tag> tags) {
+		log.trace("flushing {} tags", tags.size());
+
 		// find the set of roots, which we persist first
 		Set<Tag> ancestors = Sets.newHashSet();
 		for (Tag tag : tags) {
@@ -143,31 +151,30 @@ class FetchEntitiesHandler implements
 				ancestors.add(tag);
 			}
 		}
-		entityManager.flush();
 
 		// persist all other tags such that the parents are persisted first
-		int nodeCount;
+		int remainingCount;
 		do {
-			nodeCount = 0;
+			remainingCount = 0;
+			Set<Tag> toAdd = Sets.newHashSet();
 			for (Tag tag : tags) {
 				Set<Tag> parents = tag.getParents();
 				if (!ancestors.contains(tag)) {
 					if (ancestors.containsAll(parents)) {
 						entityManager.merge(tag);
-						ancestors.add(tag);
+						toAdd.add(tag);
 					} else {
-						nodeCount++;
+						remainingCount++;
 					}
 				}
 			}
-			entityManager.flush();
-		} while (nodeCount > 0);
-
-		tags.clear();
+			ancestors.addAll(toAdd);
+		} while (remainingCount > 0);
 	}
 
 	@Transactional
-	void flushEntities() {
+	void flushEntities(Set<DistributedEntity> entities) {
+		log.trace("flushing {} entities", entities.size());
 		// perform two passes so that all references between entities are made
 		// in the first pass, we get URLs only; in the second, we get all
 		for (DistributedEntity entity : entities) {
@@ -178,7 +185,5 @@ class FetchEntitiesHandler implements
 		for (DistributedEntity entity : entities) {
 			entityManager.merge(entity);
 		}
-		entityManager.flush();
-		entities.clear();
 	}
 }
