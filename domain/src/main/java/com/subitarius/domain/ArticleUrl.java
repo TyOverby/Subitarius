@@ -106,7 +106,7 @@ public class ArticleUrl extends DistributedEntity {
 		if (mappings != null) {
 			this.mappings = mappings;
 		} else {
-			this.mappings = ImmutableSet.of();
+			this.mappings = Sets.newHashSet();
 		}
 	}
 

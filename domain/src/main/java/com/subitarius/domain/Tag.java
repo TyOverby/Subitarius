@@ -23,6 +23,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
@@ -91,7 +92,7 @@ public class Tag extends CentralEntity {
 		if (parents != null) {
 			this.parents = parents;
 		} else {
-			this.parents = ImmutableSet.of();
+			this.parents = Sets.newHashSet();
 		}
 	}
 
@@ -104,7 +105,7 @@ public class Tag extends CentralEntity {
 		if (children != null) {
 			this.children = children;
 		} else {
-			this.children = ImmutableSet.of();
+			this.children = Sets.newHashSet();
 		}
 	}
 
@@ -117,7 +118,7 @@ public class Tag extends CentralEntity {
 		if (mappings != null) {
 			this.mappings = mappings;
 		} else {
-			this.mappings = ImmutableSet.of();
+			this.mappings = Sets.newHashSet();
 		}
 	}
 

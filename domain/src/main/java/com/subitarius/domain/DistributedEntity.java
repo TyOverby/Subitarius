@@ -34,6 +34,7 @@ import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 /**
@@ -237,7 +238,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		if (children != null) {
 			this.children = children;
 		} else {
-			this.children = ImmutableSet.of();
+			this.children = Sets.newHashSet();
 		}
 	}
 
