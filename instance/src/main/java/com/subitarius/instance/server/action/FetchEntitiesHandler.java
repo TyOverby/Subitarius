@@ -19,8 +19,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.slf4j.Logger;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
@@ -37,14 +35,10 @@ import com.subitarius.domain.TagMapping;
 import com.subitarius.instance.server.InstanceVersion;
 import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
-import com.subitarius.util.logging.InjectLogger;
 
 class FetchEntitiesHandler implements
 		ActionHandler<FetchEntities, MutationResult> {
 	private static final String URL = "http://meyer.pre-alpha.com/DistributedEntity";
-
-	@InjectLogger
-	private Logger log;
 
 	private final EntityManager entityManager;
 
@@ -100,12 +94,8 @@ class FetchEntitiesHandler implements
 		} catch (RobotsExclusionException rex) {
 			throw new ActionException(rex);
 		}
-		try {
-			flushTags();
-			flushEntities();
-		} catch (Exception x) {
-			log.error("unexpected exception", x);
-		}
+		flushTags();
+		flushEntities();
 		return MutationResult.SUCCESS;
 	}
 
@@ -161,11 +151,13 @@ class FetchEntitiesHandler implements
 			nodeCount = 0;
 			for (Tag tag : tags) {
 				Set<Tag> parents = tag.getParents();
-				if (!ancestors.contains(tag) && ancestors.containsAll(parents)) {
-					entityManager.merge(tag);
-					ancestors.add(tag);
-				} else {
-					nodeCount++;
+				if (!ancestors.contains(tag)) {
+					if (ancestors.containsAll(parents)) {
+						entityManager.merge(tag);
+						ancestors.add(tag);
+					} else {
+						nodeCount++;
+					}
 				}
 			}
 			entityManager.flush();
