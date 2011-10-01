@@ -25,5 +25,47 @@
 				</object>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://english.aljazeera.net/news/americas/2011/09/201192543845281801.html</string>
+				<string>Arrests at New York anti-Wall Street protest</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316908800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>About 80 people have been arrested as demonstrators who were camped out near the New York Stock Exchange marched through lower Manhattan, police said.</string>
+					</void>
+					<void method="add">
+						<string>Saturday's protests were part of a week-long demonstration on and near Wall Street which has been organised against a range of government-related actions that activists say are irresponsible, such as bank bailouts, the mortgage crisis and the US state of Georgia's execution of Troy Davis.</string>
+					</void>
+					<void method="add">
+						<string>The New York police took precautionary measures with metal barricades and swarms of police officers in front of the New York Stock Exchange, and the closest protesters could get to was Liberty Street, about three blocks away.</string>
+					</void>
+					<void method="add">
+						<string>A video on posted on Youtubeappears to show officers using mace on protesters who already were cordoned off by police. Another shows officers handcuffing a man after pulling him up off the ground, blood trickling down his face.</string>
+					</void>
+					<void method="add">
+						<string>Police say the arrests were mostly for blocking traffic. Charges include disorderly conduct and resisting arrest.</string>
+					</void>
+					<void method="add">
+						<string>But one demonstrator was charged with assaulting a police officer, who police say suffered a shoulder injury.</string>
+					</void>
+					<void method="add">
+						<string>Organisers of the protests have united under the banner 'Occupy Wall Street', and have taken over Manhatten's Zucatti Park, not far from Wall Street, for 8 days and nights.</string>
+					</void>
+					<void method="add">
+						<string>Patrick Bruner, a protest spokesperson, told the AP news agency the police response was "exceedingly violent" and said the protesters had stayed peaceful.</string>
+					</void>
+					<void method="add">
+						<string>On Thursday, a protest in support of Troy Davis, who was executed in Georgia the night before, converged with the demonstration in Zucatti Park, and activists said that at least six protesters were arrested.</string>
+					</void>
+					<void method="add">
+						<string>New York police spokespeople were not available for comment.</string>
+					</void>
+				</object>
+			</object>
+		</void>
 	</object>
 </java>

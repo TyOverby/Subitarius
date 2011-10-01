@@ -58,7 +58,8 @@ final class AlJazeeraArticleParser implements ArticleParser {
 			title = document.select("#DetailedTitle").text();
 
 			// date
-			String dateStr = document.select("#cphBody_lblDate").text();
+			String dateStr = document.select("#dvArticleDate").text()
+					.replace("Last Modified: ", "");
 			try {
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
