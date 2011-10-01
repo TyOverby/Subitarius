@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -39,22 +41,23 @@ final class ParseArticlesHandler implements
 	@InjectLogger
 	private Logger log;
 
-	private final EntityManager entityManager;
+	private final Provider<EntityManager> entityManagerProvider;
 
 	private final ArticleParser articleParser;
 
 	private CountDownLatch latch;
 
 	@Inject
-	private ParseArticlesHandler(EntityManager entityManager,
+	private ParseArticlesHandler(Provider<EntityManager> entityManagerProvider,
 			ArticleParser articleParser) {
-		this.entityManager = entityManager;
+		this.entityManagerProvider = entityManagerProvider;
 		this.articleParser = articleParser;
 	}
 
 	@Override
 	public MutationResult execute(ParseArticles action, Dispatcher dispatcher)
 			throws ActionException {
+		EntityManager entityManager = entityManagerProvider.get();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ArticleUrl> criteria = builder
 				.createQuery(ArticleUrl.class);
@@ -108,7 +111,9 @@ final class ParseArticlesHandler implements
 		}
 
 		private void parseArticle(ArticleUrl url) {
-			entityManager.getTransaction().begin();
+			EntityManager entityManager = entityManagerProvider.get();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
 			try {
 				log.trace("attempting to parse {}", url);
 				Article article = articleParser.parse(url);
@@ -118,7 +123,7 @@ final class ParseArticlesHandler implements
 				} else {
 					log.trace("no valid article at URL {}", url);
 				}
-				entityManager.getTransaction().commit();
+				transaction.commit();
 			} catch (ArticleParseException apx) {
 				if (apx.getCause() instanceof StatusCodeException) {
 					int statusCode = ((StatusCodeException) apx.getCause())
@@ -134,8 +139,8 @@ final class ParseArticlesHandler implements
 						"unexpected runtime exception while parsing article at URL {}",
 						url, rx);
 			} finally {
-				if (entityManager.getTransaction().isActive()) {
-					entityManager.getTransaction().rollback();
+				if (transaction.isActive()) {
+					transaction.rollback();
 				}
 			}
 		}
