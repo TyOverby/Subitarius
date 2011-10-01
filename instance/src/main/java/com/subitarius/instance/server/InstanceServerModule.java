@@ -16,7 +16,6 @@ import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.persist.Transactional;
-import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletModule;
 import com.subitarius.domain.Team;
 import com.subitarius.util.logging.Slf4jTypeListener;
@@ -42,7 +41,7 @@ public class InstanceServerModule extends ServletModule {
 	}
 
 	@Provides
-	@RequestScoped
+	@Singleton
 	@Transactional
 	@Inject
 	Team getTeam(EntityManager entityManager) {

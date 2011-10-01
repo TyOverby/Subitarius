@@ -67,7 +67,7 @@ public final class SubitariusActionModule extends ActionModule {
 	@Provides
 	@Inject
 	ExecutorService getThreadPool(ThreadFactory threadFactory) {
-		return Executors.newCachedThreadPool(threadFactory);
+		return Executors.newFixedThreadPool(1, threadFactory);
 	}
 
 	@Provides
@@ -77,7 +77,7 @@ public final class SubitariusActionModule extends ActionModule {
 
 			@Override
 			public Thread newThread(Runnable task) {
-				String name = String.format("parse/%i", count++);
+				String name = String.format("parse/%2d", count++);
 				return new Thread(task, name);
 			}
 		};
