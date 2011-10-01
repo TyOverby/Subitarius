@@ -98,8 +98,8 @@ public class SimpleHttpClient {
 
 		// download and store the robots.txt if not already present
 		String authority = uri.getAuthority();
-		if (!robotsExclusion.containsKey(authority)) {
-			robotsExclusion.put(authority, null); // to allow this request
+		if (!uri.getPath().equals("/robots.txt")
+				&& !robotsExclusion.containsKey(authority)) {
 			String url = uri.getScheme() + "://" + authority + "/robots.txt";
 			try {
 				InputStream stream = doGet(url);
@@ -108,7 +108,8 @@ public class SimpleHttpClient {
 				robotsExclusion.put(authority, robotsTxt);
 				log.debug("found robots.txt for authority {}", authority);
 			} catch (IOException iox) {
-				// it's set to null in the map already, so we move on
+				// add a blank robots.txt to the map
+				robotsExclusion.put(authority, new RobotsTxt());
 				log.debug("no robots.txt found for authority {}", authority);
 			}
 		}
