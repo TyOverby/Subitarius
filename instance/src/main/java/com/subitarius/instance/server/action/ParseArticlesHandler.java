@@ -11,7 +11,6 @@ import static com.google.common.base.Preconditions.*;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -35,14 +34,12 @@ import com.subitarius.instance.server.parse.ArticleParser;
 import com.subitarius.util.http.StatusCodeException;
 import com.subitarius.util.logging.InjectLogger;
 
-class ParseArticlesHandler implements
+final class ParseArticlesHandler implements
 		ActionHandler<ParseArticles, MutationResult> {
 	@InjectLogger
 	private Logger log;
 
 	private final EntityManager entityManager;
-
-	private final ExecutorService threadPool;
 
 	private final ArticleParser articleParser;
 
@@ -50,9 +47,8 @@ class ParseArticlesHandler implements
 
 	@Inject
 	private ParseArticlesHandler(EntityManager entityManager,
-			ExecutorService threadPool, ArticleParser articleParser) {
+			ArticleParser articleParser) {
 		this.entityManager = entityManager;
-		this.threadPool = threadPool;
 		this.articleParser = articleParser;
 	}
 
@@ -102,8 +98,7 @@ class ParseArticlesHandler implements
 		public void run() {
 			try {
 				for (ArticleUrl url : urls) {
-					Runnable task = new ParseTask(url);
-					threadPool.execute(task);
+					parseArticle(url);
 					Thread.sleep(1000);
 				}
 			} catch (InterruptedException ix) {
@@ -111,18 +106,8 @@ class ParseArticlesHandler implements
 			}
 			latch.countDown();
 		}
-	}
 
-	private final class ParseTask implements Runnable {
-		private final ArticleUrl url;
-
-		public ParseTask(ArticleUrl url) {
-			checkNotNull(url);
-			this.url = url;
-		}
-
-		@Override
-		public void run() {
+		private void parseArticle(ArticleUrl url) {
 			entityManager.getTransaction().begin();
 			try {
 				log.trace("attempting to parse {}", url);

@@ -7,9 +7,6 @@
 package com.subitarius.instance.server.action;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
@@ -62,24 +59,5 @@ public final class SubitariusActionModule extends ActionModule {
 		List<String> mappingFiles = ImmutableList.of("bean-mapping.xml");
 		mapper.setMappingFiles(mappingFiles);
 		return mapper;
-	}
-
-	@Provides
-	@Inject
-	ExecutorService getThreadPool(ThreadFactory threadFactory) {
-		return Executors.newFixedThreadPool(1, threadFactory);
-	}
-
-	@Provides
-	ThreadFactory getThreadFactory() {
-		return new ThreadFactory() {
-			private int count = 0;
-
-			@Override
-			public Thread newThread(Runnable task) {
-				String name = String.format("parse/%02d", count++);
-				return new Thread(task, name);
-			}
-		};
 	}
 }
