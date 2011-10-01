@@ -77,13 +77,14 @@ final class ReutersArticleParser implements ArticleParser {
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
-			List<Element> elements = container.select("span#articleText p");
+			List<Element> elements = container
+					.select("span#articleText p, span#articleText pre");
 			for (Element elem : elements) {
 				// don't put the timestamp in the body
 				if (elem.parent().attr("id").equals("articleInfo")) {
 					continue;
 				}
-				String text = elem.text().trim();
+				String text = elem.text().replace("\n", " ").trim();
 				if (!text.isEmpty()) {
 					paragraphs.add(text);
 				}

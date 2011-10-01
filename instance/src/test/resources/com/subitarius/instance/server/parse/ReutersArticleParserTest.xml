@@ -63,6 +63,87 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.reuters.com/article/2011/09/02/markets-canada-stocks-idUSN1E7811PA20110902</string>
+				<string>CANADA STOCKS-TSX slips as U.S. jobs growth stalls, golds gain</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1314921600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>* TSX ends down 98.33 points, or 0.77 pct, at 12,602.41</string>
+					</void>
+					<void method="add">
+						<string>* Index ends week 2.2 percent higher</string>
+					</void>
+					<void method="add">
+						<string>* Eight of 10 sectors weaker, materials rise on gold  (Adds details, comments)</string>
+					</void>
+					<void method="add">
+						<string>By Claire Sibonney</string>
+					</void>
+					<void method="add">
+						<string>TORONTO, Sept 2 (Reuters) - Toronto's main stock index ended lower on Friday after grim U.S. jobs numbers revived recession fears, but rallying gold miners helped cushion the fall.</string>
+					</void>
+					<void method="add">
+						<string>Oil and gas shares were among the hardest hit as riskier assets were sold off after data unexpectedly showed U.S. employment growth ground to a halt in August. [ID:nOAT004865]</string>
+					</void>
+					<void method="add">
+						<string>U.S. crude futures dropped more than $2 a barrel following the report, sending Suncor Energy (SU.TO) down 3.2 percent to C$30 and Canadian Natural Resources (CNQ.TO) down 3.7 percent to C$34.93.</string>
+					</void>
+					<void method="add">
+						<string>"From a technical analysis perspective it looks like (oil) is headed lower, in part reflecting the greater uncertainty of economic growth," said Robert McWhirter, president and portfolio manager at Selective Asset Management Inc.</string>
+					</void>
+					<void method="add">
+						<string>"We're still of the view that economic growth will be slow, but will accelerate in the second half of this year ... however there are a lot of people who are having greater concern about the increased risk of recession," he added.</string>
+					</void>
+					<void method="add">
+						<string>Offsetting the decline, gold miners climbed 3 percent to the top of the gainers list, tracking higher bullion prices, which neared $1,900 an ounce on safe-haven buying. [GOL/]</string>
+					</void>
+					<void method="add">
+						<string>Barrick Gold (ABX.TO) jumped 3.1 percent to C$51.97, Goldcorp (G.TO) advanced 3.1 percent to C$53.76, and Yamana Gold (YRI.TO) surged 5.5 percent to C$16.58.</string>
+					</void>
+					<void method="add">
+						<string>"Near term, you don't want to be underweight gold," said Marcus Xu, director of equity investments at Genus Capital Management in Vancouver.</string>
+					</void>
+					<void method="add">
+						<string>"If you actually look at the changes in gold prices versus changes in gold stocks over the last three months, there's a lot of value in gold stocks versus the underlying commodity," he added, pointing to small and mid-cap names that could be takeover targets.</string>
+					</void>
+					<void method="add">
+						<string>The Toronto Stock Exchange's S&amp;P/TSX composite index .GSPTSE closed 98.33 points, or 0.77 percent, lower at 12,602.41. The index ended the week 2.2 percent higher.</string>
+					</void>
+					<void method="add">
+						<string>The TSX pared earlier losses of more than 1 percent as the materials group - home to gold miners - gained 1.5 percent. Telecoms also rose 0.25 percent, while the rest of the index's 10 sectors were weaker, including financials, off 1.3 percent.</string>
+					</void>
+					<void method="add">
+						<string>Laurentian Bank (LB.TO) lost 0.9 percent to C$43.20 despite reporting a 17 percent increase in net income as loan losses fell, beating analysts' earnings expectations. [ID:nN1E7810G9]</string>
+					</void>
+					<void method="add">
+						<string>"Even with all these good earnings on all these banks, you can see the bank shares haven't done much ... it's such a tough environment for banks right now given that the yields are so low," Xu said.</string>
+					</void>
+					<void method="add">
+						<string>"And typically in this part of the business cycle ... banks don't usually outperform, they usually underperform. They're usually late-cycle boomers."</string>
+					</void>
+					<void method="add">
+						<string>In technology issues, Research In Motion (RIM.TO) plunged 4.6 percent to C$29.59 after big box retailer Best Buy slashed up to $150 off the U.S. price tag for RIM's PlayBook tablet computer for the Labor Day weekend. [ID:nN1E78021B]</string>
+					</void>
+					<void method="add">
+						<string>WiLan Inc (WIN.TO) edged up 0.4 percent to C$7.09 after the technology licensing company said it had begun its patent infringement cases against Apple Inc, Dell, Hewlett-Packard and six other companies. [ID:nL4E7K21GT]</string>
+					</void>
+					<void method="add">
+						<string>In other individual company news, Silvercorp Metals (SVM.TO) sank nearly 10 percent to C$7.43. China-focused miner Silvercorp denied anonymous allegations of fraud on Friday, but its stock swooned on fears that charges like those that sank Sino-Forest (TRE.TO) were claiming another victim. [ID:nN1E7810DH]</string>
+					</void>
+					<void method="add">
+						<string>North American markets will be closed on Monday for the Labor Day holiday. Some highlights next week are U.S. non-manufacturing ISM data on Tuesday, the Bank of Canada interest rate announcement on Wednesday and Canadian monthly employment figures on Friday. ECONCA</string>
+					</void>
+					<void method="add">
+						<string>($1=$0.98 Canadian)  (Editing by Jeffrey Hodgson)</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.reuters.com/article/slideshow</string>
 			</object>
 		</void>
