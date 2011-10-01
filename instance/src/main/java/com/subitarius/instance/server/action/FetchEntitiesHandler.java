@@ -139,7 +139,7 @@ class FetchEntitiesHandler implements
 		Set<Tag> ancestors = Sets.newHashSet();
 		for (Tag tag : tags) {
 			if (tag.getParents().isEmpty()) {
-				entityManager.persist(tag);
+				entityManager.merge(tag);
 				ancestors.add(tag);
 			}
 		}
@@ -172,11 +172,11 @@ class FetchEntitiesHandler implements
 		// in the first pass, we get URLs only; in the second, we get all
 		for (DistributedEntity entity : entities) {
 			if (!(entity instanceof TagMapping)) {
-				entityManager.persist(entity);
+				entityManager.merge(entity);
 			}
 		}
 		for (DistributedEntity entity : entities) {
-			entityManager.persist(entity);
+			entityManager.merge(entity);
 		}
 		entityManager.flush();
 		entities.clear();
