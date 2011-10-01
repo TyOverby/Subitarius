@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 
@@ -30,6 +31,7 @@ import com.subitarius.action.MutationResult;
 import com.subitarius.action.ParseArticles;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
+import com.subitarius.domain.ArticleUrl_;
 import com.subitarius.domain.Source;
 import com.subitarius.instance.server.parse.ArticleParseException;
 import com.subitarius.instance.server.parse.ArticleParser;
@@ -61,7 +63,8 @@ final class ParseArticlesHandler implements
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ArticleUrl> criteria = builder
 				.createQuery(ArticleUrl.class);
-		criteria.select(criteria.from(ArticleUrl.class));
+		Root<ArticleUrl> root = criteria.from(ArticleUrl.class);
+		criteria.where(builder.isEmpty(root.get(ArticleUrl_.articles)));
 		List<ArticleUrl> allUrls = entityManager.createQuery(criteria)
 				.getResultList();
 
