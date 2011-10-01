@@ -23,6 +23,8 @@ public interface MainMessages extends Messages {
 
 	String fetchButton();
 
+	String parseButton();
+
 	String addArticleHeading();
 
 	String statusLabel();

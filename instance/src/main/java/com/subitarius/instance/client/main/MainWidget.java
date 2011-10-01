@@ -21,6 +21,9 @@ public final class MainWidget extends Composite implements
 	@UiField
 	HasClickHandlers fetchButton;
 
+	@UiField
+	HasClickHandlers parseButton;
+
 	@UiField(provided = true)
 	final Widget addArticleWidget;
 
@@ -34,5 +37,10 @@ public final class MainWidget extends Composite implements
 	@Override
 	public HasClickHandlers getFetchButton() {
 		return fetchButton;
+	}
+
+	@Override
+	public HasClickHandlers getParseButton() {
+		return parseButton;
 	}
 }

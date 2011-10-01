@@ -27,7 +27,10 @@
 				<g:Label text="{msg.controlsHeading}" />
 			</span>
 			<g:Label text="{msg.controlsText}" />
-			<g:Button text="{msg.fetchButton}" ui:field="fetchButton" />
+			<g:HorizontalPanel>
+				<g:Button text="{msg.fetchButton}" ui:field="fetchButton" />
+				<g:Button text="{msg.parseButton}" ui:field="parseButton" />
+			</g:HorizontalPanel>
 		</g:HTMLPanel>
 
 		<g:Widget addStyleNames="{res.style.contentSection}"
