@@ -198,6 +198,11 @@ public class Article extends DistributedEntity {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s (%s)", title, url);
+	}
+
 	private void readObject(ObjectInputStream ois) throws IOException,
 			ClassNotFoundException {
 		ois.defaultReadObject();

@@ -75,9 +75,11 @@ class ParseArticlesHandler implements
 		latch = new CountDownLatch(Source.values().length);
 		for (Source source : Source.values()) {
 			String name = String.format("parse/%s", source.toString());
-			Runnable task = new SourceTask(urlMap.get(source));
+			Set<ArticleUrl> urls = urlMap.get(source);
+			Runnable task = new SourceTask(urls);
 			Thread thread = new Thread(task, name);
 			thread.start();
+			log.debug("queued {} articles from {}", urls.size(), source);
 		}
 
 		try {
