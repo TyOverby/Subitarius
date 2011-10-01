@@ -58,11 +58,11 @@ class FetchEntitiesHandler implements
 	@Override
 	public MutationResult execute(FetchEntities action, Dispatcher dispatcher)
 			throws ActionException {
+		long nextTimestamp = System.currentTimeMillis();
 		Set<Tag> tags = Sets.newHashSet();
 		Set<DistributedEntity> entities = Sets.newHashSet();
 		try {
 			long timestamp = (Long) InstanceProperty.FETCH_TIMESTAMP.get(0L);
-			InstanceProperty.FETCH_TIMESTAMP.set(System.currentTimeMillis());
 			log.trace("using timestamp: {}", timestamp);
 			ImmutableMap<String, String> params = ImmutableMap.of("version",
 					instanceVersion, "timestamp", Long.toString(timestamp));
@@ -99,6 +99,11 @@ class FetchEntitiesHandler implements
 		flushTags(tags);
 		flushEntities(entities);
 		log.debug("fetch complete");
+		try {
+			InstanceProperty.FETCH_TIMESTAMP.set(nextTimestamp);
+		} catch (IOException iox) {
+			log.warn("I/O exception while saving timestamp", iox);
+		}
 		return MutationResult.SUCCESS;
 	}
 
