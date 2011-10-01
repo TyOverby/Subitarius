@@ -56,13 +56,9 @@ class GetHierarchyHandler implements
 		for (Tag tag : tags) {
 			if (tag.getType() != Type.ARCHIVED) {
 				String tagName = tag.getName();
-				if (tag.getParents().isEmpty()) {
-					hierarchy.put(null, tagName);
-				} else {
-					for (Tag parent : tag.getParents()) {
-						String parentName = parent.getName();
-						hierarchy.put(parentName, tagName);
-					}
+				for (Tag parent : tag.getParents()) {
+					String parentName = parent.getName();
+					hierarchy.put(parentName, tagName);
 				}
 			}
 		}
