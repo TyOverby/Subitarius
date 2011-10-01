@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -33,6 +32,7 @@ import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Source;
 import com.subitarius.instance.server.parse.ArticleParseException;
 import com.subitarius.instance.server.parse.ArticleParser;
+import com.subitarius.util.http.StatusCodeException;
 import com.subitarius.util.logging.InjectLogger;
 
 class ParseArticlesHandler implements
@@ -119,19 +119,35 @@ class ParseArticlesHandler implements
 			this.url = url;
 		}
 
-		@Transactional
 		@Override
 		public void run() {
+			entityManager.getTransaction().begin();
 			try {
 				log.trace("attempting to parse {}", url);
 				Article article = articleParser.parse(url);
-				entityManager.persist(article);
-				log.trace("persisted article: {}");
+				if (article != null) {
+					entityManager.persist(article);
+					log.trace("persisted article: {}", article);
+				} else {
+					log.trace("no valid article at URL {}", url);
+				}
+				entityManager.getTransaction().commit();
 			} catch (ArticleParseException apx) {
-				log.warn("exception while parsing article", apx);
+				if (apx.getCause() instanceof StatusCodeException) {
+					int statusCode = ((StatusCodeException) apx.getCause())
+							.getStatusCode();
+					log.debug("parse failed due to status code {}: {}",
+							statusCode, url);
+				} else {
+					log.warn("exception while parsing article", apx);
+				}
 			} catch (RuntimeException rx) {
 				log.warn("unexpected runtime exception while parsing article",
 						rx);
+			} finally {
+				if (entityManager.getTransaction().isActive()) {
+					entityManager.getTransaction().rollback();
+				}
 			}
 		}
 	}

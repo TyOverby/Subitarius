@@ -77,7 +77,7 @@ public final class SubitariusActionModule extends ActionModule {
 
 			@Override
 			public Thread newThread(Runnable task) {
-				String name = String.format("parse/%2d", count++);
+				String name = String.format("parse/%02d", count++);
 				return new Thread(task, name);
 			}
 		};
