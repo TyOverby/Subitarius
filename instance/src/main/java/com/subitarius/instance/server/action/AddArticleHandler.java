@@ -38,8 +38,8 @@ class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 	private final Provider<Team> teamProvider;
 
 	@Inject
-	public AddArticleHandler(EntityManager entityManager,
-			ArticleParser articleParser, Provider<Team> teamProvider) {
+	AddArticleHandler(EntityManager entityManager, ArticleParser articleParser,
+			Provider<Team> teamProvider) {
 		this.entityManager = entityManager;
 		this.articleParser = articleParser;
 		this.teamProvider = teamProvider;

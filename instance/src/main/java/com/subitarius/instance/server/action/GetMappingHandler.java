@@ -16,7 +16,6 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -29,7 +28,8 @@ import com.subitarius.domain.TagMapping_;
 import com.subitarius.domain.Tag_;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetMappingHandler implements ActionHandler<GetMapping, GetMappingResult> {
+final class GetMappingHandler implements
+		ActionHandler<GetMapping, GetMappingResult> {
 	@InjectLogger
 	private Logger log;
 
@@ -38,12 +38,11 @@ class GetMappingHandler implements ActionHandler<GetMapping, GetMappingResult> {
 	private final Mapper mapper;
 
 	@Inject
-	public GetMappingHandler(EntityManager entityManager, Mapper mapper) {
+	private GetMappingHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetMappingResult execute(GetMapping action, Dispatcher dispatcher)
 			throws ActionException {

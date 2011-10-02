@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -34,7 +33,7 @@ import com.subitarius.domain.TagMapping;
 import com.subitarius.domain.TagMapping_;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetMappingsByArticleHandler implements
+final class GetMappingsByArticleHandler implements
 		ActionHandler<GetMappingsByArticle, GetMappingsResult> {
 	@InjectLogger
 	private Logger log;
@@ -44,13 +43,12 @@ class GetMappingsByArticleHandler implements
 	private final Mapper mapper;
 
 	@Inject
-	public GetMappingsByArticleHandler(EntityManager entityManager,
+	private GetMappingsByArticleHandler(EntityManager entityManager,
 			Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetMappingsResult execute(GetMappingsByArticle action,
 			Dispatcher dispatcher) throws ActionException {

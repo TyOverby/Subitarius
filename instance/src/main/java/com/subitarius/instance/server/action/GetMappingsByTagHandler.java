@@ -24,7 +24,6 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -38,7 +37,7 @@ import com.subitarius.domain.TagMapping;
 import com.subitarius.domain.Tag_;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetMappingsByTagHandler implements
+final class GetMappingsByTagHandler implements
 		ActionHandler<GetMappingsByTag, GetMappingsResult> {
 	@InjectLogger
 	private Logger log;
@@ -48,12 +47,11 @@ class GetMappingsByTagHandler implements
 	private final Mapper mapper;
 
 	@Inject
-	public GetMappingsByTagHandler(EntityManager entityManager, Mapper mapper) {
+	private GetMappingsByTagHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetMappingsResult execute(final GetMappingsByTag action,
 			Dispatcher dispatcher) throws ActionException {

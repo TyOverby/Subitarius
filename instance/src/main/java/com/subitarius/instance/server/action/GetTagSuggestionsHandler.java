@@ -20,7 +20,6 @@ import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -30,7 +29,7 @@ import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag_;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetTagSuggestionsHandler implements
+final class GetTagSuggestionsHandler implements
 		ActionHandler<GetTagSuggestions, GetTagSuggestionsResult> {
 	@InjectLogger
 	private Logger log;
@@ -38,11 +37,10 @@ class GetTagSuggestionsHandler implements
 	private final EntityManager entityManager;
 
 	@Inject
-	public GetTagSuggestionsHandler(EntityManager entityManager) {
+	private GetTagSuggestionsHandler(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
-	@Transactional
 	@Override
 	public GetTagSuggestionsResult execute(GetTagSuggestions action,
 			Dispatcher dispatcher) throws ActionException {

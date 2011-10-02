@@ -40,8 +40,7 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 	private final Provider<Team> teamProvider;
 
 	@Inject
-	public AddMappingHandler(EntityManager entityManager,
-			Provider<Team> teamProvider) {
+	AddMappingHandler(EntityManager entityManager, Provider<Team> teamProvider) {
 		this.entityManager = entityManager;
 		this.teamProvider = teamProvider;
 	}

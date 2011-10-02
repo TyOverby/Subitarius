@@ -12,7 +12,6 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -22,7 +21,7 @@ import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.domain.Article;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetArticleByHashHandler implements
+final class GetArticleByHashHandler implements
 		ActionHandler<GetArticleByHash, GetArticleResult> {
 	@InjectLogger
 	private Logger log;
@@ -32,12 +31,11 @@ class GetArticleByHashHandler implements
 	private final Mapper mapper;
 
 	@Inject
-	public GetArticleByHashHandler(EntityManager entityManager, Mapper mapper) {
+	private GetArticleByHashHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetArticleResult execute(GetArticleByHash action,
 			Dispatcher dispatcher) throws ActionException {

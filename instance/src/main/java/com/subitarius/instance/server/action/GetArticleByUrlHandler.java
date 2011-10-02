@@ -16,7 +16,6 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -30,7 +29,7 @@ import com.subitarius.domain.DistributedEntity;
 import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetArticleByUrlHandler implements
+final class GetArticleByUrlHandler implements
 		ActionHandler<GetArticleByUrl, GetArticleResult> {
 	@InjectLogger
 	private Logger log;
@@ -40,12 +39,11 @@ class GetArticleByUrlHandler implements
 	private final Mapper mapper;
 
 	@Inject
-	public GetArticleByUrlHandler(EntityManager entityManager, Mapper mapper) {
+	private GetArticleByUrlHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetArticleResult execute(GetArticleByUrl action,
 			Dispatcher dispatcher) throws ActionException {

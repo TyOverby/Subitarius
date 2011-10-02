@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
@@ -28,7 +27,7 @@ import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag.Type;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetHierarchyHandler implements
+final class GetHierarchyHandler implements
 		ActionHandler<GetHierarchy, GetHierarchyResult> {
 	@InjectLogger
 	private Logger log;
@@ -36,11 +35,10 @@ class GetHierarchyHandler implements
 	private final EntityManager entityManager;
 
 	@Inject
-	public GetHierarchyHandler(EntityManager entityManager) {
+	private GetHierarchyHandler(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
-	@Transactional
 	@Override
 	public GetHierarchyResult execute(GetHierarchy action, Dispatcher dispatcher)
 			throws ActionException {
