@@ -110,6 +110,14 @@ public class ArticleUrl extends DistributedEntity {
 		}
 	}
 
+	/*
+	 * To help Dozer out with DTO conversion.
+	 */
+	@Transient
+	public Source getSource() {
+		return Source.fromUrl(getUrl());
+	}
+
 	@Transient
 	@Override
 	public byte[] getBytes() {
