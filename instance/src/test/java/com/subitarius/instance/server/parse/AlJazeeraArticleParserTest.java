@@ -28,4 +28,9 @@ public final class AlJazeeraArticleParserTest extends ArticleParserTestBase {
 	public void testParse2() throws ArticleParseException {
 		testVector(1);
 	}
+	
+	@Test
+	public void testParseOpinion() throws ArticleParseException {
+		testVector(2);
+	}
 }

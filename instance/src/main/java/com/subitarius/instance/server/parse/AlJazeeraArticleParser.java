@@ -45,33 +45,34 @@ final class AlJazeeraArticleParser implements ArticleParser {
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
-			String title;
-			Date date;
-			List<String> paragraphs = Lists.newArrayList();
-
-			// setup
 			String url = articleUrl.getUrl();
 			InputStream stream = httpClient.doGet(url + "?print=true");
 			Document document = Jsoup.parse(stream, null, url);
 
-			// title
-			title = document.select("#DetailedTitle").text();
+			String title = document.select("span#DetailedTitle").text();
 
-			// date
-			String dateStr = document.select("#dvArticleDate").text()
+			String byline;
+			if (!document.select("span.byLine").isEmpty()) {
+				byline = document.select("span.byLine").text();
+			} else {
+				byline = null;
+			}
+
+			String dateStr = document.select("span#dvArticleDate").text()
 					.replace("Last Modified: ", "");
+			Date date;
 			try {
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
 				throw new ArticleParseException(articleUrl, px);
 			}
 
-			// paragraphs
-			for (Element e : document.select("#tdTextContent>p")) {
-				paragraphs.add(e.text().replace('\u00a0', ' '));
+			List<String> paragraphs = Lists.newArrayList();
+			for (Element element : document.select("#tdTextContent > p")) {
+				paragraphs.add(element.text().replace('\u00a0', ' '));
 			}
 
-			return new Article(teamProvider.get(), articleUrl, title, null,
+			return new Article(teamProvider.get(), articleUrl, title, byline,
 					date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(articleUrl, iox);

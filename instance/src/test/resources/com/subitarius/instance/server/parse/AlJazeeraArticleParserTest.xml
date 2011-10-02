@@ -5,7 +5,7 @@
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://english.aljazeera.net/programmes/aljazeeracorrespondent/2011/08/2011814134117264232.html</string>
 				<string>Chilean Miners: Still Trapped?</string>
-				<null/>
+				<string>Al Jazeera Correspondent</string>
 				<object class="java.util.Date">
 					<long>1313539200000</long>
 				</object>
@@ -63,6 +63,57 @@
 					</void>
 					<void method="add">
 						<string>New York police spokespeople were not available for comment.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://english.aljazeera.net/indepth/opinion/2011/09/201192715232851506.html</string>
+				<string>Thick as BRICS</string>
+				<string>Jorge G Castaneda</string>
+				<object class="java.util.Date">
+					<long>1317427200000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>When the United Nations voted for what was known as partition and created the State of Israel 64 years ago, subsequently granting it full membership, several Latin American countries - Brazil, El Salvador, Argentina, Colombia, Chile, Honduras - abstained, or, in the case of Cuba, voted against the relevant resolutions. Mexico abstained on partition, though it voted in favour of admitting Israel to the UN a few months later, and subsequently recognised the Jewish state, acknowledging that its national interest was best served by not taking sides in the Middle East imbroglio.</string>
+					</void>
+					<void method="add">
+						<string>In the coming weeks, most Latin American countries will vote in favour of some form of UN membership or recognition of statehood that the Palestinian Authority is seeking. But some will not. The issue is not a simple one for the Security Council’s two Latin American non-permanent members, Brazil and Colombia, or for Cuba, Nicaragua, Venezuela, Costa Rica, Argentina, Bolivia, Chile, Ecuador, Peru, Uruguay, and Honduras, which have already recognised Palestine, but have not yet voted to grant it "observer” status at the UN.</string>
+					</void>
+					<void method="add">
+						<string>To become a full-fledged UN member, the Security Council must recommend the move to the General Assembly; but upgrading the Palestinian Authority’s status to that of the Vatican - which in theory would allow it to participate in many UN agencies, including the International Criminal Court - requires only a two-thirds vote in the General Assembly. In any case, the political consequences overshadow legal or bureaucratic issues. Forcing the US to use its veto in the Security Council, or obtaining the support of more than 150 of the UN’s 193 member states in the General Assembly, would be a huge defeat for Israel and the US, which is why the Latin American votes are important.</string>
+					</void>
+					<void method="add">
+						<string>Brazil has stated that it intends to vote in the Security Council in favour of recommending Palestine’s admission to the General Assembly; Colombia has said that it plans to abstain. Most other Latin American countries would probably vote in favour of some sort of enhanced status for the Palestinian Authority.</string>
+					</void>
+					<void method="add">
+						<string>The Jewish community in the United States, and to a lesser extent President Barack Obama’s administration, has attempted to convince Chile and Mexico, which have not yet made their stances explicit, that nothing would be gained by isolating Israel (or the US, for that matter) on this issue. Indeed, little would change on the ground even with full Palestinian statehood if Israel and the US do not accept it - and Mexico and Chile could lose much in distancing themselves from an ally on a question of great importance to it.</string>
+					</void>
+					<void method="add">
+						<string>In short, as was the case more than a half-century ago, the region has not spoken with a single voice on these crucial issues. Now, as then, most Latin American countries have not taken a principled stand - either for or against Israel, or for or against the Palestinians. Instead, they have followed the path of expedience, their positions depending on the relative clout and stridency of their societies’ Jewish or Arab communities, and on urging from Washington or from the so-called ALBA bloc of Cuba, Venezuela, Nicaragua, Bolivia, and Paraguay.</string>
+					</void>
+					<void method="add">
+						<string>Latin Americans’ lack of conviction on such grave matters - with the exception of the ALBA countries, which have the wrong convictions, but nonetheless believe in them almost religiously - has marginalised the region on other important international issues, such as the recent crisis in Libya, and the ongoing one in Syria. On the UN resolution establishing a no-fly zone and civilian protection in Libya, Brazil, along with three of the other “BRICS” (and world power wannabes) - Russia, India, and China - abstained. The fourth, South Africa, went along only grudgingly.</string>
+					</void>
+					<void method="add">
+						<string>And now, on the attempt of European nations and the US to impose UN-mandated sanctions on Syria’s President Bashar al-Assad, the BRICS have gone from bad to worse. First, they dispatched a three-country mission (Brazil, India, and South Africa) to Damascus to “persuade” Assad not to murder his people. Needless to say, he did not respond that, yes, he had killed a few thousand here and there, but that now that they brought it up, he would try to be more careful.</string>
+					</void>
+					<void method="add">
+						<string>Then they made statement after statement claiming that Syria was not Libya, and they would not allow another Western intervention to achieve regime change in another Arab country just because its people seemed upset with the local dictator. In the words of a senior NGO human rights leader: “They’re punishing the Syrian people because they were unhappy that NATO took the mandate of protecting civilians in Libya and transformed it into a mandate for regime change.”</string>
+					</void>
+					<void method="add">
+						<string>Given their growing role in the global economy, it is understandable that larger Latin American countries, along with the other BRICS, are seeking a more influential world role. This is not the way to achieve it.</string>
+					</void>
+					<void method="add">
+						<string>Jorge G. Castañeda, former Foreign Minister of Mexico (2000-2003), is Global Distinguished Professor of Politics and Latin American Studies at New York University.</string>
+					</void>
+					<void method="add">
+						<string>A version of this article previously appeared on Project Syndicate.</string>
+					</void>
+					<void method="add">
+						<string>The views expressed in this article are the author's own and do not necessarily reflect Al Jazeera's editorial policy.</string>
 					</void>
 				</object>
 			</object>
