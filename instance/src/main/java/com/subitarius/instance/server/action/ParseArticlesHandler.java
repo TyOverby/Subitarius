@@ -31,8 +31,11 @@ import com.subitarius.action.MutationResult;
 import com.subitarius.action.ParseArticles;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
-import com.subitarius.domain.ArticleUrl_;
+import com.subitarius.domain.DeletedEntity;
+import com.subitarius.domain.DistributedEntity;
+import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.domain.Source;
+import com.subitarius.domain.Team;
 import com.subitarius.instance.server.parse.ArticleParseException;
 import com.subitarius.instance.server.parse.ArticleParser;
 import com.subitarius.util.http.StatusCodeException;
@@ -47,13 +50,16 @@ final class ParseArticlesHandler implements
 
 	private final ArticleParser articleParser;
 
+	private final Provider<Team> teamProvider;
+
 	private CountDownLatch latch;
 
 	@Inject
 	private ParseArticlesHandler(Provider<EntityManager> entityManagerProvider,
-			ArticleParser articleParser) {
+			ArticleParser articleParser, Provider<Team> teamProvider) {
 		this.entityManagerProvider = entityManagerProvider;
 		this.articleParser = articleParser;
+		this.teamProvider = teamProvider;
 	}
 
 	@Override
@@ -63,8 +69,13 @@ final class ParseArticlesHandler implements
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ArticleUrl> criteria = builder
 				.createQuery(ArticleUrl.class);
-		Root<ArticleUrl> root = criteria.from(ArticleUrl.class);
-		criteria.where(builder.isEmpty(root.get(ArticleUrl_.articles)));
+		Root<ArticleUrl> urlRoot = criteria.from(ArticleUrl.class);
+		criteria.select(urlRoot);
+		Root<DistributedEntity> entityRoot = criteria
+				.from(DistributedEntity.class);
+		criteria.where(builder.isEmpty(entityRoot
+				.get(DistributedEntity_.children)));
+		criteria.distinct(true);
 		List<ArticleUrl> allUrls = entityManager.createQuery(criteria)
 				.getResultList();
 
@@ -133,6 +144,12 @@ final class ParseArticlesHandler implements
 							.getStatusCode();
 					log.debug("parse failed due to status code {}: {}",
 							statusCode, url);
+					if (statusCode == 404) {
+						log.trace("marking URL as deleted: {}", url);
+						DeletedEntity deleted = new DeletedEntity(
+								teamProvider.get(), url);
+						entityManager.persist(deleted);
+					}
 				} else {
 					log.warn("exception while parsing article at URL {}", url,
 							apx);
