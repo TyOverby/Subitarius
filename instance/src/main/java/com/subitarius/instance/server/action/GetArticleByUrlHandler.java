@@ -56,12 +56,13 @@ final class GetArticleByUrlHandler implements
 			CriteriaQuery<Article> criteria = builder
 					.createQuery(Article.class);
 			Root<Article> articleRoot = criteria.from(Article.class);
+			criteria.select(articleRoot);
 			Root<DistributedEntity> entityRoot = criteria
 					.from(DistributedEntity.class);
-			criteria.where(builder.equal(articleRoot.get(Article_.url),
-					articleUrl));
-			criteria.where(builder.isEmpty(entityRoot
-					.get(DistributedEntity_.children)));
+			criteria.where(builder.and(builder.equal(
+					articleRoot.get(Article_.url), articleUrl)), builder
+					.isEmpty(entityRoot.get(DistributedEntity_.children)));
+			criteria.distinct(true);
 			Article article = entityManager.createQuery(criteria)
 					.getSingleResult();
 

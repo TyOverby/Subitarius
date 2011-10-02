@@ -60,12 +60,14 @@ final class GetMappingsByArticleHandler implements
 		CriteriaQuery<TagMapping> criteria = builder
 				.createQuery(TagMapping.class);
 		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
+		criteria.select(mappingRoot);
 		Root<DistributedEntity> entityRoot = criteria
 				.from(DistributedEntity.class);
-		criteria.where(builder.equal(mappingRoot.get(TagMapping_.articleUrl),
-				articleUrl));
-		criteria.where(builder.isEmpty(entityRoot
-				.get(DistributedEntity_.children)));
+		criteria.where(
+				builder.and(builder.equal(
+						mappingRoot.get(TagMapping_.articleUrl), articleUrl)),
+				builder.isEmpty(entityRoot.get(DistributedEntity_.children)));
+		criteria.distinct(true);
 		List<TagMapping> mappings = entityManager.createQuery(criteria)
 				.getResultList();
 
