@@ -23,4 +23,9 @@ public final class BbcArticleParserTest extends ArticleParserTestBase {
 	public void testParse() throws ArticleParseException {
 		testVector(0);
 	}
+	
+	@Test
+	public void testParseVideo() throws ArticleParseException {
+		testVector(1);
+	}
 }

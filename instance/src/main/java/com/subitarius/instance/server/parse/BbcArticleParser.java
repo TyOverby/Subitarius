@@ -45,13 +45,6 @@ final class BbcArticleParser implements ArticleParser {
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
-			String title;
-			Date date;
-			String author = null;
-			List<String> paragraphs = Lists.newArrayList();
-
-			// setup
-			// canonical URL will never contain parameters
 			String url = articleUrl.getUrl();
 			InputStream stream = httpClient.doGet(url + "?print=true");
 			Document document = Jsoup.parse(stream, null, url);
@@ -60,23 +53,22 @@ final class BbcArticleParser implements ArticleParser {
 			document.select(".videoInStoryA, .videoInStoryB, .videoInStoryC")
 					.remove();
 
-			// title
-			title = document.select("h1.story-header").first().text();
-
-			// date
+			String title = document.select("h1.story-header").first().text();
 			String dateStr = document.select("span.date").first().text();
+			Date date;
 			try {
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
 				throw new ArticleParseException(articleUrl, px);
 			}
 
-			// paragraphs
-			for (Element elem : document.select("div.story-body p")) {
+			List<String> paragraphs = Lists.newArrayList();
+			for (Element elem : document
+					.select("div.story-body > p, div.emp-decription > p")) {
 				paragraphs.add(elem.text());
 			}
 
-			return new Article(teamProvider.get(), articleUrl, title, author,
+			return new Article(teamProvider.get(), articleUrl, title, null,
 					date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(articleUrl, iox);

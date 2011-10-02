@@ -103,5 +103,29 @@
 				</object>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/news/world-europe-14963652</string>
+				<string>Russian tycoons in TV show punch up</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316304000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Russian tycoon Alexander Lebedev has attacked a fellow businessman during the pre-recording of a talk show on the economic crisis for TV channel NTV.</string>
+					</void>
+					<void method="add">
+						<string>Mr Lebedev, a former KGB agent who own UK newspapers the Independent and Evening Standard, lashed out at Sergei Polonsky several times, knocking him from his chair.</string>
+					</void>
+					<void method="add">
+						<string>Yekaterina Gordeyeva, NTV reporter and one of the talk show hosts, said that such a incident was not anticipated, but that "if the oligarchs are fighting, then it means... the crisis is a really worrying issue."</string>
+					</void>
+					<void method="add">
+						<string>Steve Rosenberg reports.</string>
+					</void>
+				</object>
+			</object>
+		</void>
 	</object>
 </java>
