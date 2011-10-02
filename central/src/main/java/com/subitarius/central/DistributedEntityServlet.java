@@ -134,6 +134,7 @@ class DistributedEntityServlet extends HttpServlet {
 			criteria.where(builder.greaterThanOrEqualTo(
 					root.get(DistributedEntity_.persistDate), timestamp));
 		}
-		return entityManager.createQuery(criteria).getResultList();
+		return entityManager.createQuery(criteria)
+				.setHint("org.hibernate.cacheable", true).getResultList();
 	}
 }
