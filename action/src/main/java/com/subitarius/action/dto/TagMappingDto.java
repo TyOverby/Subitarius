@@ -44,7 +44,7 @@ public final class TagMappingDto implements IsSerializable {
 		return articleUrl;
 	}
 
-	public void setArticle(ArticleUrlDto articleUrl) {
+	public void setArticleUrl(ArticleUrlDto articleUrl) {
 		this.articleUrl = articleUrl;
 	}
 
