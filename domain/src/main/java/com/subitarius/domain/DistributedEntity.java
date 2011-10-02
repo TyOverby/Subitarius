@@ -177,7 +177,9 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		byte[] prefixBytes = prefix.getBytes(Charsets.UTF_8);
 		byte[] payload = getBytes();
 		byte[] data = merge(prefixBytes, payload);
-		return digest.digest(data);
+		synchronized (digest) {
+			return digest.digest(data);
+		}
 	}
 
 	protected void setHash(String hash) {

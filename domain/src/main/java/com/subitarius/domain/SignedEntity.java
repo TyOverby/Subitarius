@@ -54,17 +54,21 @@ abstract class SignedEntity extends CentralEntity implements HasBytes {
 
 	protected void sign(PrivateKey privateKey) throws InvalidKeyException,
 			SignatureException {
-		algorithm.initSign(privateKey);
-		algorithm.update(getBytes());
-		signature = algorithm.sign();
+		synchronized (algorithm) {
+			algorithm.initSign(privateKey);
+			algorithm.update(getBytes());
+			signature = algorithm.sign();
+		}
 	}
 
 	public boolean verify(PublicKey publicKey) throws InvalidKeyException,
 			SignatureException {
 		checkState(signature != null);
-		algorithm.initVerify(publicKey);
-		algorithm.update(getBytes());
-		return algorithm.verify(signature);
+		synchronized (algorithm) {
+			algorithm.initVerify(publicKey);
+			algorithm.update(getBytes());
+			return algorithm.verify(signature);
+		}
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,
