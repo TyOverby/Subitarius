@@ -33,7 +33,6 @@ import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.DeletedEntity;
 import com.subitarius.domain.DistributedEntity;
-import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.domain.Source;
 import com.subitarius.domain.Team;
 import com.subitarius.instance.server.parse.ArticleParseException;
@@ -71,10 +70,8 @@ final class ParseArticlesHandler implements
 				.createQuery(ArticleUrl.class);
 		Root<ArticleUrl> urlRoot = criteria.from(ArticleUrl.class);
 		criteria.select(urlRoot);
-		Root<DistributedEntity> entityRoot = criteria
-				.from(DistributedEntity.class);
-		criteria.where(builder.isEmpty(entityRoot
-				.get(DistributedEntity_.children)));
+		criteria.where(builder.isEmpty(urlRoot
+				.<Set<DistributedEntity>> get("children")));
 		criteria.distinct(true);
 		List<ArticleUrl> allUrls = entityManager.createQuery(criteria)
 				.getResultList();
