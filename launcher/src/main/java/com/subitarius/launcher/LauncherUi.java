@@ -8,8 +8,8 @@ package com.subitarius.launcher;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
@@ -18,9 +18,11 @@ import javax.swing.JOptionPane;
 
 import com.google.inject.Inject;
 
-final class LauncherUi implements WindowListener {
+final class LauncherUi {
 	private final ResourceBundle resourceBundle;
+
 	private final InstanceServer instanceServer;
+
 	private final JFrame frame;
 
 	@Inject
@@ -39,7 +41,12 @@ final class LauncherUi implements WindowListener {
 			}
 		});
 
-		frame.addWindowListener(this);
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				stopServer();
+			}
+		});
 		frame.add(button);
 		frame.setSize(250, 100);
 	}
@@ -62,34 +69,5 @@ final class LauncherUi implements WindowListener {
 		JOptionPane.showMessageDialog(null,
 				resourceBundle.getObject("error.title"), caught.toString(),
 				JOptionPane.ERROR_MESSAGE);
-	}
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		stopServer();
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-	}
-
-	@Override
-	public void windowClosed(WindowEvent e) {
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-	}
-
-	@Override
-	public void windowActivated(WindowEvent e) {
-	}
-
-	@Override
-	public void windowDeactivated(WindowEvent e) {
 	}
 }
