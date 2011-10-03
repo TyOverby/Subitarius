@@ -7,6 +7,7 @@
 package com.subitarius.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 public class DeletedEntity extends DistributedEntity {
@@ -22,6 +23,7 @@ public class DeletedEntity extends DistributedEntity {
 		super(creator, parent);
 	}
 
+	@Transient
 	@Override
 	public byte[] getBytes() {
 		return getParent().getBytes();
