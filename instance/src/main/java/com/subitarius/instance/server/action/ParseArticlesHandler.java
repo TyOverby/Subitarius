@@ -146,6 +146,7 @@ final class ParseArticlesHandler implements
 						DeletedEntity deleted = new DeletedEntity(
 								teamProvider.get(), url);
 						entityManager.persist(deleted);
+						transaction.commit();
 					}
 				} else {
 					log.warn("exception while parsing article at URL {}", url,
