@@ -6,7 +6,7 @@
 
 package com.subitarius.instance.server.parse;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,14 +32,16 @@ import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
 
 final class LaTimesArticleParser implements ArticleParser {
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMMMM dd, yyyy");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
+			"MMMMM dd, yyyy");
 
 	private final Provider<Team> teamProvider;
 
 	private final SimpleHttpClient httpClient;
 
 	@Inject
-	private LaTimesArticleParser(Provider<Team> teamProvider, SimpleHttpClient httpClient) {
+	private LaTimesArticleParser(Provider<Team> teamProvider,
+			SimpleHttpClient httpClient) {
 		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
@@ -54,18 +56,16 @@ final class LaTimesArticleParser implements ArticleParser {
 				String pageUrl = url;
 				int page = 1;
 				do {
-					pageUrl = url + '/' + page;
-					System.out.println(pageUrl);
 					InputStream stream = httpClient.doGet(pageUrl);
 					document = Jsoup.parse(stream, null, pageUrl);
 					documents.add(document);
-					page++;
-				} while (document.select("div.mod-pagination").first().text().contains("Next"));
+					pageUrl = url + '/' + (++page);
+				} while (document.select("div.mod-pagination").first().text()
+						.contains("Next"));
 
 				List<Article> articles = Lists.newArrayList();
 				for (Document doc : documents) {
 					articles.add(parseFeaturedPage(articleUrl, doc));
-					System.out.println("fuck");
 				}
 				return combine(articles);
 			} else {
@@ -84,11 +84,11 @@ final class LaTimesArticleParser implements ArticleParser {
 		}
 	}
 
-	private Article parseStandard(ArticleUrl articleUrl, Document document) throws ArticleParseException {
-		// TODO:
-		// Null Pointer Exception
+	private Article parseStandard(ArticleUrl articleUrl, Document document)
+			throws ArticleParseException {
 		String title = document.select("div.story > h1").first().text();
-		String byline = document.select("span.byline").first().text().replace(", Los Angeles Times", "").trim();
+		String byline = document.select("span.byline").first().text()
+				.replace(", Los Angeles Times", "").trim();
 		String dateStr = document.select("span.dateString").first().text();
 		Date date;
 		try {
@@ -101,7 +101,8 @@ final class LaTimesArticleParser implements ArticleParser {
 		// as a result, we have to iterate through the nodes to find these tags
 		// TODO: this method inserts some extra whitespace around links
 		List<String> paragraphs = Lists.newArrayList();
-		List<Node> nodes = document.select("div#story-body-text").first().childNodes();
+		List<Node> nodes = document.select("div#story-body-text").first()
+				.childNodes();
 		String currentPara = "";
 		int lineBreakCount = 0;
 		for (Node node : nodes) {
@@ -122,12 +123,15 @@ final class LaTimesArticleParser implements ArticleParser {
 		}
 		paragraphs.add(currentPara);
 
-		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date,
+				paragraphs);
 	}
 
-	private Article parseFeaturedPage(ArticleUrl articleUrl, Document document) throws ArticleParseException {
+	private Article parseFeaturedPage(ArticleUrl articleUrl, Document document)
+			throws ArticleParseException {
 		String title = document.select(".multi-line-title-1").first().text();
-		String[] metaStr = document.select("#mod-article-byline").first().text().split("\\|");
+		String[] metaStr = document.select("#mod-article-byline").first()
+				.text().split("\\|");
 		String byline = metaStr[1].replace(", Los Angeles Times", "").trim();
 		Date date;
 		try {
@@ -146,7 +150,8 @@ final class LaTimesArticleParser implements ArticleParser {
 			}
 		}
 
-		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date,
+				paragraphs);
 	}
 
 	private static Article combine(List<Article> articles) {
@@ -175,7 +180,8 @@ final class LaTimesArticleParser implements ArticleParser {
 		return new Article(creator, url, title, byline, date, paragraphs);
 	}
 
-	private Article parseBlog(ArticleUrl articleUrl, Document document) throws ArticleParseException {
+	private Article parseBlog(ArticleUrl articleUrl, Document document)
+			throws ArticleParseException {
 		String title = document.select("h1.entry-header").text();
 		String dateStr = document.select("div.time").first().text();
 		Date date;
@@ -200,6 +206,7 @@ final class LaTimesArticleParser implements ArticleParser {
 			}
 		}
 
-		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date,
+				paragraphs);
 	}
 }
