@@ -112,7 +112,12 @@ final class EconomistArticleParser implements ArticleParser {
 				type = ArticleType.PRINT;
 			}
 
+			// TODO:
+			// NullPointerException
+			// http://www.economist.com/node/21530177
+			// Redirect loop :S
 			String title = type.getTitle(document);
+
 			String byline = type.getByline(document);
 			Date date;
 			try {
