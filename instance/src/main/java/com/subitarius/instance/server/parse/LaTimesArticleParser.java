@@ -33,17 +33,17 @@ import com.subitarius.util.http.SimpleHttpClient;
 
 final class LaTimesArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMMMM dd, yyyy");
-
+	
 	private final Provider<Team> teamProvider;
-
+	
 	private final SimpleHttpClient httpClient;
-
+	
 	@Inject
 	private LaTimesArticleParser(Provider<Team> teamProvider, SimpleHttpClient httpClient) {
 		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
-
+	
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
@@ -52,7 +52,9 @@ final class LaTimesArticleParser implements ArticleParser {
 				List<Document> documents = Lists.newArrayList();
 				Document document;
 				String pageUrl = url;
+				
 				int page = 1;
+				boolean hasNextPage;
 				do {
 					pageUrl = url + '/' + page;
 					System.out.println(pageUrl);
@@ -60,12 +62,17 @@ final class LaTimesArticleParser implements ArticleParser {
 					document = Jsoup.parse(stream, null, pageUrl);
 					documents.add(document);
 					page++;
-				} while (document.select("div.mod-pagination").first().text().contains("Next"));
-
+					
+					try {
+						hasNextPage = document.select("div.mod-pagination").first().text().contains("Next");
+					} catch (NullPointerException npe) {
+						hasNextPage = false;
+					}
+				} while (hasNextPage);
+				
 				List<Article> articles = Lists.newArrayList();
 				for (Document doc : documents) {
 					articles.add(parseFeaturedPage(articleUrl, doc));
-					System.out.println("fuck");
 				}
 				return combine(articles);
 			} else {
@@ -83,7 +90,7 @@ final class LaTimesArticleParser implements ArticleParser {
 			throw new ArticleParseException(articleUrl, rex);
 		}
 	}
-
+	
 	private Article parseStandard(ArticleUrl articleUrl, Document document) throws ArticleParseException {
 		// TODO:
 		// Null Pointer Exception
@@ -91,12 +98,18 @@ final class LaTimesArticleParser implements ArticleParser {
 		String byline = document.select("span.byline").first().text().replace(", Los Angeles Times", "").trim();
 		String dateStr = document.select("span.dateString").first().text();
 		Date date;
+		Team team;
+		if (teamProvider == null) {
+			team = teamProvider.get();
+		} else {
+			team = null;
+		}
 		try {
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(articleUrl, px);
 		}
-
+		
 		// they are absolutely evil and separate paragraphs only with <br><br>
 		// as a result, we have to iterate through the nodes to find these tags
 		// TODO: this method inserts some extra whitespace around links
@@ -121,22 +134,36 @@ final class LaTimesArticleParser implements ArticleParser {
 			}
 		}
 		paragraphs.add(currentPara);
-
-		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
+		
+		return new Article(team, articleUrl, title, byline, date, paragraphs);
 	}
-
+	
 	private Article parseFeaturedPage(ArticleUrl articleUrl, Document document) throws ArticleParseException {
+		
 		String title = document.select(".multi-line-title-1").first().text();
 		String[] metaStr = document.select("#mod-article-byline").first().text().split("\\|");
-		String byline = metaStr[1].replace(", Los Angeles Times", "").trim();
+		boolean bylineSet = false;
+		String byline = null;
+		if (metaStr.length > 1) {
+			byline = metaStr[1].replace(", Los Angeles Times", "").trim();
+			bylineSet = true;
+		}
+		
 		Date date;
+		Team team;
+		if (teamProvider == null) {
+			team = teamProvider.get();
+		} else {
+			team = null;
+		}
+		
 		try {
 			String dateStr = metaStr[0].trim();
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(articleUrl, px);
 		}
-
+		
 		List<String> paragraphs = Lists.newArrayList();
 		List<Element> elements = document.select(".mod-articletext > p");
 		for (Element elem : elements) {
@@ -145,22 +172,34 @@ final class LaTimesArticleParser implements ArticleParser {
 				paragraphs.add(text);
 			}
 		}
-
-		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
+		
+		if (!bylineSet) {
+			for (int i = paragraphs.size() - 1; i > 0; i--) {
+				if (paragraphs.get(i).contains("—")) {
+					byline = paragraphs.get(i).replace("—", "").trim();
+					paragraphs.remove(i);
+					break;
+				}
+			}
+		}
+		
+		return new Article(team, articleUrl, title, byline, date, paragraphs);
 	}
-
+	
 	private static Article combine(List<Article> articles) {
 		checkArgument(articles.size() > 0);
-
 		Team creator = articles.get(0).getCreator();
 		ArticleUrl url = articles.get(0).getUrl();
 		String title = articles.get(0).getTitle();
 		String byline = articles.get(0).getByline();
 		Date date = articles.get(0).getDate();
 		List<String> paragraphs = Lists.newArrayList();
-
+		
 		for (Article article : articles) {
-			checkArgument(creator.equals(article.getCreator()));
+			try {
+				checkArgument(creator.equals(article.getCreator()));
+			} catch (NullPointerException npe) {
+			}
 			checkArgument(url.equals(article.getUrl()));
 			checkArgument(title.equals(article.getTitle()));
 			if (byline == null) {
@@ -171,20 +210,27 @@ final class LaTimesArticleParser implements ArticleParser {
 			checkArgument(date.equals(article.getDate()));
 			paragraphs.addAll(article.getParagraphs());
 		}
-
+		
 		return new Article(creator, url, title, byline, date, paragraphs);
 	}
-
+	
 	private Article parseBlog(ArticleUrl articleUrl, Document document) throws ArticleParseException {
 		String title = document.select("h1.entry-header").text();
 		String dateStr = document.select("div.time").first().text();
 		Date date;
+		Team team;
+		if (teamProvider == null) {
+			team = teamProvider.get();
+		} else {
+			team = null;
+		}
+		
 		try {
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(articleUrl, px);
 		}
-
+		
 		String byline = null;
 		List<String> paragraphs = Lists.newArrayList();
 		boolean inContent = true;
@@ -199,7 +245,7 @@ final class LaTimesArticleParser implements ArticleParser {
 				byline = text.replace("-- ", "");
 			}
 		}
-
-		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
+		
+		return new Article(team, articleUrl, title, byline, date, paragraphs);
 	}
 }
