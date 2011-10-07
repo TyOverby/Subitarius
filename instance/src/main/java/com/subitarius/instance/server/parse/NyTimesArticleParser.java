@@ -34,8 +34,7 @@ final class NyTimesArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyyMMdd");
 
-	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
-			"Interactive", "blog post", "Subject", "Gift Guide", "Login");
+	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of();
 
 	private final Provider<Team> teamProvider;
 
