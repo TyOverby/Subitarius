@@ -25,7 +25,7 @@ public class HereParseThis {
 	 * @throws ArticleParseException
 	 */
 	public static void main(String[] args) throws ArticleParseException {
-		String earl = "http://www.economist.com/node/21526415";
+		String earl = "http://www.economist.com/node/21526778";
 		
 		printArticle(parseThisMotherFucker(earl));
 	}
@@ -48,7 +48,9 @@ public class HereParseThis {
 		System.out.println("DATE: " + article.getDate());
 		System.out.println("PARAGRAPHS:");
 		for (String s : article.getParagraphs()) {
-			System.out.println("\t" + s + "\n");
+			System.out.println("<void method=\"add\">");
+			System.out.println("\t<string>" + s + "</string>");
+			System.out.println("</void>");
 		}
 	}
 }

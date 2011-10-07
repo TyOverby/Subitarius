@@ -39,6 +39,42 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.economist.com/node/21526778</string>
+				<string>900 days of solitude</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1300320000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Leningrad: The Epic Siege of World War II, 1941-44. By Anna Reid. Walker &amp; Co; 492 pages; $30. Published in Britain as “Leningrad: Tragedy of a City Under Siege, 1941-44” by Bloomsbury; £25. Buy from Amazon.com, Amazon.co.uk</string>
+					</void>
+					<void method="add">
+						<string>WARTIME commemorations come round so often that the 70th anniversary of the siege of Leningrad may seem unremarkable. More attention is paid nowadays to the battles for Moscow and Stalingrad. Yet the collapse of the Soviet Union has made available a trove of new material. In the first full-length book on the siege since 1969, Anna Reid (a former Economist journalist) uses these records to compelling effect to tell this horrific and occasionally inspiring story.</string>
+					</void>
+					<void method="add">
+						<string>There is no doubting its epic scale. Launched on September 8th 1941, the siege was the deadliest in history. It famously lasted for almost 900 days and killed some 750,000 civilians (almost one in three of the pre-war population) and about the same number of soldiers. The eventual expulsion of German forces has left an image of determined Soviet citizens holding out against frenzied Nazi attacks in freezing conditions. Dmitri Shostakovich’s bombastic “Leningrad” symphony, broadcast towards enemy lines in August 1942, has cemented this impression. Yet it is misleading, in two respects.</string>
+					</void>
+					<void method="add">
+						<string>The first concerns the question of why the Germans never took the city. The answer, Ms Reid suggests, is that they did not really try. Soon after the siege began, the military focus switched to Moscow and then moved south. The Germans dropped fewer bombs on Leningrad than on London, and never offered terms for surrender. They did not want the responsibility of feeding 2.5m people. It was easier to let Leningrad’s inhabitants starve.</string>
+					</void>
+					<void method="add">
+						<string>The second is that the terrible suffering of Leningrad owed as much to Soviet errors as to Nazi aggression. This goes beyond Stalin’s wilful refusal to prepare for an invasion, despite countless warnings. Ms Reid lists a string of catastrophic blunders: the delayed evacuation of Tallinn, which led to the worst-ever Soviet naval disaster, with 65 ships sunk; the deaths of thousands of young conscripts in the “People’s Levy”, who were thrown into the front-line with no training; the failure to evacuate Leningrad until too late; the criminal negligence in not stockpiling food.</string>
+					</void>
+					<void method="add">
+						<string>The crunch came when Leningrad’s last land link was cut in early September. But the real pain began that winter, one of the coldest on record. This period, up to March 1942, forms the heart of the book. Famine set in early, as the daily individual ration fell to 125 grams or less of “bread” (often bulked out with sawdust or wallpaper paste). The personal diaries quoted by Ms Reid, many written by middle-class academics, artists, doctors and their families, offer a relentless drumroll of deaths, often attributed to “dystrophy”, not starvation. Entire families were wiped out. Dogs, cats and rats went too. A 12-year-old girl poignantly notes in her diary, “only Tanya is left”. Cannibalism was widespread, first of the dead and then of the living.</string>
+					</void>
+					<void method="add">
+						<string>After this gruesome tale the easing of the siege comes as an anticlimax. Rail links were fitfully restored as the German army was pushed back. The “ice road” across Lake Ladoga let some supplies in and people out. By the winter of 1943 the end was in sight, though it took another year to lift the siege entirely.</string>
+					</void>
+					<void method="add">
+						<string>Yet for all the celebrations of Stalin’s victory over Hitler, the aftermath was almost as grim. Harsh Soviet rule continued to cost lives. Stalin retained a deep suspicion of Leningrad, making life miserable for the city’s residents. It is an irony that Russia’s rulers today hail from St Petersburg, and they sometimes want to rehabilitate Stalin. Were Vladimir Putin ever to read this book, he would surely desist.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.economist.com/blogs/baobab/2011/03/drug-smuggling</string>
 				<string>The classic car-boot story</string>
 				<string>by J.L.</string>
