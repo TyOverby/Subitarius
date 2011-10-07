@@ -36,11 +36,10 @@ final class EconomistArticleParser implements ArticleParser {
 			String getTitle(Document document) {
 				return document.select("h3.ec-blog-headline").first().text();
 			}
-
+			
 			@Override
 			String getByline(Document document) {
-				String blogInfo = document.select("p.ec-blog-info").first()
-						.text();
+				String blogInfo = document.select("p.ec-blog-info").first().text();
 				Matcher matcher = BYLINE_PATTERN.matcher(blogInfo);
 				if (matcher.find()) {
 					return matcher.group(1);
@@ -49,86 +48,82 @@ final class EconomistArticleParser implements ArticleParser {
 				}
 			}
 		},
-
+		
 		PRINT("p.ec-article-info", "div.ec-article-content p") {
 			@Override
 			String getTitle(Document document) {
-				String title = document.select("h3.headline").first().text();
+				String title = document.select(".headline").first().text();
 				Element subtitle = document.select("h1.rubric").first();
 				if (subtitle != null) {
 					title += ": " + subtitle.text();
 				}
 				return title;
 			}
-
+			
 			@Override
 			String getByline(Document document) {
 				return null;
 			}
 		};
-
+		
 		private final String dateSelector;
-
+		
 		private final String bodySelector;
-
+		
 		private ArticleType(String dateSelector, String bodySelector) {
 			this.dateSelector = dateSelector;
 			this.bodySelector = bodySelector;
 		}
-
+		
 		abstract String getTitle(Document document);
-
+		
 		abstract String getByline(Document document);
 	}
-
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"MMM dd yyyy");
-
-	private static final Pattern BYLINE_PATTERN = Pattern
-			.compile("(by (.+?))( \\||$)");
-
+	
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd yyyy");
+	
+	private static final Pattern BYLINE_PATTERN = Pattern.compile("(by (.+?))( \\||$)");
+	
 	private final Provider<Team> teamProvider;
-
+	
 	private final SimpleHttpClient httpClient;
-
+	
 	@Inject
-	private EconomistArticleParser(Provider<Team> teamProvider,
-			SimpleHttpClient httpClient) {
+	private EconomistArticleParser(Provider<Team> teamProvider, SimpleHttpClient httpClient) {
 		this.teamProvider = teamProvider;
 		this.httpClient = httpClient;
 	}
-
+	
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		try {
 			String url = articleUrl.getUrl();
 			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
-
+			
 			ArticleType type;
 			if (document.body().className().contains("blog")) {
 				type = ArticleType.BLOG;
 			} else {
 				type = ArticleType.PRINT;
 			}
-
+			
 			// TODO:
 			// NullPointerException
 			// http://www.economist.com/node/21530177
 			// Redirect loop :S
 			String title = type.getTitle(document);
-
+			
 			String byline = type.getByline(document);
 			Date date;
 			try {
 				Element dateElem = document.select(type.dateSelector).first();
-				String dateStr = dateElem.text().replace("th", "")
-						.replace("st", "").replace("rd", "").replace("nd", "");
+				String dateStr = dateElem.text().replace("th", "").replace("st", "").replace("rd", "").replace("nd", "");
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
 				throw new ArticleParseException(articleUrl, px);
 			}
-
+			
 			List<String> paragraphs = Lists.newArrayList();
 			List<Element> elements = document.select(type.bodySelector);
 			for (Element elem : elements) {
@@ -137,9 +132,8 @@ final class EconomistArticleParser implements ArticleParser {
 					paragraphs.add(text);
 				}
 			}
-
-			return new Article(teamProvider.get(), articleUrl, title, byline,
-					date, paragraphs);
+			
+			return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
 		} catch (IOException iox) {
 			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {

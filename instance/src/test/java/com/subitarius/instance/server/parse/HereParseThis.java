@@ -19,30 +19,28 @@ import com.subitarius.util.logging.TestLoggingModule;
  * 
  */
 public class HereParseThis {
-
+	
 	/**
 	 * @param args
 	 * @throws ArticleParseException
 	 */
 	public static void main(String[] args) throws ArticleParseException {
-		String earl = "http://articles.latimes.com/2011/sep/17/news/la-trb-your-scene-perus-alluring-salt-ponds-20110916";
-
+		String earl = "http://www.economist.com/node/21526415";
+		
 		printArticle(parseThisMotherFucker(earl));
 	}
-
-	private static Article parseThisMotherFucker(String earl)
-			throws ArticleParseException {
-		Injector inj = Guice.createInjector(new HttpModule(),
-				new TestLoggingModule(), new AbstractModule() {
-					@Override
-					protected void configure() {
-						bind(ArticleParser.class).to(MasterArticleParser.class);
-					}
-				});
+	
+	private static Article parseThisMotherFucker(String earl) throws ArticleParseException {
+		Injector inj = Guice.createInjector(new HttpModule(), new TestLoggingModule(), new AbstractModule() {
+			@Override
+			protected void configure() {
+				bind(ArticleParser.class).to(MasterArticleParser.class);
+			}
+		});
 		ArticleParser ap = inj.getInstance(ArticleParser.class);
 		return ap.parse(new ArticleUrl(earl));
 	}
-
+	
 	private static void printArticle(Article article) {
 		System.out.println("TITLE:    " + article.getTitle());
 		System.out.println("EARL: " + article.getUrl());
