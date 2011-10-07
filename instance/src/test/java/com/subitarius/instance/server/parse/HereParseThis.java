@@ -6,9 +6,13 @@
 
 package com.subitarius.instance.server.parse;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
+import com.subitarius.util.http.HttpModule;
+import com.subitarius.util.logging.TestLoggingModule;
 
 /**
  * @author ty
@@ -26,12 +30,16 @@ public class HereParseThis {
 		printArticle(parseThisMotherFucker(earl));
 	}
 
-	private static Article parseThisMotherFucker(String earl) throws ArticleParseException {
-		TestingContextListener tcl = new TestingContextListener();
-		Injector inj = tcl.getInjector();
-
+	private static Article parseThisMotherFucker(String earl)
+			throws ArticleParseException {
+		Injector inj = Guice.createInjector(new HttpModule(),
+				new TestLoggingModule(), new AbstractModule() {
+					@Override
+					protected void configure() {
+						bind(ArticleParser.class).to(MasterArticleParser.class);
+					}
+				});
 		ArticleParser ap = inj.getInstance(ArticleParser.class);
-
 		return ap.parse(new ArticleUrl(earl));
 	}
 

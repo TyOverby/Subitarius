@@ -98,12 +98,6 @@ final class LaTimesArticleParser implements ArticleParser {
 		String byline = document.select("span.byline").first().text().replace(", Los Angeles Times", "").trim();
 		String dateStr = document.select("span.dateString").first().text();
 		Date date;
-		Team team;
-		if (teamProvider == null) {
-			team = teamProvider.get();
-		} else {
-			team = null;
-		}
 		try {
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
@@ -135,7 +129,7 @@ final class LaTimesArticleParser implements ArticleParser {
 		}
 		paragraphs.add(currentPara);
 		
-		return new Article(team, articleUrl, title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
 	}
 	
 	private Article parseFeaturedPage(ArticleUrl articleUrl, Document document) throws ArticleParseException {
@@ -218,12 +212,6 @@ final class LaTimesArticleParser implements ArticleParser {
 		String title = document.select("h1.entry-header").text();
 		String dateStr = document.select("div.time").first().text();
 		Date date;
-		Team team;
-		if (teamProvider == null) {
-			team = teamProvider.get();
-		} else {
-			team = null;
-		}
 		
 		try {
 			date = DATE_FORMAT.parse(dateStr);
@@ -246,6 +234,6 @@ final class LaTimesArticleParser implements ArticleParser {
 			}
 		}
 		
-		return new Article(team, articleUrl, title, byline, date, paragraphs);
+		return new Article(teamProvider.get(), articleUrl, title, byline, date, paragraphs);
 	}
 }
