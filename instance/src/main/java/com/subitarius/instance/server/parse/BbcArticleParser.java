@@ -52,8 +52,9 @@ final class BbcArticleParser implements ArticleParser {
 			if (document.body().id().equals("show-episode")) {
 				// audio programme
 				return null;
-			} else if (document.body().classNames().contains("sport")) {
-				// differently-formatted sports news
+			} else if (document.body().classNames().contains("sport")
+					|| document.body().classNames().contains("newsbeat")) {
+				// differently-formatted sports news or radio features
 				return null;
 			}
 
