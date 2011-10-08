@@ -43,7 +43,13 @@ final class NyTimesArticleParser implements ArticleParser {
 
 			@Override
 			String getByline(Document document) {
-				return document.select("meta[name=byl]").attr("content");
+				String byline = document.select("meta[name=byl]").attr(
+						"content");
+				if (!byline.isEmpty()) {
+					return byline;
+				} else {
+					return null;
+				}
 			}
 
 			@Override
@@ -55,7 +61,7 @@ final class NyTimesArticleParser implements ArticleParser {
 
 			@Override
 			List<Element> getElements(Document document) {
-				return document.select("div.articleBody > p");
+				return document.select("div.articleBody p");
 			}
 		},
 

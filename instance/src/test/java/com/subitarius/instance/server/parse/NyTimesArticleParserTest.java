@@ -25,32 +25,37 @@ public final class NyTimesArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParseOpinion() throws ArticleParseException {
+	public void testParseOpEd() throws ArticleParseException {
 		testVector(1);
 	}
 
 	@Test
-	public void testParseRoomForDebate() throws ArticleParseException {
+	public void testParseEditorial() throws ArticleParseException {
 		testVector(2);
 	}
 
 	@Test
-	public void testParseRoomForDebateIntro() throws ArticleParseException {
+	public void testParseRoomForDebate() throws ArticleParseException {
 		testVector(3);
 	}
 
 	@Test
-	public void testParseSchoolbook() throws ArticleParseException {
+	public void testParseRoomForDebateIntro() throws ArticleParseException {
 		testVector(4);
 	}
 
 	@Test
-	public void testParseMultimedia() throws ArticleParseException {
+	public void testParseSchoolbook() throws ArticleParseException {
 		testVector(5);
 	}
 
 	@Test
-	public void testParseReference() throws ArticleParseException {
+	public void testParseMultimedia() throws ArticleParseException {
 		testVector(6);
+	}
+
+	@Test
+	public void testParseReference() throws ArticleParseException {
+		testVector(7);
 	}
 }

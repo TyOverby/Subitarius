@@ -95,6 +95,9 @@
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
+						<string>Cambridge, Mass.</string>
+					</void>
+					<void method="add">
 						<string>IN 1980, Steve Jobs went to a brown-bag lunch at Stanford business school, looking for summer help. Other Apple executives were busy explaining what a personal computer was when he sauntered in; they stopped mid-sentence as, dressed in a vest, jeans and Birkenstock sandals, he settled himself, cross-legged, on top of a desk. He looked as if he were about to hold a yoga class. Then he began to talk, instead, about revolutionizing the world.</string>
 					</void>
 					<void method="add">
@@ -120,6 +123,36 @@
 					</void>
 					<void method="add">
 						<string>As for whether the Apple computers changed not only who wrote, but what they wrote, I can’t speak for others. I can only say that these computers coaxed out of me an expansiveness the typewriter never did. For every writer, the leap from short story to novel is, well, a leap. It involves faith, and resources, and a conception, finally, of how much room is yours in the world. I was not a person who would have looked at a ream of paper and thought, “Sure, that is mine to fill up.” But I turned out to be a person who could keep moving a cursor until I’d filled one ream, then another. It is a truly minuscule reason, in the scheme of things, for which to celebrate and mourn Steve Jobs. Still, I add my small reason to the infinity of others.</string>
+					</void>
+					<void method="add">
+						<string>Gish Jen is the author, most recently, of the novel “World and Town.”</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/2011/09/03/opinion/a-bad-call-on-ozone.html</string>
+				<string>A Bad Call on Ozone</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1314921600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>President Obama’s decision not to proceed with stronger air-quality standards governing ozone is a setback for public health and the environment and a victory for industry and its Republican friends in Congress.</string>
+					</void>
+					<void method="add">
+						<string>In a terse, three-paragraph statement Friday morning, the president said he did not want to burden industry with new rules at a time of great economic uncertainty, and he pledged to revisit the issue in two years. But since the proposed rules would not have begun to bite for several years, his decision seemed driven more than anything else by politics and his own re-election campaign.</string>
+					</void>
+					<void method="add">
+						<string>Ozone is the main component of smog, a leading cause of respiratory and other diseases. The standards governing allowable ozone levels of ozone in communities across the country have not changed since 1997. In 2008, the Bush administration proposed a new standard that was a good deal weaker than the recommendations of the E.P.A.’s science advisers and were promptly challenged in courts by state governments and environmental groups.</string>
+					</void>
+					<void method="add">
+						<string>This summer, Lisa Jackson, the administrator of the Environmental Protection Agency, sent a new and stronger standard to the White House — igniting a fierce lobbying campaign by industry groups asserting that the standards would require impossibly costly investments in new pollution controls and throw people out of work. Industry has made these arguments before. They almost always turn out to be exaggerated.</string>
+					</void>
+					<void method="add">
+						<string>The president sought to assuage Ms. Jackson by reminding her that a host of other environmental rules approved or in the works — including mandating cleaner cars and fewer power plant emissions of mercury and other pollutants — would do much to clean the air. All true. But there is still no excuse for compromising on public health and allowing politics to trump science.</string>
 					</void>
 				</object>
 			</object>
