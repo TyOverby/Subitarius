@@ -87,6 +87,45 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/2011/10/07/opinion/how-my-apple-computer-taught-me-to-write.html</string>
+				<string>My Muse Was an Apple Computer</string>
+				<string>By GISH JEN</string>
+				<object class="java.util.Date">
+					<long>1317945600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>IN 1980, Steve Jobs went to a brown-bag lunch at Stanford business school, looking for summer help. Other Apple executives were busy explaining what a personal computer was when he sauntered in; they stopped mid-sentence as, dressed in a vest, jeans and Birkenstock sandals, he settled himself, cross-legged, on top of a desk. He looked as if he were about to hold a yoga class. Then he began to talk, instead, about revolutionizing the world.</string>
+					</void>
+					<void method="add">
+						<string>Some four or five students heeded his call, including my husband-to-be, David O’Connor. This was less than half the number who signed up to work for Hewlett-Packard, but never mind. That summer job became a full-time job when David graduated, and a kind of dream. Apple, back then, had a hot-air balloon. It had a race car. When the second “Star Wars” movie opened, Apple bought out a theater so the whole company could go. A friend’s father called a job at Apple the worst possible thing that could happen to a young person, as everything that followed was bound to be a disappointment. And perhaps that was true.</string>
+					</void>
+					<void method="add">
+						<string>But, of course, it was exciting in a way even an onlooking writer could understand — strangely familiar, too, as if it were being run by a cousin. Apple was, for example, antiestablishment, as all writers are. It was anti-DEC and anti-I.B.M, a harborer of an anti-acronym acrimony that writers, naturally, shared. What’s more, Steve Jobs’s perfectionism made perfect sense to people like me: Of course, he sweated every detail; of course he drove others mad. He was a J. D. Salinger who, weirdly, knew computing.</string>
+					</void>
+					<void method="add">
+						<string>Was this why the Apple computer felt like a thing worth trying to write on? Though I would never have thought to use a word processor — those were for offices — I was open to the Apple II, and first worked on one at David’s apartment in the fall of 1980. The screen was black and the type green, and there were only 40 characters per line. But you could insert things; you did not have to retype an entire page if you had a new line of dialogue. And, equally exciting: you could delete things.</string>
+					</void>
+					<void method="add">
+						<string>More important, you worked with that little blinking cursor before you. No one in the world particularly cared if you wrote and, of course, you knew the computer didn’t care, either. But it was waiting for you to type something. It was not inert and passive, like the page. It was listening. It was your ally. It was your audience. And with it — on it — whatever — you could try things. You were not wasting paper; you were not making a racket. You were not even writing, exactly, as no one you knew wrote this way. Everything you’d read as an English major was far, far away; words like “the literary tradition” belonged to another galaxy. It was just you and this little blinking light, which somehow made you feel like it was always the middle of the night. But for the on-off switch, you would never have called the computer a machine.</string>
+					</void>
+					<void method="add">
+						<string>Later, at the Iowa Writers’ Workshop, I used a typewriter. But whenever I visited David in California, I wrote on his computer. I did not hide the fact that I did this, but I did not advertise it, either: “real writers,” many believed, used paper and pencil. O.K., so fiction writers, hacks that we were, used typewriters. But computers were suspect. Some writers I knew used the university mainframe to prepare manuscripts, but they typically doctored their pages before sending them out to magazines. They whited things out here and there, and made corrections by pen. They turned a page upside down, or rumpled the pages a little. In short, they tried to make their stories look as though they’d been, not printed, but typed.</string>
+					</void>
+					<void method="add">
+						<string>And so did I, sometimes, though I knew that the prejudices were all wrong. Maybe there was something dronelike about working on a mainframe; maybe sitting at stations and terminals really was at odds with the play at the heart of creative work. The Apple II, though, was born both in play and to encourage play; and this was even more true of the Lisa and Macintosh computers that followed. My first Lisa was a prototype, whose graphic interface I still glow to recall, and not just because David had worked on it. Truly, it was the sheer friendliness of the interface that I loved. And the mouse! No longer did you need to think about what you were doing; you just did it.</string>
+					</void>
+					<void method="add">
+						<string>What came out of this computer was not further from the human heart; it was closer. It was looser, freer, more spontaneous — more democratic, too. Writers in the past had often depended on an amanuensis to get their work out; behind the Mr. Tolstoys there was often a Mrs. Tolstoy. But now Mrs. Tolstoy could also write, if she liked. She could get her thoughts down and send them out with an ease she could never have dreamed of before.</string>
+					</void>
+					<void method="add">
+						<string>As for whether the Apple computers changed not only who wrote, but what they wrote, I can’t speak for others. I can only say that these computers coaxed out of me an expansiveness the typewriter never did. For every writer, the leap from short story to novel is, well, a leap. It involves faith, and resources, and a conception, finally, of how much room is yours in the world. I was not a person who would have looked at a ream of paper and thought, “Sure, that is mine to fill up.” But I turned out to be a person who could keep moving a cursor until I’d filled one ream, then another. It is a truly minuscule reason, in the scheme of things, for which to celebrate and mourn Steve Jobs. Still, I add my small reason to the infinity of others.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.nytimes.com/roomfordebate/2011/08/22/lessons-of-the-libyan-endgame/in-libya-much-work-to-be-done</string>
 				<string>Work to Be Done</string>
 				<string>Mansour O. El-Kikhia</string>

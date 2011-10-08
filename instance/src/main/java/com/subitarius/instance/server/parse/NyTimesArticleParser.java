@@ -55,7 +55,7 @@ final class NyTimesArticleParser implements ArticleParser {
 
 			@Override
 			List<Element> getElements(Document document) {
-				return document.select("div.articleBody p");
+				return document.select("div.articleBody > p");
 			}
 		},
 
