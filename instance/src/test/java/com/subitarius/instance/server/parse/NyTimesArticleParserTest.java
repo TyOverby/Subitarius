@@ -58,4 +58,9 @@ public final class NyTimesArticleParserTest extends ArticleParserTestBase {
 	public void testParseReference() throws ArticleParseException {
 		testVector(7);
 	}
+
+	@Test
+	public void testParseGiftGuide() throws ArticleParseException {
+		testVector(8);
+	}
 }

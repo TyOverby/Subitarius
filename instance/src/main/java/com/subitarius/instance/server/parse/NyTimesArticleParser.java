@@ -176,6 +176,12 @@ final class NyTimesArticleParser implements ArticleParser {
 				} else if (blogName.equals("schoolbook")) {
 					pageType = PageType.SCHOOLBOOK;
 				}
+			} else if (pageTypeStr.equals("Topic")) {
+				String pageSubType = document.select("meta[name=PST]").attr(
+						"content");
+				if (pageSubType.equals("Gift Guide")) {
+					return null;
+				}
 			} else if (pageTypeStr.equals("Multimedia")
 					|| pageTypeStr.equals("Reference")) {
 				return null;

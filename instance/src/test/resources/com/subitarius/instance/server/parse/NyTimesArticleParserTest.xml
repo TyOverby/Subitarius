@@ -244,5 +244,10 @@
 				<string>http://www.nytimes.com/best-sellers-books/2011-09-04/hardcover-political-books/list.html</string>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/gift-guide/holiday-2010/best-illustrated-childrens-books-2010/list.html</string>
+			</object>
+		</void>
 	</object>
 </java>
