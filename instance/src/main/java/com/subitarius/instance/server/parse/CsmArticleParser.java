@@ -75,7 +75,8 @@ final class CsmArticleParser implements ArticleParser {
 
 	private static boolean isParseable(Document document) {
 		// check for lists and quizzes
-		Element content = document.select("div.list-article-full, div.ui-quiz")
+		Element content = document.select(
+				"div.list-article-full, div.ui-quiz, div.video-description")
 				.first();
 		return (content == null);
 	}

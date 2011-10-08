@@ -43,4 +43,9 @@ public final class CsmArticleParserTest extends ArticleParserTestBase {
 	public void testParseQuiz() throws ArticleParseException {
 		testVector(4);
 	}
+
+	@Test
+	public void testParseVideo() throws ArticleParseException {
+		testVector(5);
+	}
 }

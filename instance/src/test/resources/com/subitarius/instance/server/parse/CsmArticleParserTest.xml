@@ -136,5 +136,10 @@
 				<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/multimedia/2011/Sep/0913-libya-amnesty-international-video</string>
+			</object>
+		</void>
 	</object>
 </java>
