@@ -59,6 +59,36 @@ final class NyTimesArticleParser implements ArticleParser {
 			}
 		},
 
+		ROOM_FOR_DEBATE {
+			private final DateFormat DATE_FORMAT = new SimpleDateFormat(
+					"MMMMM d, yyyy");
+
+			@Override
+			String getTitle(Document document) {
+				return document.select("h3.nytint-post-headline").first()
+						.text();
+			}
+
+			@Override
+			String getByline(Document document) {
+				return document.select("p.nytint-post-leadin > strong").first()
+						.text();
+			}
+
+			@Override
+			Date getDate(Document document) throws ParseException {
+				Element dateElem = document.select("p.pubdate").first();
+				dateElem.children().select("strong").remove();
+				return DATE_FORMAT.parse(dateElem.text());
+			}
+
+			@Override
+			List<Element> getElements(Document document) {
+				return document
+						.select("p.nytint-post-leadin, div.nytint-post > p");
+			}
+		},
+
 		SCHOOLBOOK {
 			private final DateFormatSymbols SYMBOLS = new DateFormatSymbols();
 			{
@@ -126,10 +156,12 @@ final class NyTimesArticleParser implements ArticleParser {
 					"content");
 			if (pageTypeStr.equals("Article")) {
 				pageType = PageType.ARTICLE;
-			} else if (pageTypeStr.equals("Blogs")) {
+			} else if (pageTypeStr.equalsIgnoreCase("Blogs")) {
 				String blogName = document.select("meta[name=BN]").attr(
 						"content");
-				if (blogName.equals("schoolbook")) {
+				if (blogName.equals("roomfordebate")) {
+					pageType = PageType.ROOM_FOR_DEBATE;
+				} else if (blogName.equals("schoolbook")) {
 					pageType = PageType.SCHOOLBOOK;
 				}
 			} else if (pageTypeStr.equals("Multimedia")) {

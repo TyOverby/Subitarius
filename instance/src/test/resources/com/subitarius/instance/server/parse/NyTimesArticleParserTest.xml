@@ -87,6 +87,39 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/roomfordebate/2011/08/22/lessons-of-the-libyan-endgame/in-libya-much-work-to-be-done</string>
+				<string>Work to Be Done</string>
+				<string>Mansour O. El-Kikhia</string>
+				<object class="java.util.Date">
+					<long>1314057600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Mansour O. El-Kikhia is chairman of the department of political science and geography at the University of Texas at San Antonio. He is the author of "Libya's Qaddafi: The Politics of Contradiction."</string>
+					</void>
+					<void method="add">
+						<string>Undermining Qaddafi’s control of Libya has not been easy. And as expected, it has taken thousands of lives and will most probably take many more until he is finally dislodged.</string>
+					</void>
+					<void method="add">
+						<string>Today for the first time in 42 years, the majority of Libyans are free from dictatorship. And although the road to the future may look smooth, it will not be. Obstacles are looming high that could undermine the infant revolt. There are too many guns in the street, no political institutions, no security forces to keep the peace, and more important a built-up anger at supports of a regime that has dominated and abused Libyan lives for such a long time.</string>
+					</void>
+					<void method="add">
+						<string>How will the fragile governmental structure deal with all the weapons, any potential lawlessness, and hostile elements that are bound to remain even after the Libyan dictator is dislodged? These are all important questions that need to be answered and dealt with.</string>
+					</void>
+					<void method="add">
+						<string>The first step in dealing with these issues is to continue doing what is being done in the areas liberated thus far, and that is to enter the liberated cities with their own people. There are still people in Tripoli who command respect and many are happy to see Qaddafi gone. They need to be brought on board to participate in the national reconciliation.</string>
+					</void>
+					<void method="add">
+						<string>Libya’s revolution has perhaps proven to be the exception in that we saw little to no looting or destruction of public wealth, nor did we witness other atrocities that usually accompany such changes. It seems that Libyans realize that engaging in such behavior would undermine the very goals they have fought and died for. This is good news and leads me to believe that among them there is not only the understanding and willingness to give the National Transitional Council a chance to forge ahead with the necessary changes. First among them is electing a legitimate body to finalize a new Libyan constitution and oversee new popular elections to approve the constitution framework and follow it up with popular elections that staff the new institutions and bring them on line.</string>
+					</void>
+					<void method="add">
+						<string>As for the guns, they will fall silent when there is no need for them.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.nytimes.com/schoolbook/2011/09/14/new-york-city-schools-in-almanac-form/</string>
 				<string>New York City Schools, In Almanac Form</string>
 				<string>By Robert Gebeloff</string>
