@@ -28,4 +28,9 @@ public final class WaPostArticleParserTest extends ArticleParserTestBase {
 	public void testParseBlog() throws ArticleParseException {
 		testVector(1);
 	}
+
+	@Test
+	public void testParseHybrid() throws ArticleParseException {
+		testVector(2);
+	}
 }
