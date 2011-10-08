@@ -170,7 +170,8 @@ final class NyTimesArticleParser implements ArticleParser {
 				} else if (blogName.equals("schoolbook")) {
 					pageType = PageType.SCHOOLBOOK;
 				}
-			} else if (pageTypeStr.equals("Multimedia")) {
+			} else if (pageTypeStr.equals("Multimedia")
+					|| pageTypeStr.equals("Reference")) {
 				return null;
 			}
 			if (pageType == null) {
