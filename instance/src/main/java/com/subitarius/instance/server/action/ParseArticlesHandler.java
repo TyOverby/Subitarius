@@ -130,11 +130,12 @@ final class ParseArticlesHandler implements
 				Article article = articleParser.parse(url);
 				if (article != null) {
 					entityManager.persist(article);
+					transaction.commit();
 					log.trace("persisted article: {}", article);
 				} else {
 					log.trace("no valid article at URL {}", url);
+					deleteArticle(url);
 				}
-				transaction.commit();
 			} catch (ArticleParseException apx) {
 				if (apx.getCause() instanceof StatusCodeException) {
 					int statusCode = ((StatusCodeException) apx.getCause())
@@ -142,11 +143,7 @@ final class ParseArticlesHandler implements
 					log.debug("parse failed due to status code {}: {}",
 							statusCode, url);
 					if (statusCode == 404) {
-						log.trace("marking URL as deleted: {}", url);
-						DeletedEntity deleted = new DeletedEntity(
-								teamProvider.get(), url);
-						entityManager.persist(deleted);
-						transaction.commit();
+						deleteArticle(url);
 					}
 				} else {
 					log.warn("exception while parsing article at URL {}", url,
@@ -161,6 +158,14 @@ final class ParseArticlesHandler implements
 					transaction.rollback();
 				}
 			}
+		}
+
+		private void deleteArticle(ArticleUrl url) {
+			log.trace("marking URL as deleted: {}", url);
+			EntityManager entityManager = entityManagerProvider.get();
+			DeletedEntity deleted = new DeletedEntity(teamProvider.get(), url);
+			entityManager.persist(deleted);
+			entityManager.getTransaction().commit(); // opened in parseArticle
 		}
 	}
 }
