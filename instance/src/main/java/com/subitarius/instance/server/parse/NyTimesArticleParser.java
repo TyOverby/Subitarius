@@ -160,7 +160,13 @@ final class NyTimesArticleParser implements ArticleParser {
 				String blogName = document.select("meta[name=BN]").attr(
 						"content");
 				if (blogName.equals("roomfordebate")) {
-					pageType = PageType.ROOM_FOR_DEBATE;
+					if (!document.select("meta[name=response_id]").isEmpty()) {
+						// Room for Debate response
+						pageType = PageType.ROOM_FOR_DEBATE;
+					} else {
+						// Room for Debate introductory page (no real content)
+						return null;
+					}
 				} else if (blogName.equals("schoolbook")) {
 					pageType = PageType.SCHOOLBOOK;
 				}

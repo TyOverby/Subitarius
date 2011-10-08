@@ -35,12 +35,17 @@ public final class NyTimesArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParseSchoolbook() throws ArticleParseException {
+	public void testParseRoomForDebateIntro() throws ArticleParseException {
 		testVector(3);
 	}
 
 	@Test
-	public void testParseMultimedia() throws ArticleParseException {
+	public void testParseSchoolbook() throws ArticleParseException {
 		testVector(4);
+	}
+
+	@Test
+	public void testParseMultimedia() throws ArticleParseException {
+		testVector(5);
 	}
 }

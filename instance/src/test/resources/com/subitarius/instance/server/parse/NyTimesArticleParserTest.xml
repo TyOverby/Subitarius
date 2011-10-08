@@ -159,6 +159,11 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/roomfordebate/2011/09/08/will-online-faith-communities-replace-churches</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.nytimes.com/schoolbook/2011/09/14/new-york-city-schools-in-almanac-form/</string>
 				<string>New York City Schools, In Almanac Form</string>
 				<string>By Robert Gebeloff</string>
