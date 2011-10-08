@@ -9,6 +9,7 @@ package com.subitarius.instance.server.parse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +33,9 @@ import com.subitarius.util.http.SimpleHttpClient;
 final class NyTimesArticleParser implements ArticleParser {
 	private static enum PageType {
 		ARTICLE {
+			private final DateFormat DATE_FORMAT = new SimpleDateFormat(
+					"yyyyMMdd");
+
 			@Override
 			String getTitle(Document document) {
 				return document.select("meta[name=hdl]").attr("content");
@@ -56,6 +60,18 @@ final class NyTimesArticleParser implements ArticleParser {
 		},
 
 		SCHOOLBOOK {
+			private final DateFormatSymbols SYMBOLS = new DateFormatSymbols();
+			{
+				// you couldn't make this up
+				// http://owl.english.purdue.edu/owl/resource/735/02/
+				SYMBOLS.setShortMonths(new String[] { "Jan.", "Feb.", "March",
+						"April", "May", "June", "July", "Aug.", "Sept.",
+						"Oct.", "Nov.", "Dec." });
+			}
+
+			private final DateFormat DATE_FORMAT = new SimpleDateFormat(
+					"MMM d, yyyy", SYMBOLS);
+
 			@Override
 			String getTitle(Document document) {
 				return document.select("h1.sbook-headline").first().text();
@@ -68,14 +84,15 @@ final class NyTimesArticleParser implements ArticleParser {
 
 			@Override
 			Date getDate(Document document) throws ParseException {
-				String dateStr = document.select("p.sbook-bydate").first()
+				String dateStr = document.select("p.sbook-pubdate").first()
 						.text();
 				return DATE_FORMAT.parse(dateStr);
 			}
 
 			@Override
 			List<Element> getElements(Document document) {
-				return document.select("div.sbook-post-content");
+				return document
+						.select("div.sbook-post-content p, div.sbook-post-content li");
 			}
 		};
 
@@ -87,9 +104,6 @@ final class NyTimesArticleParser implements ArticleParser {
 
 		abstract List<Element> getElements(Document document);
 	}
-
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
-			"yyyyMMdd");
 
 	private final Provider<Team> teamProvider;
 

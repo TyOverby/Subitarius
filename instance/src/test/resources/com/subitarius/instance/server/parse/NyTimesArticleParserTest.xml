@@ -85,5 +85,44 @@
 				</object>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/schoolbook/2011/09/14/new-york-city-schools-in-almanac-form/</string>
+				<string>New York City Schools, In Almanac Form</string>
+				<string>By Robert Gebeloff</string>
+				<object class="java.util.Date">
+					<long>1315958400000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>It stands to reason that students with high attendance rates have a better chance of succeeding at school.</string>
+					</void>
+					<void method="add">
+						<string>With data from the city’s Independent Budget Office, the value of attendance can be measured more precisely. The passing rate in math for students that missed five or fewer days of school in 2009-10 was 69 percent. Students that missed six to 10 days? 55 percent. Chronically absent (21 or more days)? 28 percent.</string>
+					</void>
+					<void method="add">
+						<string>This is part of a comprehensive package of system-wide and school-level data released today by the Independent Budget Office. As part of the 2009 state law renewing mayoral control of the system, the budget office was charged with enhancing the the “official and public understanding” of schools. They hired Raymond Domanico, a former Department of Education data analyst, to handle the job.</string>
+					</void>
+					<void method="add">
+						<string>The report is not an audit that tells whether the Education Department is meeting performance objectives or whether tax dollars are being well spent. Rather, it’s a compendium of interesting facts, a summary of figures that are commonly discussed and some that aren’t readily available.</string>
+					</void>
+					<void method="add">
+						<string>For example, in addition to overall test score performance and budget data, the report also shows that:</string>
+					</void>
+					<void method="add">
+						<string>There are more students who were born in Guyana (9,923) than in Puerto Rico (8,349), Pakistan (5,828) or India (4,163). About 40 percent of students speak a language other than English at home.</string>
+					</void>
+					<void method="add">
+						<string>Compared with a decade ago, Education Department per-pupil spending on debt service has doubled ($1,698 now, up from $847) and spending on pension contributions has risen nearly fivefold ($2,916, up from $620).</string>
+					</void>
+					<void method="add">
+						<string>Nearly 20 percent of the principals and teachers in 2006 had left the school system three years later, but that rate is much lower than the turnover that occurred in the early days of mayoral control.</string>
+					</void>
+					<void method="add">
+						<string>The report in its entirety, and data for individual schools, is here. It has data at the school level and includes such metrics as spending by category and space utilization.</string>
+					</void>
+				</object>
+			</object>
+		</void>
 	</object>
 </java>

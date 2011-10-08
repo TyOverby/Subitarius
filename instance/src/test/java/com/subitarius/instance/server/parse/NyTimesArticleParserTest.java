@@ -20,7 +20,12 @@ public final class NyTimesArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParse() throws ArticleParseException {
+	public void testParseArticle() throws ArticleParseException {
 		testVector(0);
+	}
+
+	@Test
+	public void testParseSchoolbook() throws ArticleParseException {
+		testVector(1);
 	}
 }
