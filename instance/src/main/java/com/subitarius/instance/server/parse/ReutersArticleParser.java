@@ -13,11 +13,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -28,6 +30,51 @@ import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
 
 final class ReutersArticleParser implements ArticleParser {
+	private static enum ArticleType {
+		STANDARD {
+			@Override
+			String getDateSelector() {
+				return "span.timestamp";
+			}
+
+			@Override
+			String getTextSelector() {
+				return "span#articleText p, span#articleText pre";
+			}
+
+			@Override
+			Element preProcess(Document document) {
+				// remove user comments
+				Element container = document.select("div.column2").first();
+				container.select("div.articleComments").remove();
+				return container;
+			}
+		},
+
+		AFRICA {
+			@Override
+			String getDateSelector() {
+				return "div.timestampHeader";
+			}
+
+			@Override
+			String getTextSelector() {
+				return "div#resizeableText > p";
+			}
+
+			@Override
+			Element preProcess(Document document) {
+				return document;
+			}
+		};
+
+		abstract Element preProcess(Document document);
+
+		abstract String getDateSelector();
+
+		abstract String getTextSelector();
+	}
+
 	/**
 	 * The canonical URL for a slideshow feature.
 	 */
@@ -50,17 +97,21 @@ final class ReutersArticleParser implements ArticleParser {
 	@Override
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
+		ArticleType articleType;
 		if (url.equals(SLIDESHOW_URL)) {
 			// slideshow, we can't parse this
 			return null;
+		} else if (url.startsWith("http://af.reuters.com")) {
+			articleType = ArticleType.AFRICA;
+		} else {
+			articleType = ArticleType.STANDARD;
 		}
+		Map<String, String> params = ImmutableMap.of("sp", "true");
 
 		try {
-			InputStream stream = httpClient.doGet(url);
+			InputStream stream = httpClient.doGet(url, params);
 			Document document = Jsoup.parse(stream, null, url);
-			Element container = document.select("div.column2").first();
-			// remove user comments
-			container.select("div.articleComments").remove();
+			Element container = articleType.preProcess(document);
 
 			String title = container.select("h1").first().text();
 
@@ -69,16 +120,16 @@ final class ReutersArticleParser implements ArticleParser {
 
 			Date date;
 			try {
-				String dateStr = container.select("span.timestamp").first()
-						.text();
+				String dateStr = container
+						.select(articleType.getDateSelector()).first().text();
 				date = DATE_FORMAT.parse(dateStr);
 			} catch (ParseException px) {
 				throw new ArticleParseException(articleUrl, px);
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
-			List<Element> elements = container
-					.select("span#articleText p, span#articleText pre");
+			List<Element> elements = container.select(articleType
+					.getTextSelector());
 			for (Element elem : elements) {
 				// don't put the timestamp in the body
 				if (elem.parent().attr("id").equals("articleInfo")) {
