@@ -33,4 +33,9 @@ public final class BbcArticleParserTest extends ArticleParserTestBase {
 	public void testParseProgramme() throws ArticleParseException {
 		testVector(2);
 	}
+
+	@Test
+	public void testParseSports() throws ArticleParseException {
+		testVector(3);
+	}
 }

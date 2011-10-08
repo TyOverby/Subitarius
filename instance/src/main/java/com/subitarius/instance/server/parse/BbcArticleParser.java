@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,6 +51,9 @@ final class BbcArticleParser implements ArticleParser {
 
 			if (document.body().id().equals("show-episode")) {
 				// audio programme
+				return null;
+			} else if (document.body().classNames().contains("sport")) {
+				// differently-formatted sports news
 				return null;
 			}
 

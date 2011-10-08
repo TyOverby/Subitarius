@@ -132,5 +132,10 @@
 				<string>http://www.bbc.co.uk/programmes/p00jn4by</string>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/sport2/hi/rugby_union/welsh/14737048.stm</string>
+			</object>
+		</void>
 	</object>
 </java>
