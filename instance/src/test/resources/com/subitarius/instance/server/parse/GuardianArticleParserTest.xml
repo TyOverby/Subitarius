@@ -198,5 +198,10 @@
 				<string>http://www.guardian.co.uk/commentisfree/cifamerica/poll/2011/sep/01/obama-boehner-diary-clash-poll</string>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.guardian.co.uk/world/audio/2011/sep/09/9-11-air-traffic-control-recordings-audio</string>
+			</object>
+		</void>
 	</object>
 </java>

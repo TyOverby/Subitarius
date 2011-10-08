@@ -19,6 +19,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -68,6 +69,9 @@ final class GuardianArticleParser implements ArticleParser {
 		}
 	}
 
+	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
+			"has-badge", "competition", "poll", "audio");
+
 	private static final DateFormat DATE_FORMAT_UK = new SimpleDateFormat(
 			"EEEEE d MMMMM yyyy");
 
@@ -93,10 +97,9 @@ final class GuardianArticleParser implements ArticleParser {
 			Document document = Jsoup.parse(stream, null, url);
 
 			Set<String> classNames = document.body().classNames();
-			if (classNames.contains("has-badge")
-					|| classNames.contains("competition")
-					|| classNames.contains("poll")) {
-				// markers for unparseable types (blog posts, contests, polls)
+			classNames.retainAll(UNPARSEABLE_TYPES);
+			if (!classNames.isEmpty()) {
+				// this article is unparseable for some reason
 				return null;
 			}
 

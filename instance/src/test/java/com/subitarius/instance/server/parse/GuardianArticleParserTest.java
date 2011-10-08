@@ -58,4 +58,9 @@ public final class GuardianArticleParserTest extends ArticleParserTestBase {
 	public void testParsePoll() throws ArticleParseException {
 		testVector(7);
 	}
+
+	@Test
+	public void testParseAudio() throws ArticleParseException {
+		testVector(8);
+	}
 }
