@@ -124,5 +124,10 @@
 				</object>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.nytimes.com/interactive/2011/09/23/world/middleeast/steps-in-the-palestinian-bid-for-un-membership.html</string>
+			</object>
+		</void>
 	</object>
 </java>

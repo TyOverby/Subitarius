@@ -28,4 +28,9 @@ public final class NyTimesArticleParserTest extends ArticleParserTestBase {
 	public void testParseSchoolbook() throws ArticleParseException {
 		testVector(1);
 	}
+	
+	@Test
+	public void testParseMultimedia() throws ArticleParseException {
+		testVector(2);
+	}
 }

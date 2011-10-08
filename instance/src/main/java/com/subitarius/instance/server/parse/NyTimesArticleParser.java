@@ -132,6 +132,8 @@ final class NyTimesArticleParser implements ArticleParser {
 				if (blogName.equals("schoolbook")) {
 					pageType = PageType.SCHOOLBOOK;
 				}
+			} else if (pageTypeStr.equals("Multimedia")) {
+				return null;
 			}
 			if (pageType == null) {
 				throw new ArticleParseException(articleUrl);
