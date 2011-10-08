@@ -1,6 +1,6 @@
 /*
  * AlJazeeraArticleParser.java
- * Copyright (C) 2011 Ty Overby
+ * Copyright (C) 2011 Ty Overby, Meyer Kizner
  * All rights reserved.
  */
 
@@ -68,8 +68,12 @@ final class AlJazeeraArticleParser implements ArticleParser {
 			}
 
 			List<String> paragraphs = Lists.newArrayList();
-			for (Element element : document.select("#tdTextContent > p")) {
-				paragraphs.add(element.text().replace('\u00a0', ' '));
+			for (Element element : document
+					.select("#tdTextContent > p, #tdTextContent > div:not(:has(p))")) {
+				String text = element.text().replace('\u00a0', ' ').trim();
+				if (!text.isEmpty()) {
+					paragraphs.add(text);
+				}
 			}
 
 			return new Article(teamProvider.get(), articleUrl, title, byline,
