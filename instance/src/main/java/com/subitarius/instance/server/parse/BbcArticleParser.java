@@ -1,6 +1,6 @@
 /*
  * BbcArticleParser.java
- * Copyright (C) 2011 Ty Overby
+ * Copyright (C) 2011 Ty Overby, Meyer Kizner
  * All rights reserved.
  */
 
@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -48,6 +49,11 @@ final class BbcArticleParser implements ArticleParser {
 			String url = articleUrl.getUrl();
 			InputStream stream = httpClient.doGet(url + "?print=true");
 			Document document = Jsoup.parse(stream, null, url);
+
+			if (document.body().id().equals("show-episode")) {
+				// audio programme
+				return null;
+			}
 
 			// drop some content that can mess up our text
 			document.select(".videoInStoryA, .videoInStoryB, .videoInStoryC")

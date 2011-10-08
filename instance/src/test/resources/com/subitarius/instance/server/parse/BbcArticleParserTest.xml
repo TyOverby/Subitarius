@@ -127,5 +127,10 @@
 				</object>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/programmes/p00jn4by</string>
+			</object>
+		</void>
 	</object>
 </java>
