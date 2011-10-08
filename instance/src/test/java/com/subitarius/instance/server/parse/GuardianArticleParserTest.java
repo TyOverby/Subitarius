@@ -33,12 +33,12 @@ public final class GuardianArticleParserTest extends ArticleParserTestBase {
 	public void testParseReuters() throws ArticleParseException {
 		testVector(2);
 	}
-	
+
 	@Test
 	public void testParseReutersExpired() throws ArticleParseException {
 		testVector(3);
 	}
-	
+
 	@Test
 	public void testParsePa() throws ArticleParseException {
 		testVector(4);
@@ -52,5 +52,10 @@ public final class GuardianArticleParserTest extends ArticleParserTestBase {
 	@Test
 	public void testParseContest() throws ArticleParseException {
 		testVector(6);
+	}
+
+	@Test
+	public void testParsePoll() throws ArticleParseException {
+		testVector(7);
 	}
 }

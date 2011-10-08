@@ -94,8 +94,9 @@ final class GuardianArticleParser implements ArticleParser {
 
 			Set<String> classNames = document.body().classNames();
 			if (classNames.contains("has-badge")
-					|| classNames.contains("competition")) {
-				// markers for unparseable types (blog posts, contests)
+					|| classNames.contains("competition")
+					|| classNames.contains("poll")) {
+				// markers for unparseable types (blog posts, contests, polls)
 				return null;
 			}
 
