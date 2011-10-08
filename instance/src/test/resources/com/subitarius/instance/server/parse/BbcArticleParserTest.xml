@@ -142,5 +142,20 @@
 				<string>http://www.bbc.co.uk/newsbeat/14895606</string>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/blogs/philmcnulty/2011/09/sofia_storm_clubs_were_banking.html</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/news/mobile/world-10785301</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/pressoffice/pressreleases/stories/2011/09_september/27/murray.shtml</string>
+			</object>
+		</void>
 	</object>
 </java>

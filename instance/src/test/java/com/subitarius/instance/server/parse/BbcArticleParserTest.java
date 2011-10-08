@@ -43,4 +43,19 @@ public final class BbcArticleParserTest extends ArticleParserTestBase {
 	public void testParseNewsbeat() throws ArticleParseException {
 		testVector(4);
 	}
+
+	@Test
+	public void testParseBlog() throws ArticleParseException {
+		testVector(5);
+	}
+
+	@Test
+	public void testParseMobile() throws ArticleParseException {
+		testVector(6);
+	}
+
+	@Test
+	public void testParsePressRelease() throws ArticleParseException {
+		testVector(7);
+	}
 }

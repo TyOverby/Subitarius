@@ -49,12 +49,7 @@ final class BbcArticleParser implements ArticleParser {
 			InputStream stream = httpClient.doGet(url + "?print=true");
 			Document document = Jsoup.parse(stream, null, url);
 
-			if (document.body().id().equals("show-episode")) {
-				// audio programme
-				return null;
-			} else if (document.body().classNames().contains("sport")
-					|| document.body().classNames().contains("newsbeat")) {
-				// differently-formatted sports news or radio features
+			if (!document.body().classNames().contains("news")) {
 				return null;
 			}
 
