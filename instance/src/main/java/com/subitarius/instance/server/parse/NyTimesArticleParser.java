@@ -184,6 +184,8 @@ final class NyTimesArticleParser implements ArticleParser {
 			} else if (pageTypeStr.equals("Multimedia")
 					|| pageTypeStr.equals("Reference")) {
 				return null;
+			} else if (!document.select("img[alt=On This Day]").isEmpty()) {
+				return null;
 			}
 			if (pageType == null) {
 				throw new ArticleParseException(articleUrl);
