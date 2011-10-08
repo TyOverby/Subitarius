@@ -77,8 +77,7 @@ final class NyTimesArticleParser implements ArticleParser {
 
 			@Override
 			String getByline(Document document) {
-				return document.select("p.nytint-post-leadin > strong").first()
-						.text();
+				return document.select("meta[name=byline]").attr("content");
 			}
 
 			@Override
