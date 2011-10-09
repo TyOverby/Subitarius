@@ -38,4 +38,9 @@ public final class LaTimesArticleParserTest extends ArticleParserTestBase {
 	public void testParseStandard() throws ArticleParseException {
 		testVector(3);
 	}
+
+	@Test
+	public void testParseOpinion() throws ArticleParseException {
+		testVector(4);
+	}
 }

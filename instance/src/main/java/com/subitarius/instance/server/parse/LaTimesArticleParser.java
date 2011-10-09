@@ -50,7 +50,7 @@ final class LaTimesArticleParser implements ArticleParser {
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
 		try {
-			if (url.contains("articles.latimes.com")) {
+			if (url.startsWith("http://articles.latimes.com")) {
 				List<Document> documents = Lists.newArrayList();
 				Document document;
 				String pageUrl = url;
@@ -79,7 +79,8 @@ final class LaTimesArticleParser implements ArticleParser {
 			} else {
 				InputStream stream = httpClient.doGet(url);
 				Document document = Jsoup.parse(stream, null, url);
-				if (url.contains("latimesblogs.latimes.com")) {
+				if (url.startsWith("http://latimesblogs.latimes.com")
+						|| url.startsWith("http://opinion.latimes.com")) {
 					return parseBlog(articleUrl, document);
 				} else {
 					return parseStandard(articleUrl, document);
@@ -209,14 +210,12 @@ final class LaTimesArticleParser implements ArticleParser {
 		List<String> paragraphs = Lists.newArrayList();
 		boolean inContent = true;
 		for (Element elem : document.select("div.entry-body > p")) {
-			String text = elem.text().trim();
-			if (text.contains("RELATED")) {
+			String text = elem.text().replace('\u00a0', ' ').trim();
+			if (text.equals("RELATED:") || text.equals("ALSO:")) {
 				inContent = false;
 			}
 			if (inContent && !text.isEmpty()) {
 				paragraphs.add(text);
-			} else if (text.startsWith("--")) {
-				byline = text.replace("-- ", "");
 			}
 		}
 

@@ -5,7 +5,7 @@
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://latimesblogs.latimes.com/technology/2011/08/windows-8-will-have-an-app-store-but-will-it-be-called-app-store.html</string>
 				<string>Windows 8 will have an app store, but will it be called App Store?</string>
-				<string>Nathan Olivarez-Giles</string>
+				<null/>
 				<object class="java.util.Date">
 					<long>1313625600000</long>
 				</object>
@@ -232,6 +232,39 @@
 					</void>
 					<void method="add">
 						<string> don.lee@latimes.com  </string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://opinion.latimes.com/opinionla/2011/09/malaria-vaccine-the-fiction-and-the-reality.html</string>
+				<string>Malaria vaccine: The fiction and the reality</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316390400000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Ann Patchett has earned all sorts of praise for her bestseller, "State of Wonder," but as engaging as the story is, the science left something -- well, several things -- to be desired.</string>
+					</void>
+					<void method="add">
+						<string>In the end, the mystery in the Amazon rain forest depends on the assumption (spoiler alert ahead!) that a pharmaceutical company would see all sorts of millions to be made with a drug that would allow 70-year-old women to become pregnant, but that no drug company would be interested if that same substance made an effective malaria vaccine.</string>
+					</void>
+					<void method="add">
+						<string>Presumably, because most of the malaria deaths are among poor children in Africa, there is no money to be made. (Actually, the rain forest stuff wouldn't really qualify as a vaccine; it's a preventive medicine, taken every day.)</string>
+					</void>
+					<void method="add">
+						<string>Fortunately, that's fiction. The reality is that with all the money spent preventing and treating malaria, an effective vaccine would be snapped up by governments, charitable foundations and nonprofit medical organizations.</string>
+					</void>
+					<void method="add">
+						<string>The even more heartening reality is that possible vaccines are in the pipeline. British drug maker GlaxoSmithKline has a malaria vaccine in advanced trials -- not a cure-all vaccine, but one with an effectiveness rate of more than 50% -- that could become available by 2015.</string>
+					</void>
+					<void method="add">
+						<string>And last week, the New England Journal of Medicine reported on another vaccine, being developed by various research institutes, that appeared effective in children, though the trials are at a very early stage.</string>
+					</void>
+					<void method="add">
+						<string>Close to 800,000 people died of malaria in 2009, and indeed, most of them are young children in Africa.</string>
 					</void>
 				</object>
 			</object>
