@@ -30,7 +30,12 @@ public final class LaTimesArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParseStandard() throws ArticleParseException {
+	public void testParseFeaturedTwo() throws ArticleParseException {
 		testVector(2);
+	}
+
+	@Test
+	public void testParseStandard() throws ArticleParseException {
+		testVector(3);
 	}
 }

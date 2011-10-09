@@ -53,7 +53,7 @@ final class EconomistArticleParser implements ArticleParser {
 		PRINT("p.ec-article-info", "div.ec-article-content p") {
 			@Override
 			String getTitle(Document document) {
-				String title = document.select("h3.headline").first().text();
+				String title = document.select(".headline").first().text();
 				Element subtitle = document.select("h1.rubric").first();
 				if (subtitle != null) {
 					title += ": " + subtitle.text();

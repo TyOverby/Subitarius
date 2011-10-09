@@ -55,17 +55,25 @@ final class LaTimesArticleParser implements ArticleParser {
 				Document document;
 				String pageUrl = url;
 				int page = 1;
+				boolean hasNextPage;
 				do {
 					InputStream stream = httpClient.doGet(pageUrl);
 					document = Jsoup.parse(stream, null, pageUrl);
 					documents.add(document);
+
 					pageUrl = url + '/' + (++page);
-				} while (document.select("div.mod-pagination").first().text()
-						.contains("Next"));
+					Element pageControl = document.select("div.mod-pagination")
+							.first();
+					if (pageControl != null) {
+						hasNextPage = pageControl.text().contains("Next");
+					} else {
+						hasNextPage = false;
+					}
+				} while (hasNextPage);
 
 				List<Article> articles = Lists.newArrayList();
 				for (Document doc : documents) {
-					articles.add(parseFeaturedPage(articleUrl, doc));
+					articles.add(parseFeatured(articleUrl, doc));
 				}
 				return combine(articles);
 			} else {
@@ -127,12 +135,18 @@ final class LaTimesArticleParser implements ArticleParser {
 				paragraphs);
 	}
 
-	private Article parseFeaturedPage(ArticleUrl articleUrl, Document document)
+	private Article parseFeatured(ArticleUrl articleUrl, Document document)
 			throws ArticleParseException {
 		String title = document.select(".multi-line-title-1").first().text();
 		String[] metaStr = document.select("#mod-article-byline").first()
 				.text().split("\\|");
-		String byline = metaStr[1].replace(", Los Angeles Times", "").trim();
+		String byline;
+		if (metaStr.length > 1) {
+			byline = metaStr[1].replace(", Los Angeles Times", "").trim();
+		} else {
+			byline = null;
+		}
+
 		Date date;
 		try {
 			String dateStr = metaStr[0].trim();
@@ -156,7 +170,6 @@ final class LaTimesArticleParser implements ArticleParser {
 
 	private static Article combine(List<Article> articles) {
 		checkArgument(articles.size() > 0);
-
 		Team creator = articles.get(0).getCreator();
 		ArticleUrl url = articles.get(0).getUrl();
 		String title = articles.get(0).getTitle();
@@ -185,6 +198,7 @@ final class LaTimesArticleParser implements ArticleParser {
 		String title = document.select("h1.entry-header").text();
 		String dateStr = document.select("div.time").first().text();
 		Date date;
+
 		try {
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {

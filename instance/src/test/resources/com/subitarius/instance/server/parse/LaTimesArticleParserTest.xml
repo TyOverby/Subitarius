@@ -129,6 +129,30 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://articles.latimes.com/2011/sep/17/news/la-trb-your-scene-perus-alluring-salt-ponds-20110916</string>
+				<string>Your Scene: Peru's alluring salt ponds</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1304380800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>In August, Cameron Taylor-Brown and her husband, Charles, spent a week in Peru's Sacred Valley before hiking the Salkantay Route to Machu Picchu. Just north of Maras, the couple visited stream-fed salt ponds where the contrasting elements caught her eye.</string>
+					</void>
+					<void method="add">
+						<string>"The off-white grid of the salt pools playing against the dark clothing of this person feels mysterious and intriguing," the Los Angeles resident said.</string>
+					</void>
+					<void method="add">
+						<string>Taylor-Brown used a Canon PowerShot SD850.</string>
+					</void>
+					<void method="add">
+						<string>— Jason La</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.latimes.com/business/la-fi-obama-economy-20110902,0,7026111.story</string>
 				<string>White House forecasts high unemployment through 2012</string>
 				<string>By Don Lee</string>

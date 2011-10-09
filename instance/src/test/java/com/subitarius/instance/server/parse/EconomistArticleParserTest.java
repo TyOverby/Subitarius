@@ -25,12 +25,17 @@ public final class EconomistArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParseBlog() throws ArticleParseException {
+	public void testParsePrint2() throws ArticleParseException {
 		testVector(1);
 	}
 
 	@Test
-	public void testParseBlog2() throws ArticleParseException {
+	public void testParseBlog() throws ArticleParseException {
 		testVector(2);
+	}
+
+	@Test
+	public void testParseBlog2() throws ArticleParseException {
+		testVector(3);
 	}
 }
