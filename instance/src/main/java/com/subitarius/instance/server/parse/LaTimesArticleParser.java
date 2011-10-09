@@ -50,43 +50,47 @@ final class LaTimesArticleParser implements ArticleParser {
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
 		try {
-			if (url.startsWith("http://articles.latimes.com")) {
-				List<Document> documents = Lists.newArrayList();
-				Document document;
-				String pageUrl = url;
-				int page = 1;
-				boolean hasNextPage;
-				do {
-					InputStream stream = httpClient.doGet(pageUrl);
-					document = Jsoup.parse(stream, null, pageUrl);
-					documents.add(document);
+			List<Document> documents = Lists.newArrayList();
+			Document document;
+			String canonicalUrl;
+			String pageUrl = url;
+			int page = 1;
+			boolean hasNextPage;
+			do {
+				InputStream stream = httpClient.doGet(pageUrl);
+				document = Jsoup.parse(stream, null, pageUrl);
+				documents.add(document);
+				canonicalUrl = document.select("meta[property=og:url]").attr(
+						"content");
 
-					pageUrl = url + '/' + (++page);
-					Element pageControl = document.select("div.mod-pagination")
-							.first();
-					if (pageControl != null) {
-						hasNextPage = pageControl.text().contains("Next");
-					} else {
-						hasNextPage = false;
-					}
-				} while (hasNextPage);
-
-				List<Article> articles = Lists.newArrayList();
-				for (Document doc : documents) {
-					articles.add(parseFeatured(articleUrl, doc));
-				}
-				return combine(articles);
-			} else {
-				InputStream stream = httpClient.doGet(url);
-				Document document = Jsoup.parse(stream, null, url);
-				if (url.startsWith("http://latimesblogs.latimes.com")
-						|| url.startsWith("http://opinion.latimes.com")
-						|| url.startsWith("http://lakersblog.latimes.com")) {
-					return parseBlog(articleUrl, document);
+				pageUrl = url + '/' + (++page);
+				Element pageControl = document.select("div.mod-pagination")
+						.first();
+				if (pageControl != null) {
+					hasNextPage = pageControl.text().contains("Next");
 				} else {
-					return parseStandard(articleUrl, document);
+					hasNextPage = false;
 				}
+			} while (hasNextPage);
+
+			List<Article> articles = Lists.newArrayList();
+			String subdomain = canonicalUrl.substring(
+					canonicalUrl.indexOf("http://") + 7,
+					canonicalUrl.indexOf(".latimes.com"));
+			for (Document doc : documents) {
+				Article article;
+				if (subdomain.equals("articles")) {
+					article = parseFeatured(articleUrl, doc);
+				} else if (subdomain.equals("latimesblogs")
+						|| subdomain.equals("opinion")
+						|| subdomain.equals("lakersblog")) {
+					article = parseBlog(articleUrl, doc);
+				} else {
+					article = parseStandard(articleUrl, doc);
+				}
+				articles.add(article);
 			}
+			return combine(articles);
 		} catch (IOException iox) {
 			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
