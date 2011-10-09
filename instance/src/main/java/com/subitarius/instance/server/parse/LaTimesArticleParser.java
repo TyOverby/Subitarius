@@ -97,8 +97,14 @@ final class LaTimesArticleParser implements ArticleParser {
 	private Article parseStandard(ArticleUrl articleUrl, Document document)
 			throws ArticleParseException {
 		String title = document.select("div.story > h1").first().text();
-		String byline = document.select("span.byline").first().text()
-				.replace(", Los Angeles Times", "").trim();
+		Element bylineElem = document.select("span.byline").first();
+		String byline;
+		if (bylineElem != null) {
+			byline = bylineElem.text().replace(", Los Angeles Times", "")
+					.trim();
+		} else {
+			byline = null;
+		}
 		String dateStr = document.select("span.dateString").first().text();
 		Date date;
 		try {
@@ -126,12 +132,20 @@ final class LaTimesArticleParser implements ArticleParser {
 				currentPara = "";
 				lineBreakCount = 0;
 			} else if (node instanceof Element) {
-				currentPara += ((Element) node).text().trim() + " ";
+				String nodeText = ((Element) node).text().replace("  ", " ")
+						.trim();
+				if (!nodeText.isEmpty()) {
+					currentPara += nodeText + ' ';
+				}
 			} else if (node instanceof TextNode) {
-				currentPara += ((TextNode) node).getWholeText().trim() + " ";
+				String nodeText = ((TextNode) node).getWholeText()
+						.replace("  ", " ").trim();
+				if (!nodeText.isEmpty()) {
+					currentPara += nodeText + ' ';
+				}
 			}
 		}
-		paragraphs.add(currentPara);
+		paragraphs.add(currentPara.trim());
 
 		return new Article(teamProvider.get(), articleUrl, title, byline, date,
 				paragraphs);
