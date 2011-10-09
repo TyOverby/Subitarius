@@ -19,10 +19,10 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
+import com.subitarius.action.dto.TagMappingDto.State;
 import com.subitarius.instance.client.AppPlace;
 import com.subitarius.instance.client.AppState;
 import com.subitarius.instance.client.CommonResources;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
 
 public class TagMappingWidget extends Composite implements
 		TagMappingPresenter.Display {

@@ -30,24 +30,6 @@ import com.subitarius.util.http.RobotsExclusionException;
 import com.subitarius.util.http.SimpleHttpClient;
 
 final class WaPostArticleParser implements ArticleParser {
-	private static enum ArticleType {
-		STORY {
-			@Override
-			String getBodySelector() {
-				return "div.article_body p";
-			}
-		},
-
-		BLOG {
-			@Override
-			String getBodySelector() {
-				return "div#entrytext p";
-			}
-		};
-
-		abstract String getBodySelector();
-	}
-
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd");
 
@@ -66,45 +48,35 @@ final class WaPostArticleParser implements ArticleParser {
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
 		try {
-			if (url.endsWith("_story.html")) {
-				/*
-				 * The Post's robots.txt file blocks us from fetching the single
-				 * page and printable versions of articles. So we fetch all
-				 * possible pages, parse them individually, and combine them
-				 * together.
-				 */
-				List<Document> documents = Lists.newArrayList();
-				Document document;
-				int page = 0;
-				do {
-					InputStream stream = httpClient.doGet(url);
-					document = Jsoup.parse(stream, null, url);
-					documents.add(document);
-
-					int index;
-					if (page > 0) {
-						index = url.indexOf("_" + page + ".html");
-					} else {
-						index = url.indexOf(".html");
-					}
-
-					String suffix = "_" + (++page) + ".html";
-					url = url.substring(0, index) + suffix;
-				} while (!document.select("a.next-page").isEmpty());
-
-				List<Article> articles = Lists.newArrayList();
-				for (Document doc : documents) {
-					articles.add(parsePage(articleUrl, doc, ArticleType.STORY));
-				}
-				return combine(articles);
-			} else if (url.endsWith("_blog.html")) {
+			/*
+			 * The Post's robots.txt file blocks us from fetching the single
+			 * page and printable versions of articles. So we fetch all possible
+			 * pages, parse them individually, and combine them together.
+			 */
+			List<Document> documents = Lists.newArrayList();
+			Document document;
+			int page = 0;
+			do {
 				InputStream stream = httpClient.doGet(url);
-				Document document = Jsoup.parse(stream, null, url);
-				return parsePage(articleUrl, document, ArticleType.BLOG);
-			} else {
-				// we don't know how to deal with this
-				return null;
+				document = Jsoup.parse(stream, null, url);
+				documents.add(document);
+
+				int index;
+				if (page > 0) {
+					index = url.indexOf("_" + page + ".html");
+				} else {
+					index = url.indexOf(".html");
+				}
+
+				String suffix = "_" + (++page) + ".html";
+				url = url.substring(0, index) + suffix;
+			} while (!document.select("a.next-page").isEmpty());
+
+			List<Article> articles = Lists.newArrayList();
+			for (Document doc : documents) {
+				articles.add(parsePage(articleUrl, doc));
 			}
+			return combine(articles);
 		} catch (ParseException px) {
 			throw new ArticleParseException(articleUrl, px);
 		} catch (IOException iox) {
@@ -114,29 +86,23 @@ final class WaPostArticleParser implements ArticleParser {
 		}
 	}
 
-	private Article parsePage(ArticleUrl articleUrl, Document document,
-			ArticleType type) throws ParseException {
+	private Article parsePage(ArticleUrl articleUrl, Document document)
+			throws ParseException {
 		String title = document.select("meta[name=DC.title]").attr("content")
 				.trim();
-		String creator = document.select("meta[name=DC.creator]").attr(
-				"content");
-		String byline;
-		if (creator.isEmpty()) {
-			byline = null;
-		} else {
-			byline = "By " + creator;
-		}
-
+		String byline = document.select("meta[name=DC.creator]")
+				.attr("content");
 		String dateStr = document.select("meta[name=DC.date.issued]").attr(
 				"content");
 		Date date = DATE_FORMAT.parse(dateStr);
 
 		List<String> paragraphs = Lists.newArrayList();
-		String bodySelector = type.getBodySelector();
-		List<Element> elements = document.select(bodySelector);
+		List<Element> elements = document
+				.select("div.article_body p, div#entrytext > p");
 		for (Element elem : elements) {
 			// remove image captions
-			document.select("span.imgleft, span.imgright, span.blog_caption")
+			document.select(
+					"span.imgleft, span.imgright, span.blog_caption, span.caption")
 					.remove();
 			String text = elem.text().trim();
 			if (!text.isEmpty()) {

@@ -10,7 +10,6 @@ import static com.google.common.base.Preconditions.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,19 +18,26 @@ import org.apache.http.Header;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.subitarius.util.http.robots.Directive.Type;
 
-public class RobotsTxt implements Predicate<HttpUriRequest> {
+public final class RobotsTxt implements Predicate<HttpUriRequest> {
 	private final Map<Set<Directive>, Section> sections;
 
-	private Set<Directive> agents = new HashSet<Directive>();
+	private Set<Directive> agents = Sets.newHashSet();
 
 	private List<Directive> directives;
 
 	private boolean expectingAgents = true;
 
+	public RobotsTxt() {
+		sections = ImmutableMap.of();
+	}
+
 	public RobotsTxt(String file) {
-		sections = new LinkedHashMap<Set<Directive>, Section>();
+		sections = Maps.newLinkedHashMap();
 
 		for (String line : file.split("\n")) {
 			if (line.contains("#")) {
@@ -110,9 +116,7 @@ public class RobotsTxt implements Predicate<HttpUriRequest> {
 				assert directive.getType().equals(Type.USER_AGENT);
 
 				if (directive.apply(userAgent)) {
-					if (!entry.getValue().apply(path)) {
-						return false;
-					}
+					return entry.getValue().apply(path);
 				}
 			}
 		}

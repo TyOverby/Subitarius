@@ -15,12 +15,12 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.AddMapping;
+import com.subitarius.action.MutationResult;
+import com.subitarius.action.dto.TagMappingDto;
+import com.subitarius.action.dto.TagMappingDto.State;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.AddMapping;
-import com.subitarius.instance.shared.action.MutationResult;
-import com.subitarius.instance.shared.dto.TagMappingDto;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
 
 public class TagMappingPresenter implements Presenter<TagMappingDto> {
 	public static interface Display extends IsWidget {

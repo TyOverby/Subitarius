@@ -36,7 +36,8 @@ final class Launcher {
 			UnsupportedLookAndFeelException {
 		System.setProperty("user.timezone", "UTC");
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		Injector injector = Guice.createInjector(new LauncherModule());
+		Injector injector = Guice.createInjector(new LauncherModule(),
+				new ProductionLauncherModule());
 		Launcher launcher = injector.getInstance(Launcher.class);
 		launcher.launch();
 	}

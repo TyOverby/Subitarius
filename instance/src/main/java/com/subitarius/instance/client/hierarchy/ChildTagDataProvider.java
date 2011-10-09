@@ -6,26 +6,30 @@
 
 package com.subitarius.instance.client.hierarchy;
 
-import java.util.ArrayList;
+import static com.google.common.base.Preconditions.*;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetHierarchy;
+import com.subitarius.action.GetHierarchyResult;
+import com.subitarius.action.GetTag;
+import com.subitarius.action.GetTagResult;
+import com.subitarius.action.dto.TagDto;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetHierarchy;
-import com.subitarius.instance.shared.action.GetHierarchyResult;
-import com.subitarius.instance.shared.action.GetTag;
-import com.subitarius.instance.shared.action.GetTagResult;
-import com.subitarius.instance.shared.dto.TagDto;
 
-public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
+public final class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 	private static Multimap<String, String> hierarchy;
 
 	public static boolean isKnownLeaf(String tagName) {
@@ -45,7 +49,7 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 	private boolean initialized = false;
 
 	@Inject
-	public ChildTagDataProvider(DispatcherAsync dispatcher) {
+	private ChildTagDataProvider(DispatcherAsync dispatcher) {
 		super(new ProvidesKey<TagDto>() {
 			@Override
 			public Object getKey(TagDto tag) {
@@ -60,20 +64,14 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 	}
 
 	public void init(TagDto parent) {
-		if (initialized) {
-			throw new IllegalStateException();
-		} else {
-			this.parent = parent;
-			initialized = true;
-		}
+		checkState(!initialized);
+		this.parent = parent;
+		initialized = true;
 	}
 
 	@Override
 	protected void onRangeChanged(final HasData<TagDto> display) {
-		if (!initialized) {
-			throw new IllegalStateException();
-		}
-
+		checkState(initialized);
 		dispatcher.execute(new GetHierarchy(),
 				new ManagedCallback<GetHierarchyResult>() {
 					@Override
@@ -82,7 +80,14 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 						Collection<String> children;
 
 						if (parent == null) {
-							children = hierarchy.get(null);
+							children = Collections2.filter(hierarchy.keySet(),
+									new Predicate<String>() {
+										@Override
+										public boolean apply(String input) {
+											return !hierarchy.values()
+													.contains(input);
+										}
+									});
 						} else {
 							children = hierarchy.get(parent.getName());
 						}
@@ -115,7 +120,7 @@ public class ChildTagDataProvider extends AbstractDataProvider<TagDto> {
 
 		public PendingState(HasData<TagDto> display, int size) {
 			this.display = display;
-			tags = new ArrayList<TagDto>(size);
+			tags = Lists.newArrayListWithCapacity(size);
 			count = size;
 		}
 

@@ -73,8 +73,11 @@ public class ArticleUrl extends DistributedEntity {
 	}
 
 	protected void setArticles(Set<Article> articles) {
-		checkNotNull(articles);
-		this.articles = articles;
+		if (articles != null) {
+			this.articles = articles;
+		} else {
+			this.articles = ImmutableSet.of();
+		}
 	}
 
 	@Transient
@@ -100,8 +103,19 @@ public class ArticleUrl extends DistributedEntity {
 	}
 
 	protected void setMappings(Set<TagMapping> mappings) {
-		checkNotNull(mappings);
-		this.mappings = mappings;
+		if (mappings != null) {
+			this.mappings = mappings;
+		} else {
+			this.mappings = Sets.newHashSet();
+		}
+	}
+
+	/*
+	 * To help Dozer out with DTO conversion.
+	 */
+	@Transient
+	public Source getSource() {
+		return Source.fromUrl(getUrl());
 	}
 
 	@Transient

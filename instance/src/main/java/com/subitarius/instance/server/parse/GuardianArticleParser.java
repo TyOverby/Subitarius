@@ -13,11 +13,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -67,6 +69,9 @@ final class GuardianArticleParser implements ArticleParser {
 		}
 	}
 
+	private static final List<String> UNPARSEABLE_TYPES = ImmutableList.of(
+			"has-badge", "competition", "poll", "audio");
+
 	private static final DateFormat DATE_FORMAT_UK = new SimpleDateFormat(
 			"EEEEE d MMMMM yyyy");
 
@@ -91,8 +96,10 @@ final class GuardianArticleParser implements ArticleParser {
 			InputStream stream = httpClient.doGet(url);
 			Document document = Jsoup.parse(stream, null, url);
 
-			if (document.body().className().contains("has-badge")) {
-				// blog posts, contests, etc. all seem to contain this
+			Set<String> classNames = document.body().classNames();
+			classNames.retainAll(UNPARSEABLE_TYPES);
+			if (!classNames.isEmpty()) {
+				// this article is unparseable for some reason
 				return null;
 			}
 

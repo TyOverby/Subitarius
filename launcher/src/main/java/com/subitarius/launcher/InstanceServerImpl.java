@@ -6,7 +6,7 @@
 
 package com.subitarius.launcher;
 
-import org.mortbay.jetty.Server;
+import org.eclipse.jetty.server.Server;
 
 import com.google.inject.Inject;
 

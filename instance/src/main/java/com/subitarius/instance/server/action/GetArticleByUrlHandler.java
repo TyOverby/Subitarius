@@ -16,19 +16,20 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetArticleByUrl;
+import com.subitarius.action.GetArticleResult;
+import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Article_;
-import com.subitarius.instance.shared.action.GetArticleByUrl;
-import com.subitarius.instance.shared.action.GetArticleResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
+import com.subitarius.domain.DistributedEntity;
+import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetArticleByUrlHandler implements
+final class GetArticleByUrlHandler implements
 		ActionHandler<GetArticleByUrl, GetArticleResult> {
 	@InjectLogger
 	private Logger log;
@@ -38,12 +39,11 @@ class GetArticleByUrlHandler implements
 	private final Mapper mapper;
 
 	@Inject
-	public GetArticleByUrlHandler(EntityManager entityManager, Mapper mapper) {
+	private GetArticleByUrlHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetArticleResult execute(GetArticleByUrl action,
 			Dispatcher dispatcher) throws ActionException {
@@ -56,9 +56,13 @@ class GetArticleByUrlHandler implements
 			CriteriaQuery<Article> criteria = builder
 					.createQuery(Article.class);
 			Root<Article> articleRoot = criteria.from(Article.class);
-			criteria.where(builder.equal(articleRoot.get(Article_.url),
-					articleUrl));
-			criteria.where(builder.isNull(articleRoot.get(Article_.child)));
+			criteria.select(articleRoot);
+			Root<DistributedEntity> entityRoot = criteria
+					.from(DistributedEntity.class);
+			criteria.where(builder.and(builder.equal(
+					articleRoot.get(Article_.url), articleUrl)), builder
+					.isEmpty(entityRoot.get(DistributedEntity_.children)));
+			criteria.distinct(true);
 			Article article = entityManager.createQuery(criteria)
 					.getSingleResult();
 

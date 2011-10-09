@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
@@ -57,6 +57,144 @@
 					</void>
 					<void method="add">
 						<string>(Reporting by Adrian Bathgate; editing by Balazs Koranyi)</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.reuters.com/article/2011/09/02/markets-canada-stocks-idUSN1E7811PA20110902</string>
+				<string>CANADA STOCKS-TSX slips as U.S. jobs growth stalls, golds gain</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1314921600000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>* TSX ends down 98.33 points, or 0.77 pct, at 12,602.41</string>
+					</void>
+					<void method="add">
+						<string>* Index ends week 2.2 percent higher</string>
+					</void>
+					<void method="add">
+						<string>* Eight of 10 sectors weaker, materials rise on gold  (Adds details, comments)</string>
+					</void>
+					<void method="add">
+						<string>By Claire Sibonney</string>
+					</void>
+					<void method="add">
+						<string>TORONTO, Sept 2 (Reuters) - Toronto's main stock index ended lower on Friday after grim U.S. jobs numbers revived recession fears, but rallying gold miners helped cushion the fall.</string>
+					</void>
+					<void method="add">
+						<string>Oil and gas shares were among the hardest hit as riskier assets were sold off after data unexpectedly showed U.S. employment growth ground to a halt in August. [ID:nOAT004865]</string>
+					</void>
+					<void method="add">
+						<string>U.S. crude futures dropped more than $2 a barrel following the report, sending Suncor Energy (SU.TO) down 3.2 percent to C$30 and Canadian Natural Resources (CNQ.TO) down 3.7 percent to C$34.93.</string>
+					</void>
+					<void method="add">
+						<string>"From a technical analysis perspective it looks like (oil) is headed lower, in part reflecting the greater uncertainty of economic growth," said Robert McWhirter, president and portfolio manager at Selective Asset Management Inc.</string>
+					</void>
+					<void method="add">
+						<string>"We're still of the view that economic growth will be slow, but will accelerate in the second half of this year ... however there are a lot of people who are having greater concern about the increased risk of recession," he added.</string>
+					</void>
+					<void method="add">
+						<string>Offsetting the decline, gold miners climbed 3 percent to the top of the gainers list, tracking higher bullion prices, which neared $1,900 an ounce on safe-haven buying. [GOL/]</string>
+					</void>
+					<void method="add">
+						<string>Barrick Gold (ABX.TO) jumped 3.1 percent to C$51.97, Goldcorp (G.TO) advanced 3.1 percent to C$53.76, and Yamana Gold (YRI.TO) surged 5.5 percent to C$16.58.</string>
+					</void>
+					<void method="add">
+						<string>"Near term, you don't want to be underweight gold," said Marcus Xu, director of equity investments at Genus Capital Management in Vancouver.</string>
+					</void>
+					<void method="add">
+						<string>"If you actually look at the changes in gold prices versus changes in gold stocks over the last three months, there's a lot of value in gold stocks versus the underlying commodity," he added, pointing to small and mid-cap names that could be takeover targets.</string>
+					</void>
+					<void method="add">
+						<string>The Toronto Stock Exchange's S&amp;P/TSX composite index .GSPTSE closed 98.33 points, or 0.77 percent, lower at 12,602.41. The index ended the week 2.2 percent higher.</string>
+					</void>
+					<void method="add">
+						<string>The TSX pared earlier losses of more than 1 percent as the materials group - home to gold miners - gained 1.5 percent. Telecoms also rose 0.25 percent, while the rest of the index's 10 sectors were weaker, including financials, off 1.3 percent.</string>
+					</void>
+					<void method="add">
+						<string>Laurentian Bank (LB.TO) lost 0.9 percent to C$43.20 despite reporting a 17 percent increase in net income as loan losses fell, beating analysts' earnings expectations. [ID:nN1E7810G9]</string>
+					</void>
+					<void method="add">
+						<string>"Even with all these good earnings on all these banks, you can see the bank shares haven't done much ... it's such a tough environment for banks right now given that the yields are so low," Xu said.</string>
+					</void>
+					<void method="add">
+						<string>"And typically in this part of the business cycle ... banks don't usually outperform, they usually underperform. They're usually late-cycle boomers."</string>
+					</void>
+					<void method="add">
+						<string>In technology issues, Research In Motion (RIM.TO) plunged 4.6 percent to C$29.59 after big box retailer Best Buy slashed up to $150 off the U.S. price tag for RIM's PlayBook tablet computer for the Labor Day weekend. [ID:nN1E78021B]</string>
+					</void>
+					<void method="add">
+						<string>WiLan Inc (WIN.TO) edged up 0.4 percent to C$7.09 after the technology licensing company said it had begun its patent infringement cases against Apple Inc, Dell, Hewlett-Packard and six other companies. [ID:nL4E7K21GT]</string>
+					</void>
+					<void method="add">
+						<string>In other individual company news, Silvercorp Metals (SVM.TO) sank nearly 10 percent to C$7.43. China-focused miner Silvercorp denied anonymous allegations of fraud on Friday, but its stock swooned on fears that charges like those that sank Sino-Forest (TRE.TO) were claiming another victim. [ID:nN1E7810DH]</string>
+					</void>
+					<void method="add">
+						<string>North American markets will be closed on Monday for the Labor Day holiday. Some highlights next week are U.S. non-manufacturing ISM data on Tuesday, the Bank of Canada interest rate announcement on Wednesday and Canadian monthly employment figures on Friday. ECONCA</string>
+					</void>
+					<void method="add">
+						<string>($1=$0.98 Canadian)  (Editing by Jeffrey Hodgson)</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://af.reuters.com/article/investingNews/idAFJOE79706420111008</string>
+				<string>Rio surrenders 51 pct stake in Zimbabwe unit: paper</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1318032000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>By MacDonald Dzirutwe</string>
+					</void>
+					<void method="add">
+						<string>HARARE (Reuters) - Rio Tinto has told Zimbabwe's government it will give up a 51 percent stake in its local diamond unit Murowa, state media reported on Saturday, making it the first foreign-owned firm to voluntarily comply with the country's local ownership law.</string>
+					</void>
+					<void method="add">
+						<string>"Murowa Diamonds wrote to us (on Thursday) saying they have given up 51 percent of shares and these would be given to our people," Kasukuwere told the official Herald newspaper.</string>
+					</void>
+					<void method="add">
+						<string>Murowa officials were not available for comment.</string>
+					</void>
+					<void method="add">
+						<string>The heavily criticised law is aimed mainly at mining firms and banks operating in the resource-rich country, which has become an economic basket case because of what analysts say are years of mismanagement by President Robert Mugabe's government.</string>
+					</void>
+					<void method="add">
+						<string>Last month, Indigenisation and Empowerment Minister Saviour Kasukuwere said mining firms had mostly met a September deadline by which they were required to submit plans to transfer a 51 percent stake in their operations to locals.</string>
+					</void>
+					<void method="add">
+						<string>The world's number one and two platinum producers, Anglo American Platinum and Impala Platinum are also major foreign mining firms with assets in Zimbabwe.</string>
+					</void>
+					<void method="add">
+						<string>Critics have said a major reason for the law is to allow Mugabe's ZANU-PF party to build up a war chest ahead of national elections that could come as early as next year.</string>
+					</void>
+					<void method="add">
+						<string>They say Zimbabwe, emerging from a decade-long slump, can not raise the funds needed to take over the mining assets and the cash generated by the firms would go to top officials, not ordinary people, who rank among the poorest in the world.</string>
+					</void>
+					<void method="add">
+						<string>Regulations supporting the empowerment law require miners to choose local partners from a government approved list, which Prime Minister Morgan Tsvangirai's Movement for Democratic Change (MDC) party says is meant to benefit Mugabe's allies.</string>
+					</void>
+					<void method="add">
+						<string>Mugabe was forced to share power with Tsvangirai two years ago after disputed elections in 2008. The two have sharp differences over the ownership policy.</string>
+					</void>
+					<void method="add">
+						<string>"My overall assessment is that over 90 percent of the submitted proposals do not meet the minimum requirements (of choosing partners from a government list) and there seems to be an element of resistance," Kasukuwere was quoted as saying.</string>
+					</void>
+					<void method="add">
+						<string>Kasukuwere also said plans submitted by foreign mines generally show the companies want to sell a maximum of 30 percent of shares while the remaining 21 percent would be made up of empowerment credits awarded for social investments made in infrastructure, health and education facilities.</string>
+					</void>
+					<void method="add">
+						<string>Implats unit Zimplats, which is the largest platinum producer in Zimbabwe was given up to next month to fully comply with the empowerment law.</string>
+					</void>
+					<void method="add">
+						<string>Zimbabwe has the world's second-largest known platinum reserves after neighbouring South Africa and market watchers and investors are therefore keen to see how the situation unfolds against the backdrop of red-hot commodity prices.</string>
 					</void>
 				</object>
 			</object>

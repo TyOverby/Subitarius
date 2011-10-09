@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
@@ -134,6 +134,11 @@
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/multimedia/2011/Sep/0913-libya-amnesty-international-video</string>
 			</object>
 		</void>
 	</object>

@@ -15,7 +15,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.subitarius.instance.shared.dto.TagMappingDto.State;
+import com.subitarius.action.dto.TagMappingDto.State;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.

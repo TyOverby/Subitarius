@@ -16,12 +16,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 /*
  * Note that hashCode() and equals() ignore the tag name's case.
@@ -80,16 +82,18 @@ public class Tag extends CentralEntity {
 		this.type = type;
 	}
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(joinColumns = { @JoinColumn(nullable = false) }, inverseJoinColumns = { @JoinColumn(nullable = false) })
 	public Set<Tag> getParents() {
 		return parents;
 	}
 
 	protected void setParents(Set<Tag> parents) {
-		checkNotNull(parents);
-		checkArgument(!parents.contains(this));
-		this.parents = parents;
+		if (parents != null) {
+			this.parents = parents;
+		} else {
+			this.parents = Sets.newHashSet();
+		}
 	}
 
 	@ManyToMany(mappedBy = "parents")
@@ -98,8 +102,11 @@ public class Tag extends CentralEntity {
 	}
 
 	protected void setChildren(Set<Tag> children) {
-		checkNotNull(children);
-		this.children = children;
+		if (children != null) {
+			this.children = children;
+		} else {
+			this.children = Sets.newHashSet();
+		}
 	}
 
 	@OneToMany(mappedBy = "tag")
@@ -108,8 +115,11 @@ public class Tag extends CentralEntity {
 	}
 
 	protected void setMappings(Set<TagMapping> mappings) {
-		checkNotNull(mappings);
-		this.mappings = mappings;
+		if (mappings != null) {
+			this.mappings = mappings;
+		} else {
+			this.mappings = Sets.newHashSet();
+		}
 	}
 
 	@Override

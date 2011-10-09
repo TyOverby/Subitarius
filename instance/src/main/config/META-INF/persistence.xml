@@ -7,6 +7,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<class>com.subitarius.domain.Article</class>
 		<class>com.subitarius.domain.ArticleUrl</class>
+		<class>com.subitarius.domain.DeletedEntity</class>
 		<class>com.subitarius.domain.DistributedEntity</class>
 		<class>com.subitarius.domain.License</class>
 		<class>com.subitarius.domain.Tag</class>

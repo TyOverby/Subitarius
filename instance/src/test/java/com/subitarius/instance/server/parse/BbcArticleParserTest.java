@@ -1,6 +1,6 @@
 /*
  * BbcArticleParserTest.java
- * Copyright (C) 2011 Ty Overby
+ * Copyright (C) 2011 Ty Overby, Meyer Kizner
  * All rights reserved.
  */
 
@@ -22,5 +22,40 @@ public final class BbcArticleParserTest extends ArticleParserTestBase {
 	@Test
 	public void testParse() throws ArticleParseException {
 		testVector(0);
+	}
+
+	@Test
+	public void testParseVideo() throws ArticleParseException {
+		testVector(1);
+	}
+
+	@Test
+	public void testParseProgramme() throws ArticleParseException {
+		testVector(2);
+	}
+
+	@Test
+	public void testParseSports() throws ArticleParseException {
+		testVector(3);
+	}
+
+	@Test
+	public void testParseNewsbeat() throws ArticleParseException {
+		testVector(4);
+	}
+
+	@Test
+	public void testParseBlog() throws ArticleParseException {
+		testVector(5);
+	}
+
+	@Test
+	public void testParseMobile() throws ArticleParseException {
+		testVector(6);
+	}
+
+	@Test
+	public void testParsePressRelease() throws ArticleParseException {
+		testVector(7);
 	}
 }

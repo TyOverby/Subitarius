@@ -7,7 +7,7 @@
 package com.subitarius.instance.client.taginput;
 
 import com.google.gwt.user.client.ui.HasValue;
-import com.subitarius.instance.shared.dto.TagDto;
+import com.subitarius.action.dto.TagDto;
 
 public interface TagSelector extends HasValue<TagDto> {
 	String getSelectedName();

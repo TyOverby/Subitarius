@@ -26,6 +26,7 @@ import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
@@ -137,8 +138,11 @@ public class Team extends SignedEntity {
 	}
 
 	protected void setLicenses(Set<License> licenses) {
-		checkNotNull(licenses);
-		this.licenses = licenses;
+		if (licenses != null) {
+			this.licenses = licenses;
+		} else {
+			this.licenses = Sets.newHashSet();
+		}
 	}
 
 	@Transient

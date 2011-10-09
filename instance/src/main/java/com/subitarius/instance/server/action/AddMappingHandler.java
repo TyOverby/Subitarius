@@ -20,6 +20,8 @@ import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.AddMapping;
+import com.subitarius.action.MutationResult;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.TagMapping;
@@ -27,8 +29,6 @@ import com.subitarius.domain.TagMapping.State;
 import com.subitarius.domain.TagMapping_;
 import com.subitarius.domain.Tag_;
 import com.subitarius.domain.Team;
-import com.subitarius.instance.shared.action.AddMapping;
-import com.subitarius.instance.shared.action.MutationResult;
 import com.subitarius.util.logging.InjectLogger;
 
 class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
@@ -40,8 +40,7 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 	private final Provider<Team> teamProvider;
 
 	@Inject
-	public AddMappingHandler(EntityManager entityManager,
-			Provider<Team> teamProvider) {
+	AddMappingHandler(EntityManager entityManager, Provider<Team> teamProvider) {
 		this.entityManager = entityManager;
 		this.teamProvider = teamProvider;
 	}

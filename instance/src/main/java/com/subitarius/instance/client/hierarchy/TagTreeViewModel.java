@@ -15,10 +15,10 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.subitarius.action.dto.TagDto;
+import com.subitarius.action.dto.TagDto.Type;
 import com.subitarius.instance.client.AppPlace;
 import com.subitarius.instance.client.AppState;
-import com.subitarius.instance.shared.dto.TagDto;
-import com.subitarius.instance.shared.dto.TagDto.Type;
 
 public class TagTreeViewModel implements TreeViewModel {
 	private final Provider<ChildTagDataProvider> dataSourceProvider;

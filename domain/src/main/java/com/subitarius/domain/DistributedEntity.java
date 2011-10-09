@@ -15,8 +15,10 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.util.Date;
+import java.util.Set;
 import java.util.regex.Pattern;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,7 +26,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
@@ -32,6 +34,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 
 /**
@@ -57,6 +61,7 @@ import com.google.inject.Inject;
  * 
  */
 @Entity
+@Cacheable
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class DistributedEntity implements HasBytes, Serializable {
 	private static final long serialVersionUID = -5279070062492987285L;
@@ -133,7 +138,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	private DistributedEntity parent;
 
-	private transient DistributedEntity child;
+	private transient Set<DistributedEntity> children;
 
 	protected DistributedEntity() {
 		this(null, null);
@@ -151,6 +156,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		createDate = new Date();
 		this.creator = creator;
 		this.parent = parent;
+		children = ImmutableSet.of();
 	}
 
 	@Id
@@ -171,7 +177,9 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		byte[] prefixBytes = prefix.getBytes(Charsets.UTF_8);
 		byte[] payload = getBytes();
 		byte[] data = merge(prefixBytes, payload);
-		return digest.digest(data);
+		synchronized (digest) {
+			return digest.digest(data);
+		}
 	}
 
 	protected void setHash(String hash) {
@@ -193,7 +201,11 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false, updatable = false)
 	public Date getPersistDate() {
-		return new Date(persistDate.getTime());
+		if (persistDate != null) {
+			return new Date(persistDate.getTime());
+		} else {
+			return null; // hasn't been persisted yet
+		}
 	}
 
 	protected void setPersistDate(Date persistDate) {
@@ -215,8 +227,8 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this.creator = creator;
 	}
 
-	@OneToOne
-	@JoinColumn(updatable = false)
+	@ManyToOne
+	@JoinColumn(unique = true, updatable = false)
 	public DistributedEntity getParent() {
 		return parent;
 	}
@@ -225,13 +237,26 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 		this.parent = parent;
 	}
 
-	@OneToOne(mappedBy = "parent")
-	public DistributedEntity getChild() {
-		return child;
+	@OneToMany(mappedBy = "parent")
+	protected Set<DistributedEntity> getChildren() {
+		return children;
 	}
 
-	protected void setChild(DistributedEntity child) {
-		this.child = child;
+	protected void setChildren(Set<DistributedEntity> children) {
+		if (children != null) {
+			this.children = children;
+		} else {
+			this.children = Sets.newHashSet();
+		}
+	}
+
+	@Transient
+	public DistributedEntity getChild() {
+		if (children == null || children.isEmpty()) {
+			return null;
+		} else {
+			return children.iterator().next();
+		}
 	}
 
 	@Transient
@@ -301,7 +326,6 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 			ClassNotFoundException {
 		ois.defaultReadObject();
 		setCreateDate(createDate);
-		setPersistDate(persistDate);
 		validate();
 	}
 

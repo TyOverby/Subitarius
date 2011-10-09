@@ -1,4 +1,4 @@
-Todo list
+To-do list
 =========
 This list will be used to monitor progress as well as helping with version numbering.
 Once everything under each build is completed, the program compiles, and is otherwise considered usable, work can begin on the next version.
@@ -8,6 +8,10 @@ Each item is ordered by importance.
 ---------
 1. ~~Move to self-contained servlet container~~
 2. ~~Refactor to "com.subitarius"~~
+
+~~0.2.1-alpha~~
+-----------
+~~1. Some way of downloading and parsing articles in the short-term, so that the program is usable~~
 
 0.3-alpha
 ---------

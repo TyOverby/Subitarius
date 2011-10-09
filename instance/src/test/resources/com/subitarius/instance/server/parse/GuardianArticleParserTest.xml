@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
@@ -37,7 +37,7 @@
 				<string>Canada PM urges US to approve oil pipeline</string>
 				<null/>
 				<object class="java.util.Date">
-					<long>1296864000000</long>
+					<long>1296777600000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
@@ -111,30 +111,24 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
-				<string>http://www.guardian.co.uk/business/feedarticle/9790739</string>
-				<string>Acquisitions key for EADS' U.S. growth - CFO</string>
+				<string>http://www.guardian.co.uk/business/feedarticle/9839805</string>
+				<string>Germany puts forward Asmussen to replace Stark at ECB</string>
 				<null/>
 				<object class="java.util.Date">
-					<long>1312934400000</long>
+					<long>1315612800000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
-						<string>NEW YORK, Aug 10 (Reuters) - European aerospace group EADS, parent of Airbus, cannot meet its 2020 sales target in the United States without acquisitions, its chief financial officer said on Wednesday.</string>
+						<string>MARSEILLE, France, Sept 10 (Reuters) - Germany has formally put forward deputy finance minister Joerg Asmussen to replace Juergen Stark on the European Central Bank's executive board, Finance Minister Wolfgang Schaeuble said on Saturday.</string>
 					</void>
 					<void method="add">
-						<string>The company has targeted $10 billion in non-Airbus sales in the U.S. by 2020.</string>
+						<string>"The German government has told Eurogroup head Juncker that it proposes Asmussen to succeed Juergen Stark," Schaeuble told a news conference at Group of Eight talks in the French Mediterranean port of Marseille.</string>
 					</void>
 					<void method="add">
-						<string>EADS is screening acquisition targets for the services side of its business, particularly in the security market, CFO Hans-Peter Ring said at an industry conference. EADS has announced three acquisitions in the last 15 days -- each of less than $1 billion.</string>
+						<string>Stark, the top German at the ECB, announced on Friday he would quit early in what sources said was a protest against the ECB's policy of buying bonds to help troubled euro zone debtor states.</string>
 					</void>
 					<void method="add">
-						<string>"We will look at bigger targets than what we have done, but it is risky in this environment," he said.</string>
-					</void>
-					<void method="add">
-						<string>The company had about 11 billion euros in cash at the end of June.</string>
-					</void>
-					<void method="add">
-						<string>Europe's top aerospace company has tried to reduce reliance on the capital intensive and highly cyclical Airbus jet sales revenue stream. But the head of the company's 13-person mergers and acquisition team has said EADS is under no pressure to do deals at any price. (Reporting by A. Ananthalakshmi and Nick Zieminski, editing by Gerald E. McCormick)</string>
+						<string>Asked if he had been taken by surprise at Stark's decision, Schaeuble said: "We weren't surprised by his decision. But unfortunately because of the independence of the ECB our attempts to dissuade him failed." (Reporting by Annika Breidthardt and Fiona Shaikh, writing by Mike Peacock)</string>
 					</void>
 				</object>
 			</object>
@@ -150,7 +144,7 @@
 				<string>Government ousted in Portugal poll</string>
 				<null/>
 				<object class="java.util.Date">
-					<long>1307318400000</long>
+					<long>1307232000000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
@@ -197,6 +191,16 @@
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.guardian.co.uk/music/competition/2011/jun/22/larmer-tree</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.guardian.co.uk/commentisfree/cifamerica/poll/2011/sep/01/obama-boehner-diary-clash-poll</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.guardian.co.uk/world/audio/2011/sep/09/9-11-air-traffic-control-recordings-audio</string>
 			</object>
 		</void>
 	</object>

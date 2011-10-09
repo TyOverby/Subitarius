@@ -25,7 +25,17 @@ public final class ReutersArticleParserTest extends ArticleParserTestBase {
 	}
 
 	@Test
-	public void testParseSlideshow() throws ArticleParseException {
+	public void testParsePreformatted() throws ArticleParseException {
 		testVector(1);
+	}
+
+	@Test
+	public void testParseAfrica() throws ArticleParseException {
+		testVector(2);
+	}
+
+	@Test
+	public void testParseSlideshow() throws ArticleParseException {
+		testVector(3);
 	}
 }

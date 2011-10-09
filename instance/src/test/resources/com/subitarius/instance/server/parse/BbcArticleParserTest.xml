@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
@@ -101,6 +101,60 @@
 						<string>Details of the deaths were unclear, though there were reports that gunmen had attacked a police post.</string>
 					</void>			
 				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/news/world-europe-14963652</string>
+				<string>Russian tycoons in TV show punch up</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316304000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Russian tycoon Alexander Lebedev has attacked a fellow businessman during the pre-recording of a talk show on the economic crisis for TV channel NTV.</string>
+					</void>
+					<void method="add">
+						<string>Mr Lebedev, a former KGB agent who own UK newspapers the Independent and Evening Standard, lashed out at Sergei Polonsky several times, knocking him from his chair.</string>
+					</void>
+					<void method="add">
+						<string>Yekaterina Gordeyeva, NTV reporter and one of the talk show hosts, said that such a incident was not anticipated, but that "if the oligarchs are fighting, then it means... the crisis is a really worrying issue."</string>
+					</void>
+					<void method="add">
+						<string>Steve Rosenberg reports.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/programmes/p00jn4by</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/sport2/hi/rugby_union/welsh/14737048.stm</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/newsbeat/14895606</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/blogs/philmcnulty/2011/09/sofia_storm_clubs_were_banking.html</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/news/mobile/world-10785301</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.bbc.co.uk/pressoffice/pressreleases/stories/2011/09_september/27/murray.shtml</string>
 			</object>
 		</void>
 	</object>

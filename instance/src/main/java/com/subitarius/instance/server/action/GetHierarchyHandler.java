@@ -18,17 +18,16 @@ import org.slf4j.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetHierarchy;
+import com.subitarius.action.GetHierarchyResult;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag.Type;
-import com.subitarius.instance.shared.action.GetHierarchy;
-import com.subitarius.instance.shared.action.GetHierarchyResult;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetHierarchyHandler implements
+final class GetHierarchyHandler implements
 		ActionHandler<GetHierarchy, GetHierarchyResult> {
 	@InjectLogger
 	private Logger log;
@@ -36,11 +35,10 @@ class GetHierarchyHandler implements
 	private final EntityManager entityManager;
 
 	@Inject
-	public GetHierarchyHandler(EntityManager entityManager) {
+	private GetHierarchyHandler(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
-	@Transactional
 	@Override
 	public GetHierarchyResult execute(GetHierarchy action, Dispatcher dispatcher)
 			throws ActionException {
@@ -56,13 +54,9 @@ class GetHierarchyHandler implements
 		for (Tag tag : tags) {
 			if (tag.getType() != Type.ARCHIVED) {
 				String tagName = tag.getName();
-				if (tag.getParents().isEmpty()) {
-					hierarchy.put(null, tagName);
-				} else {
-					for (Tag parent : tag.getParents()) {
-						String parentName = parent.getName();
-						hierarchy.put(parentName, tagName);
-					}
+				for (Tag parent : tag.getParents()) {
+					String parentName = parent.getName();
+					hierarchy.put(parentName, tagName);
 				}
 			}
 		}

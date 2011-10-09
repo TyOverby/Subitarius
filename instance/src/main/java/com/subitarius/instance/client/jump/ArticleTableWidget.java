@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.view.client.HasData;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.subitarius.instance.shared.dto.ArticleDto;
+import com.subitarius.action.dto.ArticleDto;
 
 public class ArticleTableWidget extends Composite implements
 		ArticleTablePresenter.Display {

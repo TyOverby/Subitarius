@@ -81,13 +81,13 @@ public class Article extends DistributedEntity {
 
 	@Column(updatable = false)
 	public String getByline() {
-		if (byline != null) {
-			checkArgument(!byline.isEmpty());
-		}
 		return byline;
 	}
 
 	protected void setByline(String byline) {
+		if (byline != null) {
+			checkArgument(!byline.isEmpty());
+		}
 		this.byline = byline;
 	}
 
@@ -196,6 +196,11 @@ public class Article extends DistributedEntity {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s (%s)", title, url);
 	}
 
 	private void readObject(ObjectInputStream ois) throws IOException,

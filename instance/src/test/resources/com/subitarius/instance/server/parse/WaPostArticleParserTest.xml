@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.washingtonpost.com/opinions/as-global-crises-mount-obama-has-become-the-worlds-master-of-ceremonies-/2011/03/15/ABAKbLs_story.html</string>
 				<string>As global crises mount, Obama has become the world’s master of ceremonies</string>
-				<string>By David J. Rothkopf</string>
+				<string>David J. Rothkopf</string>
 				<object class="java.util.Date">
 					<long>1300579200000</long>
 				</object>
@@ -71,7 +71,7 @@
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.washingtonpost.com/blogs/blogpost/post/vancouver-kissing-couple-knocked-down-by-riot-police-new-video-shows-watch/2011/06/23/AGXSg1hH_blog.html</string>
 				<string>Vancouver kissing couple knocked down by riot police, new video shows (Watch)</string>
-				<string>By Melissa Bell</string>
+				<string>Melissa Bell</string>
 				<object class="java.util.Date">
 					<long>1308787200000</long>
 				</object>
@@ -87,6 +87,51 @@
 					</void>
 					<void method="add">
 						<string>The cute couple is now looking to capi­tal­ize on their instant fame, recently hiring a high-powered publicist. It’s also rather amazing how well-documented our lives are now. This is the third time this couple’s moment was caught on camera, all by strangers. The eyes are everywhere.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.washingtonpost.com/blogs/the-fix/post/presidential-debate-applause-meter-death-penalty-english-bashing-the-media/2011/09/08/gIQAI07aCK_blog.html</string>
+				<string>Presidential debate applause meter: Death penalty, English, bashing the media</string>
+				<string>Rachel Weiner</string>
+				<object class="java.util.Date">
+					<long>1315440000000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>The significant arguments of last night’s Republican presidential debate centered on jobs, Social Security and global warming. But some of the biggest applause lines were on issues that have barely factored into the national debate.</string>
+					</void>
+					<void method="add">
+						<string>Unsurprisingly, red meat and clever quips played better to the assembled audience than nitty-gritty policy debates or proposals.</string>
+					</void>
+					<void method="add">
+						<string>Some of the biggest applause of the night went to Texas Gov. Rick Perry for his support of the death penalty. The audience responded favorably even before Perry spoke, when moderator Brian Williams noted that the governor has overseen a record 234 executions while in office.</string>
+					</void>
+					<void method="add">
+						<string>Asked if he was surprised by the enthusiastic response, Perry got more applause for saying that he had no doubts about any of those sentences — and for noting that a majority of Americans support the death penalty. “Americans understand justice,” Perry said.</string>
+					</void>
+					<void method="add">
+						<string>Former House Speaker Newt Gingrich got a huge burst of applause for his own pet cause — critiquing the questions/questioner/debate format. While he was an afterthought for much of the night, Gingrich got an enthusiastic response when he declared: “I will repudiate every effort of the news media to get Republicans fighting one another.”</string>
+					</void>
+					<void method="add">
+						<string>And former Pennsylvania senator Rick Santorum got a positive response for telling Perry that family rights should trump state rights when it comes to the HPV vaccine.</string>
+					</void>
+					<void method="add">
+						<string>Both Perry and former Massachusetts governor Mitt Romney won appreciative laughter for their back-and-forth on jobs — but more for their jokes more than their proposals.</string>
+					</void>
+					<void method="add">
+						<string>Romney was rewarded for comparing Perry to former vice president Al Gore, Perry for saying Romney’s record was more dismal than that of former Massachusetts governor Michael Dukakis.</string>
+					</void>
+					<void method="add">
+						<string>Even former Utah governor Jon Huntsman got some audience love when he chimed in that his state beat both Massachusetts and Texas in job creation.</string>
+					</void>
+					<void method="add">
+						<string>Notably, the normally fiery Rep. Michele Bachmann (R-Minn.) got few questions and did not use them very well — she had no memorable applause lines.</string>
+					</void>
+					<void method="add">
+						<string>What lines did we miss?</string>
 					</void>
 				</object>
 			</object>

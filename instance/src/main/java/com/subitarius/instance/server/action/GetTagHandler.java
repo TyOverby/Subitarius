@@ -16,18 +16,17 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 import com.prealpha.dispatch.server.ActionHandler;
 import com.prealpha.dispatch.shared.ActionException;
 import com.prealpha.dispatch.shared.Dispatcher;
+import com.subitarius.action.GetTag;
+import com.subitarius.action.GetTagResult;
+import com.subitarius.action.dto.TagDto;
 import com.subitarius.domain.Tag;
 import com.subitarius.domain.Tag_;
-import com.subitarius.instance.shared.action.GetTag;
-import com.subitarius.instance.shared.action.GetTagResult;
-import com.subitarius.instance.shared.dto.TagDto;
 import com.subitarius.util.logging.InjectLogger;
 
-class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
+final class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 	@InjectLogger
 	private Logger log;
 
@@ -36,12 +35,11 @@ class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 	private final Mapper mapper;
 
 	@Inject
-	public GetTagHandler(EntityManager entityManager, Mapper mapper) {
+	private GetTagHandler(EntityManager entityManager, Mapper mapper) {
 		this.entityManager = entityManager;
 		this.mapper = mapper;
 	}
 
-	@Transactional
 	@Override
 	public GetTagResult execute(GetTag action, Dispatcher dispatcher)
 			throws ActionException {

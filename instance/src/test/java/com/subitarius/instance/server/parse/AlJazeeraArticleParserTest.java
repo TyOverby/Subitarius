@@ -1,6 +1,6 @@
 /*
  * AlJazeeraArticleParserTest.java
- * Copyright (C) 2011 Ty Overby
+ * Copyright (C) 2011 Ty Overby, Meyer Kizner
  * All rights reserved.
  */
 
@@ -22,5 +22,20 @@ public final class AlJazeeraArticleParserTest extends ArticleParserTestBase {
 	@Test
 	public void testParse() throws ArticleParseException {
 		testVector(0);
+	}
+
+	@Test
+	public void testParse2() throws ArticleParseException {
+		testVector(1);
+	}
+
+	@Test
+	public void testParseOpinion() throws ArticleParseException {
+		testVector(2);
+	}
+
+	@Test
+	public void testParseLongOpinion() throws ArticleParseException {
+		testVector(3);
 	}
 }

@@ -16,20 +16,28 @@ public interface MainMessages extends Messages {
 	String usageHeading();
 
 	String usageText();
-	
+
+	String controlsHeading();
+
+	String controlsText();
+
+	String fetchButton();
+
+	String parseButton();
+
 	String addArticleHeading();
-	
+
 	String statusLabel();
-	
+
 	String statusLabelInvalid();
-	
+
 	String statusLabelNoParser();
-	
+
 	String statusLabelNoArticle();
-	
+
 	String statusLabelFailed();
-	
+
 	String urlLabel();
-	
+
 	String addButton();
 }

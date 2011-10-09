@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://english.aljazeera.net/programmes/aljazeeracorrespondent/2011/08/2011814134117264232.html</string>
 				<string>Chilean Miners: Still Trapped?</string>
-				<null/>
+				<string>Al Jazeera Correspondent</string>
 				<object class="java.util.Date">
 					<long>1313539200000</long>
 				</object>
@@ -22,6 +22,234 @@
 					<void method="add">
 						<string>Al Jazeera's Lucia Newman covered the mining crisis and the dramatic rescue and takes us back to meet some of the same characters she met at the time to see how the tragedy and the subsequent adulation that followed the rescue have impacted the lives of many of the miners and their families. She also asks if the Chilean government has kept its promise to improve mining safety standards in the country. In an exclusive interview, Chile's minister of mining acknowledges that much more needs to be done to improve safety conditions in the country's copper mines.</string>
 					</void>		
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://english.aljazeera.net/news/americas/2011/09/201192543845281801.html</string>
+				<string>Arrests at New York anti-Wall Street protest</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316908800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>About 80 people have been arrested as demonstrators who were camped out near the New York Stock Exchange marched through lower Manhattan, police said.</string>
+					</void>
+					<void method="add">
+						<string>Saturday's protests were part of a week-long demonstration on and near Wall Street which has been organised against a range of government-related actions that activists say are irresponsible, such as bank bailouts, the mortgage crisis and the US state of Georgia's execution of Troy Davis.</string>
+					</void>
+					<void method="add">
+						<string>The New York police took precautionary measures with metal barricades and swarms of police officers in front of the New York Stock Exchange, and the closest protesters could get to was Liberty Street, about three blocks away.</string>
+					</void>
+					<void method="add">
+						<string>A video on posted on Youtubeappears to show officers using mace on protesters who already were cordoned off by police. Another shows officers handcuffing a man after pulling him up off the ground, blood trickling down his face.</string>
+					</void>
+					<void method="add">
+						<string>Police say the arrests were mostly for blocking traffic. Charges include disorderly conduct and resisting arrest.</string>
+					</void>
+					<void method="add">
+						<string>But one demonstrator was charged with assaulting a police officer, who police say suffered a shoulder injury.</string>
+					</void>
+					<void method="add">
+						<string>Organisers of the protests have united under the banner 'Occupy Wall Street', and have taken over Manhatten's Zucatti Park, not far from Wall Street, for 8 days and nights.</string>
+					</void>
+					<void method="add">
+						<string>Patrick Bruner, a protest spokesperson, told the AP news agency the police response was "exceedingly violent" and said the protesters had stayed peaceful.</string>
+					</void>
+					<void method="add">
+						<string>On Thursday, a protest in support of Troy Davis, who was executed in Georgia the night before, converged with the demonstration in Zucatti Park, and activists said that at least six protesters were arrested.</string>
+					</void>
+					<void method="add">
+						<string>New York police spokespeople were not available for comment.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://english.aljazeera.net/indepth/opinion/2011/09/201192715232851506.html</string>
+				<string>Thick as BRICS</string>
+				<string>Jorge G Castaneda</string>
+				<object class="java.util.Date">
+					<long>1317427200000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>When the United Nations voted for what was known as partition and created the State of Israel 64 years ago, subsequently granting it full membership, several Latin American countries - Brazil, El Salvador, Argentina, Colombia, Chile, Honduras - abstained, or, in the case of Cuba, voted against the relevant resolutions. Mexico abstained on partition, though it voted in favour of admitting Israel to the UN a few months later, and subsequently recognised the Jewish state, acknowledging that its national interest was best served by not taking sides in the Middle East imbroglio.</string>
+					</void>
+					<void method="add">
+						<string>In the coming weeks, most Latin American countries will vote in favour of some form of UN membership or recognition of statehood that the Palestinian Authority is seeking. But some will not. The issue is not a simple one for the Security Council’s two Latin American non-permanent members, Brazil and Colombia, or for Cuba, Nicaragua, Venezuela, Costa Rica, Argentina, Bolivia, Chile, Ecuador, Peru, Uruguay, and Honduras, which have already recognised Palestine, but have not yet voted to grant it "observer” status at the UN.</string>
+					</void>
+					<void method="add">
+						<string>To become a full-fledged UN member, the Security Council must recommend the move to the General Assembly; but upgrading the Palestinian Authority’s status to that of the Vatican - which in theory would allow it to participate in many UN agencies, including the International Criminal Court - requires only a two-thirds vote in the General Assembly. In any case, the political consequences overshadow legal or bureaucratic issues. Forcing the US to use its veto in the Security Council, or obtaining the support of more than 150 of the UN’s 193 member states in the General Assembly, would be a huge defeat for Israel and the US, which is why the Latin American votes are important.</string>
+					</void>
+					<void method="add">
+						<string>Brazil has stated that it intends to vote in the Security Council in favour of recommending Palestine’s admission to the General Assembly; Colombia has said that it plans to abstain. Most other Latin American countries would probably vote in favour of some sort of enhanced status for the Palestinian Authority.</string>
+					</void>
+					<void method="add">
+						<string>The Jewish community in the United States, and to a lesser extent President Barack Obama’s administration, has attempted to convince Chile and Mexico, which have not yet made their stances explicit, that nothing would be gained by isolating Israel (or the US, for that matter) on this issue. Indeed, little would change on the ground even with full Palestinian statehood if Israel and the US do not accept it - and Mexico and Chile could lose much in distancing themselves from an ally on a question of great importance to it.</string>
+					</void>
+					<void method="add">
+						<string>In short, as was the case more than a half-century ago, the region has not spoken with a single voice on these crucial issues. Now, as then, most Latin American countries have not taken a principled stand - either for or against Israel, or for or against the Palestinians. Instead, they have followed the path of expedience, their positions depending on the relative clout and stridency of their societies’ Jewish or Arab communities, and on urging from Washington or from the so-called ALBA bloc of Cuba, Venezuela, Nicaragua, Bolivia, and Paraguay.</string>
+					</void>
+					<void method="add">
+						<string>Latin Americans’ lack of conviction on such grave matters - with the exception of the ALBA countries, which have the wrong convictions, but nonetheless believe in them almost religiously - has marginalised the region on other important international issues, such as the recent crisis in Libya, and the ongoing one in Syria. On the UN resolution establishing a no-fly zone and civilian protection in Libya, Brazil, along with three of the other “BRICS” (and world power wannabes) - Russia, India, and China - abstained. The fourth, South Africa, went along only grudgingly.</string>
+					</void>
+					<void method="add">
+						<string>And now, on the attempt of European nations and the US to impose UN-mandated sanctions on Syria’s President Bashar al-Assad, the BRICS have gone from bad to worse. First, they dispatched a three-country mission (Brazil, India, and South Africa) to Damascus to “persuade” Assad not to murder his people. Needless to say, he did not respond that, yes, he had killed a few thousand here and there, but that now that they brought it up, he would try to be more careful.</string>
+					</void>
+					<void method="add">
+						<string>Then they made statement after statement claiming that Syria was not Libya, and they would not allow another Western intervention to achieve regime change in another Arab country just because its people seemed upset with the local dictator. In the words of a senior NGO human rights leader: “They’re punishing the Syrian people because they were unhappy that NATO took the mandate of protecting civilians in Libya and transformed it into a mandate for regime change.”</string>
+					</void>
+					<void method="add">
+						<string>Given their growing role in the global economy, it is understandable that larger Latin American countries, along with the other BRICS, are seeking a more influential world role. This is not the way to achieve it.</string>
+					</void>
+					<void method="add">
+						<string>Jorge G. Castañeda, former Foreign Minister of Mexico (2000-2003), is Global Distinguished Professor of Politics and Latin American Studies at New York University.</string>
+					</void>
+					<void method="add">
+						<string>A version of this article previously appeared on Project Syndicate.</string>
+					</void>
+					<void method="add">
+						<string>The views expressed in this article are the author's own and do not necessarily reflect Al Jazeera's editorial policy.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://english.aljazeera.net/indepth/opinion/2011/08/20118287295098231.html</string>
+				<string>Libya: The triumphalism of the US media</string>
+				<string>Ted Rall</string>
+				<object class="java.util.Date">
+					<long>1314835200000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>The fall of Muammar Gaddafi was a Libyan story first and foremost. Libyans fought, killed and died to end the Colonel's 42-year reign.</string>
+					</void>
+					<void method="add">
+						<string>No doubt, the US and its NATO proxies tipped the military balance in favour of the Benghazi-based rebels. It's hard for any government to defend itself when denied the use of its own airspace as enemy missiles and bombs blast away its infrastructure over the course of more than 20,000 sorties.</string>
+					</void>
+					<void method="add">
+						<string>Still, it was Libyans who took the biggest risks and paid the highest price. They deserve the credit. From a foreign policy standpoint, it behooves the West to give it to them. Consider a parallel, the fall 2001 bombing campaign against the Taliban. With fewer than a thousand Special Forces troops on the ground in Afghanistan to bribe tribal leaders and guide bombs to their targets, the US military and CIA relied exclusively on air power to allow the Northern Alliance to advance. The premature announcement that major combat operations had ceased, followed by the installation of Hamid Karzai as president - a man widely seen as a US figurehead - set the stage for what would eventually become the United States' longest war.</string>
+					</void>
+					<void method="add">
+						<string>As did the triumphalism of the US media, who treated the "defeat" (more like the dispersing) of the Taliban as Bush's victory. The Northern Alliance was a mere afterthought, condescended to at every turn by the punditocracy. To paraphrase Bush's defense secretary Donald Rumsfeld, the US went to war with the ally it had, not the one it would have liked to have had. The US' attitude toward Karzai and his government reflected that in many ways: snipes and insults, including the suggestion that the Afghan leader was mentally ill and ought to be replaced, as well as years of funding levels too low to meet payroll and other basic needs, thus limiting its power to metro Kabul and a few other major cities.</string>
+					</void>
+					<void method="add">
+						<string>In retrospect, it would have been smarter for the US to have graciously credited (and funded) the Northern Alliance with its defeat over the Taliban, content to remain the power behind the throne.</string>
+					</void>
+					<void method="add">
+						<string>Premature victory</string>
+					</void>
+					<void method="add">
+						<string>Despite this experience in Afghanistan, "victory" in Libya has prompted a renewal of triumphalism in the US media.</string>
+					</void>
+					<void method="add">
+						<string>Like a slightly drunken crowd at a football match giddily shouting "U-S-A", editors and producers keep thumping their chests long after it stops being attractive.</string>
+					</void>
+					<void method="add">
+						<string>When Obama announced the anti-Gaddafi bombing campaign in March, Stephen Walt issued a relatively safe pair of predictions. "If Gaddafi is soon ousted and the rebel forces can establish a reasonably stable order there, then this operation will be judged a success and it will be high-fives all around," Walt wrote in Foreign Policy. "If a prolonged stalemate occurs, if civilian casualties soar, if the coalition splinters, or if a post-Gaddafi Libya proves to be unstable, violent, or a breeding ground for extremists … his decision will be judged a mistake."</string>
+					</void>
+					<void method="add">
+						<string>It's only been a few days since the fall of Tripoli, but high-fives and victory dances abound.</string>
+					</void>
+					<void method="add">
+						<string>"Rebel Victory in Libya a Vindication for Obama," screamed the headline in US News &amp; World Report.</string>
+					</void>
+					<void method="add">
+						<string>"Libya Vindicates Obama's Multilateral Leadership," claimed CNN. Slightly later: "A Major Win for Obama's Libya Policy."</string>
+					</void>
+					<void method="add">
+						<string>On the political Left, the anti-interventionist website Antiwar.com called it "Libya: Obama's Pyrrhic Victory".</string>
+					</void>
+					<void method="add">
+						<string>But it was still a victory - and still Obama's.</string>
+					</void>
+					<void method="add">
+						<string>Even the Right, which belatedly rediscovered the War Powers Act and the US constitution's assignment of the right to declare war to Congress three months into the NATO-led bombing campaign in Libya, was grumblingly supportive of the initial results.</string>
+					</void>
+					<void method="add">
+						<string>"[Fox News'] Sean Hannity was never happy about the US involvement in the Libyan conflict, because he believed that the president displayed weakness by not leading the charge and that he was wrong to drag America into what could end up being another intractable conflict in the first place," notes Sadhbh Walshe in the UK Guardian. "Now that, a tidy five months later, a brutal dictator has been overthrown, paving the way for Libyans to get a shot, at least, at democracy, Hannity's focus of discontent has shifted to the fact that President Obama has not yet presented a plan for how a post-Gaddafi Libya should be governed."</string>
+					</void>
+					<void method="add">
+						<string>Here's Bill O'Reilly, also on Fox: "Here's the box score. No Americans killed, costs kept down. If the full brunt of American airpower in the Mediterranean had been unleashed, you would have had a lot of civilian casualties. Very difficult to do the bombing that they did. The bottom line is: Gaddafi's gone after six months not to come back again. No American dead."</string>
+					</void>
+					<void method="add">
+						<string>The only major right-wing talker to completely deride recent events in Libya was Michael Savage, a man not commonly given to introspection: "Who do you think is more dangerous, Gaddafi or those who will replace him?" asked Savage.</string>
+					</void>
+					<void method="add">
+						<string>Overall, says Walshe, "Obama Gets B Grade on Libya" from the Right.</string>
+					</void>
+					<void method="add">
+						<string>My favourite headline appeared on the news opinion site Sodahead: "Rightwing Americans Punk'd by Obama and Libyan Rebels!"</string>
+					</void>
+					<void method="add">
+						<string>Libyan rebels? Oh, yeah, them.</string>
+					</void>
+					<void method="add">
+						<string>To hear the Obama administration and its media allies tell it, Libyan revolutionaries suddenly picked up a copy of the US Declaration of Independence - or was it The Wall Street Journal opinion page? - which inspired them to depose a tyrant. Tunisia, Egypt, Yemen - all missing. You could read thousands of pages without coming across a reference to recent - cosy - US dealings with the Brotherly Leader and Guide of the Revolution of Libya.</string>
+					</void>
+					<void method="add">
+						<string>During a speech at Columbia University, former Obama aide Samantha Power asserted that "the President has argued our [American] interests and our values cannot be separated … These values have caused the people of Libya to risk their lives on the street". Death to the dictator! Give me my MTV!</string>
+					</void>
+					<void method="add">
+						<string>Here in the States it's another post-victory silly season. We had a the Mother of All Let's-Pat-Ourselves-On-the-Back Moments after the 1991 collapse of the Soviet Union when history was over, socialism was dead and capitalism forever triumphant. (Since the 2008 fiscal meltdown, of course, capitalism hasn't been doing so well.)</string>
+					</void>
+					<void method="add">
+						<string>Who could forget the stagecrafted teardown of Saddam's statue at Firdos Square by a US Marine Corps psychological operations detachment in 2003? At such times sane people go nuts and crazy people seem sane; thus, former Alaska governor-beauty queen-Tea Party doyen Sarah Palin chimes in with what reads like a serious (!) foreign policy statement:</string>
+					</void>
+					<void method="add">
+						<string>"We join the Libyan people in gratefulness as we hear of Col. Gaddafi's defeat. The fall of a tyrant and sponsor of terrorism is a great day for freedom-loving people around the world. But the path to democracy in Libya is not complete, and we must make wise choices to ensure that our national interests are protected. First, the White House needs to avoid triumphalism. Gaddafi may be gone, but the fighting may not be complete. As we've seen in Kosovo, Bosnia, Iraq, and Afghanistan, we must not celebrate too quickly."</string>
+					</void>
+					<void method="add">
+						<string>Alas, Palin seems to be one of the few who is refusing the invitation to party like it's 1991.</string>
+					</void>
+					<void method="add">
+						<string>Liberal hypocrisy</string>
+					</void>
+					<void method="add">
+						<string>The liberal blogosphere, which largely supports Obama with the same knee-jerk consistency as its conservative counterpart backed his predecessor's every move - i.e., principles be damned, let's elect/re-elect our man - is wallowing in cognitive dissonance.</string>
+					</void>
+					<void method="add">
+						<string>"You can, and many have and will, argue hard about the merits of US action in Libya, or inaction in Syria," wrote Tom Levenson of the blog Balloon Juice in a post entitled "Send In the Clowns". (The circus reference is to the leading 2012 Republican presidential candidates.)</string>
+					</void>
+					<void method="add">
+						<string>Levenson continued: "That community organiser in the White House, though? Unlike the all-hat-no-cattle types we are increasingly seeing over there [on the Republican side], he may take his time, but he does seem to get his man." Strange. Going after Saddam, for liberal Democrats, was bad due to the lack of a casus belli. Looking back now, however, the case against Bush has been revised to mere ineffectiveness; the illegality of his war has been annulled by Obama's decision to bomb Libya with an even lower level of congressional approval.</string>
+					</void>
+					<void method="add">
+						<string>"Can Obama Call It a Win?" asked a host on New York's WYNC, one of the biggest public-radio stations in the nation. They think he should - but worry aloud that the Right will deny the president his rightful strut in his metaphorical "mission accomplished" flight suit. "His detractors will look to the length of time that this took compared to what he originally promised and say, 'You know what, this is still a defeat for you, or at least not a major victory,'" complained Gideon Rose, editor of Foreign Affairs magazine. "People will be able to say Obama got rid of Gaddafi, but for the Libyans this story is beginning rather than ending ... It will be an interesting question whether Libyans can maintain any kind of stability themselves. If they can't, the West will really have to face the more difficult question of whether we go in on the ground at all to maintain order."</string>
+					</void>
+					<void method="add">
+						<string>E.J. Dionne, Jr. of The Washington Post best encapsulates the liberal Democratic view of the fall of Gaddafi. To Dionne, the victory belongs to Obama because it belongs to the Libyan people:</string>
+					</void>
+					<void method="add">
+						<string>"It's remarkable how reluctant Obama's opponents are to acknowledge that despite all the predictions that his policy of limited engagement could never work, it actually did. Let it be said upfront that the rout of Gaddafi was engineered not by foreign powers but by a brave rebellion organised in Libya by its people. But that is the point. The United States has no troops in Libya, which means our men and women in uniform do not find themselves at the centre of - or responsible for - what will inevitably be a messy and possibly dangerous aftermath. Our forces did not suffer a single casualty. The military action by the West that was crucial to the rebels was a genuine coalition effort led by Britain and France. This was not a made-by-America revolution, and both we and the Middle East are better for that."</string>
+					</void>
+					<void method="add">
+						<string>Even when a "victory" isn't a US victory, it's a US victory. Got that?</string>
+					</void>
+					<void method="add">
+						<string>From the standpoint of the Libyan people, one can only hope that life for the average citizen becomes freer and more prosperous, and that the toppling of Gaddafi leads to a fulfillment of the promise the deposed leader offered in the 1970s, when he improved living standards after forcing foreign oil companies to remit fairer exploitation fees. That would surely be the victory that matters most.</string>
+					</void>
+					<void method="add">
+						<string>From a geopolitical perspective, however, it seems that the real story behind the US-backed war against Libya is that the UK and France are being repaid by their American masters for their support, tacit and complicit, in US interventions in Central and South Asia and the Middle East.</string>
+					</void>
+					<void method="add">
+						<string>"Paris' and London's interests in waging war on Libya are not the same, and Libya carries different weight with each," reads a March 2011 report in Forbes magazine by Stratfor, the geopolitics thinktank. "For the United Kingdom, Libya offers a promise of energy exploitation. It is not a country with which London has a strong client-patron relationship at the moment, but one could develop if Muammar Gaddafi were removed from power. For France, Tripoli already is a significant energy exporter and arms customer. Paris' interest in intervening is also about intra-European politics … [French President Nicolas] Sarkozy has a history of using aggressive foreign relation moves to gain or maintain popularity at home."</string>
+					</void>
+					<void method="add">
+						<string>For Libya as a free nation-state, the biggest victory has yet to be won: freedom from foreign intervention.</string>
+					</void>
+					<void method="add">
+						<string>Ted Rall is an American political cartoonist, columnist and author. His recent books include The Anti-American Manifesto, Silk Road to Ruin: Is Central Asia the New Middle East? and To Afghanistan and Back: A Graphic Travelogue. His website is rall.com.</string>
+					</void>
+					<void method="add">
+						<string>The views expressed in this article are the author's own and do not necessarily represent Al Jazeera's editorial policy.</string>
+					</void>
 				</object>
 			</object>
 		</void>

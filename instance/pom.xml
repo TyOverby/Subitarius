@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.subitarius</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.2-alpha</version>
+		<version>0.2.1-alpha</version>
 	</parent>
 	<artifactId>instance</artifactId>
 	<packaging>war</packaging>
@@ -65,13 +65,26 @@
 		<dependency>
 			<groupId>com.prealpha</groupId>
 			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011082008</version>
+			<version>v2011091017</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.prealpha</groupId>
 			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011082008</version>
+			<version>v2011091017</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.subitarius</groupId>
+			<artifactId>action</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.subitarius</groupId>
+			<artifactId>action</artifactId>
+			<version>${project.version}</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>
@@ -86,6 +99,12 @@
 			<artifactId>util</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
@@ -145,7 +164,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.3.0</version>
+				<version>2.3.0-1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -155,6 +174,7 @@
 				</executions>
 				<configuration>
 					<webappDirectory>${project.build.webappDirectory}</webappDirectory>
+					<deploy>${project.build.directory}/gwt-deploy</deploy>
 				</configuration>
 			</plugin>
 		</plugins>

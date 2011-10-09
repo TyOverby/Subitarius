@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.6.0_24" class="java.beans.XMLDecoder">
+<java version="1.6.0_26" class="java.beans.XMLDecoder">
 	<object class="java.util.ArrayList">
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://latimesblogs.latimes.com/technology/2011/08/windows-8-will-have-an-app-store-but-will-it-be-called-app-store.html</string>
 				<string>Windows 8 will have an app store, but will it be called App Store?</string>
-				<string>Nathan Olivarez-Giles</string>
+				<null/>
 				<object class="java.util.Date">
 					<long>1313625600000</long>
 				</object>
@@ -129,6 +129,30 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.latimes.com/travel/deals/la-trb-your-scene-perus-alluring-salt-ponds-20110916,0,5194545.story</string>
+				<string>Your Scene: Peru's alluring salt ponds</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1304380800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>In August, Cameron Taylor-Brown and her husband, Charles, spent a week in Peru's Sacred Valley before hiking the Salkantay Route to Machu Picchu. Just north of Maras, the couple visited stream-fed salt ponds where the contrasting elements caught her eye.</string>
+					</void>
+					<void method="add">
+						<string>"The off-white grid of the salt pools playing against the dark clothing of this person feels mysterious and intriguing," the Los Angeles resident said.</string>
+					</void>
+					<void method="add">
+						<string>Taylor-Brown used a Canon PowerShot SD850.</string>
+					</void>
+					<void method="add">
+						<string>— Jason La</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.latimes.com/business/la-fi-obama-economy-20110902,0,7026111.story</string>
 				<string>White House forecasts high unemployment through 2012</string>
 				<string>By Don Lee</string>
@@ -207,7 +231,88 @@
 						<string>Economists said the White House's latest forecast was far more realistic than its earlier projections. But even the new one may be overstating growth and understating unemployment, some said.</string>
 					</void>
 					<void method="add">
-						<string> don.lee@latimes.com  </string>
+						<string>don.lee@latimes.com</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://opinion.latimes.com/opinionla/2011/09/malaria-vaccine-the-fiction-and-the-reality.html</string>
+				<string>Malaria vaccine: The fiction and the reality</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316390400000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Ann Patchett has earned all sorts of praise for her bestseller, "State of Wonder," but as engaging as the story is, the science left something -- well, several things -- to be desired.</string>
+					</void>
+					<void method="add">
+						<string>In the end, the mystery in the Amazon rain forest depends on the assumption (spoiler alert ahead!) that a pharmaceutical company would see all sorts of millions to be made with a drug that would allow 70-year-old women to become pregnant, but that no drug company would be interested if that same substance made an effective malaria vaccine.</string>
+					</void>
+					<void method="add">
+						<string>Presumably, because most of the malaria deaths are among poor children in Africa, there is no money to be made. (Actually, the rain forest stuff wouldn't really qualify as a vaccine; it's a preventive medicine, taken every day.)</string>
+					</void>
+					<void method="add">
+						<string>Fortunately, that's fiction. The reality is that with all the money spent preventing and treating malaria, an effective vaccine would be snapped up by governments, charitable foundations and nonprofit medical organizations.</string>
+					</void>
+					<void method="add">
+						<string>The even more heartening reality is that possible vaccines are in the pipeline. British drug maker GlaxoSmithKline has a malaria vaccine in advanced trials -- not a cure-all vaccine, but one with an effectiveness rate of more than 50% -- that could become available by 2015.</string>
+					</void>
+					<void method="add">
+						<string>And last week, the New England Journal of Medicine reported on another vaccine, being developed by various research institutes, that appeared effective in children, though the trials are at a very early stage.</string>
+					</void>
+					<void method="add">
+						<string>Close to 800,000 people died of malaria in 2009, and indeed, most of them are young children in Africa.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://lakersblog.latimes.com/lakersblog/2011/09/pau-gasol-suffers-mild-ankle-sprain-in-european-championships.html</string>
+				<string>Pau Gasol sprains ankle in European Championships</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1315180800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Lakers forward Pau Gasol sat out of Spain's 65-57 loss Monday to Turkey in the preliminary round of the European Championships after suffering what the team termed a mild ankle sprain, according to a report from ESPN.com's Mark Woods.</string>
+					</void>
+					<void method="add">
+						<string>Spain had entered Monday's game guaranteed first place in Group A and exercised caution on Gasol, who had reportedly sprained his ankle during Sunday's victory over Lithuania.</string>
+					</void>
+					<void method="add">
+						<string>"He is day-to-day," Spain Coach Sergio Scariolo told reporters. "He's having treatment and the doctors will assess him before the second round begins."</string>
+					</void>
+					<void method="add">
+						<string>This isn't the first time Gasol suffered an injury while playing overseas. He also broke his left index finger in the 2009 off-season while practicing with the Spanish national team.</string>
+					</void>
+				</object>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.latimes.com/news/opinion/opinionla/la-ed-davis-20110921,0,7050393.story</string>
+				<string>Justice and Troy Anthony Davis</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1316563200000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Unless there is a last-minute stay, Troy Anthony Davis will die Wednesday by lethal injection, raising the distinct possibility that the state of Georgia will have executed an innocent man. His is perhaps the highest-profile death penalty case in the country, attracting the attention of such public figures as former President Jimmy Carter , Pope Benedict XVI and former FBI Director William Sessions, all of whom have called for clemency, as well as the European Union , which on Monday urged Georgia's pardons board to commute Davis' sentence. The board was not swayed. On Tuesday, after hearing hours of testimony from both sides, it rejected Davis' request for clemency and set the stage for his execution.</string>
+					</void>
+					<void method="add">
+						<string>We have no idea whether or not Davis is innocent; he is the only person who knows for sure whether he gunned down 27-year-old police officer and former Army Ranger Mark MacPhail in a Burger King parking lot in Savannah in 1989. But there have been so many doubts raised since his conviction that it's impossible to state with any certainty that he's guilty, either. This is why his sentence should have been commuted to life without parole, and it's why the death penalty should be abolished. Once the ultimate sanction has been enforced, it's impossible to take it back when further evidence of innocence emerges.</string>
+					</void>
+					<void method="add">
+						<string>If the U.S. justice system has failed Davis, it may be because it's so difficult to overturn capital convictions. A Georgia jury found him guilty, despite the lack of a murder weapon or any other physical evidence linking him to the shooting, based on witness testimony that later proved to be unreliable. Seven of the nine prosecution witnesses recanted their testimony after the trial, with some claiming it was coerced by police, and some witnesses have identified another man as MacPhail's killer. Yet appeals courts have opted not to reverse the jury's decision because even with all the troubling new details, defense attorneys haven't been able to prove by clear and convincing evidence that Davis is innocent. That's a different burden of proof than is required at trial, where prosecutors need to demonstrate guilt beyond a reasonable doubt. This means that even when new testimony raises doubts about the original verdict, it's sometimes not enough to save a defendant's life.</string>
+					</void>
+					<void method="add">
+						<string>For a state to justify executing someone, the case against him or her must be ironclad. The case against Davis is anything but. Georgia's governor has no power to stop executions, and Davis' defense attorneys may be out of options. His execution, if it proceeds, should remind all Americans of the potential for injustice lying at the heart of a primitive method of punishment.</string>
 					</void>
 				</object>
 			</object>

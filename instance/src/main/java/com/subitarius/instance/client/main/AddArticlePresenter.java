@@ -16,13 +16,13 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.AddArticle;
+import com.subitarius.action.AddArticleResult;
 import com.subitarius.instance.client.AppPlace;
 import com.subitarius.instance.client.AppState;
 import com.subitarius.instance.client.HistoryManager;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.AddArticle;
-import com.subitarius.instance.shared.action.AddArticleResult;
 
 /*
  * TODO: doesn't present anything

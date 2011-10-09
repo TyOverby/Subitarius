@@ -45,6 +45,8 @@ public abstract class ArticleParserTestBase {
 		if (expected == null) {
 			assertNull(actual);
 			return;
+		} else {
+			assertNotNull(actual);
 		}
 
 		// check each part individually so that we can see failures easily

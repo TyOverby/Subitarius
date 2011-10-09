@@ -22,13 +22,13 @@ import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.inject.Inject;
 import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.subitarius.action.GetArticleByUrl;
+import com.subitarius.action.GetArticleResult;
+import com.subitarius.action.dto.ArticleDto;
+import com.subitarius.action.dto.ArticleUrlDto;
+import com.subitarius.action.dto.TagMappingDto;
 import com.subitarius.instance.client.Presenter;
 import com.subitarius.instance.client.error.ManagedCallback;
-import com.subitarius.instance.shared.action.GetArticleByUrl;
-import com.subitarius.instance.shared.action.GetArticleResult;
-import com.subitarius.instance.shared.dto.ArticleDto;
-import com.subitarius.instance.shared.dto.ArticleUrlDto;
-import com.subitarius.instance.shared.dto.TagMappingDto;
 
 public class ArticleTablePresenter implements Presenter<List<TagMappingDto>> {
 	public static interface Display extends IsWidget, HasValue<ArticleSort> {

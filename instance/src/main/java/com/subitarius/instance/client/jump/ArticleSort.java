@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.*;
 import java.util.Comparator;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.subitarius.instance.shared.dto.ArticleDto;
+import com.subitarius.action.dto.ArticleDto;
 
 class ArticleSort implements Comparator<ArticleDto>, IsSerializable {
 	public static final ArticleSort DEFAULT_SORT = new ArticleSort(

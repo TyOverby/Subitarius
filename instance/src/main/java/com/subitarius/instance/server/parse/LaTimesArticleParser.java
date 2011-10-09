@@ -50,33 +50,47 @@ final class LaTimesArticleParser implements ArticleParser {
 	public Article parse(ArticleUrl articleUrl) throws ArticleParseException {
 		String url = articleUrl.getUrl();
 		try {
-			if (url.contains("articles.latimes.com")) {
-				List<Document> documents = Lists.newArrayList();
-				Document document;
-				String pageUrl = url;
-				int page = 1;
-				do {
-					InputStream stream = httpClient.doGet(pageUrl);
-					document = Jsoup.parse(stream, null, pageUrl);
-					documents.add(document);
-					pageUrl = url + '/' + (++page);
-				} while (document.select("div.mod-pagination").first().text()
-						.contains("Next"));
+			List<Document> documents = Lists.newArrayList();
+			Document document;
+			String canonicalUrl;
+			String pageUrl = url;
+			int page = 1;
+			boolean hasNextPage;
+			do {
+				InputStream stream = httpClient.doGet(pageUrl);
+				document = Jsoup.parse(stream, null, pageUrl);
+				documents.add(document);
+				canonicalUrl = document.select("meta[property=og:url]").attr(
+						"content");
 
-				List<Article> articles = Lists.newArrayList();
-				for (Document doc : documents) {
-					articles.add(parseFeaturedPage(articleUrl, doc));
-				}
-				return combine(articles);
-			} else {
-				InputStream stream = httpClient.doGet(url);
-				Document document = Jsoup.parse(stream, null, url);
-				if (url.contains("latimesblogs.latimes.com")) {
-					return parseBlog(articleUrl, document);
+				pageUrl = url + '/' + (++page);
+				Element pageControl = document.select("div.mod-pagination")
+						.first();
+				if (pageControl != null) {
+					hasNextPage = pageControl.text().contains("Next");
 				} else {
-					return parseStandard(articleUrl, document);
+					hasNextPage = false;
 				}
+			} while (hasNextPage);
+
+			List<Article> articles = Lists.newArrayList();
+			String subdomain = canonicalUrl.substring(
+					canonicalUrl.indexOf("http://") + 7,
+					canonicalUrl.indexOf(".latimes.com"));
+			for (Document doc : documents) {
+				Article article;
+				if (subdomain.equals("articles")) {
+					article = parseFeatured(articleUrl, doc);
+				} else if (subdomain.equals("latimesblogs")
+						|| subdomain.equals("opinion")
+						|| subdomain.equals("lakersblog")) {
+					article = parseBlog(articleUrl, doc);
+				} else {
+					article = parseStandard(articleUrl, doc);
+				}
+				articles.add(article);
 			}
+			return combine(articles);
 		} catch (IOException iox) {
 			throw new ArticleParseException(articleUrl, iox);
 		} catch (RobotsExclusionException rex) {
@@ -87,8 +101,14 @@ final class LaTimesArticleParser implements ArticleParser {
 	private Article parseStandard(ArticleUrl articleUrl, Document document)
 			throws ArticleParseException {
 		String title = document.select("div.story > h1").first().text();
-		String byline = document.select("span.byline").first().text()
-				.replace(", Los Angeles Times", "").trim();
+		Element bylineElem = document.select("span.byline").first();
+		String byline;
+		if (bylineElem != null) {
+			byline = bylineElem.text().replace(", Los Angeles Times", "")
+					.trim();
+		} else {
+			byline = null;
+		}
 		String dateStr = document.select("span.dateString").first().text();
 		Date date;
 		try {
@@ -116,23 +136,37 @@ final class LaTimesArticleParser implements ArticleParser {
 				currentPara = "";
 				lineBreakCount = 0;
 			} else if (node instanceof Element) {
-				currentPara += ((Element) node).text().trim() + " ";
+				String nodeText = ((Element) node).text().replace("  ", " ")
+						.trim();
+				if (!nodeText.isEmpty()) {
+					currentPara += nodeText + ' ';
+				}
 			} else if (node instanceof TextNode) {
-				currentPara += ((TextNode) node).getWholeText().trim() + " ";
+				String nodeText = ((TextNode) node).getWholeText()
+						.replace("  ", " ").trim();
+				if (!nodeText.isEmpty()) {
+					currentPara += nodeText + ' ';
+				}
 			}
 		}
-		paragraphs.add(currentPara);
+		paragraphs.add(currentPara.trim());
 
 		return new Article(teamProvider.get(), articleUrl, title, byline, date,
 				paragraphs);
 	}
 
-	private Article parseFeaturedPage(ArticleUrl articleUrl, Document document)
+	private Article parseFeatured(ArticleUrl articleUrl, Document document)
 			throws ArticleParseException {
 		String title = document.select(".multi-line-title-1").first().text();
 		String[] metaStr = document.select("#mod-article-byline").first()
 				.text().split("\\|");
-		String byline = metaStr[1].replace(", Los Angeles Times", "").trim();
+		String byline;
+		if (metaStr.length > 1) {
+			byline = metaStr[1].replace(", Los Angeles Times", "").trim();
+		} else {
+			byline = null;
+		}
+
 		Date date;
 		try {
 			String dateStr = metaStr[0].trim();
@@ -156,7 +190,6 @@ final class LaTimesArticleParser implements ArticleParser {
 
 	private static Article combine(List<Article> articles) {
 		checkArgument(articles.size() > 0);
-
 		Team creator = articles.get(0).getCreator();
 		ArticleUrl url = articles.get(0).getUrl();
 		String title = articles.get(0).getTitle();
@@ -185,6 +218,7 @@ final class LaTimesArticleParser implements ArticleParser {
 		String title = document.select("h1.entry-header").text();
 		String dateStr = document.select("div.time").first().text();
 		Date date;
+
 		try {
 			date = DATE_FORMAT.parse(dateStr);
 		} catch (ParseException px) {
@@ -195,14 +229,12 @@ final class LaTimesArticleParser implements ArticleParser {
 		List<String> paragraphs = Lists.newArrayList();
 		boolean inContent = true;
 		for (Element elem : document.select("div.entry-body > p")) {
-			String text = elem.text().trim();
-			if (text.contains("RELATED")) {
+			String text = elem.text().replace('\u00a0', ' ').trim();
+			if (text.equals("RELATED:") || text.equals("ALSO:")) {
 				inContent = false;
 			}
 			if (inContent && !text.isEmpty()) {
 				paragraphs.add(text);
-			} else if (text.startsWith("--")) {
-				byline = text.replace("-- ", "");
 			}
 		}
 
