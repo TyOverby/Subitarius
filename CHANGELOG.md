@@ -1,3 +1,8 @@
+0.2.1-alpha
+===========
+* Add buttons to the main page to fetch entities and parse articles
+* Fix a number of article parser bugs and fetch/parse performance issues
+
 0.2-alpha
 =========
 * Rename to com.subitarius

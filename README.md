@@ -5,7 +5,7 @@ TODO (features)
 * Work on patrol/delete
 * Archive articles after some amount of time
 * License revocation and/or expiry
-* Central server separate from client, for release
+* ~~Central server separate from client, for release~~
 * Custom articles
     * Have an entire tag dedicated to them in addition to being found in the related tags
     * Written by us
