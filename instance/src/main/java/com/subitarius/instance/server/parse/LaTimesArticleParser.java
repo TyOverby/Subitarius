@@ -80,7 +80,8 @@ final class LaTimesArticleParser implements ArticleParser {
 				InputStream stream = httpClient.doGet(url);
 				Document document = Jsoup.parse(stream, null, url);
 				if (url.startsWith("http://latimesblogs.latimes.com")
-						|| url.startsWith("http://opinion.latimes.com")) {
+						|| url.startsWith("http://opinion.latimes.com")
+						|| url.startsWith("http://lakersblog.latimes.com")) {
 					return parseBlog(articleUrl, document);
 				} else {
 					return parseStandard(articleUrl, document);

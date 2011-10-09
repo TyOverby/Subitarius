@@ -269,5 +269,29 @@
 				</object>
 			</object>
 		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://lakersblog.latimes.com/lakersblog/2011/09/pau-gasol-suffers-mild-ankle-sprain-in-european-championships.html</string>
+				<string>Pau Gasol sprains ankle in European Championships</string>
+				<null/>
+				<object class="java.util.Date">
+					<long>1315180800000</long>
+				</object>
+				<object class="java.util.ArrayList">
+					<void method="add">
+						<string>Lakers forward Pau Gasol sat out of Spain's 65-57 loss Monday to Turkey in the preliminary round of the European Championships after suffering what the team termed a mild ankle sprain, according to a report from ESPN.com's Mark Woods.</string>
+					</void>
+					<void method="add">
+						<string>Spain had entered Monday's game guaranteed first place in Group A and exercised caution on Gasol, who had reportedly sprained his ankle during Sunday's victory over Lithuania.</string>
+					</void>
+					<void method="add">
+						<string>"He is day-to-day," Spain Coach Sergio Scariolo told reporters. "He's having treatment and the doctors will assess him before the second round begins."</string>
+					</void>
+					<void method="add">
+						<string>This isn't the first time Gasol suffered an injury while playing overseas. He also broke his left index finger in the 2009 off-season while practicing with the Spanish national team.</string>
+					</void>
+				</object>
+			</object>
+		</void>
 	</object>
 </java>
