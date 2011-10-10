@@ -6,6 +6,8 @@
 
 package com.subitarius.instance.server.action;
 
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,7 +28,6 @@ import com.subitarius.domain.Article;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.Article_;
 import com.subitarius.domain.DistributedEntity;
-import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.util.logging.InjectLogger;
 
 final class GetArticleByUrlHandler implements
@@ -56,12 +57,10 @@ final class GetArticleByUrlHandler implements
 			CriteriaQuery<Article> criteria = builder
 					.createQuery(Article.class);
 			Root<Article> articleRoot = criteria.from(Article.class);
-			criteria.select(articleRoot);
-			Root<DistributedEntity> entityRoot = criteria
-					.from(DistributedEntity.class);
 			criteria.where(builder.and(builder.equal(
 					articleRoot.get(Article_.url), articleUrl)), builder
-					.isEmpty(entityRoot.get(DistributedEntity_.children)));
+					.isEmpty(articleRoot
+							.<Set<DistributedEntity>> get("children")));
 			criteria.distinct(true);
 			Article article = entityManager.createQuery(criteria)
 					.getSingleResult();
