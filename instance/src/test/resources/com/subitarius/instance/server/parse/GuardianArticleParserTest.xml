@@ -111,24 +111,42 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
-				<string>http://www.guardian.co.uk/business/feedarticle/9839805</string>
-				<string>Germany puts forward Asmussen to replace Stark at ECB</string>
+				<string>http://www.guardian.co.uk/business/feedarticle/9888809</string>
+				<string>Japan wants G20 debate on more steps to fix Europe debt</string>
 				<null/>
 				<object class="java.util.Date">
-					<long>1315612800000</long>
+					<long>1318204800000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
-						<string>MARSEILLE, France, Sept 10 (Reuters) - Germany has formally put forward deputy finance minister Joerg Asmussen to replace Juergen Stark on the European Central Bank's executive board, Finance Minister Wolfgang Schaeuble said on Saturday.</string>
+						<string>* Europe scheme needed for Japan to buy more bonds -Azumi</string>
 					</void>
 					<void method="add">
-						<string>"The German government has told Eurogroup head Juncker that it proposes Asmussen to succeed Juergen Stark," Schaeuble told a news conference at Group of Eight talks in the French Mediterranean port of Marseille.</string>
+						<string>* Adds that stable Europe will help to ease yen rise (Adds quote, details)</string>
 					</void>
 					<void method="add">
-						<string>Stark, the top German at the ECB, announced on Friday he would quit early in what sources said was a protest against the ECB's policy of buying bonds to help troubled euro zone debtor states.</string>
+						<string>By Tetsushi Kajimoto and Leika Kihara</string>
 					</void>
 					<void method="add">
-						<string>Asked if he had been taken by surprise at Stark's decision, Schaeuble said: "We weren't surprised by his decision. But unfortunately because of the independence of the ECB our attempts to dissuade him failed." (Reporting by Annika Breidthardt and Fiona Shaikh, writing by Mike Peacock)</string>
+						<string>TOKYO, Oct 11 (Reuters) - Japan wants the Group of 20 finance leaders to discuss what more the group can do to help stabilise Europe's debt crisis, Finance Minister Jun Azumi said on Tuesday, reiterating his call for further European efforts to restore market confidence.</string>
+					</void>
+					<void method="add">
+						<string>Azumi repeated Tokyo's readiness to buy more euro zone bonds to support global efforts to stabilise markets, but only on condition that Europe comes up with a solid scheme to solve its debt crisis.</string>
+					</void>
+					<void method="add">
+						<string>"The Europeans must first discuss a scheme among themselves. Only then will Japan and the United States consider what proposals can be made. We'd like to discuss (how to support Europe) closely with the United States," Azumi told a news conference.</string>
+					</void>
+					<void method="add">
+						<string>Asian shares rose on Tuesday on hopes that European leaders are finally taking action to protect the continent's banks from its festering sovereign debt crisis.</string>
+					</void>
+					<void method="add">
+						<string>But markets have remained on edge with investors continuing to buy yen, mostly against the euro and emerging currencies, as they seek safe havens from risk.</string>
+					</void>
+					<void method="add">
+						<string>Asked what the Japanese government wants to discuss at the gathering of G20 finance leaders in Paris this weekend, Azumi said: "There's obviously the issue of the underlying strength in the yen. But first and foremost, for the global economy, it's how to achieve stability in Europe."</string>
+					</void>
+					<void method="add">
+						<string>He also said stabilising Europe's debt situation would help to halt the yen's rise and lead to stable growth in Japan's economy. (Editing by Chris Gallagher and Edmund Klamann)</string>
 					</void>
 				</object>
 			</object>
