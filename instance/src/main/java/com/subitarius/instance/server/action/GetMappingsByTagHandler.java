@@ -13,8 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.dozer.Mapper;
@@ -60,25 +62,35 @@ final class GetMappingsByTagHandler implements
 			Dispatcher dispatcher) throws ActionException {
 		String tagName = action.getTagName();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<TagMapping> criteria = builder
-				.createQuery(TagMapping.class);
-		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
-		criteria.where(builder.equal(
-				mappingRoot.get(TagMapping_.tag).get(Tag_.name), tagName),
-				builder.isNotEmpty(mappingRoot.get(TagMapping_.articleUrl).get(
-						ArticleUrl_.articles)), builder.isEmpty(mappingRoot
-						.<Set<DistributedEntity>> get("children")));
-		List<TagMapping> mappings = entityManager.createQuery(criteria)
-				.getResultList();
+		CriteriaQuery<Tuple> criteria = builder.createTupleQuery();
 
-		// MAPPING hashes to articles
+		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
+		Root<Article> articleRoot = criteria.from(Article.class);
+		criteria.multiselect(mappingRoot, articleRoot);
+
+		Predicate tagPredicate = builder.equal(mappingRoot.get(TagMapping_.tag)
+				.get(Tag_.name), tagName);
+		Predicate articlePredicate = builder.isMember(articleRoot, mappingRoot
+				.get(TagMapping_.articleUrl).get(ArticleUrl_.articles));
+		Predicate childrenPredicate = builder.isEmpty(mappingRoot
+				.<Set<DistributedEntity>> get("children"));
+		Predicate articleChildrenPredicate = builder.isEmpty(articleRoot
+				.<Set<DistributedEntity>> get("children"));
+		criteria.where(tagPredicate, articlePredicate, childrenPredicate,
+				articleChildrenPredicate);
+
+		List<Tuple> tuples = entityManager.createQuery(criteria)
+				.getResultList();
+		List<TagMapping> mappings = Lists.newArrayListWithCapacity(tuples
+				.size());
+		// TAG MAPPING hashes to articles
 		final Map<String, Article> articles = Maps
-				.newHashMapWithExpectedSize(mappings.size());
-		for (TagMapping mapping : mappings) {
-			Article article = mapping.getArticleUrl().getArticle();
-			if (article != null) {
-				articles.put(mapping.getHash(), article);
-			}
+				.newHashMapWithExpectedSize(tuples.size());
+		for (Tuple tuple : tuples) {
+			Object[] elements = tuple.toArray();
+			TagMapping mapping = (TagMapping) elements[0];
+			mappings.add(mapping);
+			articles.put(mapping.getHash(), (Article) elements[1]);
 		}
 
 		List<TagMappingDto> dtos = Lists.transform(
