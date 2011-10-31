@@ -123,7 +123,7 @@ public class SimpleHttpClient {
 		// do the request
 		HttpResponse response = httpClient.execute(request);
 		HttpEntity outputEntity = response.getEntity();
-		log.trace("{} {}", uri, response.getStatusLine());
+		log.trace("{} {}", uri.getAuthority(), response.getStatusLine());
 
 		// throw an exception if the status code wasn't 200
 		int statusCode = response.getStatusLine().getStatusCode();
