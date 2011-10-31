@@ -140,6 +140,8 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	private transient Set<DistributedEntity> children;
 
+	private transient String lazyHash;
+
 	protected DistributedEntity() {
 		this(null, null);
 	}
@@ -162,13 +164,16 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 	@Id
 	@Column(length = 64, nullable = false, updatable = false)
 	public String getHash() {
-		byte[] hashBytes = getHashBytes();
-		char[] chars = new char[2 * hashBytes.length];
-		for (int i = 0; i < hashBytes.length; i++) {
-			chars[2 * i] = HEX_CHARS[(hashBytes[i] & 0xF0) >>> 4];
-			chars[2 * i + 1] = HEX_CHARS[hashBytes[i] & 0x0F];
+		if (lazyHash == null) {
+			byte[] hashBytes = getHashBytes();
+			char[] chars = new char[2 * hashBytes.length];
+			for (int i = 0; i < hashBytes.length; i++) {
+				chars[2 * i] = HEX_CHARS[(hashBytes[i] & 0xF0) >>> 4];
+				chars[2 * i + 1] = HEX_CHARS[hashBytes[i] & 0x0F];
+			}
+			lazyHash = new String(chars);
 		}
-		return new String(chars);
+		return lazyHash;
 	}
 
 	@Transient
@@ -184,6 +189,7 @@ public abstract class DistributedEntity implements HasBytes, Serializable {
 
 	protected void setHash(String hash) {
 		checkArgument(HEX_REGEX.matcher(hash).matches());
+		lazyHash = hash;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
