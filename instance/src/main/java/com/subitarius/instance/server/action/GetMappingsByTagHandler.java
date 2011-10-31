@@ -6,6 +6,7 @@
 
 package com.subitarius.instance.server.action;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -114,8 +115,8 @@ final class GetMappingsByTagHandler implements
 				}
 			});
 		}
-		Collections2.filter(dtos, action);
-		log.info("returned {} mappings for tag \"{}\"", dtos.size(), tagName);
-		return new GetMappingsResult(dtos);
+		Collection<TagMappingDto> result = Collections2.filter(dtos, action);
+		log.info("returned {} mappings for tag \"{}\"", result.size(), tagName);
+		return new GetMappingsResult(result);
 	}
 }
