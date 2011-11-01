@@ -92,7 +92,7 @@ public class ArticleTablePresenter implements Presenter<List<TagMappingDto>> {
 		for (TagMappingDto mapping : subList) {
 			final int index = subList.indexOf(mapping);
 			ArticleUrlDto articleUrl = mapping.getArticleUrl();
-			GetArticleByUrl action = new GetArticleByUrl(articleUrl.getHash());
+			GetArticleByUrl action = new GetArticleByUrl(articleUrl);
 			dispatcher.execute(action, new ManagedCallback<GetArticleResult>() {
 				@Override
 				public void onSuccess(GetArticleResult result) {

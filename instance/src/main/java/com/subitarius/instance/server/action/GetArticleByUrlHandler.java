@@ -25,7 +25,7 @@ import com.subitarius.action.GetArticleByUrl;
 import com.subitarius.action.GetArticleResult;
 import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.domain.Article;
-import com.subitarius.domain.ArticleUrl;
+import com.subitarius.domain.ArticleUrl_;
 import com.subitarius.domain.Article_;
 import com.subitarius.domain.DistributedEntity;
 import com.subitarius.util.logging.InjectLogger;
@@ -48,20 +48,16 @@ final class GetArticleByUrlHandler implements
 	@Override
 	public GetArticleResult execute(GetArticleByUrl action,
 			Dispatcher dispatcher) throws ActionException {
-		String articleUrlHash = action.getArticleUrlHash();
-		ArticleUrl articleUrl = entityManager.find(ArticleUrl.class,
-				articleUrlHash);
-
+		String articleUrl = action.getArticleUrl();
 		try {
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Article> criteria = builder
 					.createQuery(Article.class);
 			Root<Article> articleRoot = criteria.from(Article.class);
 			criteria.where(builder.and(builder.equal(
-					articleRoot.get(Article_.url), articleUrl)), builder
-					.isEmpty(articleRoot
-							.<Set<DistributedEntity>> get("children")));
-			criteria.distinct(true);
+					articleRoot.get(Article_.url).get(ArticleUrl_.url),
+					articleUrl)), builder.isEmpty(articleRoot
+					.<Set<DistributedEntity>> get("children")));
 			Article article = entityManager.createQuery(criteria)
 					.getSingleResult();
 

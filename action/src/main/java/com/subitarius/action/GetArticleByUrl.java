@@ -8,21 +8,27 @@ package com.subitarius.action;
 
 import static com.google.common.base.Preconditions.*;
 
+import com.subitarius.action.dto.ArticleUrlDto;
+
 public final class GetArticleByUrl extends GetArticle {
-	private String articleUrlHash;
+	private String articleUrl;
 
 	// serialization support
 	@SuppressWarnings("unused")
 	private GetArticleByUrl() {
 	}
 
-	public GetArticleByUrl(String articleUrlHash) {
-		checkNotNull(articleUrlHash);
-		this.articleUrlHash = articleUrlHash;
+	public GetArticleByUrl(String articleUrl) {
+		checkNotNull(articleUrl);
+		this.articleUrl = articleUrl;
 	}
 
-	public String getArticleUrlHash() {
-		return articleUrlHash;
+	public GetArticleByUrl(ArticleUrlDto dto) {
+		this(dto.getUrl());
+	}
+
+	public String getArticleUrl() {
+		return articleUrl;
 	}
 
 	@Override
@@ -30,7 +36,7 @@ public final class GetArticleByUrl extends GetArticle {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((articleUrlHash == null) ? 0 : articleUrlHash.hashCode());
+				+ ((articleUrl == null) ? 0 : articleUrl.hashCode());
 		return result;
 	}
 
@@ -46,11 +52,11 @@ public final class GetArticleByUrl extends GetArticle {
 			return false;
 		}
 		GetArticleByUrl other = (GetArticleByUrl) obj;
-		if (articleUrlHash == null) {
-			if (other.articleUrlHash != null) {
+		if (articleUrl == null) {
+			if (other.articleUrl != null) {
 				return false;
 			}
-		} else if (!articleUrlHash.equals(other.articleUrlHash)) {
+		} else if (!articleUrl.equals(other.articleUrl)) {
 			return false;
 		}
 		return true;
