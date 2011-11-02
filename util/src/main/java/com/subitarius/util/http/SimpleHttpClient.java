@@ -93,11 +93,11 @@ public class SimpleHttpClient {
 	private InputStream execute(HttpUriRequest request) throws IOException,
 			RobotsExclusionException {
 		URI uri = request.getURI();
-		log.trace("{} {}", uri, request.getRequestLine());
+		String authority = uri.getAuthority();
+		log.trace("{} {}", authority, request.getRequestLine());
 		request.setHeader("User-Agent", USER_AGENT);
 
 		// download and store the robots.txt if not already present
-		String authority = uri.getAuthority();
 		if (!uri.getPath().equals("/robots.txt")
 				&& !robotsExclusion.containsKey(authority)) {
 			String url = uri.getScheme() + "://" + authority + "/robots.txt";
@@ -123,7 +123,7 @@ public class SimpleHttpClient {
 		// do the request
 		HttpResponse response = httpClient.execute(request);
 		HttpEntity outputEntity = response.getEntity();
-		log.trace("{} {}", uri.getAuthority(), response.getStatusLine());
+		log.trace("{} {}", authority, response.getStatusLine());
 
 		// throw an exception if the status code wasn't 200
 		int statusCode = response.getStatusLine().getStatusCode();
