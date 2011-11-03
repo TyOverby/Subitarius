@@ -103,6 +103,10 @@ final class ParseArticlesHandler implements
 	private final class SourceTask implements Runnable {
 		private final Set<ArticleUrl> urls;
 
+		private EntityManager entityManager;
+
+		private EntityTransaction transaction;
+
 		public SourceTask(Set<ArticleUrl> urls) {
 			checkNotNull(urls);
 			this.urls = urls;
@@ -110,21 +114,28 @@ final class ParseArticlesHandler implements
 
 		@Override
 		public void run() {
+			entityManager = entityManagerProvider.get();
 			try {
 				for (ArticleUrl url : urls) {
-					parseArticle(url);
+					transaction = entityManager.getTransaction();
+					transaction.begin();
+					try {
+						parseArticle(url);
+					} finally {
+						if (transaction.isActive()) {
+							transaction.rollback();
+						}
+					}
 					Thread.sleep(1000);
 				}
 			} catch (InterruptedException ix) {
 				log.warn("interrupt on source thread", ix);
+			} finally {
+				latch.countDown();
 			}
-			latch.countDown();
 		}
 
 		private void parseArticle(ArticleUrl url) {
-			EntityManager entityManager = entityManagerProvider.get();
-			EntityTransaction transaction = entityManager.getTransaction();
-			transaction.begin();
 			try {
 				log.trace("attempting to parse {}", url);
 				Article article = articleParser.parse(url);
@@ -153,19 +164,14 @@ final class ParseArticlesHandler implements
 				log.warn(
 						"unexpected runtime exception while parsing article at URL {}",
 						url, rx);
-			} finally {
-				if (transaction.isActive()) {
-					transaction.rollback();
-				}
 			}
 		}
 
 		private void deleteArticle(ArticleUrl url) {
 			log.trace("marking URL as deleted: {}", url);
-			EntityManager entityManager = entityManagerProvider.get();
 			DeletedEntity deleted = new DeletedEntity(teamProvider.get(), url);
 			entityManager.persist(deleted);
-			entityManager.getTransaction().commit(); // opened in parseArticle
+			transaction.commit();
 		}
 	}
 }
