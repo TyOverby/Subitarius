@@ -8,6 +8,7 @@ package com.subitarius.instance.server.action;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -28,7 +29,6 @@ import com.subitarius.action.GetMappingsResult;
 import com.subitarius.action.dto.TagMappingDto;
 import com.subitarius.domain.ArticleUrl;
 import com.subitarius.domain.DistributedEntity;
-import com.subitarius.domain.DistributedEntity_;
 import com.subitarius.domain.TagMapping;
 import com.subitarius.domain.TagMapping_;
 import com.subitarius.util.logging.InjectLogger;
@@ -61,12 +61,9 @@ final class GetMappingsByArticleHandler implements
 				.createQuery(TagMapping.class);
 		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
 		criteria.select(mappingRoot);
-		Root<DistributedEntity> entityRoot = criteria
-				.from(DistributedEntity.class);
-		criteria.where(
-				builder.and(builder.equal(
-						mappingRoot.get(TagMapping_.articleUrl), articleUrl)),
-				builder.isEmpty(entityRoot.get(DistributedEntity_.children)));
+		criteria.where(builder.and(builder.equal(
+				mappingRoot.get(TagMapping_.articleUrl), articleUrl)), builder
+				.isEmpty(mappingRoot.<Set<DistributedEntity>> get("children")));
 		criteria.distinct(true);
 		List<TagMapping> mappings = entityManager.createQuery(criteria)
 				.getResultList();

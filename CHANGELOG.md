@@ -1,3 +1,7 @@
+0.2.2-alpha
+===========
+* More bug fixes and performance issues
+
 0.2.1-alpha
 ===========
 * Add buttons to the main page to fetch entities and parse articles

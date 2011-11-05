@@ -74,11 +74,13 @@ final class CsmArticleParser implements ArticleParser {
 	}
 
 	private static boolean isParseable(Document document) {
-		// check for lists and quizzes
-		Element content = document.select(
+		// check that some content exists
+		Element goodContent = document.select("div#mainColumn").first();
+		// check for lists, quizzes, videos
+		Element badContent = document.select(
 				"div.list-article-full, div.ui-quiz, div.video-description")
 				.first();
-		return (content == null);
+		return (goodContent != null && badContent == null);
 	}
 
 	private Article getFromDocuments(ArticleUrl articleUrl,

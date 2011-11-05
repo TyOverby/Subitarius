@@ -69,6 +69,16 @@ public enum Source {
 	},
 
 	LA_TIMES("Los Angeles Times", "latimes.com") {
+		@Override
+		String canonicalize(String rawUrl) {
+			rawUrl = super.canonicalize(rawUrl);
+			if (rawUrl.matches(".*/\\d+")) {
+				int index = rawUrl.lastIndexOf("/");
+				return rawUrl.substring(0, index);
+			} else {
+				return rawUrl;
+			}
+		}
 	};
 
 	public static Source fromUrl(String url) {

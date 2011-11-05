@@ -111,24 +111,75 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
-				<string>http://www.guardian.co.uk/business/feedarticle/9839805</string>
-				<string>Germany puts forward Asmussen to replace Stark at ECB</string>
+				<string>http://www.guardian.co.uk/business/feedarticle/9888809</string>
+				<string>Japan to consult with U.S. on euro bond buying</string>
 				<null/>
 				<object class="java.util.Date">
-					<long>1315612800000</long>
+					<long>1318291200000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<void method="add">
-						<string>MARSEILLE, France, Sept 10 (Reuters) - Germany has formally put forward deputy finance minister Joerg Asmussen to replace Juergen Stark on the European Central Bank's executive board, Finance Minister Wolfgang Schaeuble said on Saturday.</string>
+						<string>* Europe scheme needed for Japan to buy more bonds-Azumi</string>
 					</void>
 					<void method="add">
-						<string>"The German government has told Eurogroup head Juncker that it proposes Asmussen to succeed Juergen Stark," Schaeuble told a news conference at Group of Eight talks in the French Mediterranean port of Marseille.</string>
+						<string>* Adds that stable Europe will help to ease yen rise</string>
 					</void>
 					<void method="add">
-						<string>Stark, the top German at the ECB, announced on Friday he would quit early in what sources said was a protest against the ECB's policy of buying bonds to help troubled euro zone debtor states.</string>
+						<string>* Azumi says will consult with US before buying bonds (Adds quotes, details, background)</string>
 					</void>
 					<void method="add">
-						<string>Asked if he had been taken by surprise at Stark's decision, Schaeuble said: "We weren't surprised by his decision. But unfortunately because of the independence of the ECB our attempts to dissuade him failed." (Reporting by Annika Breidthardt and Fiona Shaikh, writing by Mike Peacock)</string>
+						<string>By Tetsushi Kajimoto and Leika Kihara</string>
+					</void>
+					<void method="add">
+						<string>TOKYO, Oct 11 (Reuters) - Japan will consult with the United States before it considers buying more euro zone bonds, raising the stakes for European policymakers under pressure from world leaders to resolve the debt crisis quickly.</string>
+					</void>
+					<void method="add">
+						<string>Finance Minister Jun Azumi urged Europe to restore market confidence in the run-up to a Group of 20 finance leaders' meeting in Paris this week.</string>
+					</void>
+					<void method="add">
+						<string>He repeated that Japan stood ready to buy more euro zone bonds so long as Europe comes up with a solid scheme to solve a crisis that has resulted in financial rescues for Greece, Ireland and Portugal.</string>
+					</void>
+					<void method="add">
+						<string>But on Tuesday Azumi added that Japan would consult with the United States first, which a senior finance ministry official said was to underline the international concern over the crisis.</string>
+					</void>
+					<void method="add">
+						<string>"The Europeans must first discuss a scheme among themselves. Only then will Japan and the United States consider what proposals can be made. We'd like to discuss (how to support Europe) closely with the United States," Azumi told a news conference after a cabinet meeting.</string>
+					</void>
+					<void method="add">
+						<string>"Stabilising Europe's debt situation would help to halt the yen's rise and lead to stable growth in Japan's economy."</string>
+					</void>
+					<void method="add">
+						<string>The crisis has prompted heavy safe-haven investment in the yen, which rose to a record high against the dollar in August, causing concern in Tokyo that exports will suffer and so struggle to support the economy in its recovery from the March earthquake and tsunami.</string>
+					</void>
+					<void method="add">
+						<string>Azumi said Japan wanted the G20 financial leaders to discuss the yen at its meeting on Friday and Saturday.</string>
+					</void>
+					<void method="add">
+						<string>Japan holds about 2.7 billion euros, or 20 percent, of the total bonds issued by the European Financial Stability Facility (EFSF) after it purchased them in January and June.</string>
+					</void>
+					<void method="add">
+						<string>Foreign leaders have looked with alarm at the inability of euro zone leaders to forge a common approach to tackle the crisis.</string>
+					</void>
+					<void method="add">
+						<string>Bank of Japan Governor Masaaki Shirakawa called on Europe on Tuesday to deal decisively with the crisis, saying it was the biggest problem confronting the world economy.</string>
+					</void>
+					<void method="add">
+						<string>U.S. President Barack Obama urged Europe to "act fast" in comments on Thursday and British Prime Minister David Cameron called on euro zone leaders for a "big bazooka" approach in an interview with the Financial Times.</string>
+					</void>
+					<void method="add">
+						<string>All 17 euro zone national parliaments but Slovakia have endorsed a new role for the EFSF, including intervention in bond markets, recapitalising banks and lending protectively to struggling euro zone member states.</string>
+					</void>
+					<void method="add">
+						<string>Slovakia is due to vote on Tuesday on changes that are seen as vital to EU efforts to contain the crisis.</string>
+					</void>
+					<void method="add">
+						<string>Asian shares rose on Tuesday on hopes that European leaders are finally taking action. But markets have remained on edge with investors buying the yen, mostly against the euro and emerging currencies, as a safe haven from risk.</string>
+					</void>
+					<void method="add">
+						<string>Europe's banks expect to be told to raise more capital under a Franco-German effort to solve the crisis after the rescue of Franco-Belgian lender Dexia SA .</string>
+					</void>
+					<void method="add">
+						<string>German Chancellor Angela Merkel and French President Nicolas Sarkozy said on Sunday they would tackle Greece's woes and agree how to recapitalise the regions' banks by the end of the month, but they declined to reveal details of their plan. (Additional reporting by Kaori Kaneko; Editing by Chris Gallagher and Edmund Klamann)</string>
 					</void>
 				</object>
 			</object>

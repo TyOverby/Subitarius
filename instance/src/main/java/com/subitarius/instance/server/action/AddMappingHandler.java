@@ -91,9 +91,9 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 		CriteriaQuery<TagMapping> criteria = builder
 				.createQuery(TagMapping.class);
 		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
-		criteria.where(builder.equal(mappingRoot.get(TagMapping_.tag), tag));
-		criteria.where(builder.equal(mappingRoot.get(TagMapping_.articleUrl),
-				articleUrl));
+		criteria.where(builder.and(builder.equal(
+				mappingRoot.get(TagMapping_.tag), tag), builder.equal(
+				mappingRoot.get(TagMapping_.articleUrl), articleUrl)));
 		try {
 			return entityManager.createQuery(criteria).getSingleResult();
 		} catch (NoResultException nrx) {

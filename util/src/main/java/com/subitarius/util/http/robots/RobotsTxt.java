@@ -6,133 +6,65 @@
 
 package com.subitarius.util.http.robots;
 
-import static com.google.common.base.Preconditions.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.apache.http.Header;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.subitarius.util.http.robots.Directive.Type;
 
 public final class RobotsTxt implements Predicate<HttpUriRequest> {
-	private final Map<Set<Directive>, Section> sections;
-
-	private Set<Directive> agents = Sets.newHashSet();
-
-	private List<Directive> directives;
-
-	private boolean expectingAgents = true;
+	private final ImmutableSet<Record> records;
 
 	public RobotsTxt() {
-		sections = ImmutableMap.of();
+		records = ImmutableSet.of();
 	}
 
-	public RobotsTxt(String file) {
-		sections = Maps.newLinkedHashMap();
-
-		for (String line : file.split("\n")) {
-			if (line.contains("#")) {
-				line = line.substring(0, line.indexOf("#"));
-			}
-
-			int index = line.indexOf(":");
-			if (index >= 0) {
-				String name = line.substring(0, index).trim();
-				String value = line.substring(index + 1).trim();
-
-				Type type;
-				if (name.equals("Allow")) {
-					type = Type.ALLOW;
-				} else if (name.equals("Disallow")) {
-					type = Type.DISALLOW;
-				} else if (name.equals("User-agent")) {
-					type = Type.USER_AGENT;
-				} else {
-					continue;
-				}
-
-				if (type.hasPattern()) {
-					add(new PatternDirective(value, type));
-				} else {
-					add(new StaticDirective(value, type));
-				}
+	public RobotsTxt(String text) {
+		Set<Record> records = Sets.newHashSet();
+		String[] lines = text.split("\n");
+		String recordText = "";
+		for (String line : lines) {
+			if (line.isEmpty()) {
+				records.add(new Record(recordText));
+				recordText = "";
+			} else {
+				recordText += line;
 			}
 		}
-
-		if (directives != null) {
-			sections.put(agents, new Section(directives));
+		if (!recordText.isEmpty()) {
+			records.add(new Record(recordText));
 		}
-		agents = null;
-		directives = null;
+		this.records = ImmutableSet.copyOf(records);
 	}
 
-	private void add(Directive directive) {
-		if (expectingAgents) {
-			switch (directive.getType()) {
-			case USER_AGENT:
-				agents.add(directive);
-				break;
-			default:
-				expectingAgents = false;
-				directives = new ArrayList<Directive>();
-				directives.add(directive);
-				break;
-			}
-		} else {
-			switch (directive.getType()) {
-			case USER_AGENT:
-				expectingAgents = true;
-				sections.put(agents, new Section(directives));
-				agents = new HashSet<Directive>();
-				agents.add(directive);
-				directives = null;
-				break;
-			default:
-				directives.add(directive);
-				break;
-			}
-		}
-	}
-
+	/**
+	 * Returns {@code false} if {@code input} is blocked by this
+	 * {@code robots.txt} file. A request is blocked if one or more individual
+	 * {@link Record} instances which form this file block the request.
+	 * 
+	 * @param input
+	 *            the request to consider for blocking
+	 * @return {@code true} if the request is allowed, or {@code false} if it is
+	 *         disallowed
+	 */
 	@Override
-	public boolean apply(HttpUriRequest request) {
-		Header[] headers = request.getHeaders("User-Agent");
-		checkArgument(headers.length == 1);
-		String userAgent = headers[0].getValue();
-
-		String path = request.getURI().getPath();
-
-		for (Map.Entry<Set<Directive>, Section> entry : sections.entrySet()) {
-			for (Directive directive : entry.getKey()) {
-				assert directive.getType().equals(Type.USER_AGENT);
-
-				if (directive.apply(userAgent)) {
-					return entry.getValue().apply(path);
-				}
+	public boolean apply(HttpUriRequest input) {
+		for (Record record : records) {
+			if (!record.apply(input)) {
+				return false;
 			}
 		}
-
 		return true;
 	}
-
+	
 	@Override
 	public String toString() {
-		String str = "";
-		for (Map.Entry<Set<Directive>, Section> entry : sections.entrySet()) {
-			for (Directive directive : entry.getKey()) {
-				str += directive.toString();
-			}
-			str += entry.getValue().toString();
+		String result = "";
+		for (Record record : records) {
+			result += record.toString();
 		}
-		return str;
+		return result;
 	}
 }

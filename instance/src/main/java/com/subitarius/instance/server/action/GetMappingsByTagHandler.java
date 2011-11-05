@@ -6,14 +6,18 @@
 
 package com.subitarius.instance.server.action;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.dozer.Mapper;
@@ -32,8 +36,10 @@ import com.subitarius.action.GetMappingsResult;
 import com.subitarius.action.dto.ArticleDto;
 import com.subitarius.action.dto.TagMappingDto;
 import com.subitarius.domain.Article;
-import com.subitarius.domain.Tag;
+import com.subitarius.domain.ArticleUrl_;
+import com.subitarius.domain.DistributedEntity;
 import com.subitarius.domain.TagMapping;
+import com.subitarius.domain.TagMapping_;
 import com.subitarius.domain.Tag_;
 import com.subitarius.util.logging.InjectLogger;
 
@@ -57,20 +63,39 @@ final class GetMappingsByTagHandler implements
 			Dispatcher dispatcher) throws ActionException {
 		String tagName = action.getTagName();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Tag> criteria = builder.createQuery(Tag.class);
-		Root<Tag> root = criteria.from(Tag.class);
-		criteria.where(builder.equal(root.get(Tag_.name), tagName));
-		Tag tag = entityManager.createQuery(criteria).getSingleResult();
+		CriteriaQuery<Tuple> criteria = builder.createTupleQuery();
 
-		final Map<String, TagMapping> mappings = Maps.newHashMap();
-		for (TagMapping mapping : tag.getMappings()) {
-			if (mapping.getArticleUrl().getArticle() != null) {
-				mappings.put(mapping.getHash(), mapping);
-			}
+		Root<TagMapping> mappingRoot = criteria.from(TagMapping.class);
+		Root<Article> articleRoot = criteria.from(Article.class);
+		criteria.multiselect(mappingRoot, articleRoot);
+
+		Predicate tagPredicate = builder.equal(mappingRoot.get(TagMapping_.tag)
+				.get(Tag_.name), tagName);
+		Predicate articlePredicate = builder.isMember(articleRoot, mappingRoot
+				.get(TagMapping_.articleUrl).get(ArticleUrl_.articles));
+		Predicate childrenPredicate = builder.isEmpty(mappingRoot
+				.<Set<DistributedEntity>> get("children"));
+		Predicate articleChildrenPredicate = builder.isEmpty(articleRoot
+				.<Set<DistributedEntity>> get("children"));
+		criteria.where(tagPredicate, articlePredicate, childrenPredicate,
+				articleChildrenPredicate);
+
+		List<Tuple> tuples = entityManager.createQuery(criteria)
+				.getResultList();
+		List<TagMapping> mappings = Lists.newArrayListWithCapacity(tuples
+				.size());
+		// TAG MAPPING hashes to articles
+		final Map<String, Article> articles = Maps
+				.newHashMapWithExpectedSize(tuples.size());
+		for (Tuple tuple : tuples) {
+			Object[] elements = tuple.toArray();
+			TagMapping mapping = (TagMapping) elements[0];
+			mappings.add(mapping);
+			articles.put(mapping.getHash(), (Article) elements[1]);
 		}
 
 		List<TagMappingDto> dtos = Lists.transform(
-				Lists.newArrayList(mappings.values()),
+				Lists.newArrayList(mappings),
 				new Function<TagMapping, TagMappingDto>() {
 					@Override
 					public TagMappingDto apply(TagMapping input) {
@@ -82,20 +107,16 @@ final class GetMappingsByTagHandler implements
 			Collections.sort(dtos, new Comparator<TagMappingDto>() {
 				@Override
 				public int compare(TagMappingDto m1, TagMappingDto m2) {
-					String hash1 = m1.getHash();
-					String hash2 = m2.getHash();
-					Article article1 = mappings.get(hash1).getArticleUrl()
-							.getArticle();
-					Article article2 = mappings.get(hash2).getArticleUrl()
-							.getArticle();
+					Article article1 = articles.get(m1.getHash());
+					Article article2 = articles.get(m2.getHash());
 					ArticleDto dto1 = mapper.map(article1, ArticleDto.class);
 					ArticleDto dto2 = mapper.map(article2, ArticleDto.class);
 					return action.getComparator().compare(dto1, dto2);
 				}
 			});
 		}
-		Collections2.filter(dtos, action);
-		log.info("returned {} mappings for tag: {}", dtos.size(), tag);
-		return new GetMappingsResult(dtos);
+		Collection<TagMappingDto> result = Collections2.filter(dtos, action);
+		log.info("returned {} mappings for tag \"{}\"", result.size(), tagName);
+		return new GetMappingsResult(result);
 	}
 }

@@ -83,7 +83,7 @@ public final class GetMappingsByTag extends GetMappings {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result
 				+ ((comparator == null) ? 0 : comparator.hashCode());
 		result = prime * result + ((states == null) ? 0 : states.hashCode());
@@ -97,7 +97,7 @@ public final class GetMappingsByTag extends GetMappings {
 		if (this == obj) {
 			return true;
 		}
-		if (!super.equals(obj)) {
+		if (obj == null) {
 			return false;
 		}
 		if (!(obj instanceof GetMappingsByTag)) {

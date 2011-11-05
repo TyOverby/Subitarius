@@ -112,7 +112,6 @@ public class Article extends DistributedEntity {
 
 	protected void setParagraphs(List<String> paragraphs) {
 		checkNotNull(paragraphs);
-		checkArgument(!paragraphs.isEmpty());
 		this.paragraphs = paragraphs;
 	}
 
