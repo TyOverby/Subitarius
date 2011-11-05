@@ -133,12 +133,17 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
-				<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
+				<string>http://www.csmonitor.com/World/2011/1104/The-Monitor-s-Weekly-News-Quiz-for-Oct.-30-Nov.-4-2011/GREECE-BAILOUT</string>
 			</object>
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.csmonitor.com/multimedia/2011/Sep/0913-libya-amnesty-international-video</string>
+			</object>
+		</void>
+		<void method="add">
+			<object class="com.subitarius.instance.server.parse.TestVector">
+				<string>http://www.csmonitor.com/USA/2011/0614/How-well-do-you-know-Puerto-Rico-A-quiz/Puerto-Rican-Gov.-Luis-Guillermo-Fortuno-supports-which-of-the-following</string>
 			</object>
 		</void>
 	</object>
