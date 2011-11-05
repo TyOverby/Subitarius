@@ -153,85 +153,109 @@
 		</void>
 		<void method="add">
 			<object class="com.subitarius.instance.server.parse.TestVector">
-				<string>http://www.latimes.com/business/la-fi-obama-economy-20110902,0,7026111.story</string>
-				<string>White House forecasts high unemployment through 2012</string>
-				<string>By Don Lee</string>
+				<string>http://www.latimes.com/news/nationworld/nation/la-na-mississippi-abortion-20111105,0,2689355.story</string>
+				<string>Mississippi attempts to define the start of personhood</string>
+				<string>By Richard Fausset</string>
 				<object class="java.util.Date">
-					<long>1314835200000</long>
+					<long>1320364800000</long>
 				</object>
 				<object class="java.util.ArrayList">
 					<!-- Some of the whitespace is slightly off, due to the messed up HTML for these paragraphs -->
 					<void method="add">
-						<string>Reporting from Washington— In a move underscoring the urgency of the nation's economic problems, the White House issued a new assessment that predicted continued high unemployment through 2012.</string>
+						<string>Reporting from Clarksdale, Miss.</string>
 					</void>
 					<void method="add">
-						<string>The grim outlook, part of the summer report on the nation's budget and the economy, was released Thursday as President Obama prepared to announce new stimulus proposals next week.</string>
+						<string>Gail Giaramita was walking door-to-door in this old cotton town on a recent afternoon, genially informing voters about the simple choice they faced when it came to Initiative 26, the statewide ballot measure that would define personhood as beginning at the moment of fertilization.</string>
 					</void>
 					<void method="add">
-						<string>The administration said that based on the latest economic data, it now expects the unemployment rate to end the year at 9.1%, which is where it stood in July. The jobless figure for August will be released Friday with accompanying statistics on job creation.</string>
+						<string>"If you believe that the unborn are human beings, you need to vote yes," Giaramita explained to W.L. Wilkins, proprietor of Big Mama's grocery store. "If you believe that women should continue to have the right to abort their babies, you need to vote no."</string>
 					</void>
 					<void method="add">
-						<string>The report shows the bind policymakers are caught in: A stagnating economy reduces tax revenue and increases the deficit, but government measures that economists say are needed to stimulate the economy also cost money and also add to the deficit — at least in the near term.</string>
+						<string>If that's all there was to it — if Initiative 26 would simply ban all abortions, even in cases of rape or incest — this proposed amendment to the state Constitution would be controversial enough. But opponents of the measure are warning of other potential consequences, including a ban on many birth control pills and a severe hampering of popular infertility treatments.</string>
 					</void>
 					<void method="add">
-						<string>And that policy dilemma is magnified by the current political stalemate in Washington.</string>
+						<string>Proponents call these charges untrue "scare tactics."</string>
 					</void>
 					<void method="add">
-						<string>Many private analysts are expecting last month's unemployment to be unchanged at 9.1%, with sluggish job growth of 70,000 to 80,000, about the same as the average of the previous three months when the recovery was stalling.</string>
+						<string>Either way, the measure's passage would count as an unprecedented attempt to nullify the abortion right granted under Roe vs. Wade. Personhood USA, the main supporter of the Mississippi measure, says a victory here could "change [the] abortion debate," as part of a "larger, global movement to define when life begins in an effort to undercut the case for legalized abortion."</string>
 					</void>
 					<void method="add">
-						<string>Under normal conditions, experts said, the U.S. economy would need to generate about 125,000 additional jobs every month to absorb new entrants to the job market and keep the unemployment rate steady.</string>
+						<string>At the same time, however, many observers, including some key antiabortion activists, expect the initiative to be immediately challenged in federal court, and probably struck down, with new rulings that may end up strengthening the hand of abortion supporters.</string>
 					</void>
 					<void method="add">
-						<string>But persistent weakness in hiring has prompted many of the unemployed to quit looking for jobs. In the government's methodology, these people are not counted as part of the official unemployment rate, thus understating the jobless problem.</string>
+						<string>Among the doubters is Joseph Latino, the Roman Catholic bishop of Jackson, Miss., who has called the personhood effort "noble," but declined to endorse it, warning that it "could ultimately harm our efforts to overthrow Roe vs. Wade."</string>
 					</void>
 					<void method="add">
-						<string>"If there are any signs of jobs being created, some large unknown proportion of the population will flood back into the labor market," said Ron Blackwell, chief economist at the AFL-CIO .</string>
+						<string>The idea of ending abortion by retooling the state-level legal definition of a person is not new, but it may have its best chance of success in Tuesday's vote in Mississippi — the most conservative state in the nation, according to a Gallup poll released in February. Both Democratic and Republican candidates for governor and attorney general here support the initiative, and as of last month, the "yes" faction has a substantial fundraising lead on the "no" crowd.</string>
 					</void>
 					<void method="add">
-						<string>And unless hiring rises dramatically, he said, the unemployment rate is sure to climb because some of those returning job seekers won't be able to find work.</string>
+						<string>"I think our chances are very good," said Les Riley, the initiative's sponsor and founder of the group Personhood Mississippi. "But I don't believe in chance. I believe in providence."</string>
 					</void>
 					<void method="add">
-						<string>The White House forecast also sees hardly any change in the unemployment rate next year in the run-up to the presidential and congressional elections, with the jobless rate projected to drop a notch to 9% on average. Only modest improvement was forecast for 2013, when unemployment is projected to dip to 8.5%.</string>
+						<string>In recent years, a number of states have considered and rejected similar proposals, most notably Colorado, where propositions were voted down in 2008 and 2010. Those efforts and the one in Mississippi were backed by Personhood USA, a Colorado-based group that has attracted antiabortion activists fed up with waiting for the U.S. Supreme Court to tilt in their favor.</string>
 					</void>
 					<void method="add">
-						<string>Despite the unusually bleak outlook, Katharine Abraham, a member of the White House Council of Economic Advisors, said the forecast doesn't see a double-dip recession.</string>
+						<string>The group is hoping to put similar initiatives before voters in a number of states next year, including in California, where supporters plan to begin gathering signatures in January, President Keith Mason said.</string>
 					</void>
 					<void method="add">
-						<string>But in a conference call, she said the report from the Office of Management and Budget revealed economic numbers that were "not what we're going to be happy with" and highlighted the importance of Obama's new job-creation effort that he plans to unveil Thursday night.</string>
+						<string>In Mississippi, the initiative's opponents are characterizing it as a case of government overreach, in apparent deference to the state's conservative tenor.</string>
 					</void>
 					<void method="add">
-						<string>Obama is expected to outline proposals such as increased job training, tax credits and investment in infrastructure as ways to get people back to work.</string>
+						<string>One TV ad from the "vote no" group Mississippians for Healthy Families features a rape victim who says the initiative goes "too far."</string>
 					</void>
 					<void method="add">
-						<string>Many in the Democratic Party are pushing the president to announce an ambitious jobs package to juice up the waning recovery, but it's unclear how much he will propose given stiff Republican opposition to increased spending that could increase the nation's deficit.</string>
+						<string>"It's perfectly acceptable to be pro-life and against Initiative 26," she says.</string>
 					</void>
 					<void method="add">
-						<string>In the so-called mid-session review released Thursday, the administration projected that the budget deficit would hit $1.32 trillion this year. The figure is about 20% lower than the $1.65-trillion deficit estimated in February because of more tax revenue and less spending than anticipated. The Congressional Budget Office issued a similar deficit projection last week.</string>
+						<string>Though few top state politicians of either party have criticized the initiative, medical groups have. The Mississippi State Medical Assn. has warned that if the initiative passes, doctors could be charged with murder or wrongful death for "employing techniques physicians have used for years."</string>
 					</void>
 					<void method="add">
-						<string>Nonetheless, a federal deficit of $1.3 trillion would represent about 9% of the gross domestic product — triple the percentage that economists consider a sustainable rate over the long term.</string>
+						<string>The Mississippi Nurses Assn. has said that some birth controls pills could become illegal, because the hormones they contain not only prevent ovulation, they might prevent a fertilized egg from implanting into the uterus.</string>
 					</void>
 					<void method="add">
-						<string>The economic outlook component of the report contained two forecasts: an original projection using economic data through June and a special "alternative forecast" based on more recent information.</string>
+						<string>A group called Parents Against MS 26 argues that in vitro fertilization would be essentially rendered ineffective because the initiative could ban the freezing of leftover embryos created as part of the IVF process. The American Society of Reproductive Medicine has stated that the initiative would "thwart the ability of those who suffer from infertility to seek treatment appropriate to their disease."</string>
 					</void>
 					<void method="add">
-						<string>That information reflected the problems stemming from the debt-ceiling turmoil and subsequent downgrading of U.S. debt as well as the deepening debt crisis in Europe.</string>
+						<string>The group Yes on 26 has called these and other concerns "scare tactics" promulgated by national groups such as Planned Parenthood and the American Civil Liberties Union . The initiative, proponents say, would not ban in vitro fertilization per se, only the destruction of unused embryos. Doctors, they say, would not be prevented from saving the life of a woman during a problematic pregnancy . And they promise that "most forms" of birth control pills would not be banned.</string>
 					</void>
 					<void method="add">
-						<string>The difference between the two highlighted just how much confidence has withered in the last two months, sharply raising the risks of recession in the short term and downgrading prospects over the long range.</string>
+						<string>If passed, the interpretation of the law would not be up to the initiative's authors, but to the courts, and possibly the state Legislature, said I. Glenn Cohen, a Harvard Law professor who has been following the issue.</string>
 					</void>
 					<void method="add">
-						<string>The White House report now sees the unemployment rate not returning to a normal range of just over 5% until 2018.</string>
+						<string>On the streets of Clarksdale, Giaramita, a 56-year-old volunteer for the Yes on 26 campaign, made her case with the sweet, Bible-based style she honed in 2010; she had bid for a congressional seat as a member of the conservative Constitution Party but lost.</string>
 					</void>
 					<void method="add">
-						<string>Economic growth also was sharply downgraded, to an anemic 1.7% rate this year and a moderate expansion of 2.6% next year.</string>
+						<string>She tried to keep her message focused on abortion, and found a largely receptive audience as she passed out handbills with a photo of a fetus and the message, "Give me a chance. I am a person."</string>
 					</void>
 					<void method="add">
-						<string>Economists said the White House's latest forecast was far more realistic than its earlier projections. But even the new one may be overstating growth and understating unemployment, some said.</string>
+						<string>She had the vote of Oliver Hicks Jr., a retired carpenter who gave her a hearty "Amen" as she made her pitch.</string>
 					</void>
 					<void method="add">
-						<string>don.lee@latimes.com</string>
+						<string>Hicks said God did not want us to kill "unborn kids." As for the other issues? "That's just something they're saying," he said.</string>
+					</void>
+					<void method="add">
+						<string>James Bopp Jr., an attorney and well-known antiabortion activist, has outlined what he believes to be the most likely legal fate of a personhood amendment like Mississippi's: A federal circuit court would strike it down. An appellate court would uphold the decision. And the Supreme Court would decline to review it.</string>
+					</void>
+					<void method="add">
+						<string>The only ones who would gain in that scenario, he argues, would be the opponents' lawyers, who would collect statutory attorney's fees from the state.</string>
+					</void>
+					<void method="add">
+						<string>"The effort will have enriched the pro-abortion forces for no gain for the pro-life side," he wrote in an influential 2007 memo on personhood amendments, which he said still reflected his position on the issue. "In fact, there will be a loss because there will be yet another federal court decision declaring that state law on abortion is superseded by the federal Constitution."</string>
+					</void>
+					<void method="add">
+						<string>The Liberty Counsel, a conservative public-interest law firm, has argued that it is "by no means certain" that a lower court would find a personhood amendment unconstitutional. The group sees "no alternative to a personhood approach that offers any chance of ending abortion in the foreseeable future."</string>
+					</void>
+					<void method="add">
+						<string>Brad Prewitt, executive director of the Yes on 26 campaign, said supporters can't worry about how things will shake out in the federal courts. Rather, he said, they need to focus on what's right.</string>
+					</void>
+					<void method="add">
+						<string>Giaramita, traipsing between lawns in Clarksdale, agreed.</string>
+					</void>
+					<void method="add">
+						<string>"This is not an intellectual decision," she said. "This is not a political decision. It's a moral decision."</string>
+					</void>
+					<void method="add">
+						<string>richard.fausset@latimes.com</string>
 					</void>
 				</object>
 			</object>

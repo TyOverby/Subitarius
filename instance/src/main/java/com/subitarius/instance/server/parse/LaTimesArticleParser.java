@@ -35,6 +35,9 @@ final class LaTimesArticleParser implements ArticleParser {
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat(
 			"MMMMM dd, yyyy");
 
+	private static final DateFormat DATE_FORMAT_META = new SimpleDateFormat(
+			"yyyy-MM-dd");
+
 	private final Provider<Team> teamProvider;
 
 	private final SimpleHttpClient httpClient;
@@ -54,8 +57,6 @@ final class LaTimesArticleParser implements ArticleParser {
 			Document document;
 			String canonicalUrl;
 			String pageUrl = url;
-			int page = 1;
-			boolean hasNextPage;
 			do {
 				InputStream stream = httpClient.doGet(pageUrl);
 				document = Jsoup.parse(stream, null, pageUrl);
@@ -63,15 +64,19 @@ final class LaTimesArticleParser implements ArticleParser {
 				canonicalUrl = document.select("meta[property=og:url]").attr(
 						"content");
 
-				pageUrl = url + '/' + (++page);
-				Element pageControl = document.select("div.mod-pagination")
-						.first();
-				if (pageControl != null) {
-					hasNextPage = pageControl.text().contains("Next");
+				int index = canonicalUrl.indexOf(".latimes.com")
+						+ ".latimes.com".length();
+				String host = canonicalUrl.substring(0, index);
+				Element linkElem = document.select("link[rel=next]").first();
+				if (linkElem != null) {
+					pageUrl = linkElem.attr("href");
+					if (!pageUrl.startsWith("http://")) {
+						pageUrl = host + pageUrl;
+					}
 				} else {
-					hasNextPage = false;
+					pageUrl = null;
 				}
-			} while (hasNextPage);
+			} while (pageUrl != null);
 
 			List<Article> articles = Lists.newArrayList();
 			String subdomain = canonicalUrl.substring(
@@ -109,13 +114,16 @@ final class LaTimesArticleParser implements ArticleParser {
 		} else {
 			byline = null;
 		}
-		String dateStr = document.select("span.dateString").first().text();
+		String dateStr = document.select("meta[name=date]").attr("content");
 		Date date;
 		try {
-			date = DATE_FORMAT.parse(dateStr);
+			date = DATE_FORMAT_META.parse(dateStr);
 		} catch (ParseException px) {
 			throw new ArticleParseException(articleUrl, px);
 		}
+
+		// remove sidebars that can get in the way
+		document.select("div.articlerail").remove();
 
 		// they are absolutely evil and separate paragraphs only with <br><br>
 		// as a result, we have to iterate through the nodes to find these tags
@@ -149,7 +157,9 @@ final class LaTimesArticleParser implements ArticleParser {
 				}
 			}
 		}
-		paragraphs.add(currentPara.trim());
+		if (!currentPara.trim().isEmpty()) {
+			paragraphs.add(currentPara.trim());
+		}
 
 		return new Article(teamProvider.get(), articleUrl, title, byline, date,
 				paragraphs);
@@ -203,7 +213,7 @@ final class LaTimesArticleParser implements ArticleParser {
 			checkArgument(title.equals(article.getTitle()));
 			if (byline == null) {
 				checkArgument(article.getByline() == null);
-			} else {
+			} else if (article.getByline() != null) {
 				checkArgument(byline.equals(article.getByline()));
 			}
 			checkArgument(date.equals(article.getDate()));
