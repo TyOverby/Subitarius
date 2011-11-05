@@ -13,6 +13,8 @@ public interface ErrorMessages extends Messages {
 
 	String exception();
 
+	String serverException();
+
 	String incompatibleService();
 
 	String back();

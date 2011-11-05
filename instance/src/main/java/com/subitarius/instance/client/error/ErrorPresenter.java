@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
+import com.google.gwt.user.client.rpc.StatusCodeException;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -73,6 +74,8 @@ public class ErrorPresenter implements PlacePresenter {
 			});
 		} else if (caught instanceof IncompatibleRemoteServiceException) {
 			display.getMessageLabel().setText(messages.incompatibleService());
+		} else if (caught instanceof StatusCodeException) {
+			display.getMessageLabel().setText(messages.serverException());
 		} else {
 			display.getMessageLabel().setText(messages.exception());
 			String stackTrace = SafeHtmlUtils
