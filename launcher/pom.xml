@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.subitarius</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.2.2-alpha</version>
+		<version>0.3-alpha</version>
 	</parent>
 	<artifactId>launcher</artifactId>
 	<packaging>jar</packaging>
