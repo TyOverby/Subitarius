@@ -161,7 +161,7 @@
 			<object class="com.subitarius.instance.server.parse.TestVector">
 				<string>http://www.nytimes.com/roomfordebate/2011/08/22/lessons-of-the-libyan-endgame/in-libya-much-work-to-be-done</string>
 				<string>Work to Be Done</string>
-				<string>Mansour O. El-Kikhia</string>
+				<null/>
 				<object class="java.util.Date">
 					<long>1314057600000</long>
 				</object>

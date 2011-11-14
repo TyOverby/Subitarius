@@ -71,13 +71,18 @@ final class NyTimesArticleParser implements ArticleParser {
 
 			@Override
 			String getTitle(Document document) {
-				return document.select("h3.nytint-post-headline").first()
-						.text();
+				return document.select(".nytint-post-headline").first().text();
 			}
 
 			@Override
 			String getByline(Document document) {
-				return document.select("meta[name=byline]").attr("content");
+				String byline = document.select("meta[name=byline]").attr(
+						"content");
+				if (!byline.isEmpty()) {
+					return byline;
+				} else {
+					return null;
+				}
 			}
 
 			@Override
