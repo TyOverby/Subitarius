@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.*;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Result;
 
 public final class GetTagSuggestionsResult implements Result {
 	private ImmutableSet<String> suggestions;

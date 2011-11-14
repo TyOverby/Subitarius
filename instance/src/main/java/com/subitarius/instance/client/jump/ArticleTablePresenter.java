@@ -21,7 +21,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 import com.subitarius.action.GetArticleByUrl;
 import com.subitarius.action.GetArticleResult;
 import com.subitarius.action.dto.ArticleDto;

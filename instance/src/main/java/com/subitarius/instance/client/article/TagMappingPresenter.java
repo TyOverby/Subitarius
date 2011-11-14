@@ -14,7 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 import com.subitarius.action.AddMapping;
 import com.subitarius.action.MutationResult;
 import com.subitarius.action.dto.TagMappingDto;

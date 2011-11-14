@@ -8,8 +8,8 @@ package com.subitarius.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.filter.CacheableAction;
-import com.prealpha.dispatch.shared.filter.MergeableAction;
+import com.prealpha.xylophone.shared.filter.CacheableAction;
+import com.prealpha.xylophone.shared.filter.MergeableAction;
 
 public final class GetMapping implements CacheableAction<GetMappingResult>,
 		MergeableAction<GetMappingResult> {

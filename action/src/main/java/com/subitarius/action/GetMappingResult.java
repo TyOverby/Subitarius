@@ -6,7 +6,7 @@
 
 package com.subitarius.action;
 
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Result;
 import com.subitarius.action.dto.TagMappingDto;
 
 public final class GetMappingResult implements Result {

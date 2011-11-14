@@ -17,7 +17,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 import com.subitarius.action.FetchEntities;
 import com.subitarius.action.MutationResult;
 import com.subitarius.action.ParseArticles;

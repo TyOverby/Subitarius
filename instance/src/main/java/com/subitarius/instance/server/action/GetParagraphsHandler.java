@@ -13,9 +13,8 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetParagraphs;
 import com.subitarius.action.GetParagraphsResult;
 import com.subitarius.domain.Article;
@@ -34,8 +33,8 @@ final class GetParagraphsHandler implements
 	}
 
 	@Override
-	public GetParagraphsResult execute(GetParagraphs action,
-			Dispatcher dispatcher) throws ActionException {
+	public GetParagraphsResult execute(GetParagraphs action)
+			throws ActionException {
 		String articleHash = action.getArticleHash();
 		Article article = entityManager.find(Article.class, articleHash);
 		List<String> paragraphs = article.getParagraphs();

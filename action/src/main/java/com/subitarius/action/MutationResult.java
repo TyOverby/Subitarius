@@ -6,7 +6,7 @@
 
 package com.subitarius.action;
 
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Result;
 
 public enum MutationResult implements Result {
 	SUCCESS, INVALID_REQUEST;

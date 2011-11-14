@@ -17,9 +17,8 @@ import org.slf4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.AddMapping;
 import com.subitarius.action.MutationResult;
 import com.subitarius.domain.ArticleUrl;
@@ -47,8 +46,7 @@ class AddMappingHandler implements ActionHandler<AddMapping, MutationResult> {
 
 	@Transactional
 	@Override
-	public MutationResult execute(AddMapping action, Dispatcher dispatcher)
-			throws ActionException {
+	public MutationResult execute(AddMapping action) throws ActionException {
 		String tagName = action.getTagName();
 		String articleUrlHash = action.getArticleUrlHash();
 		State state = State.valueOf(action.getState().name());

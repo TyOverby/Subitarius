@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 import com.subitarius.action.GetParagraphs;
 import com.subitarius.action.GetParagraphsResult;
 import com.subitarius.action.dto.ArticleDto;

@@ -8,7 +8,7 @@ package com.subitarius.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Action;
+import com.prealpha.xylophone.shared.Action;
 
 public final class AddArticle implements Action<AddArticleResult> {
 	private String url;

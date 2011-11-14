@@ -20,9 +20,8 @@ import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetTagSuggestions;
 import com.subitarius.action.GetTagSuggestionsResult;
 import com.subitarius.domain.Tag;
@@ -42,8 +41,8 @@ final class GetTagSuggestionsHandler implements
 	}
 
 	@Override
-	public GetTagSuggestionsResult execute(GetTagSuggestions action,
-			Dispatcher dispatcher) throws ActionException {
+	public GetTagSuggestionsResult execute(GetTagSuggestions action)
+			throws ActionException {
 		String namePrefix = action.getNamePrefix();
 		String strictPrefix = namePrefix.trim();
 		String wordPrefix = ' ' + strictPrefix;

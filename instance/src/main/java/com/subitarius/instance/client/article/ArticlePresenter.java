@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 import com.subitarius.action.GetArticleByHash;
 import com.subitarius.action.GetArticleResult;
 import com.subitarius.action.dto.ArticleDto;

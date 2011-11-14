@@ -24,16 +24,16 @@ import com.google.inject.BindingAnnotation;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.prealpha.dispatch.client.filter.ActionCache;
-import com.prealpha.dispatch.client.filter.ActionFilter;
-import com.prealpha.dispatch.client.filter.CachingActionFilter;
-import com.prealpha.dispatch.client.filter.ChainingFilter;
-import com.prealpha.dispatch.client.filter.DelayedBatchingFilter;
-import com.prealpha.dispatch.client.filter.DelayedBatchingFilter.BatchDelay;
-import com.prealpha.dispatch.client.filter.MemoryActionCache;
-import com.prealpha.dispatch.client.filter.MergingActionFilter;
-import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.client.filter.ActionCache;
+import com.prealpha.xylophone.client.filter.ActionFilter;
+import com.prealpha.xylophone.client.filter.CachingActionFilter;
+import com.prealpha.xylophone.client.filter.DelayedBatchingFilter;
+import com.prealpha.xylophone.client.filter.DelayedBatchingFilter.BatchDelay;
+import com.prealpha.xylophone.client.filter.FilterChain;
+import com.prealpha.xylophone.client.filter.MemoryActionCache;
+import com.prealpha.xylophone.client.filter.MergingActionFilter;
+import com.prealpha.xylophone.shared.Dispatcher;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 
 public final class ClientModule extends AbstractGinModule {
 	public ClientModule() {
@@ -66,7 +66,7 @@ public final class ClientModule extends AbstractGinModule {
 
 		List<ActionFilter> filters = ImmutableList.of(cachingFilter,
 				mergingFilter, batchingFilter);
-		ActionFilter dispatcher = new ChainingFilter(filters);
+		ActionFilter dispatcher = new FilterChain(filters);
 		dispatcher.init(backingDispatcher);
 		return dispatcher;
 	}

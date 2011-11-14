@@ -15,7 +15,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.prealpha.dispatch.server.ActionModule;
+import com.prealpha.xylophone.server.ActionModule;
 import com.subitarius.action.AddArticle;
 import com.subitarius.action.AddMapping;
 import com.subitarius.action.FetchEntities;

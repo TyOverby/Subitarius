@@ -12,9 +12,8 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetArticleByHash;
 import com.subitarius.action.GetArticleResult;
 import com.subitarius.action.dto.ArticleDto;
@@ -37,8 +36,8 @@ final class GetArticleByHashHandler implements
 	}
 
 	@Override
-	public GetArticleResult execute(GetArticleByHash action,
-			Dispatcher dispatcher) throws ActionException {
+	public GetArticleResult execute(GetArticleByHash action)
+			throws ActionException {
 		String articleHash = action.getArticleHash();
 		Article article = entityManager.find(Article.class, articleHash);
 

@@ -21,9 +21,8 @@ import org.slf4j.Logger;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetMappingsByArticle;
 import com.subitarius.action.GetMappingsResult;
 import com.subitarius.action.dto.TagMappingDto;
@@ -50,8 +49,8 @@ final class GetMappingsByArticleHandler implements
 	}
 
 	@Override
-	public GetMappingsResult execute(GetMappingsByArticle action,
-			Dispatcher dispatcher) throws ActionException {
+	public GetMappingsResult execute(GetMappingsByArticle action)
+			throws ActionException {
 		String articleUrlHash = action.getArticleUrlHash();
 		ArticleUrl articleUrl = entityManager.find(ArticleUrl.class,
 				articleUrlHash);

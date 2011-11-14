@@ -16,9 +16,8 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetMapping;
 import com.subitarius.action.GetMappingResult;
 import com.subitarius.action.dto.TagMappingDto;
@@ -44,8 +43,7 @@ final class GetMappingHandler implements
 	}
 
 	@Override
-	public GetMappingResult execute(GetMapping action, Dispatcher dispatcher)
-			throws ActionException {
+	public GetMappingResult execute(GetMapping action) throws ActionException {
 		String tagName = action.getTagName();
 		String articleUrlHash = action.getArticleUrlHash();
 

@@ -8,7 +8,7 @@ package com.subitarius.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Result;
 
 public final class AddArticleResult implements Result {
 	public static enum Type {

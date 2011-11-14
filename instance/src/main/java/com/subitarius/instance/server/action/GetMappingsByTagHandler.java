@@ -28,9 +28,8 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetMappingsByTag;
 import com.subitarius.action.GetMappingsResult;
 import com.subitarius.action.dto.ArticleDto;
@@ -59,8 +58,8 @@ final class GetMappingsByTagHandler implements
 	}
 
 	@Override
-	public GetMappingsResult execute(final GetMappingsByTag action,
-			Dispatcher dispatcher) throws ActionException {
+	public GetMappingsResult execute(final GetMappingsByTag action)
+			throws ActionException {
 		String tagName = action.getTagName();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tuple> criteria = builder.createTupleQuery();

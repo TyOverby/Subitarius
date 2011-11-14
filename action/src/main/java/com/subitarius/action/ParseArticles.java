@@ -6,7 +6,7 @@
 
 package com.subitarius.action;
 
-import com.prealpha.dispatch.shared.Action;
+import com.prealpha.xylophone.shared.Action;
 
 public enum ParseArticles implements Action<MutationResult> {
 	INSTANCE;

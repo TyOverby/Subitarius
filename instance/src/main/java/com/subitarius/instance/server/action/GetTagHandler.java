@@ -16,9 +16,8 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetTag;
 import com.subitarius.action.GetTagResult;
 import com.subitarius.action.dto.TagDto;
@@ -41,8 +40,7 @@ final class GetTagHandler implements ActionHandler<GetTag, GetTagResult> {
 	}
 
 	@Override
-	public GetTagResult execute(GetTag action, Dispatcher dispatcher)
-			throws ActionException {
+	public GetTagResult execute(GetTag action) throws ActionException {
 		String tagName = action.getTagName();
 		try {
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();

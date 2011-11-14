@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.Action;
-import com.prealpha.dispatch.shared.Dispatcher;
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Action;
+import com.prealpha.xylophone.shared.Dispatcher;
+import com.prealpha.xylophone.shared.Result;
 
 final class ActionServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

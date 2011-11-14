@@ -63,15 +63,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.prealpha</groupId>
-			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011091017</version>
+			<groupId>com.prealpha.xylophone</groupId>
+			<artifactId>xylophone</artifactId>
+			<version>0.2-beta</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.prealpha</groupId>
-			<artifactId>gwt-dispatch</artifactId>
-			<version>v2011091017</version>
+			<groupId>com.prealpha.xylophone</groupId>
+			<artifactId>xylophone</artifactId>
+			<version>0.2-beta</version>
 			<classifier>sources</classifier>
 			<scope>provided</scope>
 		</dependency>

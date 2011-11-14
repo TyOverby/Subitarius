@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.*;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Result;
 
 public final class GetHierarchyResult implements Result {
 	private ImmutableMultimap<String, String> hierarchy;

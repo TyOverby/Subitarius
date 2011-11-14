@@ -18,9 +18,8 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetArticleByUrl;
 import com.subitarius.action.GetArticleResult;
 import com.subitarius.action.dto.ArticleDto;
@@ -46,8 +45,8 @@ final class GetArticleByUrlHandler implements
 	}
 
 	@Override
-	public GetArticleResult execute(GetArticleByUrl action,
-			Dispatcher dispatcher) throws ActionException {
+	public GetArticleResult execute(GetArticleByUrl action)
+			throws ActionException {
 		String articleUrl = action.getArticleUrl();
 		try {
 			CriteriaBuilder builder = entityManager.getCriteriaBuilder();

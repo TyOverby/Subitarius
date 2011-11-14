@@ -18,9 +18,8 @@ import org.slf4j.Logger;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.GetHierarchy;
 import com.subitarius.action.GetHierarchyResult;
 import com.subitarius.domain.Tag;
@@ -40,7 +39,7 @@ final class GetHierarchyHandler implements
 	}
 
 	@Override
-	public GetHierarchyResult execute(GetHierarchy action, Dispatcher dispatcher)
+	public GetHierarchyResult execute(GetHierarchy action)
 			throws ActionException {
 		Multimap<String, String> hierarchy = HashMultimap.create();
 

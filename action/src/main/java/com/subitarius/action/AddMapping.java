@@ -8,7 +8,7 @@ package com.subitarius.action;
 
 import static com.google.common.base.Preconditions.*;
 
-import com.prealpha.dispatch.shared.Action;
+import com.prealpha.xylophone.shared.Action;
 import com.subitarius.action.dto.TagMappingDto.State;
 
 public final class AddMapping implements Action<MutationResult> {

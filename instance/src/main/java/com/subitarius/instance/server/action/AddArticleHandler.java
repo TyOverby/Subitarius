@@ -13,9 +13,8 @@ import org.slf4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.AddArticle;
 import com.subitarius.action.AddArticleResult;
 import com.subitarius.action.AddArticleResult.Type;
@@ -47,8 +46,7 @@ class AddArticleHandler implements ActionHandler<AddArticle, AddArticleResult> {
 
 	@Transactional
 	@Override
-	public AddArticleResult execute(AddArticle action, Dispatcher dispatcher)
-			throws ActionException {
+	public AddArticleResult execute(AddArticle action) throws ActionException {
 		String url = action.getUrl();
 		ArticleUrl articleUrl = new ArticleUrl(teamProvider.get(), url);
 		entityManager.persist(articleUrl);

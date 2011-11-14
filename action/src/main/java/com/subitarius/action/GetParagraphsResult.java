@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.*;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.prealpha.dispatch.shared.Result;
+import com.prealpha.xylophone.shared.Result;
 
 public final class GetParagraphsResult implements Result {
 	private ImmutableList<String> paragraphs;

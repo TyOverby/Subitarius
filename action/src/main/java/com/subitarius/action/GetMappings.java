@@ -7,8 +7,8 @@
 package com.subitarius.action;
 
 import com.google.common.base.Predicate;
-import com.prealpha.dispatch.shared.filter.CacheableAction;
-import com.prealpha.dispatch.shared.filter.MergeableAction;
+import com.prealpha.xylophone.shared.filter.CacheableAction;
+import com.prealpha.xylophone.shared.filter.MergeableAction;
 import com.subitarius.action.dto.TagMappingDto;
 
 /*

@@ -24,9 +24,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.MutationResult;
 import com.subitarius.action.ParseArticles;
 import com.subitarius.domain.Article;
@@ -62,8 +61,7 @@ final class ParseArticlesHandler implements
 	}
 
 	@Override
-	public MutationResult execute(ParseArticles action, Dispatcher dispatcher)
-			throws ActionException {
+	public MutationResult execute(ParseArticles action) throws ActionException {
 		EntityManager entityManager = entityManagerProvider.get();
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ArticleUrl> criteria = builder

@@ -10,7 +10,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.persist.jpa.JpaPersistModule;
 import com.google.inject.servlet.GuiceServletContextListener;
-import com.prealpha.dispatch.server.filter.BatchActionModule;
+import com.prealpha.xylophone.server.filter.BatchActionModule;
 import com.subitarius.domain.DomainModule;
 import com.subitarius.instance.server.action.SubitariusActionModule;
 import com.subitarius.instance.server.parse.ParseModule;

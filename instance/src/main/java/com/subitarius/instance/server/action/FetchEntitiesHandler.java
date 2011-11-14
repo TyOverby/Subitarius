@@ -20,9 +20,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
-import com.prealpha.dispatch.server.ActionHandler;
-import com.prealpha.dispatch.shared.ActionException;
-import com.prealpha.dispatch.shared.Dispatcher;
+import com.prealpha.xylophone.server.ActionHandler;
+import com.prealpha.xylophone.shared.ActionException;
 import com.subitarius.action.FetchEntities;
 import com.subitarius.action.MutationResult;
 import com.subitarius.domain.DistributedEntity;
@@ -56,8 +55,7 @@ class FetchEntitiesHandler implements
 	}
 
 	@Override
-	public MutationResult execute(FetchEntities action, Dispatcher dispatcher)
-			throws ActionException {
+	public MutationResult execute(FetchEntities action) throws ActionException {
 		long nextTimestamp = System.currentTimeMillis();
 		Set<Tag> tags = Sets.newHashSet();
 		Set<DistributedEntity> entities = Sets.newHashSet();

@@ -6,8 +6,8 @@
 
 package com.subitarius.action;
 
-import com.prealpha.dispatch.shared.filter.CacheableAction;
-import com.prealpha.dispatch.shared.filter.MergeableAction;
+import com.prealpha.xylophone.shared.filter.CacheableAction;
+import com.prealpha.xylophone.shared.filter.MergeableAction;
 
 abstract class GetArticle implements CacheableAction<GetArticleResult>,
 		MergeableAction<GetArticleResult> {

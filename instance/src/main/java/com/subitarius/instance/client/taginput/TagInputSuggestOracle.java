@@ -13,7 +13,7 @@ import java.util.Set;
 
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.inject.Inject;
-import com.prealpha.dispatch.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.DispatcherAsync;
 import com.subitarius.action.GetTagSuggestions;
 import com.subitarius.action.GetTagSuggestionsResult;
 import com.subitarius.instance.client.error.ManagedCallback;
